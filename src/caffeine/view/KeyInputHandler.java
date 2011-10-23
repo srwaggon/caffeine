@@ -16,39 +16,16 @@ public class KeyInputHandler extends JComponent implements KeyListener{
 
 	@Override
 	public void keyPressed(KeyEvent event) {
-		if(event.getKeyCode() == KeyEvent.VK_DOWN){
-			interactions.set("down",true);
-		}
-		if(event.getKeyCode() == KeyEvent.VK_LEFT){
-			interactions.set("left",true);
-		}
-		if(event.getKeyCode() == KeyEvent.VK_RIGHT){
-			interactions.set("right",true);
-		}
-		if(event.getKeyCode() == KeyEvent.VK_UP){
-			interactions.set("up",true);
-		}
+		interactions.set(event.getKeyCode(), true);
 	}
 
 	@Override
 	public void keyReleased(KeyEvent event) {		
-		if(event.getKeyCode() == KeyEvent.VK_DOWN){
-			interactions.set("down",false);
-		}
-		if(event.getKeyCode() == KeyEvent.VK_LEFT){
-			interactions.set("left",false);
-		}
-		if(event.getKeyCode() == KeyEvent.VK_RIGHT){
-			interactions.set("right",false);
-		}
-		if(event.getKeyCode() == KeyEvent.VK_UP){
-			interactions.set("up",false);
-		}
+		interactions.set(event.getKeyCode(), false);
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		System.out.println("keyTyped");
+		System.out.print(e.getKeyChar());
 	}
-
 }

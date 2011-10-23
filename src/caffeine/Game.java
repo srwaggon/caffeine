@@ -12,12 +12,13 @@ import caffeine.world.Map;
 import caffeine.world.Point;
 
 public class Game{
+	InteractionHandler interactionHandler = new InteractionHandler();
 	HashMap<Integer, Map> world = new HashMap<Integer, Map>();
 	Integer currentMapID = 0;
 	Clock gameClock = Clock.getInstance();
 	static Game game = new Game();
 	GUI gui;
-	InteractionHandler interactionHandler = new InteractionHandler();
+	
 
 	public static void main(String args[]){
 		Game.getInstance();

@@ -1,28 +1,31 @@
 package caffeine.entity;
 
+import java.awt.event.KeyEvent;
+import java.util.HashMap;
+
 import caffeine.action.Action;
 import caffeine.action.Move;
 import caffeine.view.InteractionHandler;
 import caffeine.world.Direction;
 
 public class PlayerBrain extends Brain{
+	HashMap<Integer, Action> actionMap;
 	InteractionHandler interactions;
 	
 	public PlayerBrain(InteractionHandler i){
 		interactions = i;
+		actionMap = new HashMap<Integer, Action>();
+		actionMap.put(KeyEvent.VK_UP, new Move(Direction.NORTH));
+		actionMap.put(KeyEvent.VK_DOWN, new Move(Direction.SOUTH));
+		actionMap.put(KeyEvent.VK_LEFT, new Move(Direction.WEST));
+		actionMap.put(KeyEvent.VK_RIGHT, new Move(Direction.EAST));
 	}
 	
 	@Override
 	public Action next() {
-		if(interactions.get("up") && !interactions.get("down")){
-			return new Move(Direction.NORTH);
-		}else if (interactions.get("down") && !interactions.get("up")){
-			return new Move(Direction.SOUTH);
-		}
-		if(interactions.get("left") && !interactions.get("right")){
-			return new Move(Direction.WEST);			
-		}else if (interactions.get("right") && !interactions.get("left")){
-			return new Move(Direction.EAST);
+		for(int keyCode : actionMap.keySet()){
+			if(interactions.get(keyCode))
+				return actionMap.get(keyCode);
 		}
 		return Action.Inaction;
 	}
