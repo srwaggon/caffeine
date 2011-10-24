@@ -5,11 +5,11 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JComponent;
 
-public class KeyInputHandler extends JComponent implements KeyListener{
+public class KeyInputComponent extends JComponent implements KeyListener{
 	private static final long serialVersionUID = -2255035832009759362L;
 	protected InteractionHandler interactions;
 	
-	public KeyInputHandler(InteractionHandler ih) {
+	public KeyInputComponent(InteractionHandler ih) {
 		super();
 		interactions = ih;
 	}

@@ -19,17 +19,21 @@ public class GUI extends JFrame {
        Creates a GUI for the given board.
 	 */
 	public GUI(Game game) {
-		super("Game");
+		super("Caffeine Game Engine Demo");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
-		view = new BoardView(game.getCurrentMap());
+		view = new BoardView(game);
 		setContentPane(view);
 		
-		this.addKeyListener(new KeyInputHandler(game.getInteractionHandler()));
+		this.addKeyListener(new KeyInputComponent(game.getInteractionHandler()));
 		
 		pack();
 		setResizable(false);
 		setVisible(true);
+	}
+	
+	public BoardView getContentPane(){
+		return view;
 	}
 
 	/**

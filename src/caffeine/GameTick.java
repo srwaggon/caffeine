@@ -8,7 +8,9 @@ public class GameTick extends TimerTask{
 	}
 	
 	public void run(){
-		Game.getInstance().getCurrentMap().tick();
-		Game.getInstance().getGUI().repaint();
+		Game g = Game.getInstance();
+		g.getCurrentMap().tick();
+		g.getGUI().getContentPane().getCamera().centerOn(g.getCurrentMap().getEntities().get(0).getCenter());
+		g.getGUI().repaint();
     }
 }

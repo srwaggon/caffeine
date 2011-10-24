@@ -4,6 +4,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 import caffeine.entity.Entity;
+import caffeine.view.Sprite;
 
 
 public class Tile{
@@ -45,12 +46,18 @@ public class Tile{
 	public boolean isSafe(){
 		return type.isSafe();
 	}
-	public void paint(Graphics g){
+	/*
+	public Shape getImg(){
 		g.setColor(type.getColor());
 		g.fillRect(x*size, y*size, size, size);
 		g.setColor(Color.BLACK);
 		g.drawLine(x*size, y*size, (x+1)*size-1, y*size);
 		g.drawLine(x*size, y*size, x*size, (y+1)*size-1);
+	}
+	*/
+	
+	public Sprite getSprite(){
+		return new Sprite(type.getColor(), new Rectangle(x*size, y*size, size, size));
 	}
 
 	public String description(){

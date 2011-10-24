@@ -17,7 +17,7 @@ public class Game{
 	Integer currentMapID = 0;
 	Clock gameClock = Clock.getInstance();
 	static Game game = new Game();
-	GUI gui;
+	public GUI gui;
 	
 
 	public static void main(String args[]){

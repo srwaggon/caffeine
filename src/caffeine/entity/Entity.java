@@ -1,10 +1,12 @@
 package caffeine.entity;
 
 import java.awt.*;
+import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 
 import caffeine.action.Action;
 import caffeine.util.Utilities;
+import caffeine.view.Sprite;
 import caffeine.world.Direction;
 import caffeine.world.Point;
 
@@ -98,12 +100,9 @@ public class Entity{
 		loc = p;
 	}
 
-	public void paint(Graphics g){
-		g.setColor(color);
-		g.drawOval(loc.x, loc.y, width, height);
-		g.fillOval(loc.x, loc.y, width, height);
+	public Sprite getSprite(){
+		return new Sprite(color, new RoundRectangle2D.Double(loc.x, loc.y, width, height, 15, 15));
 	}
-
 
 	public void setColor(Color c){
 		this.color = c;

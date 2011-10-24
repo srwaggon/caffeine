@@ -1,17 +1,19 @@
 package caffeine.world;
 
 
-import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import caffeine.entity.Entity;
+import caffeine.view.Sprite;
 
 public class Map{
 	private ArrayList<Entity> entities;
 	private int tileSize = 32;
 	private int height, width;
 	private int x, y;
+	private HashMap<Direction, Map> neighbors = new HashMap<Direction, Map>();
 	private Tile[][] board;
 
 	public Map(int cols, int rows, int tileSize){
@@ -88,14 +90,17 @@ public class Map{
 				0 <= p.y && p.y < height*tileSize;
 	}
 
-	public void paint(Graphics g){
+	public ArrayList<Sprite> getSprites(){
+		ArrayList<Sprite> sprites = new ArrayList<Sprite>();
 		for(int c = 0; c < board.length; c++){
 			for(int r = 0; r < board[c].length; r++){
-				board[c][r].paint(g);
-			}}
-		for (Entity e : entities){
-			e.paint(g);
+				sprites.add(board[c][r].getSprite());
+			}
 		}
+		for (Entity e : entities){
+			sprites.add(e.getSprite());
+		}
+		return sprites;
 	}
 	
 	public void tick(){
@@ -134,5 +139,15 @@ public class Map{
 		for(Entity e : dead){
 			entities.remove(e);
 		}
+	}
+
+
+	public Map getNeighbors(Direction d) {
+		return neighbors.get(d);
+	}
+
+
+	public void setNeighbor(Direction d, Map m) {
+		neighbors.put(d, m);
 	}
 }
