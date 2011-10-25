@@ -2,10 +2,13 @@ package caffeine.action;
 
 import java.util.ArrayList;
 
+import caffeine.Game;
 import caffeine.Rules;
 import caffeine.entity.Entity;
 import caffeine.world.Direction;
 import caffeine.world.Point;
+import caffeine.world.Tile;
+import caffeine.world.Warp;
 
 
 public class Move implements Action {
@@ -33,8 +36,15 @@ public class Move implements Action {
 			if(Rules.checkValidMove(this, e)){
 				e.setLoc(e.getLoc().project(direction, e.getSpeed()));
 			}
+			/*
 			if(Rules.checkDeadlyMove(this, e)){
 				e.die();
+			}
+			*/
+			if(Rules.checkWarpMove(this, e)){
+				Tile loc = Game.getInstance().getCurrentMap().getTileAt(e.getCenter());
+				Warp w = (Warp) loc.getType();
+				e.setLoc(w.loc);
 			}
 		}
 	}

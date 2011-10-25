@@ -7,7 +7,7 @@ import caffeine.entity.Entity;
 import caffeine.view.Sprite;
 
 
-public class Tile{
+public class Tile implements Sprited{
 	protected ArrayList<Entity> occupants = new ArrayList<Entity>();
 	static protected int size = 32;
 	protected int x, y;
@@ -46,20 +46,16 @@ public class Tile{
 	public boolean isSafe(){
 		return type.isSafe();
 	}
-	/*
-	public Shape getImg(){
-		g.setColor(type.getColor());
-		g.fillRect(x*size, y*size, size, size);
-		g.setColor(Color.BLACK);
-		g.drawLine(x*size, y*size, (x+1)*size-1, y*size);
-		g.drawLine(x*size, y*size, x*size, (y+1)*size-1);
-	}
-	*/
+
 	
 	public Sprite getSprite(){
 		return new Sprite(type.getColor(), new Rectangle(x*size, y*size, size, size));
 	}
-
+	
+	public TileObject getType(){
+		return type;
+	}
+	
 	public String description(){
 		return type + "@(" + x + "," + y + ")";
 	}
@@ -92,6 +88,9 @@ public class Tile{
 	}
 	public void setWater(){
 		type = new Water();
+	}
+	public void setWarp(Warp w){
+		type = w;
 	}
 
 	public void read(char c){

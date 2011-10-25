@@ -43,6 +43,11 @@ public class GUI extends JFrame {
 	public void setDelay(int delay) {
 		this.delay = delay;
 	}
+	
+	public void tick(){
+		repaint();
+		view.getCamera().tick();
+	}
 
 	/**
        Updates the display.

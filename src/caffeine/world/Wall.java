@@ -1,7 +1,7 @@
 package caffeine.world;
 import java.awt.*;
 
-public class Wall implements TileObject{
+public class Wall extends TileObject{
     public boolean isBlocked(){
         return true;
     }

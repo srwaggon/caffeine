@@ -4,13 +4,17 @@ import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 
+import caffeine.Game;
 import caffeine.action.Action;
+import caffeine.rule.Rule;
 import caffeine.util.Utilities;
 import caffeine.view.Sprite;
 import caffeine.world.Direction;
 import caffeine.world.Point;
+import caffeine.world.Sprited;
+import caffeine.world.Tile;
 
-public class Entity{
+public class Entity implements Sprited{
 	protected boolean isAlive = true, isMoving = false;
 	protected Brain brain;
 	protected Color color = Utilities.randomColor();
@@ -20,17 +24,12 @@ public class Entity{
 	protected int height = 32;
 	protected int width = 32;
 	protected int speed = width/2;
+	protected int mapID;
 	protected Point loc;
 	protected String name;
 
 	public Entity(){
 		this(new RandomBrain(), new Point());
-	}
-	public Entity(Brain b){
-		this(b, new Point());
-	}
-	public Entity(Point p){
-		this(new RandomBrain(), p);
 	}
 	public Entity(Brain b, Point point){
 		brain = b;
@@ -61,7 +60,9 @@ public class Entity{
 	public int getSpeed(){
 		return speed;
 	}
-
+	public Tile getTile(){
+		return Game.getInstance().getWorld().get(mapID).getTileAt(getCenter());
+	}
 	public ArrayList<Point> getVertices(){
 		ArrayList<Point> vertices = new ArrayList<Point>();
 		vertices.add(loc);
@@ -115,6 +116,10 @@ public class Entity{
 	}
 
 	public void tick(){
+		for(Rule r : Game.getInstance().getRules()){
+			if(r.appliesTo(this))
+				r.applyOn(this);
+		}
 		if(isAlive){
 			Action a = brain.next();
 			if (a != null){

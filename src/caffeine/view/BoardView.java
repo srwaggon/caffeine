@@ -5,7 +5,6 @@ import java.awt.*;
 import javax.swing.*;
 
 import caffeine.Game;
-import caffeine.world.Map;
 /**
    A panel for displaying the board.
  */
@@ -19,8 +18,8 @@ public class BoardView extends JPanel{
 	 */
 	public BoardView(Game game) {
 		this.game = game;
-		cam = new Camera(0, 0, game.getCurrentMap().getWidth()*game.getCurrentMap().getTileSize());
-		setBackground(Color.WHITE);
+		cam = new Camera(200, 200, 400);
+		setBackground(Color.BLACK);
 	}
 	
 	public Camera getCamera(){
@@ -39,13 +38,7 @@ public class BoardView extends JPanel{
        Returns the preferred size of this panel.
 	 */
 	public Dimension getPreferredSize() {
-		Map m = game.getCurrentMap();
-		int tileSize = m.getTileSize();
-		int width = m.getWidth();
-		int height = m.getHeight();
-		int boardWidth = Math.min(tileSize * width, 1200);
-		int boardHeight = Math.min(tileSize * height, 800);
-		return new Dimension(boardWidth, boardHeight);
+		return new Dimension(cam.view,cam.view);
 	}  
 }
 
