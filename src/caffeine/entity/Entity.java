@@ -1,6 +1,6 @@
 package caffeine.entity;
 
-import java.awt.*;
+import java.awt.Color;
 import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 
@@ -9,9 +9,10 @@ import caffeine.action.Action;
 import caffeine.rule.Rule;
 import caffeine.util.Utilities;
 import caffeine.view.Sprite;
+import caffeine.view.Sprited;
 import caffeine.world.Direction;
+import caffeine.world.Location;
 import caffeine.world.Point;
-import caffeine.world.Sprited;
 import caffeine.world.Tile;
 
 public class Entity implements Sprited{
@@ -24,17 +25,16 @@ public class Entity implements Sprited{
 	protected int height = 32;
 	protected int width = 32;
 	protected int speed = width/2;
-	protected int mapID;
-	protected Point loc;
+	protected Location loc;
 	protected String name;
 
 	public Entity(){
-		this(new RandomBrain(), new Point());
+		this(new Location());
 	}
-	public Entity(Brain b, Point point){
-		brain = b;
+	public Entity(Location loc){
+		brain = new Brain();
 		id = numCharacters++;
-		loc = point;
+		this.loc = loc;
 		name = "" + id;
 		System.err.println("Spawning Entity " + name);
 	}
@@ -47,36 +47,45 @@ public class Entity implements Sprited{
 	public Direction getFacing() {
 		return facing;
 	}
-	public Point getCenter(){
-		return loc.add(width/2,height/2);
+	public Location getCenter(){
+		return new Location(
+				loc.getMapID(),
+				loc.getX() + width/2,
+				loc.getY() + height/2);
 	}
-	public Point getLoc(){
+	public Location getLoc(){
 		return loc;
 	}
-	public Action getNext(){
-		return brain.next();
+	public Action next(){
+		return brain.next(this);
 	}
 	
 	public int getSpeed(){
 		return speed;
 	}
 	public Tile getTile(){
-		return Game.getInstance().getWorld().get(mapID).getTileAt(getCenter());
+		return Game.getInstance().getWorld().get(loc.getMapID()).getTileAt(loc.getX(), loc.getY());
 	}
-	public ArrayList<Point> getVertices(){
+
+	// TODO revise.  strongly.
+	public ArrayList<Point> getBounds(){
 		ArrayList<Point> vertices = new ArrayList<Point>();
-		vertices.add(loc);
-		vertices.add(new Point(loc.x+width-1, loc.y));
-		vertices.add(new Point(loc.x, loc.y+height-1));
-		vertices.add(new Point(loc.x+width-1, loc.y+height-1));
+		int x = loc.getX();
+		int y = loc.getY();
+		vertices.add(new Point(x, y));
+		vertices.add(new Point(x+width-1, y));
+		vertices.add(new Point(x, y+height-1));
+		vertices.add(new Point(x+width-1, y+height-1));
 		return vertices;
 	}
+	
 	public int getX(){
-		return loc.x;
+		return loc.getX();
 	}
 	public int getY(){
-		return loc.y;
+		return loc.getY();
 	}
+	/* TODO
 	public boolean hitTest(Entity other){
 		for(Point p : other.getVertices()){
 			if(hitTest(p))
@@ -88,6 +97,7 @@ public class Entity implements Sprited{
 		return loc.x <= p.x && p.x < loc.x + width &&
 				loc.y <= p.y && p.y < loc.y + height;
 	}
+	*/
 
 	public boolean isAlive(){
 		return isAlive;
@@ -97,12 +107,12 @@ public class Entity implements Sprited{
 		return isMoving;
 	}
 
-	public void setLoc(Point p){
-		loc = p;
+	public void setLoc(Location loc){
+		this.loc = loc;
 	}
 
 	public Sprite getSprite(){
-		return new Sprite(color, new RoundRectangle2D.Double(loc.x, loc.y, width, height, 15, 15));
+		return new Sprite(color, new RoundRectangle2D.Double(loc.getX(), loc.getY(), width, height, 15, 15));
 	}
 
 	public void setColor(Color c){
@@ -121,10 +131,7 @@ public class Entity implements Sprited{
 				r.applyOn(this);
 		}
 		if(isAlive){
-			Action a = brain.next();
-			if (a != null){
-				a.performOn(this);
-			}
+			next().performOn(this);
 		}
 	}
 

@@ -12,7 +12,6 @@ public class Map{
 	private ArrayList<Entity> entities;
 	private int tileSize = 32;
 	private int height, width;
-	private int x, y;
 	private HashMap<Direction, Map> neighbors = new HashMap<Direction, Map>();
 	private Tile[][] board;
 
@@ -23,8 +22,8 @@ public class Map{
 		board = new Tile[cols][rows];
 
 		for(int c = 0; c < cols; c++){
-			for(int r = 0; r < rows; r++){
-				board[c][r] = new Tile(c,r, tileSize, new Grass());
+			for(int r = 0; r < rows; r++){ // TODO fix mapIDs
+				board[c][r] = new Tile(new Location(0,c*tileSize,r*tileSize), tileSize, new Grass());
 			}}}
 
 
@@ -73,18 +72,6 @@ public class Map{
 		return entities;
 	}
 	
-	public int getX(){
-		return x;
-	}
-	public int getY(){
-		return y;
-	}
-	public void setX(int x){
-		this.x = x;
-	}
-	public void setY(int y){
-		this.y = y;
-	}
 	public boolean withinBounds(Point p){
 		return  0 <= p.x && p.x < width*tileSize &&
 				0 <= p.y && p.y < height*tileSize;
@@ -111,7 +98,7 @@ public class Map{
 	}
 	
 	public String toString(){
-		String s = "" + x + " " + y + "\n";
+		String s = "";
 		for(int i = 0; i < height; i++){
 			for(int j = 0; j < width; j++){
 				s += board[j][i];

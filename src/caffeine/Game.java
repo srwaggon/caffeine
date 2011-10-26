@@ -1,79 +1,99 @@
 package caffeine;
 
-
+// Java Libraries
 import java.util.ArrayList;
-import java.util.HashMap;
+// Local Libraries
+import caffeine.entity.*;
+import caffeine.rule.*;
+import caffeine.view.*;
+import caffeine.world.*;
 
-import caffeine.entity.Entity;
-import caffeine.entity.PlayerBrain;
-import caffeine.rule.Rule;
-import caffeine.rule.UnsafeTileRule;
-import caffeine.view.GUI;
-import caffeine.view.InteractionHandler;
-import caffeine.world.Map;
-import caffeine.world.Point;
-import caffeine.world.Warp;
 
 public class Game{
-	InteractionHandler interactionHandler = new InteractionHandler();
-	HashMap<Integer, Map> world = new HashMap<Integer, Map>();
-	ArrayList<Rule> rules = new ArrayList<Rule>();
-	Integer currentMapID = 0;
+	InteractionHandler interactionHandler;
+	World world;
+	ArrayList<Rule> rules;
+	Integer currentMapID;
 	Clock gameClock = Clock.getInstance();
 	static Game game = new Game();
 	public GUI gui;
 
 	public static void main(String args[]){
-		Game.getInstance();
+		Game g = Game.getInstance();
+		Player adam = new Player(new Location());
+		// Adam
+		g.world.get(0).add(adam);
+		g.getCamera().focusOn(g.world.get(0).getEntities().get(0));
+		
+		// Animal Kingdom
+		g.world.spawnDudes(5, 0);
 	}
 
 	private Game(){
+		interactionHandler = new InteractionHandler();
+
 		// Let there be land
-		world.put(currentMapID, Map.read("20 14 48 " +
-				"...###.......##...##" +
-				".............##...~#" + 
-				"....#######..##...~#" +
-				"#...#~~~.....##....#" +
-				"#...#.....#........#" +
-				"....#..####..##....#" +
-				".............##....#" +
-				"#..##...###..##....#" +
-				"~..##..............." +
-				"#.....#.....#..#####" +
-				"..###.#..~..#......." +
-				"......#.....#...#..." +
-				"#~.................#" +
-				"##......###.......##"
-				));
+		world = new World();
+		try {
+			Map m = Map.read("20 14 48 " +
+					"...###.......##...##" +
+					".............##...~#" + 
+					"....#######..##...~#" +
+					"#...#~~~.....##....#" +
+					"#...#.....#........#" +
+					"....#..####..##....#" +
+					".............##....#" +
+					"#..##...###..##....#" +
+					"~..##..............." +
+					"#.....#.....#..#####" +
+					"..###.#..~..#......." +
+					"......#.....#...#..." +
+					"#~.................#" +
+					"##......###.......##"
+					);
+			currentMapID = world.add(m);
+			//world.add(m);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		world.get(currentMapID).getTile(9, 10).setWarp(new Warp(currentMapID,60,60));
+
+		// with Physics
+		rules = new ArrayList<Rule>();
+		//rules.add(new UnsafeTileRule());
+		/*
+		rules.add(new Rule(){
+			public boolean appliesTo(Object o){
+				return true;
+			}
+			
+			public void applyOn(Object o){
+				System.out.println(o.toString());
+			}
+		});
+		*/
+				
 		// Let there be light
 		gui = new GUI(this);
-		// Let there be time
-		gameClock.scheduleAtFixedRate(new GameTick(), 0, 100);
-		world.get(currentMapID).add(new Entity(
-				new PlayerBrain(interactionHandler),
-				new Point()));
-		gui.getContentPane().getCamera().focusOn(getCurrentMap().getEntities().get(0));
-		for(int i = 0; i < 10; i++){
-			world.get(currentMapID).add(new Entity());
-		}
-		rules.add(new UnsafeTileRule());
 	}
 
-	public Map getCurrentMap(){
-		return world.get(currentMapID);
-	}
-	public ArrayList<Entity> getEntities(){
-		return world.get(currentMapID).getEntities();
+	protected void tick() {
+		world.get(currentMapID).tick();
+		gui.tick();
 	}
 	
-	public HashMap<Integer, Map> getWorld(){
+	public Camera getCamera(){
+		return this.gui.getContentPane().getCamera();
+	}
+	
+	public ArrayList<Entity> getEntities(int mapID){
+		return world.get(mapID).getEntities();
+	}
+	
+	public World getWorld(){
 		return world;
 	}
 
-	public GUI getGUI(){
-		return gui;
-	}
 	public static Game getInstance(){
 		return game;
 	}

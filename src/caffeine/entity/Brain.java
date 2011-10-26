@@ -2,7 +2,9 @@ package caffeine.entity;
 
 import caffeine.action.Action;
 
-public abstract class Brain {
+public class Brain {
 
-	public abstract Action next();
+	public Action next(Entity e){
+		return Action.Inaction;
+	}
 }

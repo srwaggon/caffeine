@@ -15,13 +15,6 @@ public class Point {
 		this.y = y;
 	}
 	
-	public Point add(int x, int y){
-		return new Point(this.x + x, this.y + y);
-	}
-	public Point sub(int x, int y){
-		return new Point(this.x - x, this.y - y);
-	}
-	
 	public Point project(Direction direction, int speed){
 		int dx = 0;
 		int dy = 0;
@@ -39,9 +32,8 @@ public class Point {
 		}
 		dx *= speed;
 		dy *= speed;
-		return add(dx, dy);
+		return new Point(x + dx, y + dy);
 	}
-	
 	public double distanceTo(Point other){
 		return Math.sqrt((other.x - x)^2 + (other.y - y)^2);
 	}

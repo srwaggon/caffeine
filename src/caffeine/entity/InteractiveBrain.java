@@ -8,11 +8,11 @@ import caffeine.action.Move;
 import caffeine.view.InteractionHandler;
 import caffeine.world.Direction;
 
-public class PlayerBrain extends Brain{
+public class InteractiveBrain extends Brain{
 	HashMap<Integer, Action> actionMap;
 	InteractionHandler interactions;
 	
-	public PlayerBrain(InteractionHandler i){
+	public InteractiveBrain(InteractionHandler i){
 		interactions = i;
 		actionMap = new HashMap<Integer, Action>();
 		actionMap.put(KeyEvent.VK_UP, new Move(Direction.NORTH));
@@ -22,7 +22,7 @@ public class PlayerBrain extends Brain{
 	}
 	
 	@Override
-	public Action next() {
+	public Action next(Entity e) {
 		for(int keyCode : actionMap.keySet()){
 			if(interactions.get(keyCode))
 				return actionMap.get(keyCode);

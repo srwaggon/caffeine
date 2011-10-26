@@ -5,21 +5,22 @@ import java.util.ArrayList;
 
 import caffeine.entity.Entity;
 import caffeine.view.Sprite;
+import caffeine.view.Sprited;
 
 
 public class Tile implements Sprited{
 	protected ArrayList<Entity> occupants = new ArrayList<Entity>();
 	static protected int size = 32;
-	protected int x, y;
+	protected Location loc;
+	
 	private TileObject type;
-	Tile(int x, int y){
-		this.x = x;
-		this.y = y;
+	Tile(Location l){
+		this.loc = l;
 		this.type = null;
 	}
-	Tile(int x, int y, int size, TileObject t){
-		this.x = x;
-		this.y = y;
+	
+	Tile(Location l, int size, TileObject t){
+		this.loc = l;
 		Tile.size = size;
 		this.type = t;
 	}
@@ -28,15 +29,7 @@ public class Tile implements Sprited{
 	public int getSize(){
 		return size;
 	}
-	public int getX(){
-		return x;
-	}
-	public int getY(){
-		return y;
-	}
-	public Point getPoint(){
-		return new Point(x*size, y*size);
-	}
+	
 	public boolean isBlocked(){
 		return type.isBlocked();
 	}
@@ -49,7 +42,7 @@ public class Tile implements Sprited{
 
 	
 	public Sprite getSprite(){
-		return new Sprite(type.getColor(), new Rectangle(x*size, y*size, size, size));
+		return new Sprite(type.getColor(), new Rectangle(loc.getX(), loc.getY(), size, size));
 	}
 	
 	public TileObject getType(){
@@ -57,7 +50,7 @@ public class Tile implements Sprited{
 	}
 	
 	public String description(){
-		return type + "@(" + x + "," + y + ")";
+		return type + "@(" + loc.getX() + "," + loc.getY() + ")";
 	}
 	public String toString(){
 		return type.toString();
@@ -101,5 +94,10 @@ public class Tile implements Sprited{
 		}else{
 			this.setGrass();
 		}
+	}
+	@Override
+	public Location getLoc() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

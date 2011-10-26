@@ -7,22 +7,27 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RectangularShape;
 import java.util.ArrayList;
 
-import caffeine.world.Point;
-import caffeine.world.Sprited;
+import caffeine.world.Location;
 
 public class Camera {
-	Point center;
-	int view;
+	Location location;
+	int depthOfField;
 	Sprited focus;
 	
-	public Camera(int x_offset, int y_offset, int depthOfField){
-		this.center = new Point(x_offset, y_offset);
-		this.view = depthOfField;
+	public Camera(){
+		location = new Location();
+		depthOfField = 400;
 	}
 	
-	public void focusOn(Point p){
-		center = p;
+	public Camera(Location loc, int depthOfField){
+		this.location = loc;
+		this.depthOfField = depthOfField;
 	}
+	
+	public void focusOn(Location l){
+		location = l;
+	}
+	
 	public void focusOn(Sprited s){
 		focus = s;
 	}
@@ -30,7 +35,10 @@ public class Camera {
 	public void tick(){
 		if(focus != null){
 			Rectangle r = focus.getSprite().getShape().getBounds();
-			center = new Point((int)r.getCenterX(), (int)r.getCenterY());
+			location = new Location(
+					focus.getLoc().getMapID(),
+					((int)r.getCenterX()),
+					((int)r.getCenterY()));
 		}
 	}
 	
@@ -38,8 +46,8 @@ public class Camera {
 		for(Sprite sprite: sprites){
 			RectangularShape shape = (RectangularShape) sprite.getShape();
 			Rectangle2D newRect = new Rectangle2D.Double(
-					shape.getX() - (center.x - view/2),
-					shape.getY() - (center.y - view/2),
+					shape.getX() - (location.getX() - depthOfField/2),
+					shape.getY() - (location.getY() - depthOfField/2),
 					shape.getWidth(),
 					shape.getHeight());
 			g2.setColor(sprite.getColor());

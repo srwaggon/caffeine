@@ -6,11 +6,11 @@ import caffeine.entity.Entity;
 
 public class Warp extends TileObject {
 	public int mapID = 0;
-	public Point loc;
+	public Location loc;
 	
 	public Warp(int mapID, int x, int y){
 		this.mapID = mapID;
-		loc = new Point(x, y);
+		loc = new Location(mapID, x, y);
 	}
 	@Override
 	public boolean isBlocked() {

@@ -6,7 +6,7 @@ import caffeine.world.Direction;
 
 public class RandomBrain extends Brain {
 	@Override
-	public Action next() {
+	public Action next(Entity e) {
 		return new Move(Direction.getRandom());
 	}
 
