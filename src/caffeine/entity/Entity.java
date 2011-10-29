@@ -12,11 +12,10 @@ import caffeine.view.Sprite;
 import caffeine.view.Sprited;
 import caffeine.world.Direction;
 import caffeine.world.Location;
-import caffeine.world.Point;
 import caffeine.world.Tile;
 
 public class Entity implements Sprited{
-	protected boolean isAlive = true, isMoving = false;
+	protected boolean isAlive = true;
 	protected Brain brain;
 	protected Color color = Utilities.randomColor();
 	protected Direction facing = Direction.NORTH;
@@ -44,75 +43,45 @@ public class Entity implements Sprited{
 		System.err.println(this + " has died.");
 	}
 
-	public Direction getFacing() {
-		return facing;
-	}
-	public Location getCenter(){
-		return new Location(
-				loc.getMapID(),
-				loc.getX() + width/2,
-				loc.getY() + height/2);
-	}
-	public Location getLoc(){
-		return loc;
-	}
-	public Action next(){
-		return brain.next(this);
+	public Direction facing() {return facing;}
+	
+	public Location center(){
+		return loc.add(width/2, height/2);
 	}
 	
-	public int getSpeed(){
-		return speed;
-	}
-	public Tile getTile(){
-		return Game.getInstance().getWorld().get(loc.getMapID()).getTileAt(loc.getX(), loc.getY());
-	}
+	public Location loc(){return loc;}
+	
+	public Action next(){return brain.next(this);}
+	
+	public int speed(){return speed;}
+	
+	public Tile tile(){return loc.tile();}
 
 	// TODO revise.  strongly.
-	public ArrayList<Point> getBounds(){
-		ArrayList<Point> vertices = new ArrayList<Point>();
-		int x = loc.getX();
-		int y = loc.getY();
-		vertices.add(new Point(x, y));
-		vertices.add(new Point(x+width-1, y));
-		vertices.add(new Point(x, y+height-1));
-		vertices.add(new Point(x+width-1, y+height-1));
+	public ArrayList<Location> getBounds(){
+		int id = loc.mapID;
+		int x = x();
+		int y = y();
+		ArrayList<Location> vertices = new ArrayList<Location>();
+		vertices.add(new Location(id, x, y));
+		vertices.add(new Location(id, x + width - 1, y));
+		vertices.add(new Location(id, x, y + height - 1));
+		vertices.add(new Location(id, x + width - 1, y + height - 1));
 		return vertices;
 	}
 	
-	public int getX(){
-		return loc.getX();
-	}
-	public int getY(){
-		return loc.getY();
-	}
-	/* TODO
-	public boolean hitTest(Entity other){
-		for(Point p : other.getVertices()){
-			if(hitTest(p))
-				return true;
-		}
-		return false;
-	}
-	public boolean hitTest(Point p){
-		return loc.x <= p.x && p.x < loc.x + width &&
-				loc.y <= p.y && p.y < loc.y + height;
-	}
-	*/
+	public int x(){return loc.x;}
+	
+	public int y(){return loc.y;}
 
-	public boolean isAlive(){
-		return isAlive;
-	}
+	public boolean isAlive(){return isAlive;}
 
-	public boolean isMoving() {
-		return isMoving;
-	}
-
-	public void setLoc(Location loc){
-		this.loc = loc;
-	}
+	public void setLoc(Location loc){this.loc = loc;}
 
 	public Sprite getSprite(){
-		return new Sprite(color, new RoundRectangle2D.Double(loc.getX(), loc.getY(), width, height, 15, 15));
+		return new Sprite(color, loc,
+				new RoundRectangle2D.Double(
+						loc.x, loc.y, width, height, 15, 15));
 	}
 
 	public void setColor(Color c){
@@ -121,12 +90,9 @@ public class Entity implements Sprited{
 	public void setFacing(Direction facing) {
 		this.facing = facing;
 	}
-	public void setMoving(boolean isMoving) {
-		this.isMoving = isMoving;
-	}
 
 	public void tick(){
-		for(Rule r : Game.getInstance().getRules()){
+		for(Rule r : Game.instance().getRules()){
 			if(r.appliesTo(this))
 				r.applyOn(this);
 		}

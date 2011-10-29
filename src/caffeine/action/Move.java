@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import caffeine.Rules;
 import caffeine.entity.Entity;
 import caffeine.world.Direction;
-import caffeine.world.Point;
+import caffeine.world.Location;
 
 
 public class Move implements Action {
@@ -20,10 +20,10 @@ public class Move implements Action {
 	}
 	
 	
-	public ArrayList<Point> projectVertices(Entity e){
-		ArrayList<Point> projection = new ArrayList<Point>();
-		for(Point p : e.getBounds()){
-			projection.add(p.project(direction, e.getSpeed()));
+	public ArrayList<Location> projectVertices(Entity e){
+		ArrayList<Location> projection = new ArrayList<Location>();
+		for(Location l : e.getBounds()){
+			projection.add(l.project(direction, e.speed()));
 		}
 		return projection;
 	}
@@ -32,7 +32,7 @@ public class Move implements Action {
 		if(o instanceof Entity){
 			Entity e = (Entity) o;
 			if(Rules.checkValidMove(this, e)){
-				e.setLoc(e.getLoc().project(direction, e.getSpeed()));
+				e.setLoc(e.loc().project(direction, e.speed()));
 			}
 		}
 	}

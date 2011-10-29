@@ -2,16 +2,25 @@ package caffeine.world;
 import java.awt.Color;
 
 public abstract class TileObject{
+	Color color = Color.BLUE;
+	Boolean isBlocked = false;
+	Boolean isSafe = false;
+	String symbol = "!";
+	
     public boolean isBlocked(){
-    	return false;
+    	return isBlocked;
     }
     public boolean isSafe(){
-    	return true;
+    	return isSafe;
     }
     public Color getColor(){
-    	return Color.BLACK;
+    	return color;
+    }
+    
+    public void setRed(){
+    	color = Color.RED;
     }
     public String toString(){
-    	return "TileObject";
+    	return symbol;
     }
 }

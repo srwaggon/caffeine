@@ -2,21 +2,23 @@ package caffeine.view;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RectangularShape;
 import java.util.ArrayList;
 
+import caffeine.entity.Entity;
 import caffeine.world.Location;
 
 public class Camera {
-	Location location;
-	int depthOfField;
-	Sprited focus;
+	protected ArrayList<Sprite> sprites = new ArrayList<Sprite>();
+	protected int depthOfField;
+	protected Entity focus;
+	protected Location location;
+	
 	
 	public Camera(){
+		depthOfField = 400; // TODO fix this magic number
 		location = new Location();
-		depthOfField = 400;
 	}
 	
 	public Camera(Location loc, int depthOfField){
@@ -28,26 +30,23 @@ public class Camera {
 		location = l;
 	}
 	
-	public void focusOn(Sprited s){
+	public void focusOn(Entity s){
 		focus = s;
 	}
 	
-	public void tick(){
-		if(focus != null){
-			Rectangle r = focus.getSprite().getShape().getBounds();
-			location = new Location(
-					focus.getLoc().getMapID(),
-					((int)r.getCenterX()),
-					((int)r.getCenterY()));
-		}
+	public Location loc(){
+		return location;
 	}
 	
 	public void view(Graphics2D g2, ArrayList<Sprite> sprites){
+		if(focus != null){
+			location = focus.loc();
+		}
 		for(Sprite sprite: sprites){
 			RectangularShape shape = (RectangularShape) sprite.getShape();
 			Rectangle2D newRect = new Rectangle2D.Double(
-					shape.getX() - (location.getX() - depthOfField/2),
-					shape.getY() - (location.getY() - depthOfField/2),
+					sprite.getLoc().x - (location.x - depthOfField/2),
+					sprite.getLoc().y - (location.y - depthOfField/2),
 					shape.getWidth(),
 					shape.getHeight());
 			g2.setColor(sprite.getColor());

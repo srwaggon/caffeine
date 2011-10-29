@@ -6,7 +6,7 @@ public class UnsafeTileRule implements Rule{
 	public boolean appliesTo(Object o){
 		if(o instanceof Entity){
 			Entity e = (Entity) o;
-			if(!e.getTile().getType().isSafe()){
+			if(!e.tile().getType().isSafe()){
 				return true;
 			}
 		}

@@ -1,9 +1,11 @@
 package caffeine.world;
 
+import caffeine.Game;
+
 public class Location {
-	protected int mapID;
-	protected int x;
-	protected int y;
+	public int mapID;
+	public int x;
+	public int y;
 	
 	public Location(){
 		mapID = 0;
@@ -17,28 +19,16 @@ public class Location {
 		this.y = y;
 	}
 	
-	
-	public int getMapID(){
-		return mapID;
+	public Map map(){
+		return Game.instance().world().get(mapID);
 	}
 	
-	public int getX(){
-		return x;
-	}
-	public int getY(){
-		return y;
+	public Tile tile(){
+		return map().getTileAt(x, y);
 	}
 	
-	public void setMapID(int n){
-		mapID = n;
-	}
-	
-	public void setX(int n){
-		x = n;
-	}
-	
-	public void setY(int n){
-		y = n;
+	public Location add(int xOffset, int yOffset){
+		return new Location(mapID, x+xOffset, y+yOffset);
 	}
 	
 	public Location project(Direction direction, int speed){
@@ -61,7 +51,10 @@ public class Location {
 		return new Location(mapID, x + dx, y + dy);
 	}
 	public String toString(){
-		return "[" + mapID + "(" + getX() + "," + getY() + ")]";
+		return "[" + mapID + "(" + x + "," + y + ")]";
 	}
-	
+
+	public boolean legal() {
+		return map().withinBounds(x,  y);
+	}
 }

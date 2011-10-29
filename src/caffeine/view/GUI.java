@@ -25,7 +25,7 @@ public class GUI extends JFrame {
 		view = new BoardView(game);
 		setContentPane(view);
 		
-		this.addKeyListener(new KeyInputComponent(game.getInteractionHandler()));
+		this.addKeyListener(new KeyInputComponent(game.interactionHandler()));
 		
 		pack();
 		setResizable(false);
@@ -43,18 +43,14 @@ public class GUI extends JFrame {
 	public void setDelay(int delay) {
 		this.delay = delay;
 	}
-	
-	public void tick(){
-		repaint();
-		view.getCamera().tick();
-	}
 
 	/**
        Updates the display.
 	 */
-	public void update() {
+	public void tick() {
 		try {
-			view.repaint();
+			repaint();
+			//view.repaint();
 			if (delay > 0)
 				Thread.sleep(delay);
 		}

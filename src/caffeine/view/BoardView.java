@@ -31,7 +31,7 @@ public class BoardView extends JPanel{
 	 */
 	public void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
-		cam.view(g2, game.getWorld().get(0).getSprites());
+		cam.view(g2, game.world().get(0).sprites());
 	}
 
 	/**

@@ -4,16 +4,14 @@ import java.util.ArrayList;
 
 import caffeine.action.Move;
 import caffeine.entity.Entity;
-import caffeine.world.Map;
-import caffeine.world.Point;
+import caffeine.world.Location;
 
 
 public class Rules {
-	public static boolean checkValidMove(Move m, Entity e){
-		Map b = Game.getInstance().getWorld().get(e.getLoc().getMapID());
-		ArrayList<Point> vertices = m.projectVertices(e);
-		for(Point p : vertices){
-			if (!b.withinBounds(p) || b.getTileAt(p).isBlocked()){
+	public static boolean checkValidMove(Move move, Entity e){
+		ArrayList<Location> vertices = move.projectVertices(e);
+		for(Location l : vertices){
+			if (!l.legal() || l.tile().isBlocked()){
 				return false;
 			}
 		}

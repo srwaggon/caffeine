@@ -2,6 +2,7 @@ package caffeine;
 
 // Java Libraries
 import java.util.ArrayList;
+import java.util.TimerTask;
 // Local Libraries
 import caffeine.entity.*;
 import caffeine.rule.*;
@@ -13,20 +14,19 @@ public class Game{
 	InteractionHandler interactionHandler;
 	World world;
 	ArrayList<Rule> rules;
-	Integer currentMapID;
-	Clock gameClock = Clock.getInstance();
+	Clock clock = Clock.getInstance();
 	static Game game = new Game();
 	public GUI gui;
 
 	public static void main(String args[]){
-		Game g = Game.getInstance();
+		Game g = Game.instance();
+		g.start();
+		
 		Player adam = new Player(new Location());
+		
 		// Adam
 		g.world.get(0).add(adam);
-		g.getCamera().focusOn(g.world.get(0).getEntities().get(0));
-		
-		// Animal Kingdom
-		g.world.spawnDudes(5, 0);
+		g.camera().focusOn(g.world.get(0).entities().get(0));
 	}
 
 	private Game(){
@@ -34,70 +34,51 @@ public class Game{
 
 		// Let there be land
 		world = new World();
-		try {
-			Map m = Map.read("20 14 48 " +
-					"...###.......##...##" +
-					".............##...~#" + 
-					"....#######..##...~#" +
-					"#...#~~~.....##....#" +
-					"#...#.....#........#" +
-					"....#..####..##....#" +
-					".............##....#" +
-					"#..##...###..##....#" +
-					"~..##..............." +
-					"#.....#.....#..#####" +
-					"..###.#..~..#......." +
-					"......#.....#...#..." +
-					"#~.................#" +
-					"##......###.......##"
-					);
-			currentMapID = world.add(m);
-			//world.add(m);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		world.get(currentMapID).getTile(9, 10).setWarp(new Warp(currentMapID,60,60));
+		Map m = Map.read("4 4 60 " +
+				"....\n"+
+				"....\n"+
+				"....\n"+
+				"...."
+				);
+		world.add(m);
+		//world.add(m);
 
 		// with Physics
 		rules = new ArrayList<Rule>();
-		//rules.add(new UnsafeTileRule());
-		/*
-		rules.add(new Rule(){
-			public boolean appliesTo(Object o){
-				return true;
-			}
-			
-			public void applyOn(Object o){
-				System.out.println(o.toString());
-			}
-		});
-		*/
+		rules.add(new UnsafeTileRule());
 				
 		// Let there be light
 		gui = new GUI(this);
 	}
+	
+	public void start(){
+		clock.scheduleAtFixedRate(new TimerTask(){
+			public void run() {
+				tick();
+			}}, 0, 100);
+	}
 
-	protected void tick() {
-		world.get(currentMapID).tick();
+	public void tick() {
+		world.tick();
 		gui.tick();
 	}
 	
-	public Camera getCamera(){
+	public Camera camera(){
 		return this.gui.getContentPane().getCamera();
 	}
 	
-	public ArrayList<Entity> getEntities(int mapID){
-		return world.get(mapID).getEntities();
+	public ArrayList<Entity> entities(int mapID){
+		return world.get(mapID).entities();
 	}
 	
-	public World getWorld(){
+	public World world(){
 		return world;
 	}
 
-	public static Game getInstance(){
+	public static Game instance(){
 		return game;
 	}
-	public InteractionHandler getInteractionHandler() {
+	public InteractionHandler interactionHandler() {
 		return interactionHandler;
 	}
 
