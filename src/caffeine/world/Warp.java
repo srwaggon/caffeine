@@ -28,7 +28,7 @@ public class Warp extends TileObject {
 	public void warp(Object o){
 		if(o instanceof Entity){
 			Entity e = (Entity) o;
-			e.setLoc(destination);
+			e.loc(destination);
 		}
 	}
 	

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import caffeine.Game;
 import caffeine.action.Action;
 import caffeine.rule.Rule;
-import caffeine.util.Utilities;
+import caffeine.util.Util;
 import caffeine.view.Sprite;
 import caffeine.view.Sprited;
 import caffeine.world.Direction;
@@ -17,13 +17,13 @@ import caffeine.world.Tile;
 public class Entity implements Sprited{
 	protected boolean isAlive = true;
 	protected Brain brain;
-	protected Color color = Utilities.randomColor();
-	protected Direction facing = Direction.NORTH;
+	protected Color color = Util.randomColor();
+	protected Direction direction;
 	protected static int numCharacters = 0;
 	protected int id = 0;
 	protected int height = 32;
 	protected int width = 32;
-	protected int speed = width/2;
+	protected int speed = width/4;
 	protected Location loc;
 	protected String name;
 
@@ -31,34 +31,16 @@ public class Entity implements Sprited{
 		this(new Location());
 	}
 	public Entity(Location loc){
-		brain = new Brain();
+		brain = new LeftBrain();
 		id = numCharacters++;
 		this.loc = loc;
 		name = "" + id;
 		System.err.println("Spawning Entity " + name);
 	}
 	
-	public void die(){
-		isAlive = false;
-		System.err.println(this + " has died.");
-	}
+	public boolean alive(){return isAlive;}
 
-	public Direction facing() {return facing;}
-	
-	public Location center(){
-		return loc.add(width/2, height/2);
-	}
-	
-	public Location loc(){return loc;}
-	
-	public Action next(){return brain.next(this);}
-	
-	public int speed(){return speed;}
-	
-	public Tile tile(){return loc.tile();}
-
-	// TODO revise.  strongly.
-	public ArrayList<Location> getBounds(){
+	public ArrayList<Location> bounds(){
 		int id = loc.mapID;
 		int x = x();
 		int y = y();
@@ -70,25 +52,40 @@ public class Entity implements Sprited{
 		return vertices;
 	}
 	
-	public int x(){return loc.x;}
+	public Location center(){
+		return loc.add(width/2, height/2);
+	}
 	
-	public int y(){return loc.y;}
+	public void color(Color c){this.color = c;}
+	
+	public void die(){
+		isAlive = false;
+		tile().remove(this);
+		System.err.println(this + " has died.");
+	}
+	
+	public Direction facing() {return direction;}
+	
+	public void facing(Direction angle) {this.direction = angle;}
 
-	public boolean isAlive(){return isAlive;}
+	public Location loc(){return loc;}
+	
+	public void loc(Location loc){
+		tile().remove(this);
+		this.loc = loc;
+		tile().add(this);
+	}
+	
+	public ArrayList<Action> next(){return brain.next(this);}
 
-	public void setLoc(Location loc){this.loc = loc;}
+	public int speed(){return speed;}
 
-	public Sprite getSprite(){
+	@Override
+	public Sprite sprite(){
+		// TODO System.out.println("Sprite " + this);
 		return new Sprite(color, loc,
 				new RoundRectangle2D.Double(
 						loc.x, loc.y, width, height, 15, 15));
-	}
-
-	public void setColor(Color c){
-		this.color = c;
-	}
-	public void setFacing(Direction facing) {
-		this.facing = facing;
 	}
 
 	public void tick(){
@@ -97,12 +94,20 @@ public class Entity implements Sprited{
 				r.applyOn(this);
 		}
 		if(isAlive){
-			next().performOn(this);
+			for(Action a : next()){
+				a.performOn(this);	
+			}
 		}
 	}
 
+	public Tile tile(){return loc.tile();}
+	
 	@Override
 	public String toString(){
 		return name + "@" + loc.toString(); 
 	}
+
+	public int x(){return loc.x;}
+
+	public int y(){return loc.y;}
 }

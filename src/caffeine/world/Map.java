@@ -20,33 +20,32 @@ public class Map{
 		height = rows; width = cols;
 		this.tileSize = tileSize;
 		Tile.setSize(tileSize);
-		map = new Tile[rows][cols];
+		map = new Tile[cols][rows];
 		
-		for(int c = 0; c < width; c++){
-			for(int r = 0; r < height; r++){ // TODO fix mapIDs
-				map[r][c] = new Tile();
+		for(int y = 0; y < width; y++){
+			for(int x = 0; x < height; x++){ // TODO fix mapIDs
+				map[x][y] = new Tile();
 			}
 		}
 		numMaps++;
 	}
-
-
-	public static Map read(String input){
-		Scanner scans = new Scanner(input);
-
-		int width = scans.nextInt();
-		int height = scans.nextInt();
-		int tileSize = scans.nextInt();
-
-		//TODO fix parameters of x and y of map
-		Map b = new Map(numMaps, width, height, tileSize);
+	public Map(String s){
+		Scanner scans = new Scanner(s);
+		this.id = numMaps;
+		width = Integer.parseInt(scans.next());
+		height = Integer.parseInt(scans.next());
+		this.tileSize = Integer.parseInt(scans.next());
+		Tile.setSize(tileSize);
+		
+		map = new Tile[width][height];
+		scans.nextLine();
 		for(int y = 0; y < height; y++){
 			String line = scans.nextLine();
 			for(int x = 0; x < width; x++){
-				b.get(x, y).read(line.charAt(x));
+				map[x][y] = new Tile(line.charAt(x));
 			}
 		}
-		return b;
+		numMaps++;
 	}
 
 	public Tile get(int x, int y){
@@ -71,7 +70,7 @@ public class Map{
 		ArrayList<Entity> entities = new ArrayList<Entity>();
 		for(int y = 0; y < height; y++){
 			for(int x = 0; x < width; x++){
-			entities.addAll(get(x, y).entities());
+				entities.addAll(get(x, y).entities());
 			}
 		}
 		return entities;
@@ -84,16 +83,16 @@ public class Map{
 
 	public ArrayList<Sprite> sprites(){
 		ArrayList<Sprite> sprites = new ArrayList<Sprite>();
-		for(int r = 0; r < height; r++){
-			for(int c = 0; c < width; c++){
-				Tile t = map[c][r];
-				Location l = new Location(id, c*tileSize, r*tileSize);
+		for(int y = 0; y < height; y++){
+			for(int x = 0; x < width; x++){
+				Tile t = map[x][y];
+				Location l = new Location(id, x*tileSize, y*tileSize);
 				Sprite s = new Sprite(t.getType().getColor(), l, t.shape());
 				sprites.add(s);
 			}
 		}
 		for (Entity e : entities()){
-			sprites.add(e.getSprite());
+			sprites.add(e.sprite());
 		}
 		return sprites;
 	}
@@ -110,9 +109,9 @@ public class Map{
 	
 	public String display(){
 		String s = "";
-		for(int i = 0; i < height; i++){
-			for(int j = 0; j < width; j++){
-				s += map[j][i];
+		for(int y = 0; y < height; y++){
+			for(int x = 0; x < width; x++){
+				s += map[x][y];
 			}
 			s += "\n";
 		}
@@ -120,17 +119,11 @@ public class Map{
 	}
 
 	// MUTATORS
-	public void add(Entity e){
-		map[e.x()/tileSize][e.y()/tileSize].add(e);
-	}
-	public void remove(Entity e){
-		map[e.x()/tileSize][e.y()/tileSize].remove(e);
-	}
 
 	public void clearOutDead(){
 		for (Entity e : entities()){
-			if(!e.isAlive()){
-				map[e.x()/tileSize][e.y()/tileSize].remove(e);
+			if(!e.alive()){
+				e.tile().remove(e);
 			}
 		}
 	}

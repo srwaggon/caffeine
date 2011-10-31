@@ -25,8 +25,14 @@ public class Game{
 		Player adam = new Player(new Location());
 		
 		// Adam
-		g.world.get(0).add(adam);
+		g.add(adam);
 		g.camera().focusOn(g.world.get(0).entities().get(0));
+		
+		//g.add(new Entity());
+	}
+
+	public void add(Entity e) {
+		e.tile().add(e);
 	}
 
 	private Game(){
@@ -34,11 +40,13 @@ public class Game{
 
 		// Let there be land
 		world = new World();
-		Map m = Map.read("4 4 60 " +
-				"....\n"+
-				"....\n"+
-				"....\n"+
-				"...."
+		Map m = new Map("10 6 32\n" +
+				"..##......\n"+
+				".........~\n"+
+				"...#.....~\n"+
+				".........~\n"+
+				"...#.....~\n"+
+				"~~##.....~\n"
 				);
 		world.add(m);
 		//world.add(m);

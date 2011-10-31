@@ -31,25 +31,12 @@ public class Location {
 		return new Location(mapID, x+xOffset, y+yOffset);
 	}
 	
-	public Location project(Direction direction, int speed){
-		int dx = 0;
-		int dy = 0;
-		switch(direction){
-		case WEST:
-			dx = -1; break;
-		case NORTH:
-			dy = -1; break; 
-		case EAST:
-			dx = 1; break;
-		case SOUTH:
-			dy = 1; break;
-		default:
-			break;
-		}
-		dx *= speed;
-		dy *= speed;
-		return new Location(mapID, x + dx, y + dy);
+	public Location project(Direction d, int speed){
+		int dx = ((int) Math.cos(d.radians()) * speed);
+		int dy = ((int) Math.sin(d.radians()) * speed);
+		return new Location(mapID, x+dx, y+dy);
 	}
+	
 	public String toString(){
 		return "[" + mapID + "(" + x + "," + y + ")]";
 	}

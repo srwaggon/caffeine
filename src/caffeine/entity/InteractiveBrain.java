@@ -1,6 +1,7 @@
 package caffeine.entity;
 
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import caffeine.action.Action;
@@ -15,19 +16,20 @@ public class InteractiveBrain extends Brain{
 	public InteractiveBrain(InteractionHandler i){
 		interactions = i;
 		actionMap = new HashMap<Integer, Action>();
-		actionMap.put(KeyEvent.VK_UP, new Move(Direction.NORTH));
-		actionMap.put(KeyEvent.VK_DOWN, new Move(Direction.SOUTH));
-		actionMap.put(KeyEvent.VK_LEFT, new Move(Direction.WEST));
-		actionMap.put(KeyEvent.VK_RIGHT, new Move(Direction.EAST));
+		actionMap.put(KeyEvent.VK_UP, new Move(new Direction(270)));
+		actionMap.put(KeyEvent.VK_DOWN, new Move(new Direction(90)));
+		actionMap.put(KeyEvent.VK_LEFT, new Move(new Direction(180)));
+		actionMap.put(KeyEvent.VK_RIGHT, new Move(new Direction(0)));
 	}
 	
 	@Override
-	public Action next(Entity e) {
+	public ArrayList<Action> next(Entity e) {
+		ArrayList<Action> actionList = new ArrayList<Action>();
 		for(int keyCode : actionMap.keySet()){
 			if(interactions.get(keyCode))
-				return actionMap.get(keyCode);
+				actionList.add(actionMap.get(keyCode));
 		}
-		return Action.Inaction;
+		return actionList;
 	}
 
 }

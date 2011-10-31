@@ -12,17 +12,12 @@ public class Move implements Action {
 	private Direction direction;
 	
 	public Move(Direction dir){
-		this.direction = dir;
+		direction = dir;
 	}
-	
-	public Direction getDirection(){
-		return direction;
-	}
-	
 	
 	public ArrayList<Location> projectVertices(Entity e){
 		ArrayList<Location> projection = new ArrayList<Location>();
-		for(Location l : e.getBounds()){
+		for(Location l : e.bounds()){
 			projection.add(l.project(direction, e.speed()));
 		}
 		return projection;
@@ -32,7 +27,7 @@ public class Move implements Action {
 		if(o instanceof Entity){
 			Entity e = (Entity) o;
 			if(Rules.checkValidMove(this, e)){
-				e.setLoc(e.loc().project(direction, e.speed()));
+				e.loc(e.loc().project(direction, e.speed()));
 			}
 		}
 	}

@@ -18,19 +18,12 @@ public class World {
 	
 	public int add(Map m){
 		world.put(numMaps, m);
-		System.out.println(numMaps);
 		// return its map ID, and increment the number of maps.
 		return numMaps++;
 	}
 	
 	public Map get(int mapID){
 		return world.get(mapID);
-	}
-	
-	public void spawnDudes(int n, int mapID){
-		for(int i = 0; i < n; i++){
-			world.get(mapID).add(new Entity());
-		}
 	}
 	
 	public void tick(){
