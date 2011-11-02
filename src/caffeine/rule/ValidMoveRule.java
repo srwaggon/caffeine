@@ -1,9 +1,5 @@
 package caffeine.rule;
 
-import java.util.ArrayList;
-
-import caffeine.world.Location;
-
 public class ValidMoveRule implements Rule {
 
 	@Override

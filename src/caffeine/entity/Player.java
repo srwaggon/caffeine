@@ -3,7 +3,7 @@ package caffeine.entity;
 import caffeine.Game;
 import caffeine.world.Location;
 
-public class Player extends Entity {
+public class Player extends Actor {
 
 	public Player(Location loc){
 		super(loc);

@@ -2,37 +2,35 @@ package caffeine.action;
 
 import java.util.ArrayList;
 
-import caffeine.Rules;
-import caffeine.entity.Entity;
-import caffeine.world.Direction;
+import caffeine.entity.Actor;
+import caffeine.util.Angle;
+import caffeine.util.Vector;
 import caffeine.world.Location;
 
 
 public class Move implements Action {
-	private Direction direction;
+	protected Angle theta;
 	
-	public Move(Direction dir){
-		direction = dir;
+	public Move(Angle theta){
+		this.theta = theta;
 	}
 	
-	public ArrayList<Location> projectVertices(Entity e){
+	public ArrayList<Location> projectVertices(Actor a){
 		ArrayList<Location> projection = new ArrayList<Location>();
-		for(Location l : e.bounds()){
-			projection.add(l.project(direction, e.speed()));
+		/*
+		for(Location l : a.bounds()){
+			projection.add(l.project(new Vector(theta, a.speed())));
 		}
+		*/
 		return projection;
 	}
 
-	public void performOn(Object o){
-		if(o instanceof Entity){
-			Entity e = (Entity) o;
-			if(Rules.checkValidMove(this, e)){
-				e.loc(e.loc().project(direction, e.speed()));
-			}
-		}
+	public void performOn(Actor actor){
+		Vector v = new Vector(theta, actor.acceleration());
+		actor.velocity().add(v);
 	}
 	
 	public String toString(){
-		return "move: " + direction;
+		return "move: " + theta;
 	}
 }

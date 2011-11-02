@@ -1,6 +1,8 @@
 package caffeine.world;
 
 import caffeine.Game;
+import caffeine.util.Angle;
+import caffeine.util.Vector;
 
 public class Location {
 	public int mapID;
@@ -31,10 +33,11 @@ public class Location {
 		return new Location(mapID, x+xOffset, y+yOffset);
 	}
 	
-	public Location project(Direction d, int speed){
-		int dx = ((int) Math.cos(d.radians()) * speed);
-		int dy = ((int) Math.sin(d.radians()) * speed);
-		return new Location(mapID, x+dx, y+dy);
+	public Location project(Vector v){
+		Angle a = v.angle();
+		double dx = Math.cos(a.radians());
+		double dy = Math.sin(a.radians());
+		return new Location(mapID, (int)dx+x, (int)dy+y);
 	}
 	
 	public String toString(){
@@ -43,5 +46,14 @@ public class Location {
 
 	public boolean legal() {
 		return map().withinBounds(x,  y);
+	}
+
+	public void add(Vector velocity) {
+		double r = velocity.angle().radians();
+		double speed = velocity.magnitude();
+		double dx = Math.cos(r) * speed;
+		double dy = Math.sin(r) * speed;
+		x += dx;
+		y += dy;
 	}
 }

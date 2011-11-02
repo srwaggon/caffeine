@@ -4,19 +4,18 @@ import java.util.ArrayList;
 
 import caffeine.action.Action;
 import caffeine.action.Move;
-import caffeine.action.TurnLeft;
+import caffeine.util.Angle;
 import caffeine.util.Util;
 
 public class LeftBrain extends Brain {
-
-	@Override
-	// TODO implement
-	public ArrayList<Action> next(Entity e) {
+	Angle theta = new Angle();
+	
+	public ArrayList<Action> next(Actor a) {
 		ArrayList<Action> actions = new ArrayList<Action>();
 		if(Util.coinFlip()){
-			actions.add(new TurnLeft());
+			theta.add(30);
 		}
-		actions.add(new Move(e.facing()));
+		actions.add(new Move(theta));
 		return actions;
 	}
 

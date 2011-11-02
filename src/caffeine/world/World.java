@@ -2,8 +2,6 @@ package caffeine.world;
 
 import java.util.HashMap;
 
-import caffeine.entity.Entity;
-
 public class World {
 	public HashMap<Integer, Map> world;
 	static int numMaps;

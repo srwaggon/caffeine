@@ -53,7 +53,7 @@ public class Game{
 
 		// with Physics
 		rules = new ArrayList<Rule>();
-		rules.add(new UnsafeTileRule());
+		//rules.add(new UnsafeTileRule());
 				
 		// Let there be light
 		gui = new GUI(this);
