@@ -38,7 +38,7 @@ public class BoardView extends JPanel{
        Returns the preferred size of this panel.
 	 */
 	public Dimension getPreferredSize() {
-		return new Dimension(cam.depthOfField,cam.depthOfField);
+		return new Dimension(600, 400);// TODO magic number
 	}  
 }
 

@@ -16,7 +16,6 @@ public class World {
 	
 	public int add(Map m){
 		world.put(numMaps, m);
-		// return its map ID, and increment the number of maps.
 		return numMaps++;
 	}
 	
@@ -33,7 +32,7 @@ public class World {
 	public String toString(){
 		String s = "";
 		for(Map m : world.values()){
-			s += m.display();
+			s += m;
 		}
 		return s;
 	}

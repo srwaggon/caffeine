@@ -21,8 +21,10 @@ public class Tile{
 	public Tile(char c){
 		if(c == '#'){
 			this.setWall();
-		}else if(c == '~'){
-			this.setWater();
+		}else if(c == '!'){
+			this.setLava();
+		}else if(c == '-'){
+			this.setIce();
 		}else{
 			this.setGrass();
 		}
@@ -30,9 +32,11 @@ public class Tile{
 	
 	public Tile(TileObject t){this.type = t;}
 	
-	public synchronized void add(Entity e){occupants.add(e);}
+	public void add(Entity e){occupants.add(e);}
 	
 	public ArrayList<Entity> entities(){return occupants;}
+	
+	public double drag(){return type.drag();}
 	
 	public TileObject getType(){return type;}
 	
@@ -42,15 +46,19 @@ public class Tile{
 
 	public boolean isSafe(){return type.isSafe();}
 	
-	public synchronized void remove(Entity e){occupants.remove(e);}
+	public void remove(Entity e){
+		occupants.remove(e);
+	}
 	
 	public void setGrass(){type = new Grass();}
+	
+	public void setIce(){type = new Ice();}
 	
 	public void setWall(){type = new Wall();}
 	
 	public void setWarp(Warp w){type = w;}
 	
-	public void setWater(){type = new Water();}
+	public void setLava(){type = new Lava();}
 	
 	public Shape shape(){return new Rectangle(0, 0, size, size);}
 	

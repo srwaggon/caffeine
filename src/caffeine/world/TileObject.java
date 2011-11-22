@@ -2,10 +2,13 @@ package caffeine.world;
 import java.awt.Color;
 
 public abstract class TileObject{
-	Color color = Color.BLUE;
-	Boolean isBlocked = false;
-	Boolean isSafe = false;
-	String symbol = "!";
+	protected Boolean isBlocked = false;
+	protected Boolean isSafe = false;
+	protected Color color = Color.BLUE;
+	protected double drag = 0.0;
+	protected String symbol = "!";
+	
+	public double drag(){return drag;}
 	
     public boolean isBlocked(){
     	return isBlocked;

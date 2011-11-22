@@ -11,19 +11,18 @@ import caffeine.world.Location;
 
 public class Camera {
 	protected ArrayList<Sprite> sprites = new ArrayList<Sprite>();
-	protected int depthOfField;
 	protected Entity focus;
 	protected Location location;
-	
+	protected double scale;	
 	
 	public Camera(){
-		depthOfField = 400; // TODO fix this magic number
 		location = new Location();
+		scale = 1.0;
 	}
 	
-	public Camera(Location loc, int depthOfField){
+	public Camera(Location loc, double zoom){
 		this.location = loc;
-		this.depthOfField = depthOfField;
+		this.scale = zoom;
 	}
 	
 	public void focusOn(Location l){
@@ -44,11 +43,12 @@ public class Camera {
 		}
 		for(Sprite sprite: sprites){
 			RectangularShape shape = (RectangularShape) sprite.getShape();
-			Rectangle2D newRect = new Rectangle2D.Double(
-					sprite.getLoc().x - (location.x - depthOfField/2),
-					sprite.getLoc().y - (location.y - depthOfField/2),
-					shape.getWidth(),
-					shape.getHeight());
+			Rectangle2D newRect = new Rectangle2D.Double( 
+					// TODO fix magic camera offset
+					(scale*sprite.getLoc().x - (scale*location.x - 300)),
+					(scale*sprite.getLoc().y - (scale*location.y - 200)),
+					(scale*shape.getWidth()),
+					(scale*shape.getHeight()));
 			g2.setColor(sprite.getColor());
 			g2.fill(newRect);
 			g2.setColor(Color.DARK_GRAY);

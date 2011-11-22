@@ -31,7 +31,10 @@ public class Vector {
 	
 	public double magnitude(){return magnitude;}
 	
+	public void magnitude(double m){
+		magnitude = m;
+	}
 	public String toString(){
-		return "("+magnitude+"->"+angle+")";
+		return "("+magnitude+"-> "+angle+")";
 	}
 }

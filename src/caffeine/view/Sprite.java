@@ -7,18 +7,18 @@ import caffeine.world.Location;
 
 public class Sprite {
 	private Color color;
-	private Location location;
+	private Location loc;
 	private Shape shape;
 	
-	public Sprite(Color color, Location loc, Shape shape){
-		this.color = color;
-		this.location = loc;
-		this.shape = shape;
+	public Sprite(Color c, Location l, Shape s){
+		this.color = c;
+		this.loc = l;
+		this.shape = s;
 	}
 	
 	public Color getColor(){return color;}
 	
-	public Location getLoc(){return location;}
+	public Location getLoc(){return loc;}
 	
 	public Shape getShape(){return shape;}
 	

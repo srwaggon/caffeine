@@ -12,15 +12,14 @@ import caffeine.world.*;
 
 public class Game{
 	InteractionHandler interactionHandler;
-	World world;
-	ArrayList<Rule> rules;
+	World world = new World();
+	ArrayList<Rule> rules = new ArrayList<Rule>();
 	Clock clock = Clock.getInstance();
 	static Game game = new Game();
 	public GUI gui;
 
 	public static void main(String args[]){
 		Game g = Game.instance();
-		g.start();
 		
 		Player adam = new Player(new Location());
 		
@@ -28,7 +27,7 @@ public class Game{
 		g.add(adam);
 		g.camera().focusOn(g.world.get(0).entities().get(0));
 		
-		//g.add(new Entity());
+		//g.add(new Actor());
 	}
 
 	public void add(Entity e) {
@@ -39,38 +38,18 @@ public class Game{
 		interactionHandler = new InteractionHandler();
 
 		// Let there be land
-		world = new World();
-		Map m = new Map("10 6 32\n" +
-				"..##......\n"+
-				".........~\n"+
-				"...#.....~\n"+
-				".........~\n"+
-				"...#.....~\n"+
-				"~~##.....~\n"
-				);
-		world.add(m);
-		//world.add(m);
+		world.add(new Map());
 
 		// with Physics
-		rules = new ArrayList<Rule>();
-		//rules.add(new UnsafeTileRule());
+		rules.add(new UnsafeTileRule());
 				
 		// Let there be light
 		gui = new GUI(this);
-	}
-	
-	public void start(){
-		clock.scheduleAtFixedRate(new TimerTask(){
-			public void run() {
-				tick();
-			}}, 0, 100);
+		
+		// Start time
+		clock.add(new TimerTask(){public void run(){world.tick();gui.repaint();}});
 	}
 
-	public void tick() {
-		world.tick();
-		gui.tick();
-	}
-	
 	public Camera camera(){
 		return this.gui.getContentPane().getCamera();
 	}

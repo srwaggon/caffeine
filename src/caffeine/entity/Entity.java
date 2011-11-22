@@ -13,7 +13,6 @@ import caffeine.world.Location;
 import caffeine.world.Tile;
 
 public class Entity implements Sprited{
-	protected boolean isAlive = true;
 	protected Color color = Util.randomColor();
 	protected static int numCharacters = 0;
 	protected int id = 0;
@@ -25,14 +24,13 @@ public class Entity implements Sprited{
 	public Entity(){
 		this(new Location());
 	}
+	
 	public Entity(Location loc){
 		id = numCharacters++;
 		this.loc = loc;
 		name = "" + id;
 		System.err.println("Spawning Entity " + name);
 	}
-	
-	public boolean alive(){return isAlive;}
 
 	public ArrayList<Location> bounds(){
 		int id = loc.mapID;
@@ -51,12 +49,6 @@ public class Entity implements Sprited{
 	}
 	
 	public void color(Color c){this.color = c;}
-	
-	public void die(){
-		isAlive = false;
-		tile().remove(this);
-		System.err.println(this + " has died.");
-	}
 	
 	
 	public Location loc(){return loc;}

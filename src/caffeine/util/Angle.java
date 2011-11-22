@@ -17,7 +17,7 @@ public class Angle {
 	
 	public double theta(){return theta;}
 	
-	public String toString(){return ""+theta+"d";}
+	public String toString(){return ""+theta+"deg";}
 	
 	public static double validate(double theta){return theta % 360;}
 	public void add(int i){theta += i;}

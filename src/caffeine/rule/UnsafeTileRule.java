@@ -1,11 +1,12 @@
 package caffeine.rule;
 
-import caffeine.entity.Entity;
+import caffeine.action.Die;
+import caffeine.entity.Actor;
 
 public class UnsafeTileRule implements Rule{
 	public boolean appliesTo(Object o){
-		if(o instanceof Entity){
-			Entity e = (Entity) o;
+		if(o instanceof Actor){
+			Actor e = (Actor) o;
 			if(e.alive() && !e.tile().getType().isSafe()){
 				return true;
 			}
@@ -14,8 +15,9 @@ public class UnsafeTileRule implements Rule{
 	}
 	
 	public void applyOn(Object o){
-		if(o instanceof Entity){
-			((Entity) o).die();
+		if(o instanceof Actor){
+			Actor a = (Actor) o;
+			new Die(a.loc().tile().toString()).performOn(a);
 		}
 	}
 }
