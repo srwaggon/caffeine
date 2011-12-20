@@ -7,7 +7,7 @@ public class Grass extends TileObject{
     
     public Grass(){
     	color = LIMEGREEN;
-    	drag = .1;
+    	drag = .2;
 		isBlocked = false;
 		isSafe = true;
 		symbol = ".";
