@@ -12,13 +12,19 @@ import caffeine.view.Sprited;
 import caffeine.world.Location;
 import caffeine.world.Tile;
 
+
+/**
+ * base class representing objects in the world.  Entities have a location
+ * @author srwaggon
+ *
+ */
 public class Entity implements Sprited{
-	protected Color color = Util.randomColor();
 	protected static int numCharacters = 0;
 	protected int id = 0;
 	protected int height = 32;
 	protected int width = 32;
 	protected Location loc;
+	protected Sprite sprite;
 	protected String name;
 
 	public Entity(){
@@ -26,9 +32,17 @@ public class Entity implements Sprited{
 	}
 	
 	public Entity(Location loc){
+		// generate ID#
 		id = numCharacters++;
+		// set location = provided location
 		this.loc = loc;
+		// generate sprite data (randomly-coloured 32x32px rectangle)
+		sprite = new Sprite(Util.randomColor(), loc,
+				new RoundRectangle2D.Double(
+						loc.x, loc.y, width, height, 15, 15));
+		// set name = id
 		name = "" + id;
+		// tell of his birth
 		System.err.println("Spawning Entity " + name);
 	}
 
@@ -48,7 +62,7 @@ public class Entity implements Sprited{
 		return loc.add(width/2, height/2);
 	}
 	
-	public void color(Color c){this.color = c;}
+	public void color(Color c){sprite.color(c);}
 	
 	
 	public Location loc(){return loc;}
@@ -60,11 +74,7 @@ public class Entity implements Sprited{
 	}
 
 	@Override
-	public Sprite sprite(){
-		return new Sprite(color, loc,
-				new RoundRectangle2D.Double(
-						loc.x, loc.y, width, height, 15, 15));
-	}
+	public Sprite sprite(){return sprite;}
 
 	public void tick(){
 		for(Rule r : Game.instance().getRules()){

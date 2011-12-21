@@ -42,14 +42,14 @@ public class Camera {
 			location = focus.loc();
 		}
 		for(Sprite sprite: sprites){
-			RectangularShape shape = (RectangularShape) sprite.getShape();
+			RectangularShape shape = (RectangularShape) sprite.shape();
 			Rectangle2D newRect = new Rectangle2D.Double( 
 					// TODO fix magic camera offset
-					(scale*sprite.getLoc().x - (scale*location.x - 300)),
-					(scale*sprite.getLoc().y - (scale*location.y - 200)),
+					(scale*sprite.loc().x - (scale*location.x - 300)),
+					(scale*sprite.loc().y - (scale*location.y - 200)),
 					(scale*shape.getWidth()),
 					(scale*shape.getHeight()));
-			g2.setColor(sprite.getColor());
+			g2.setColor(sprite.color());
 			g2.fill(newRect);
 			g2.setColor(Color.DARK_GRAY);
 			g2.draw(newRect);

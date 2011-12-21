@@ -1,14 +1,15 @@
 package caffeine.action;
 
 import caffeine.entity.Actor;
+import caffeine.entity.Entity;
 
 public interface Action {
 	public static Action Inaction = new Action(){	
 		@Override
-		public void performOn(Actor a) {
+		public void perform(Actor performer, Entity target) {
 			// Do nothing
 		}
 	};
 		
-	void performOn(Actor a);
+	void perform(Actor performer, Entity target);
 }

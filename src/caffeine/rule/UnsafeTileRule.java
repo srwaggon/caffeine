@@ -17,7 +17,7 @@ public class UnsafeTileRule implements Rule{
 	public void applyOn(Object o){
 		if(o instanceof Actor){
 			Actor a = (Actor) o;
-			new Die(a.loc().tile().toString()).performOn(a);
+			new Die(a.loc().tile().toString()).perform(a);
 		}
 	}
 }

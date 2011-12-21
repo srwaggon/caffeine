@@ -12,9 +12,7 @@ import caffeine.world.Location;
 public class Actor extends Entity{
 	protected boolean isAlive = true;
 	protected Brain brain = new LeftBrain();
-	protected double accelRate =  1;
-	protected Vector accelVec = new Vector();
-	protected double drag = .1;
+	protected double accelRate = 1;
 	protected Vector velocity = new Vector();
 	
 	public Actor(){}
@@ -23,13 +21,9 @@ public class Actor extends Entity{
 	
 	public double accelRate(){return accelRate;}
 	
-	public Vector accelVec(){return accelVec;}
-	
 	public boolean alive(){return isAlive;}
 	
 	public void alive(Boolean b){isAlive = b;}
-	
-	public double drag(){return drag;}
 	
 	public ArrayList<Action> next(){return brain.next(this);}
 	
@@ -43,9 +37,9 @@ public class Actor extends Entity{
 		
 		if(isAlive){
 			for(Action a : next()){
-				a.performOn(this);	
+				a.perform(this, this);	
 			}
-			new Move(velocity).performOn(this);
+			new Move(velocity).perform(this);
 		}
 	}
 	

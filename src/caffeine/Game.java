@@ -27,7 +27,7 @@ public class Game{
 		g.add(adam);
 		g.camera().focusOn(g.world.get(0).entities().get(0));
 		
-		//g.add(new Actor());
+		g.add(new Actor());
 	}
 
 	public void add(Entity e) {

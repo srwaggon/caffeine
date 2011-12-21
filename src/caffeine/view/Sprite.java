@@ -16,11 +16,12 @@ public class Sprite {
 		this.shape = s;
 	}
 	
-	public Color getColor(){return color;}
+	public void color(Color c ){color = c;}
+	public Color color(){return color;}
 	
-	public Location getLoc(){return loc;}
+	public Location loc(){return loc;}
 	
-	public Shape getShape(){return shape;}
+	public Shape shape(){return shape;}
 	
 	public String toString(){
 		return "Sprite";

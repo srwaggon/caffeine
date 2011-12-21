@@ -1,6 +1,7 @@
 package caffeine.action;
 
 import caffeine.entity.Actor;
+import caffeine.entity.Entity;
 
 public class Die implements Action {
 	String cause;
@@ -8,11 +9,16 @@ public class Die implements Action {
 		this.cause = cause;
 	}
 	
-	@Override
-	public void performOn(Actor a) {
-		a.tile().remove(a);
-		a.alive(false);
-		System.err.println(a + " has died from " + cause);
+	/**
+	 * 
+	 */
+	public void perform(Actor performer, Entity target) {
+		perform(performer);
 	}
 
+	public void perform(Actor performer){
+		performer.tile().remove(performer);
+		performer.alive(false);
+		System.err.println(performer + " has died from " + cause);
+	}
 }
