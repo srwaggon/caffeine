@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 
-import caffeine.Game;
-import caffeine.rule.Rule;
 import caffeine.util.Util;
 import caffeine.view.Sprite;
 import caffeine.view.Sprited;
@@ -32,17 +30,12 @@ public class Entity implements Sprited{
 	}
 
 	public Entity(Location location){
-		// generate ID#
 		id = numCharacters++;
-		// set location = provided location
 		loc = location.copy();
-		// generate sprite data (randomly-coloured 32x32px rectangle)
 		sprite = new Sprite(Util.randomColor(), loc,
 				new RoundRectangle2D.Double(
 						loc.x, loc.y, width, height, 16, 16));
-		// set name = id
 		name = "" + id;
-		// tell of his birth
 		System.err.println("Spawning Entity " + name);
 	}
 
@@ -77,11 +70,6 @@ public class Entity implements Sprited{
 	public Sprite sprite(){return sprite;}
 
 	public void tick(){
-		for(Rule r : Game.instance().getRules()){
-			if(r.appliesTo(this)) {
-				r.applyOn(this);
-			}
-		}
 	}
 
 	public Tile tile(){return loc.tile();}

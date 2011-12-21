@@ -7,8 +7,7 @@ import caffeine.world.Location;
 public class Player extends Actor {
 
 	public Player(){
-		super();
-		brain = new MoveBrain(Game.instance().interactionHandler());
+		this(new Location());
 	}
 	public Player(Location loc){
 		super(loc);

@@ -1,7 +1,6 @@
 package caffeine.action;
 
 import caffeine.entity.Actor;
-import caffeine.entity.Entity;
 
 public class Report implements Action {
 	String msg;
@@ -9,7 +8,7 @@ public class Report implements Action {
 		msg = message;
 	}
 	@Override
-	public void perform(Actor performer, Entity target) {
+	public void perform(Actor performer) {
 		System.out.println(performer.toString() + ": \"" + msg + "\"");
 	}
 
