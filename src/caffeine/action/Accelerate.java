@@ -8,16 +8,16 @@ import caffeine.util.Vector;
 
 public class Accelerate implements Action {
 	protected Angle theta;
-	
+
 	public Accelerate(Angle theta){
 		this.theta = theta;
 	}
-	
+
 	public void perform(Actor actor, Entity target){
 		Vector acceleration = new Vector(theta, actor.accelRate());
 		actor.velocity().add(acceleration);
 	}
-	
+
 	public String toString(){
 		return "move: " + theta;
 	}

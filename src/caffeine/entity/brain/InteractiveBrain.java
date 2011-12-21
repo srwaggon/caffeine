@@ -1,33 +1,33 @@
-package caffeine.entity;
+package caffeine.entity.brain;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import caffeine.action.Action;
-import caffeine.action.Accelerate;
-import caffeine.util.Angle;
+import caffeine.action.Report;
+import caffeine.entity.Actor;
 import caffeine.view.InteractionHandler;
 
 public class InteractiveBrain extends Brain{
-	HashMap<Integer, Action> actionMap;
+	HashMap<Integer, Action> actionMap = new HashMap<Integer, Action>();
 	InteractionHandler interactions;
-	
+
 	public InteractiveBrain(InteractionHandler i){
 		interactions = i;
-		actionMap = new HashMap<Integer, Action>();
-		actionMap.put(KeyEvent.VK_UP, new Accelerate(new Angle(270)));
-		actionMap.put(KeyEvent.VK_DOWN, new Accelerate(new Angle(90)));
-		actionMap.put(KeyEvent.VK_LEFT, new Accelerate(new Angle(180)));
-		actionMap.put(KeyEvent.VK_RIGHT, new Accelerate(new Angle(0)));
+		actionMap.put(KeyEvent.VK_UP, new Report("Up pressed"));
+		actionMap.put(KeyEvent.VK_DOWN, new Report("Down pressed"));
+		actionMap.put(KeyEvent.VK_LEFT, new Report("Left pressed"));
+		actionMap.put(KeyEvent.VK_RIGHT, new Report("Right pressed"));
 	}
-	
+
 	@Override
 	public ArrayList<Action> next(Actor actor) {
 		ArrayList<Action> actionList = new ArrayList<Action>();
 		for(int keyCode : actionMap.keySet()){
-			if(interactions.get(keyCode))
+			if(interactions.get(keyCode)) {
 				actionList.add(actionMap.get(keyCode));
+			}
 		}
 		return actionList;
 	}

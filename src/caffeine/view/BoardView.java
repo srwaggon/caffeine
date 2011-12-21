@@ -1,8 +1,12 @@
 package caffeine.view;
 
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+
+import javax.swing.JPanel;
 
 import caffeine.Game;
 /**
@@ -21,7 +25,7 @@ public class BoardView extends JPanel{
 		cam = new Camera();
 		setBackground(Color.BLACK);
 	}
-	
+
 	public Camera getCamera(){
 		return cam;
 	}
@@ -39,6 +43,6 @@ public class BoardView extends JPanel{
 	 */
 	public Dimension getPreferredSize() {
 		return new Dimension(600, 400);// TODO magic number
-	}  
+	}
 }
 

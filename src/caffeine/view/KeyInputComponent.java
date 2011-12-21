@@ -8,7 +8,7 @@ import javax.swing.JComponent;
 public class KeyInputComponent extends JComponent implements KeyListener{
 	private static final long serialVersionUID = -2255035832009759362L;
 	protected InteractionHandler interactions;
-	
+
 	public KeyInputComponent(InteractionHandler ih) {
 		super();
 		interactions = ih;
@@ -20,7 +20,7 @@ public class KeyInputComponent extends JComponent implements KeyListener{
 	}
 
 	@Override
-	public void keyReleased(KeyEvent event) {		
+	public void keyReleased(KeyEvent event) {
 		interactions.set(event.getKeyCode(), false);
 	}
 

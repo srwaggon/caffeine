@@ -10,7 +10,7 @@ import caffeine.util.Util;
 import caffeine.view.Sprite;
 import caffeine.view.Sprited;
 import caffeine.world.Location;
-import caffeine.world.Tile;
+import caffeine.world.tile.Tile;
 
 
 /**
@@ -30,16 +30,16 @@ public class Entity implements Sprited{
 	public Entity(){
 		this(new Location());
 	}
-	
-	public Entity(Location loc){
+
+	public Entity(Location location){
 		// generate ID#
 		id = numCharacters++;
 		// set location = provided location
-		this.loc = loc;
+		loc = location.copy();
 		// generate sprite data (randomly-coloured 32x32px rectangle)
 		sprite = new Sprite(Util.randomColor(), loc,
 				new RoundRectangle2D.Double(
-						loc.x, loc.y, width, height, 15, 15));
+						loc.x, loc.y, width, height, 16, 16));
 		// set name = id
 		name = "" + id;
 		// tell of his birth
@@ -57,16 +57,16 @@ public class Entity implements Sprited{
 		vertices.add(new Location(id, x + width - 1, y + height - 1));
 		return vertices;
 	}
-	
+
 	public Location center(){
 		return loc.add(width/2, height/2);
 	}
-	
+
 	public void color(Color c){sprite.color(c);}
-	
-	
+
+
 	public Location loc(){return loc;}
-	
+
 	public void loc(Location loc){
 		tile().remove(this);
 		this.loc = loc;
@@ -78,16 +78,17 @@ public class Entity implements Sprited{
 
 	public void tick(){
 		for(Rule r : Game.instance().getRules()){
-			if(r.appliesTo(this))
+			if(r.appliesTo(this)) {
 				r.applyOn(this);
+			}
 		}
 	}
 
 	public Tile tile(){return loc.tile();}
-	
+
 	@Override
 	public String toString(){
-		return name + "@" + loc.toString(); 
+		return name;
 	}
 
 	public int x(){return loc.x;}

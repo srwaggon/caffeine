@@ -1,9 +1,10 @@
-package caffeine.entity;
+package caffeine.entity.brain;
 
 import java.util.ArrayList;
 
-import caffeine.action.Action;
 import caffeine.action.Accelerate;
+import caffeine.action.Action;
+import caffeine.entity.Actor;
 import caffeine.util.Angle;
 
 public class RandomBrain extends Brain {

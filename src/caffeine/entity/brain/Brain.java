@@ -1,8 +1,9 @@
-package caffeine.entity;
+package caffeine.entity.brain;
 
 import java.util.ArrayList;
 
 import caffeine.action.Action;
+import caffeine.entity.Actor;
 
 public class Brain {
 

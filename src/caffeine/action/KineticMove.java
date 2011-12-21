@@ -9,24 +9,24 @@ import caffeine.util.Vector;
  * @author srwaggon
  *
  */
-public class Move implements Action {
+public class KineticMove implements Action {
 	Vector motionVector;
-	
+
 	/**
 	 * Creates a move object
 	 * @param motionVector a vector indicating the direction and magnitude of movement
 	 */
-	public Move(Vector motionVector){
-		this.motionVector = motionVector;	
+	public KineticMove(Vector motionVector){
+		this.motionVector = motionVector;
 	}
-	
+
 	public void perform(Actor performer, Entity target) {
 		perform(performer); // hand off to the singly-parameterized method
 	}
-	
+
 	public void perform(Actor performer){
 		performer.loc().tile().remove(performer);
-		performer.loc().add(motionVector);		
+		performer.loc().add(motionVector);
 		performer.loc().tile().add(performer);
 	}
 

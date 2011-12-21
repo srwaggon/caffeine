@@ -7,13 +7,13 @@ public class UnsafeTileRule implements Rule{
 	public boolean appliesTo(Object o){
 		if(o instanceof Actor){
 			Actor e = (Actor) o;
-			if(e.alive() && !e.tile().getType().isSafe()){
+			if(e.alive() && !e.tile().getType().safe()){
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	public void applyOn(Object o){
 		if(o instanceof Actor){
 			Actor a = (Actor) o;

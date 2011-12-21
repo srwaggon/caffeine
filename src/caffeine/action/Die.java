@@ -8,7 +8,7 @@ public class Die implements Action {
 	public Die(String cause){
 		this.cause = cause;
 	}
-	
+
 	/**
 	 * 
 	 */

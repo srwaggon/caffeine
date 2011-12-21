@@ -1,11 +1,12 @@
-package caffeine.world;
-import java.awt.*;
+package caffeine.world.tile;
+import java.awt.Color;
+
 
 public class Lava extends TileObject{
 	public Lava(){
 		color = Color.RED;
-		isBlocked = false;
-		isSafe = false;
+		pass = true;
+		safe = false;
 		symbol = "!";
 	}
 }

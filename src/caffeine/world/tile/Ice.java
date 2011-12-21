@@ -1,12 +1,13 @@
-package caffeine.world;
-import java.awt.*;
+package caffeine.world.tile;
+import java.awt.Color;
+
 
 public class Ice extends TileObject{
 	public Ice(){
 		color = Color.CYAN;
 		drag = .5;
-		isBlocked = false;
-		isSafe = true;
+		pass = true;
+		safe = true;
 		symbol = "-";
 	}
 }

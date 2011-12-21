@@ -1,6 +1,6 @@
 package caffeine.view;
 
-import javax.swing.*;
+import javax.swing.JFrame;
 
 import caffeine.Game;
 
@@ -11,18 +11,18 @@ public class GUI extends JFrame {
 	public GUI(Game game) {
 		super("Caffeine Game Engine Demo");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		
+
 		view = new BoardView(game);
 		setContentPane(view);
-		
-		this.addKeyListener(new KeyInputComponent(game.interactionHandler()));
-		
+
+		addKeyListener(new KeyInputComponent(game.interactionHandler()));
+
 		pack();
 		setResizable(false);
 		setVisible(true);
 	}
-	
+
 	public BoardView getContentPane(){
 		return view;
-	}  
+	}
 }

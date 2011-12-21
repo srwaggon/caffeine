@@ -3,11 +3,18 @@ package caffeine;
 // Java Libraries
 import java.util.ArrayList;
 import java.util.TimerTask;
-// Local Libraries
-import caffeine.entity.*;
-import caffeine.rule.*;
-import caffeine.view.*;
-import caffeine.world.*;
+
+import caffeine.entity.Actor;
+import caffeine.entity.Entity;
+import caffeine.entity.Player;
+import caffeine.rule.Rule;
+import caffeine.rule.UnsafeTileRule;
+import caffeine.view.Camera;
+import caffeine.view.GUI;
+import caffeine.view.InteractionHandler;
+import caffeine.world.Location;
+import caffeine.world.Map;
+import caffeine.world.World;
 
 
 public class Game{
@@ -20,14 +27,11 @@ public class Game{
 
 	public static void main(String args[]){
 		Game g = Game.instance();
-		
-		Player adam = new Player(new Location());
-		
-		// Adam
+		Location l = new Location(0, 32, 32);
+		Player adam = new Player(l);
 		g.add(adam);
-		g.camera().focusOn(g.world.get(0).entities().get(0));
-		
-		g.add(new Actor());
+		g.add(new Actor(l));
+		g.camera().focusOn(adam);
 	}
 
 	public void add(Entity e) {
@@ -42,22 +46,22 @@ public class Game{
 
 		// with Physics
 		rules.add(new UnsafeTileRule());
-				
+
 		// Let there be light
 		gui = new GUI(this);
-		
+
 		// Start time
-		clock.add(new TimerTask(){public void run(){world.tick();gui.repaint();}});
+		clock.add(new TimerTask(){public void run(){world.run();gui.repaint();}});
 	}
 
 	public Camera camera(){
-		return this.gui.getContentPane().getCamera();
+		return gui.getContentPane().getCamera();
 	}
-	
+
 	public ArrayList<Entity> entities(int mapID){
 		return world.get(mapID).entities();
 	}
-	
+
 	public World world(){
 		return world;
 	}
