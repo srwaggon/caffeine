@@ -7,7 +7,7 @@ import caffeine.entity.Entity;
 import caffeine.view.Sprite;
 import caffeine.world.tile.Tile;
 
-public class Map extends Thread{
+public class Map{
 	private int height, width;
 	private Tile[][] map;
 
@@ -46,9 +46,10 @@ public class Map extends Thread{
 		String line = scans.next();
 		for(int i = 0; i < height*width; i++){
 			char c = line.charAt(i);
-			System.out.println(c);
+			System.err.print(c);
 			map[i%width][i/width] = new Tile(c);
 		}
+		System.err.println();
 	}
 
 	public Tile get(int x, int y){
