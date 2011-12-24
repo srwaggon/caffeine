@@ -7,8 +7,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
-
-import caffeine.Game;
 /**
    A panel for displaying the board.
  */
@@ -16,13 +14,11 @@ import caffeine.Game;
 @SuppressWarnings("serial")
 public class BoardView extends JPanel{
 	private Camera cam;
-	private Game game;
 	/**
        Creates a view from a board.
 	 */
-	public BoardView(Game game) {
-		this.game = game;
-		cam = new Camera();
+	public BoardView() {
+		cam = new Camera(getPreferredSize());
 		setBackground(Color.BLACK);
 	}
 
@@ -35,14 +31,14 @@ public class BoardView extends JPanel{
 	 */
 	public void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
-		cam.view(g2, game.world().get(0).sprites());
+		cam.view(g2);
 	}
 
 	/**
        Returns the preferred size of this panel.
 	 */
 	public Dimension getPreferredSize() {
-		return new Dimension(600, 400);// TODO magic number
+		return new Dimension(600, 400);
 	}
 }
 

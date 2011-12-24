@@ -10,7 +10,7 @@ public class Angle {
 	public double radians(){
 		return Math.toRadians(theta);}
 
-	public static Angle random(){return new Angle(Math.random()*360);}
+	public static Angle random(){return new Angle((int) (Math.random()*360));}
 
 	public double sin(){return Math.sin(radians());}
 	public double cos(){return Math.cos(radians());}

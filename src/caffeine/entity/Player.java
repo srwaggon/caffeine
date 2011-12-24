@@ -11,6 +11,6 @@ public class Player extends Actor {
 	}
 	public Player(Location loc){
 		super(loc);
-		brain = new MoveBrain(Game.instance().interactionHandler());
+		brain = new MoveBrain(Game.interactionHandler());
 	}
 }

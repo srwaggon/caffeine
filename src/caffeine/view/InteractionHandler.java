@@ -5,9 +5,6 @@ import java.util.HashMap;
 public class InteractionHandler {
 	HashMap<Integer, Boolean> actionCodes = new HashMap<Integer, Boolean>();
 
-	public InteractionHandler(){
-	}
-
 	public void set(int keyCode, boolean b){
 		actionCodes.put(keyCode, b);
 	}

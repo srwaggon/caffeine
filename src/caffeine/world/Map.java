@@ -7,7 +7,7 @@ import caffeine.entity.Entity;
 import caffeine.view.Sprite;
 import caffeine.world.tile.Tile;
 
-public class Map extends Thread{
+public class Map{
 	private int height, width;
 	private Tile[][] map;
 

@@ -45,9 +45,9 @@ public class Entity implements Sprited{
 		int y = y();
 		ArrayList<Location> vertices = new ArrayList<Location>();
 		vertices.add(new Location(id, x, y));
-		vertices.add(new Location(id, x + width - 1, y));
-		vertices.add(new Location(id, x, y + height - 1));
-		vertices.add(new Location(id, x + width - 1, y + height - 1));
+		vertices.add(new Location(id, x + width-1, y));
+		vertices.add(new Location(id, x, y + height-1));
+		vertices.add(new Location(id, x + width-1, y + height-1));
 		return vertices;
 	}
 
