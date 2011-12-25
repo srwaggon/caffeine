@@ -54,5 +54,6 @@ public class Camera {
 
 		}
 		g2.dispose();
+		sprites = new ArrayList<Sprite>();
 	}
 }
