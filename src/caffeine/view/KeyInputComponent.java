@@ -10,7 +10,6 @@ public class KeyInputComponent extends JComponent implements KeyListener{
 	protected InteractionHandler interactions;
 
 	public KeyInputComponent(InteractionHandler ih) {
-		super();
 		interactions = ih;
 	}
 
@@ -26,6 +25,6 @@ public class KeyInputComponent extends JComponent implements KeyListener{
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		System.out.print(e.getKeyChar());
+		System.err.print(e.getKeyChar());
 	}
 }

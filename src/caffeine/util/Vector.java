@@ -26,8 +26,6 @@ public class Vector {
 			double by = other.magnitude()*other.angle().sin();
 			double rx = ax + bx;
 			double ry = ay + by;
-
-			System.out.printf("%f %f %f %f %f %f\n", ax, ay, bx, by, rx, ry);
 			int offset = 0;
 			if(rx < 0) {
 				offset = 180;
@@ -39,6 +37,8 @@ public class Vector {
 	}
 
 	public Angle angle(){return angle;}
+
+	public void angle(Angle a){angle = a;}
 
 	public double magnitude(){return magnitude;}
 

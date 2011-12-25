@@ -23,7 +23,7 @@ public class Location {
 	}
 
 	public Map map(){
-		return Game.instance().world().get(mapID);
+		return Game.game.world().get(mapID);
 	}
 
 	public Tile tile(){
@@ -36,8 +36,8 @@ public class Location {
 
 	public Location project(Vector v){
 		Angle a = v.angle();
-		double dx = Math.cos(a.radians());
-		double dy = Math.sin(a.radians());
+		double dx = Math.cos(a.radians())*v.magnitude();
+		double dy = Math.sin(a.radians())*v.magnitude();
 		return new Location(mapID, (int)dx+x, (int)dy+y);
 	}
 

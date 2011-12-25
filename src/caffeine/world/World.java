@@ -2,13 +2,14 @@ package caffeine.world;
 
 import java.util.HashMap;
 
-public class World extends Thread{
-	public HashMap<Integer, Map> world;
-	static int numMaps;
+public class World{
+	public HashMap<Integer, Map> world = new HashMap<Integer, Map>();
+	static int numMaps = 0;
 
-	public World(){
-		world = new HashMap<Integer, Map>();
-		numMaps = 0;
+	public World(){}
+
+	public World(Map m){
+		world.put(numMaps, m);
 	}
 	public int size(){
 		return world.size();

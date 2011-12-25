@@ -8,18 +8,15 @@ import caffeine.Game;
 public class GUI extends JFrame {
 	private BoardView view;
 
-	public GUI(Game game) {
+	public GUI() {
 		super("Caffeine Game Engine Demo");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-		view = new BoardView(game);
+		view = new BoardView();
 		setContentPane(view);
-
-		addKeyListener(new KeyInputComponent(game.interactionHandler()));
-
 		pack();
 		setResizable(false);
 		setVisible(true);
+		addKeyListener(new KeyInputComponent(Game.interactionHandler()));
 	}
 
 	public BoardView getContentPane(){

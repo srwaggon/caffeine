@@ -13,8 +13,8 @@ public class InteractiveBrain extends Brain{
 	HashMap<Integer, Action> actionMap = new HashMap<Integer, Action>();
 	InteractionHandler interactions;
 
-	public InteractiveBrain(InteractionHandler i){
-		interactions = i;
+	public InteractiveBrain(InteractionHandler ih){
+		interactions = ih;
 		actionMap.put(KeyEvent.VK_UP, new Report("Up pressed"));
 		actionMap.put(KeyEvent.VK_DOWN, new Report("Down pressed"));
 		actionMap.put(KeyEvent.VK_LEFT, new Report("Left pressed"));

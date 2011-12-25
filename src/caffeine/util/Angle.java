@@ -1,15 +1,16 @@
 package caffeine.util;
 
 public class Angle {
-	double theta;
+	protected double theta;
 
 	public Angle() {theta = 0;}
-	public Angle(double angle){theta = validate(angle);}
+
+	public Angle(double angle){theta = theta(angle);}
 
 	public double radians(){
 		return Math.toRadians(theta);}
 
-	public static Angle random(){return new Angle(Math.random()*360);}
+	public static Angle random(){return new Angle((int) (Math.random()*360));}
 
 	public double sin(){return Math.sin(radians());}
 	public double cos(){return Math.cos(radians());}
@@ -19,7 +20,10 @@ public class Angle {
 
 	public String toString(){return ""+theta+"deg";}
 
-	public static double validate(double theta){return theta % 360;}
-	public void add(int i){theta += i;}
+	public static double theta(double theta){return theta % 360;}
+
+	public void add(double i){theta = (theta + i) % 360;}
+
+	public void add(Angle a){add(a.theta());}
 
 }

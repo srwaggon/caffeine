@@ -30,26 +30,30 @@ public class Camera {
 		loc = l;
 	}
 
-	public void focusOn(Entity s){
-		loc = s.loc();
+	public void focusOn(Entity e){
+		loc = e.loc();
+
 	}
 
 	public Location loc(){
 		return loc;
 	}
 
-	public void view(Graphics2D g2, ArrayList<Sprite> sprites){
+	public void view(Graphics2D g2){
+		sprites.addAll(loc.map().sprites());
 		for(Sprite sprite: sprites){
 			RectangularShape shape = (RectangularShape) sprite.shape();
 			shape.setFrame(
-					(scale*sprite.loc().x - (scale*loc.x - dims.width/2)),
-					(scale*sprite.loc().y - (scale*loc.y - dims.height/2)),
+					(scale*(sprite.loc().x - (loc.x - dims.width/2))),
+					(scale*(sprite.loc().y - (loc.y - dims.height/2))),
 					(scale*shape.getWidth()),
 					(scale*shape.getHeight()));
 			g2.setColor(sprite.color());
 			g2.fill(shape);
 			g2.setColor(Color.DARK_GRAY);
 			g2.draw(shape);
+
 		}
+		g2.dispose();
 	}
 }
