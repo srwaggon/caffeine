@@ -4,16 +4,15 @@ import caffeine.action.Action;
 import caffeine.action.Motion;
 import caffeine.action.StaticMotion;
 import caffeine.entity.brain.Brain;
-import caffeine.entity.brain.RandomBrain;
-import caffeine.util.Vector;
+import caffeine.entity.brain.LeftBrain;
 import caffeine.world.Location;
 
 public class Actor extends Entity{
+	public int attack = 1;
+	public int attackRadius = 12;
+	public int health = 10;
 	protected boolean isAlive = true;
-	protected Brain brain = new RandomBrain();
-	protected int speed = 4; // used for static moves
-	protected double accelRate = 1;
-	protected Vector velocity = new Vector(); // used for kinetic moves
+	protected Brain brain = new LeftBrain();
 	protected Motion motion;
 
 	public Actor(Location l){
@@ -27,12 +26,18 @@ public class Actor extends Entity{
 
 	public void alive(Boolean b){isAlive = b;}
 
+	public void brain(Brain b){
+		brain = b;
+	}
+
 	public void tick(){
 		if(isAlive){
 			for(Action a : brain.next(this)){
 				a.perform(this);
 			}
+			loc.tile().remove(this);
 			motion.tick();
+			loc.tile().add(this);
 		}
 	}
 }

@@ -26,4 +26,8 @@ public class Angle {
 
 	public void add(Angle a){add(a.theta());}
 
+	public Angle bisect(Angle a){
+		return new Angle((a.theta() + theta)/2);
+	}
+
 }

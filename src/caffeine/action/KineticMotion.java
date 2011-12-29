@@ -29,6 +29,17 @@ public class KineticMotion implements Motion{
 
 
 	public void tick(){
-		loc.add(velocity);
+		loc.set(loc.add(velocity));
+	}
+
+	@Override
+	public boolean validMove(Move m, Actor a) {
+		return false;
+	}
+
+	@Override
+	public Vector velocity() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

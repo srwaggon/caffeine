@@ -17,6 +17,7 @@ public class Sprite {
 	}
 
 	public void color(Color c ){color = c;}
+
 	public Color color(){return color;}
 
 	public Location loc(){return loc;}

@@ -1,19 +1,11 @@
 package caffeine.world.tile;
 
-import java.awt.Rectangle;
-import java.awt.Shape;
 import java.util.ArrayList;
 
 import caffeine.entity.Entity;
 
 public class Tile{
 	protected ArrayList<Entity> occupants = new ArrayList<Entity>();
-	static protected int size = 32;
-	public static void setSize(int size){
-		if (size > 0){
-			Tile.size = size;
-		}
-	}
 
 	private TileObject type;
 
@@ -60,10 +52,6 @@ public class Tile{
 	public void setWarp(Warp w){type = w;}
 
 	public void setLava(){type = new Lava();}
-
-	public Shape shape(){return new Rectangle(0, 0, size, size);}
-
-	public static int size(){return size;}
 
 	public String toString(){return type.toString();}
 }

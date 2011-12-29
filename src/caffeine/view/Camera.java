@@ -3,11 +3,13 @@ package caffeine.view;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.geom.RectangularShape;
 import java.util.ArrayList;
 
 import caffeine.entity.Entity;
 import caffeine.world.Location;
+import caffeine.world.Map;
 
 public class Camera {
 	protected ArrayList<Sprite> sprites = new ArrayList<Sprite>();
@@ -38,21 +40,41 @@ public class Camera {
 		return loc;
 	}
 
-	public void view(Graphics2D g2){
-		sprites.addAll(loc.map().sprites());
-		for(Sprite sprite: sprites){
+	public void render(Graphics2D g2){
+		/* draw all the tiles*/
+		Map m = loc.map();
+		for(Sprite sprite : m.tileSprites()){
 			RectangularShape shape = (RectangularShape) sprite.shape();
-			shape.setFrame(
-					(scale*(sprite.loc().x - (loc.x - dims.width/2))),
-					(scale*(sprite.loc().y - (loc.y - dims.height/2))),
-					(scale*shape.getWidth()),
-					(scale*shape.getHeight()));
+			Rectangle2D frame = shape.getFrame();
+			System.out.println(sprite.loc().x + " : " + frame.getX());
+			double x = scale * (sprite.loc().x - (loc.x - dims.width / 2));
+			double y = scale * (sprite.loc().y - (loc.y - dims.height / 2));
+			double w = scale * shape.getWidth();
+			double h = scale * shape.getHeight();
+			shape.setFrame(x, y, w, h);
 			g2.setColor(sprite.color());
 			g2.fill(shape);
 			g2.setColor(Color.DARK_GRAY);
 			g2.draw(shape);
-
 		}
+
+		/* draw all of the sprites */
+		for(Entity e : m.entities()){
+			Sprite sprite = e.sprite();
+			RectangularShape shape = (RectangularShape) sprite.shape();
+			Rectangle2D frame = shape.getFrame();
+			System.out.println(sprite.loc().x + " : " + frame.getX());
+			double x = scale * (sprite.loc().x - shape.getWidth() / 2 - (loc.x - dims.width / 2));
+			double y = scale * (sprite.loc().y - shape.getHeight() / 2 - (loc.y - dims.height / 2));
+			double w = scale * shape.getWidth();
+			double h = scale * shape.getHeight();
+			shape.setFrame(x, y, w, h);
+			g2.setColor(sprite.color());
+			g2.fill(shape);
+			g2.setColor(Color.DARK_GRAY);
+			g2.draw(shape);
+		}
+
 		g2.dispose();
 		sprites = new ArrayList<Sprite>();
 	}

@@ -18,32 +18,26 @@ public class StaticMotion implements Motion{
 		; // Do nothing -- static motion
 	}
 
-	/**
-	 * Determines if a move is worth processing, and if so,
-	 * combines its angle with the mover's speed to create
-	 * a motion vector, that gets added to velocity.
-	 */
 	public void handleMove(Move m, Actor performer){
-		Vector motionVector = new Vector(m.angle, speed);
-		/*
-		for (Location l : performer.bounds()){
-			Location p = l.project(motionVector);
-			//System.out.println(p + " : " + p.tile() + p.tile().pass());
-			if (!p.tile().pass()){
-				return;
-			}
+		if(validMove(m, performer)){
+			velocity.add(new Vector(m.angle(), speed));
 		}
-		 */
-		velocity.add(motionVector);
-
-		//loc.tile().remove(performer);
-		//loc.tile().add(performer);
 	}
 
 
+	public boolean validMove(Move m, Actor performer){
+		Vector motionVector = new Vector(m.angle(), speed);
+
+		return true;
+	}
 
 	public void tick(){
-		loc.add(velocity);
+		loc.set(loc.add(velocity));
 		velocity.magnitude(0);
+	}
+
+	@Override
+	public Vector velocity() {
+		return velocity;
 	}
 }

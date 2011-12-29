@@ -2,6 +2,7 @@ package caffeine.world;
 
 import caffeine.Game;
 import caffeine.util.Angle;
+import caffeine.util.Util;
 import caffeine.util.Vector;
 import caffeine.world.tile.Tile;
 
@@ -49,16 +50,25 @@ public class Location {
 		return map().withinBounds(x,  y);
 	}
 
-	public void add(Vector velocity) {
+	public Location add(Vector velocity) {
 		double r = velocity.angle().radians();
 		double speed = velocity.magnitude();
 		double dx = Math.cos(r) * speed;
 		double dy = Math.sin(r) * speed;
-		x += dx;
-		y += dy;
+		return new Location(mapID, (int)(x+dx), (int)(y+dy));
 	}
 
 	public Location copy() {
 		return new Location(mapID, x, y);
+	}
+
+	public void set(Location l){
+		mapID = l.mapID;
+		x = l.x;
+		y = l.y;
+	}
+
+	public double distanceTo(Location loc) {
+		return Util.pythagoras(loc.x-x, loc.y-y);
 	}
 }

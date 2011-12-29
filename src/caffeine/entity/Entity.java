@@ -1,8 +1,7 @@
 package caffeine.entity;
 
 import java.awt.Color;
-import java.awt.geom.RoundRectangle2D;
-import java.util.ArrayList;
+import java.awt.geom.Ellipse2D;
 
 import caffeine.util.Util;
 import caffeine.view.Sprite;
@@ -19,8 +18,7 @@ import caffeine.world.tile.Tile;
 public class Entity implements Sprited{
 	protected static int numCharacters = 0;
 	protected int id = 0;
-	protected int height = 32;
-	protected int width = 32;
+	protected int radius = 16;
 	protected Location loc;
 	protected Sprite sprite;
 	protected String name;
@@ -32,27 +30,15 @@ public class Entity implements Sprited{
 	public Entity(Location location){
 		id = numCharacters++;
 		loc = location.copy();
+		int x = loc.x - radius;
+		int y = loc.y - radius;
+		int w = radius*2;
+		int h = radius*2;
 		sprite = new Sprite(Util.randomColor(), loc,
-				new RoundRectangle2D.Double(
-						loc.x, loc.y, width, height, 16, 16));
+				new Ellipse2D.Double(
+						x, y, w, h));
 		name = "" + id;
-		System.err.println("Spawning Entity " + name);
-	}
-
-	public ArrayList<Location> bounds(){
-		int id = loc.mapID;
-		int x = x();
-		int y = y();
-		ArrayList<Location> vertices = new ArrayList<Location>();
-		vertices.add(new Location(id, x, y));
-		vertices.add(new Location(id, x + width-1, y));
-		vertices.add(new Location(id, x, y + height-1));
-		vertices.add(new Location(id, x + width-1, y + height-1));
-		return vertices;
-	}
-
-	public Location center(){
-		return loc.add(width/2, height/2);
+		System.err.println("Spawning Entity " + name + " at " + loc);
 	}
 
 	public void color(Color c){sprite.color(c);}
@@ -66,7 +52,8 @@ public class Entity implements Sprited{
 		tile().add(this);
 	}
 
-	@Override
+	public int radius(){return radius;}
+
 	public Sprite sprite(){return sprite;}
 
 	public void tick(){

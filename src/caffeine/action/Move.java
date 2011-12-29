@@ -9,7 +9,7 @@ import caffeine.util.Angle;
  *
  */
 public class Move implements Action {
-	public Angle angle;
+	protected Angle angle;
 
 	/**
 	 * Creates a move object
@@ -17,6 +17,10 @@ public class Move implements Action {
 	 */
 	public Move(Angle theta){
 		angle = theta;
+	}
+
+	public Angle angle(){
+		return angle;
 	}
 
 	public void perform(Actor performer){

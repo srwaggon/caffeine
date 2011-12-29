@@ -22,10 +22,23 @@ public class Game{
 
 	public static void main(String args[]){
 		Game g = Game.game;
-		Location l = new Location(0, 32, 32);
+		Location l = new Location(0, 48, 48);
 		Player adam = new Player(l);
 		g.add(adam);
-		//g.add(new Actor(l));
+
+		/*
+		Actor a = new Actor(l);
+		a.brain(new RandomBrain());
+		g.add(a);
+
+		a = new Actor(l);
+		a.brain(new LeftBrain());
+		g.add(a);
+
+		a = new Actor(l);
+		a.brain(new RightBrain());
+		g.add(a);
+		 */
 		camera().focusOn(adam);
 	}
 

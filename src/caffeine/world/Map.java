@@ -1,5 +1,6 @@
 package caffeine.world;
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -8,26 +9,29 @@ import caffeine.view.Sprite;
 import caffeine.world.tile.Tile;
 
 public class Map{
-	private int height, width;
-	private Tile[][] map;
+	protected int height, width;
+	protected Tile[][] map;
+	protected int tileSize = 32;
+	protected ArrayList<Entity> entities = new ArrayList<Entity>();
 
 	public Map(){
 		this("10 10 32 "+
 				"##########"+
 				"#........#"+
-				"#........#"+
-				"#........#"+
-				"#........#"+
-				"#........#"+
-				"#........#"+
-				"#........#"+
+				"#.....#..#"+
+				"#.#......#"+
+				"#.......##"+
+				"#..#.....#"+
+				"#......#.#"+
+				"#...#....#"+
 				"#........#"+
 				"##########");
 	}
 
 	public Map(int cols, int rows, int tileSize){
-		height = rows; width = cols;
-		Tile.setSize(tileSize);
+		height = rows;
+		width = cols;
+		this.tileSize = tileSize;
 		map = new Tile[cols][rows];
 
 		for(int y = 0; y < width; y++){
@@ -40,7 +44,7 @@ public class Map{
 		Scanner scans = new Scanner(s);
 		width = Integer.parseInt(scans.next());
 		height = Integer.parseInt(scans.next());
-		Tile.setSize(Integer.parseInt(scans.next()));
+		tileSize = Integer.parseInt(scans.next());
 
 		map = new Tile[width][height];
 		String line = scans.next();
@@ -69,7 +73,7 @@ public class Map{
 	}
 
 	public Tile getTileAt(int x, int y){
-		return get(x/Tile.size(), y/Tile.size());
+		return get(x/tileSize, y/tileSize);
 	}
 
 	public int height(){return height;}
@@ -79,6 +83,12 @@ public class Map{
 	//public int tileSize(){return Tile.size;}
 
 	public ArrayList<Entity> entities(){
+
+		return entities;
+
+		/* Entities is updated on every screen render.
+		 * Not really safe, but should work fine as long as the screen is rendering.
+		 * AKA, if the screen isn't rendering, the game isn't running. =(
 		ArrayList<Entity> entities = new ArrayList<Entity>();
 		for(int y = 0; y < height; y++){
 			for(int x = 0; x < width; x++){
@@ -86,27 +96,34 @@ public class Map{
 			}
 		}
 		return entities;
+		 */
 	}
 
 	public boolean withinBounds(int x, int y){
-		return  0 <= x && x < width*Tile.size() &&
-				0 <= y && y < height*Tile.size();
+		return  0 <= x && x < width*tileSize &&
+				0 <= y && y < height*tileSize;
 	}
 
-	public ArrayList<Sprite> sprites(){
+	public ArrayList<Sprite> tileSprites(){
+		entities = new ArrayList<Entity>();
 		ArrayList<Sprite> sprites = new ArrayList<Sprite>();
+
 		for(int y = 0; y < height; y++){
 			for(int x = 0; x < width; x++){
 				Tile t = map[x][y];
 				// Because the map ID isn't important for placing the sprites.
-				Location l = new Location(-1, x*Tile.size(), y*Tile.size());
-				Sprite s = new Sprite(t.getType().color(), l, t.shape());
+				Location l = new Location(-1, x*tileSize, y*tileSize);
+				Sprite s = new Sprite(t.getType().color(), l, new Rectangle(x*tileSize, y*tileSize, tileSize, tileSize));
 				sprites.add(s);
+				// Side effect.. Necessary to update entities.
+				entities.addAll(t.entities());
 			}
 		}
+		/*
 		for (Entity e : entities()){
 			sprites.add(e.sprite());
 		}
+		 */
 		return sprites;
 	}
 
