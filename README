@@ -1,5 +1,8 @@
 Caffeine Engine
 Samuel Waggoner
-README
+samuel.waggoner@gmail.com
 
-wat is this.. i don't even
+
+Caffeine README
+
+Caffeine is intended to be a simple 2D tile-based game engine written in Java.  Its focus is to take advantage of abstraction provided by Java will remaining light-weight and flexible to different tile-based games.
