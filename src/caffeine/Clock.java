@@ -1,33 +1,49 @@
 package caffeine;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Clock extends Timer{
-	static Clock instance = new Clock();
-	ArrayList<TimerTask> events = new ArrayList<TimerTask>();
-	int delay;
+public class Clock {
+  private Timer timer = new Timer();
+  private boolean running = false;
+  List<TimerTask> events = new ArrayList<TimerTask>();
 
-	private Clock(){
-		scheduleAtFixedRate(new TimerTask(){
-			public void run(){
-				tick();
-			}}, 0, 1000/60);
-	}
+  public Clock(){
+    timer.scheduleAtFixedRate(new TimerTask(){
+      public void run(){
+        tick();
+      }
+    }, 0, 1000/16);
+  }
 
-	public void add(TimerTask t){
-		events.add(t);
-	}
+  public void add(TimerTask t){
+    events.add(t);
+  }
 
-	public static Clock getInstance(){
-		return instance;
-	}
+  public void clear(){
+    events = new ArrayList<TimerTask>();
+  }
 
-	private void tick(){
-		try {
-			for(TimerTask t : events){
-				t.run();
-			}
-		}catch (Throwable ex) { }
-	}
+  public void start(){
+    running = true;
+  }
+
+  public void stop(){
+    running = false;
+  }
+
+  private void tick(){
+    if(running){
+      try{
+        for(TimerTask t : events){
+          t.run();
+        }
+      }
+      catch(Throwable ex){
+        System.err.println("Exception caught: " + ex.toString());
+      }
+    }
+  }
 }
+

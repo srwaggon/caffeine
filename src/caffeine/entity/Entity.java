@@ -1,7 +1,9 @@
 package caffeine.entity;
 
 import java.awt.Color;
-import java.awt.geom.Ellipse2D;
+import java.awt.Rectangle;
+import java.awt.geom.RoundRectangle2D;
+import java.util.ArrayList;
 
 import caffeine.util.Util;
 import caffeine.view.Sprite;
@@ -16,57 +18,73 @@ import caffeine.world.tile.Tile;
  *
  */
 public class Entity implements Sprited{
-	protected static int numCharacters = 0;
-	protected int id = 0;
-	protected int radius = 16;
-	protected Location loc;
-	protected Sprite sprite;
-	protected String name;
+  protected static int numCharacters = 0;
+  protected int id = 0;
+  protected int radius = 15;
+  protected Location loc;
+  private Rectangle frame;
+  protected Sprite sprite;
+  protected String name;
 
-	public Entity(){
-		this(new Location());
-	}
+  public Entity(){
+    this(new Location());
+  }
 
-	public Entity(Location location){
-		id = numCharacters++;
-		loc = location.copy();
-		int x = loc.x - radius;
-		int y = loc.y - radius;
-		int w = radius*2;
-		int h = radius*2;
-		sprite = new Sprite(Util.randomColor(), loc,
-				new Ellipse2D.Double(
-						x, y, w, h));
-		name = "" + id;
-		System.err.println("Spawning Entity " + name + " at " + loc);
-	}
+  public Entity(Location location){
+    id = numCharacters++;
+    loc = location.copy();
 
-	public void color(Color c){sprite.color(c);}
+    int fx = loc.x() - radius;
+    int fy = loc.y() - radius;
+    int fw = radius*2;
+    int fh = radius*2;
+    frame = new Rectangle(fx, fy, fw, fh);
+    RoundRectangle2D shape = new RoundRectangle2D.Float(fx, fy, fw, fh, 16, 16);
+    sprite = new Sprite(Util.randomColor(), loc, shape);
 
+    name = "" + id;
+    tile().add(this);
+    System.err.println("Spawning Entity " + name + " at " + loc);
+  }
 
-	public Location loc(){return loc;}
+  public void color(Color c){sprite.color(c);}
 
-	public void loc(Location loc){
-		tile().remove(this);
-		this.loc = loc;
-		tile().add(this);
-	}
+  public Rectangle hitbox(){
+    return frame;
+  }
 
-	public int radius(){return radius;}
+  public Location loc(){return loc;}
 
-	public Sprite sprite(){return sprite;}
+  public void loc(Location loc){
+    tile().remove(this);
+    this.loc = loc;
+    tile().add(this);
+  }
 
-	public void tick(){
-	}
+  public int radius(){return radius;}
 
-	public Tile tile(){return loc.tile();}
+  public Sprite sprite(){return sprite;}
 
-	@Override
-	public String toString(){
-		return name;
-	}
+  public void tick(){
+  }
 
-	public int x(){return loc.x;}
+  public Tile tile(){return loc.tile();}
 
-	public int y(){return loc.y;}
+  public ArrayList<Location> vertices(){
+    ArrayList<Location> vertices = new ArrayList<Location>();
+    int mapID = loc.mapID();
+    int x = loc.x();
+    int y = loc.y();
+
+    // topleft, topright, bottomleft, bottomright
+    vertices.add(new Location(mapID, x - radius, y - radius));
+    vertices.add(new Location(mapID, x - radius, y + radius));
+    vertices.add(new Location(mapID, x + radius, y - radius));
+    vertices.add(new Location(mapID, x + radius, y + radius));
+    return vertices;
+  }
+  @Override
+  public String toString(){
+    return name;
+  }
 }

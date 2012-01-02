@@ -1,17 +1,15 @@
 package caffeine.action;
 
 import caffeine.entity.Actor;
-import caffeine.util.Vector;
+import caffeine.world.Direction;
 
 public interface Motion {
 
-	public void handleAcceleration(Accelerate accel, Actor target);
+  public Direction facing();
 
-	public void handleMove(Move move, Actor target);
+  public void handleMove(Move move, Actor target);
 
-	public void tick();
+  public void tick();
 
-	public boolean validMove(Move m, Actor a);
-
-	public Vector velocity();
+  public boolean validMove(Move m, Actor a);
 }
