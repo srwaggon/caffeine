@@ -18,7 +18,7 @@ import caffeine.world.tile.Tile;
 public class Entity implements Sprited{
   protected static int numCharacters = 0;
   protected int id = 0;
-  protected int radius = 15;
+  protected int radius = 10;
   protected Location loc;
   private Rectangle frame;
   protected Sprite sprite;

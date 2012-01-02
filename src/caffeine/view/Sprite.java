@@ -2,6 +2,7 @@ package caffeine.view;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Shape;
 import java.awt.geom.RoundRectangle2D;
 
@@ -30,11 +31,16 @@ public class Sprite {
   }
 
   public void paint(Graphics2D g2){
+    Image img = Spritesheet.sprites.getSprite(0);
+    g2.drawImage(img, loc.x()-15, loc.y()-15, null);
+
+    /*
     Shape s = shape();
     g2.setColor(color);
     g2.fill(s);
     g2.setColor(Color.white);
     g2.draw(s);
+     */
   }
 
   public String toString(){

@@ -5,9 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
 
-import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import caffeine.CaffeineGame;
@@ -23,9 +21,7 @@ public class BoardView extends JPanel{
 
   public BoardView() {
     cam = new Camera(getPreferredSize());
-    try{
-      view = ImageIO.read(new File("res/thief.png"));
-    } catch (Exception e){};
+
   }
 
   public Camera getCamera(){
