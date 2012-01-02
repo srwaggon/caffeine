@@ -2,10 +2,8 @@ package caffeine.entity;
 
 import java.awt.Color;
 import java.awt.Rectangle;
-import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 
-import caffeine.util.Util;
 import caffeine.view.Sprite;
 import caffeine.view.Sprited;
 import caffeine.world.Location;
@@ -30,17 +28,10 @@ public class Entity implements Sprited{
     this(new Location());
   }
 
-  public Entity(Location location){
+  public Entity(Location l){
     id = numCharacters++;
-    loc = location.copy();
-
-    int fx = loc.x() - radius;
-    int fy = loc.y() - radius;
-    int fw = radius*2;
-    int fh = radius*2;
-    frame = new Rectangle(fx, fy, fw, fh);
-    RoundRectangle2D shape = new RoundRectangle2D.Float(fx, fy, fw, fh, 16, 16);
-    sprite = new Sprite(Util.randomColor(), loc, shape);
+    loc = l.copy();
+    sprite = new Sprite(loc, radius);
 
     name = "" + id;
     tile().add(this);

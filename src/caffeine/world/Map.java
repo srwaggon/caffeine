@@ -1,20 +1,19 @@
 package caffeine.world;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
 import caffeine.entity.Entity;
-import caffeine.view.Sprite;
 import caffeine.world.tile.Tile;
 
 public class Map{
   protected int height, width;
   protected Tile[][] map;
   protected int tileSize = 32;
-  protected List<Entity> entities = new ArrayList<Entity>();
 
   public Map(){
     this("20 20 32 "+
@@ -93,30 +92,16 @@ public class Map{
   public int width(){return width;}
 
   public List<Entity> entities(){
+    List<Entity> entities = new LinkedList<Entity>();
+    for (Tile t : tiles()){
+      entities.addAll(t.entities());
+    }
     return entities;
   }
 
   public boolean withinBounds(int x, int y){
     return  0 <= x && x < width*tileSize &&
         0 <= y && y < height*tileSize;
-  }
-
-  public List<Sprite> tileSprites(){
-    entities = new ArrayList<Entity>();
-    List<Sprite> sprites = new ArrayList<Sprite>();
-
-    for(int y = 0; y < height; y++){
-      for(int x = 0; x < width; x++){
-        Tile t = map[x][y];
-        // Because the map ID isn't important for placing the sprites.
-        Location l = new Location(-1, x*tileSize, y*tileSize);
-        Sprite s = new Sprite(t.getType().color(), l, new Rectangle(x*tileSize, y*tileSize, tileSize, tileSize));
-        sprites.add(s);
-        // Side effect.. Necessary to update entities.
-        entities.addAll(t.entities());
-      }
-    }
-    return sprites;
   }
 
   public void tick(){
@@ -144,5 +129,28 @@ public class Map{
       s += "\n";
     }
     return s;
+  }
+
+  public void paint(Graphics2D g2) {
+    /* A place to store entity sprites, we'll draw these after we've drawn the world */
+    List<Entity> entities = new LinkedList<Entity>();
+
+    /* Draw the world, tile by tile */
+    for(int y = 0; y < height; y++){
+      for(int x = 0; x < width; x++){
+        Tile t = map[x][y];
+        entities.addAll(t.entities());
+        g2.setColor(t.type().color());
+        g2.fill(new Rectangle(x*tileSize, y*tileSize, tileSize, tileSize));
+        g2.setColor(Color.black);
+        g2.drawLine(x*tileSize, y*tileSize, (x+1)*tileSize, y*tileSize);
+        g2.drawLine(x*tileSize, y*tileSize, x*tileSize, (y+1)*tileSize);
+      }
+    }
+
+    /* Now draw the entities on the world */
+    for(Entity e : entities) {
+      e.sprite().paint(g2);
+    }
   }
 }

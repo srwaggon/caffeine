@@ -27,4 +27,8 @@ public class Move implements Action {
     performer.motion().handleMove(this, performer);
   }
 
+  public String toString(){
+    return "move: " + dir;
+  }
+
 }

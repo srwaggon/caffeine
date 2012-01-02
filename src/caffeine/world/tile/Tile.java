@@ -31,7 +31,7 @@ public class Tile{
 
   public double drag(){return type.drag();}
 
-  public TileObject getType(){return type;}
+  public TileObject type(){return type;}
 
   public boolean pass(){return type.pass();}
 

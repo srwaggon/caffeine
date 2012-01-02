@@ -2,24 +2,24 @@ package caffeine.view;
 
 import javax.swing.JFrame;
 
-import caffeine.Game;
+import caffeine.CaffeineGame;
 
 @SuppressWarnings("serial")
 public class GUI extends JFrame {
-	private BoardView view;
+  private BoardView view;
 
-	public GUI() {
-		super("Caffeine Game Engine Demo");
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		view = new BoardView();
-		setContentPane(view);
-		pack();
-		setResizable(false);
-		setVisible(true);
-		addKeyListener(new KeyInputComponent(Game.interactionHandler()));
-	}
+  public GUI() {
+    super("Caffeine Game Engine Demo");
+    setDefaultCloseOperation(EXIT_ON_CLOSE);
+    view = new BoardView();
+    setContentPane(view);
+    pack();
+    setResizable(false);
+    setVisible(true);
+    addKeyListener(new KeyInputComponent(CaffeineGame.interactionHandler()));
+  }
 
-	public BoardView getContentPane(){
-		return view;
-	}
+  public BoardView getContentPane(){
+    return view;
+  }
 }

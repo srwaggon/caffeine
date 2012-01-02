@@ -21,10 +21,10 @@ import caffeine.world.World;
  * Games handle everything, from graphics to the heartbeat, as well as the mechanics, but are broken down into smaller components.
  * @author Fnar
  */
-public final class Game {
+public final class CaffeineGame {
   private static InteractionHandler interactionHandler= new InteractionHandler();
   private Clock clock = new Clock();
-  public final static Game GAME = new Game();
+  public final static CaffeineGame GAME = new CaffeineGame();
   GUI gui = new GUI();
   World world = new World(new Map());
 
@@ -34,9 +34,10 @@ public final class Game {
    * @param args
    */
   public static void main(String args[]){
-    Game.instance();
+    CaffeineGame.instance();
     Location l = new Location(0, 48, 48);
     Player adam = new Player(l);
+
 
     Actor a = new Actor(l);
     a.brain(new RandomBrain());
@@ -48,9 +49,10 @@ public final class Game {
     a.brain(new RightBrain());
 
     camera().focusOn(adam);
+
   }
 
-  private Game(){
+  private CaffeineGame(){
     clock.add(new TimerTask(){
       public void run(){
         world.tick();
@@ -68,7 +70,7 @@ public final class Game {
     return world.get(mapID).entities();
   }
 
-  public static Game instance(){
+  public static CaffeineGame instance(){
     return GAME;
   }
 

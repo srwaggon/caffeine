@@ -1,5 +1,6 @@
 package caffeine.world;
 
+import java.awt.Graphics2D;
 import java.util.HashMap;
 
 public class World{
@@ -36,6 +37,12 @@ public class World{
       s += m;
     }
     return s;
+  }
+
+  public void paint(Graphics2D g2) {
+    for (Map m : world.values()){
+      m.paint(g2);
+    }
   }
 
 }
