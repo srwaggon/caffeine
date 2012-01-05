@@ -4,16 +4,18 @@ import caffeine.entity.Actor;
 
 /* Represents a general action to be performed by an Actor */
 public interface Action {
-  //Could require a 'target' in constructor
-
-  /* Required methods */
-  void perform(Actor performer);
-
-
   /* An example/basic action: Inaction! */
   public static Action Inaction = new Action(){
     public void perform(Actor performer) {
-      // Do nothing
+      ;// Do nothing
     }
   };
+
+  //Could require a 'target' in constructor
+
+  /**
+   * Takes an Actor and applies the result of this action on it.
+   * @param performer
+   */
+  void perform(Actor performer);
 }

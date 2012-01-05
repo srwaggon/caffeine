@@ -1,6 +1,5 @@
 package caffeine.entity;
 
-import java.awt.Color;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
@@ -31,14 +30,12 @@ public class Entity implements Sprited{
   public Entity(Location l){
     id = numCharacters++;
     loc = l.copy();
-    sprite = new Sprite(loc, radius);
+    sprite = new Sprite(loc, 0);
 
     name = "" + id;
     tile().add(this);
     System.err.println("Spawning Entity " + name + " at " + loc);
   }
-
-  public void color(Color c){sprite.color(c);}
 
   public Rectangle hitbox(){
     return frame;

@@ -1,6 +1,6 @@
 package caffeine.world;
 
-import caffeine.CaffeineGame;
+import caffeine.Game;
 import caffeine.util.Util;
 import caffeine.world.tile.Tile;
 
@@ -22,7 +22,7 @@ public class Location {
   }
 
   public Map map(){
-    return CaffeineGame.GAME.world().get(mapID);
+    return Game.GAME.world().get(mapID);
   }
 
   public Tile tile(){

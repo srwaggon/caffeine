@@ -1,6 +1,6 @@
 package caffeine.entity;
 
-import caffeine.CaffeineGame;
+import caffeine.Game;
 import caffeine.entity.brain.PlayerBrain;
 import caffeine.world.Location;
 
@@ -11,6 +11,6 @@ public class Player extends Actor {
 	}
 	public Player(Location loc){
 		super(loc);
-		brain = new PlayerBrain(CaffeineGame.interactionHandler());
+		brain = new PlayerBrain(Game.interactionHandler());
 	}
 }

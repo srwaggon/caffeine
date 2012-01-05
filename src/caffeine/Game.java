@@ -9,8 +9,7 @@ import caffeine.entity.Player;
 import caffeine.entity.brain.LeftBrain;
 import caffeine.entity.brain.RandomBrain;
 import caffeine.entity.brain.RightBrain;
-import caffeine.view.Camera;
-import caffeine.view.GUI;
+import caffeine.view.GFX;
 import caffeine.view.InteractionHandler;
 import caffeine.world.Location;
 import caffeine.world.Map;
@@ -21,12 +20,12 @@ import caffeine.world.World;
  * Games handle everything, from graphics to the heartbeat, as well as the mechanics, but are broken down into smaller components.
  * @author Fnar
  */
-public final class CaffeineGame {
-  private static InteractionHandler interactionHandler= new InteractionHandler();
-  private Clock clock = new Clock();
-  public final static CaffeineGame GAME = new CaffeineGame();
-  GUI gui = new GUI();
-  World world = new World(new Map());
+public final class Game {
+  private Clock clock = new Clock(); // Heartbeat.  Handles game cycles and tick alerts.
+  public final static Game GAME = new Game();  // Instance
+  private static final GFX gfx = new GFX(); // handles graphics
+  static final InteractionHandler interactionHandler = new InteractionHandler(); // Handles input from Keyboard and Mouse
+  protected World world = new World(new Map()); // handles entities and interactions
 
 
   /**
@@ -34,7 +33,7 @@ public final class CaffeineGame {
    * @param args
    */
   public static void main(String args[]){
-    CaffeineGame.instance();
+    Game g = Game.game();
     Location l = new Location(0, 48, 48);
     Player adam = new Player(l);
 
@@ -47,39 +46,37 @@ public final class CaffeineGame {
 
     a = new Actor(l);
     a.brain(new RightBrain());
-
-    camera().focusOn(adam);
-
   }
 
-  private CaffeineGame(){
+  private Game(){
     clock.add(new TimerTask(){
       public void run(){
         world.tick();
-        gui.repaint();
+        gfx.tick();
       }
     });
     clock.start();
-  }
-
-  public static Camera camera(){
-    return GAME.gui.getContentPane().getCamera();
   }
 
   public List<Entity> entities(int mapID){
     return world.get(mapID).entities();
   }
 
-  public static CaffeineGame instance(){
+  public static Game game(){
     return GAME;
   }
 
-  public World world(){
-    return world;
+
+  public GFX gfx() {
+    return gfx;
   }
 
   public static InteractionHandler interactionHandler() {
     return interactionHandler;
+  }
+
+  public World world(){
+    return world;
   }
 }
 

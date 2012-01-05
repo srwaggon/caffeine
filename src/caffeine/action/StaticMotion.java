@@ -11,7 +11,6 @@ public class StaticMotion implements Motion{
   private int xdir = 0;
   private int ydir = 0;
   public int speed = 4;
-  double accelerationRate = 0;
   int moveTimer;
 
   public StaticMotion(Location l){

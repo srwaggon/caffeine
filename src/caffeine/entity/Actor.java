@@ -21,6 +21,10 @@ public class Actor extends Entity{
 
   public Motion motion(){return motion;}
 
+  public Actor instance(Location location){
+    return new Actor(location);
+  }
+
   public boolean alive(){return isAlive;}
 
   public void alive(Boolean b){isAlive = b;}

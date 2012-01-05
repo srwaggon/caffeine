@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
-import caffeine.CaffeineGame;
+import caffeine.Game;
 /**
    A panel for displaying the board.
  */
@@ -24,7 +24,7 @@ public class BoardView extends JPanel{
 
   }
 
-  public Camera getCamera(){
+  public Camera camera(){
     return cam;
   }
 
@@ -33,7 +33,7 @@ public class BoardView extends JPanel{
    */
   public void paintComponent(Graphics g) {
     Graphics2D g2 = (Graphics2D) g;
-    CaffeineGame.instance().world().paint(g2);
+    Game.game().world().paint(g2);
   }
 
   /**

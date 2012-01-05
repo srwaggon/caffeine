@@ -8,16 +8,25 @@ import java.awt.image.ImageFilter;
 import java.awt.image.ImageProducer;
 import java.awt.image.RGBImageFilter;
 import java.io.File;
+import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
-
+/**
+ * The Spritesheet class handles reading in an image file of sprites (currently only 32x32)
+ * and allows for retrieving an individual one, with pure black (0x00000000) set to transparency.
+ * @author Fnar
+ *
+ */
 public class Spritesheet{
-  public static Spritesheet sprites = new Spritesheet("res/sprites.png");
   private static BufferedImage sheet;
   protected int tileHeight = 32;
   protected int tileWidth = 32;
-
+  protected HashMap<Integer, Image> sprites = new HashMap<Integer, Image>();
+  /**
+   * Creates a Spritesheet from the file located in the path provided.
+   * @param path indicating sprite image file location
+   */
   public Spritesheet(String path){
     try{
       BufferedImage sht = ImageIO.read(new File(path));
@@ -27,6 +36,12 @@ public class Spritesheet{
 
   }
 
+  /**
+   * Checks each pixel for blackness (0x00000000)
+   * and converts it to full alpha transparency (0xFF000000).
+   * @param image
+   * @return
+   */
   private static Image transformBlackToTransparency(BufferedImage image){
     ImageFilter filter = new RGBImageFilter(){
 
@@ -48,12 +63,26 @@ public class Spritesheet{
     return Toolkit.getDefaultToolkit().createImage(ip);
   }
 
-  public Image getSprite(int index){
+
+  /**
+   * Retrieves a 32x32 tile from the indicated spritesheet
+   * @param index of sprite from spritesheet
+   * @return image representing the sprite at the requested index.
+   */
+  public Image sprite(int index){
     int tilesPerCol = sheet.getHeight()/tileHeight;
     int tilesPerRow = sheet.getWidth()/tileWidth;
-    BufferedImage subimage = sheet.getSubimage(index % tilesPerRow, index / tilesPerCol, tileWidth, tileHeight);
+    int x = index % tilesPerRow * tileWidth;
+    int y = index / tilesPerCol * tileHeight;
+    BufferedImage subimage = sheet.getSubimage(x, y, tileWidth, tileHeight);
     return transformBlackToTransparency(subimage);
   }
+
+  /*
+  public static Image sprite(int index){
+    return CaffeineGame.instance().gfx().sprites().sprite(index);
+  }
+   */
 
 
 }
