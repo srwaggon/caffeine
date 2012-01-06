@@ -23,8 +23,9 @@ import caffeine.world.World;
 public final class Game {
   private Clock clock = new Clock(); // Heartbeat.  Handles game cycles and tick alerts.
   public final static Game GAME = new Game();  // Instance
-  private static final GFX gfx = new GFX(); // handles graphics
+
   static final InteractionHandler interactionHandler = new InteractionHandler(); // Handles input from Keyboard and Mouse
+  private static final GFX gfx = new GFX(); // handles graphics
   protected World world = new World(new Map()); // handles entities and interactions
 
 

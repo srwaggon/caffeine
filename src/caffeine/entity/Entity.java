@@ -30,7 +30,7 @@ public class Entity implements Sprited{
   public Entity(Location l){
     id = numCharacters++;
     loc = l.copy();
-    sprite = new Sprite(loc, 0);
+    sprite = new Sprite(loc, 2);
 
     name = "" + id;
     tile().add(this);

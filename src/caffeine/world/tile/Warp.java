@@ -5,7 +5,7 @@ import java.awt.Color;
 import caffeine.entity.Entity;
 import caffeine.world.Location;
 
-public class Warp extends TileObject {
+public class Warp extends TileType {
 	public int mapID = 0;
 	public Location destination;
 

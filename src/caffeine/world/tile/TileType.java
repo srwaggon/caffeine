@@ -1,7 +1,7 @@
 package caffeine.world.tile;
 import java.awt.Color;
 
-public abstract class TileObject{
+public abstract class TileType{
 	protected Boolean pass = false;
 	protected Boolean safe = false;
 	protected Color color = Color.BLUE;
