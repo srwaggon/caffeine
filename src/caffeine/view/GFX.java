@@ -1,5 +1,8 @@
 package caffeine.view;
 
+import java.awt.Image;
+
+
 
 /**
  * GFX handles all work associated with graphics.
@@ -8,19 +11,22 @@ package caffeine.view;
  */
 public class GFX {
   protected GUI gui = new GUI();
-  protected Spritesheet spriteSheet = new Spritesheet("res/sprites.png");
+  public static Spritesheet spritesheet = new Spritesheet("res/sprites.png");
+  public static Spritesheet tilesheet = spritesheet;
 
   public GFX(){
-    spriteSheet = new Spritesheet("res/sprites.png");
-    Sprite.setSource(spriteSheet);
   }
 
   public Camera camera(){
     return gui.getContentPane().camera();
   }
 
-  public Spritesheet spriteSheet(){
-    return spriteSheet;
+  public static Image getSprite(int id){
+    return spritesheet.get(id);
+  }
+
+  public static Image getTile(int id){
+    return tilesheet.get(id);
   }
 
   public void tick(){

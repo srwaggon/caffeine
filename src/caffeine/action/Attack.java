@@ -13,7 +13,7 @@ public class Attack implements Action {
     int attackRadius = performer.radius()*2;
     Direction facing =  performer.motion().facing();
 
-    for(Entity e : performer.loc().project(facing, attackRadius).tile().entities()) {
+    for(Entity e : performer.loc().project(facing, attackRadius).tile().occupants()) {
       if(e instanceof Actor){
         Actor a = (Actor)e;
         if(!a.equals(performer) && a.loc().distanceTo(performer.loc()) < attackRadius){

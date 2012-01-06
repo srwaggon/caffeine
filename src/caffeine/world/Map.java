@@ -1,6 +1,5 @@
 package caffeine.world;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.LinkedList;
@@ -94,7 +93,7 @@ public class Map{
   public List<Entity> entities(){
     List<Entity> entities = new LinkedList<Entity>();
     for (Tile t : tiles()){
-      entities.addAll(t.entities());
+      entities.addAll(t.occupants());
     }
     return entities;
   }
@@ -139,12 +138,10 @@ public class Map{
     for(int y = 0; y < height; y++){
       for(int x = 0; x < width; x++){
         Tile t = map[x][y];
-        entities.addAll(t.entities());
-        g2.setColor(t.type().color());
-        g2.fill(new Rectangle(x*tileSize, y*tileSize, tileSize, tileSize));
-        g2.setColor(Color.black);
-        g2.drawLine(x*tileSize, y*tileSize, (x+1)*tileSize, y*tileSize);
-        g2.drawLine(x*tileSize, y*tileSize, x*tileSize, (y+1)*tileSize);
+        entities.addAll(t.occupants());
+
+        Rectangle r = new Rectangle(x*tileSize, y*tileSize, tileSize, tileSize);
+        t.paint(g2, r);
       }
     }
 

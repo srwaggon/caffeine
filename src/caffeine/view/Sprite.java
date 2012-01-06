@@ -12,7 +12,7 @@ public class Sprite {
 
   public Sprite(Location l, int spriteID){
     loc = l;
-    sprite = source.sprite(spriteID);
+    sprite = GFX.getSprite(spriteID);
   }
 
   public Location loc(){
@@ -25,10 +25,6 @@ public class Sprite {
 
   public String toString(){
     return "Sprite";
-  }
-
-  public static void setSource(Spritesheet spriteSheet) {
-    source = spriteSheet;
   }
 
 }

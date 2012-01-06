@@ -69,7 +69,7 @@ public class Spritesheet{
    * @param index of sprite from spritesheet
    * @return image representing the sprite at the requested index.
    */
-  public Image sprite(int index){
+  public Image get(int index){
     int tilesPerCol = sheet.getHeight()/tileHeight;
     int tilesPerRow = sheet.getWidth()/tileWidth;
     int x = index % tilesPerRow * tileWidth;
