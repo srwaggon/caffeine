@@ -2,7 +2,6 @@ package caffeine.world;
 
 import caffeine.Game;
 import caffeine.util.Util;
-import caffeine.world.tile.Tile;
 
 public class Location {
   protected int mapID;

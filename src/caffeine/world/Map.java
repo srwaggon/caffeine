@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Scanner;
 
 import caffeine.entity.Entity;
-import caffeine.world.tile.Tile;
 
 public class Map{
   protected int height, width;
@@ -66,7 +65,7 @@ public class Map{
     System.err.println();
   }
 
-  public Tile get(int x, int y){
+  public Tile getTile(int x, int y){
     if (x < 0) {
       x = 0;
     }
@@ -83,12 +82,12 @@ public class Map{
   }
 
   public Tile getTileAt(int x, int y){
-    return get(x/tileSize, y/tileSize);
+    return getTile(x/tileSize, y/tileSize);
   }
 
-  public int height(){return height;}
+  public int height(){return height*tileSize;}
 
-  public int width(){return width;}
+  public int width(){return width*tileSize;}
 
   public List<Entity> entities(){
     List<Entity> entities = new LinkedList<Entity>();

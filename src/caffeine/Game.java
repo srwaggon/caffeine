@@ -12,7 +12,6 @@ import caffeine.entity.brain.RightBrain;
 import caffeine.view.GFX;
 import caffeine.view.InteractionHandler;
 import caffeine.world.Location;
-import caffeine.world.Map;
 import caffeine.world.World;
 
 /**
@@ -26,7 +25,7 @@ public final class Game {
 
   static final InteractionHandler interactionHandler = new InteractionHandler(); // Handles input from Keyboard and Mouse
   private static final GFX gfx = new GFX(); // handles graphics
-  protected World world = new World(new Map()); // handles entities and interactions
+  protected World world = new World(); // handles entities and interactions
 
 
   /**
@@ -37,6 +36,8 @@ public final class Game {
     Game g = Game.game();
     Location l = new Location(0, 48, 48);
     Player adam = new Player(l);
+
+    g.gfx().camera().focusOn(adam);
 
 
     Actor a = new Actor(l);

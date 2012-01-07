@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import caffeine.view.Sprite;
 import caffeine.view.Sprited;
 import caffeine.world.Location;
-import caffeine.world.tile.Tile;
+import caffeine.world.Tile;
 
 
 /**

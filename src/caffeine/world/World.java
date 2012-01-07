@@ -7,14 +7,11 @@ public class World{
   public HashMap<Integer, Map> world = new HashMap<Integer, Map>();
   static int numMaps = 0;
 
-  public World(){}
+  public World(){world.put(numMaps, new Map());}
 
-  public World(Map m){
-    world.put(numMaps, m);
-  }
-  public int size(){
-    return world.size();
-  }
+  public World(Map m){world.put(numMaps, m);}
+
+  public int size(){return world.size();}
 
   public int add(Map m){
     world.put(numMaps, m);

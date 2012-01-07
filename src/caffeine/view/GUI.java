@@ -6,20 +6,20 @@ import caffeine.Game;
 
 @SuppressWarnings("serial")
 public class GUI extends JFrame {
-  private BoardView view;
+  protected Screen screen = new Screen();
 
   public GUI() {
     super("Caffeine Game Engine Demo");
     setDefaultCloseOperation(EXIT_ON_CLOSE);
-    view = new BoardView();
-    setContentPane(view);
+    setContentPane(screen);
     pack();
-    setResizable(false);
+    //setResizable(false);
     setVisible(true);
     addKeyListener(new KeyInputComponent(Game.interactionHandler()));
   }
 
-  public BoardView getContentPane(){
-    return view;
+  public Screen getContentPane(){
+    return screen;
   }
+
 }

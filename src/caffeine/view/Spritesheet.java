@@ -70,19 +70,17 @@ public class Spritesheet{
    * @return image representing the sprite at the requested index.
    */
   public Image get(int index){
-    int tilesPerCol = sheet.getHeight()/tileHeight;
-    int tilesPerRow = sheet.getWidth()/tileWidth;
-    int x = index % tilesPerRow * tileWidth;
-    int y = index / tilesPerCol * tileHeight;
-    BufferedImage subimage = sheet.getSubimage(x, y, tileWidth, tileHeight);
-    return transformBlackToTransparency(subimage);
+    if(sprites.containsKey(index)){
+      return sprites.get(index);
+    }else{
+      int tilesPerCol = sheet.getHeight()/tileHeight;
+      int tilesPerRow = sheet.getWidth()/tileWidth;
+      int x = index % tilesPerRow * tileWidth;
+      int y = index / tilesPerCol * tileHeight;
+      BufferedImage subimage = sheet.getSubimage(x, y, tileWidth, tileHeight);
+      Image sprite = transformBlackToTransparency(subimage);
+      sprites.put(index, sprite);
+      return sprite;
+    }
   }
-
-  /*
-  public static Image sprite(int index){
-    return CaffeineGame.instance().gfx().sprites().sprite(index);
-  }
-   */
-
-
 }

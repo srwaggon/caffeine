@@ -1,7 +1,8 @@
 package caffeine.view;
 
 import java.awt.Dimension;
-import java.awt.Graphics2D;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,17 +13,10 @@ public class Camera {
   protected List<Sprite> sprites = new ArrayList<Sprite>();
   protected Dimension dims;
   protected Location loc;
-  protected double scale;
 
   public Camera(Dimension d){
     dims = d;
     loc = new Location();
-    scale = 1.0;
-  }
-
-  public Camera(Location l, double zoom){
-    loc = l;
-    scale = zoom;
   }
 
   public void focusOn(Location l){
@@ -37,7 +31,23 @@ public class Camera {
     return loc;
   }
 
-  public void render(Graphics2D g2){
+  public void view(Graphics g){
+    MapView mapview = new MapView(loc.map());
+    int w = dims.width  > mapview.getWidth()  ? mapview.getWidth()  : dims.width;
+    int h = dims.height > mapview.getHeight() ? mapview.getHeight() : dims.height;
+    int x = loc.x() - w / 2;
+    int y = loc.y() - h / 2;
 
+    if (x < 0) {
+      x = 0;
+    }
+    if (y < 0) {
+      y = 0;
+    }
+
+    Image image = mapview.getImage();
+    int renderX = w/2 - loc.x();
+    int renderY = h/2 - loc.y();
+    g.drawImage(image, renderX, renderY, null);
   }
 }

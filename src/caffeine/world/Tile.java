@@ -1,4 +1,4 @@
-package caffeine.world.tile;
+package caffeine.world;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
