@@ -1,5 +1,6 @@
 package caffeine.view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 
@@ -11,6 +12,7 @@ public class Screen extends JPanel {
 
   public Screen(){
     camera = new Camera(getPreferredSize());
+    setBackground(Color.black);
   }
 
   public Camera camera(){
@@ -22,6 +24,7 @@ public class Screen extends JPanel {
   }
 
   public void paintComponent(Graphics g){
+    super.paintComponent(g);
     camera.view(g);
   }
 

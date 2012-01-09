@@ -3,14 +3,11 @@ package caffeine.view;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.util.ArrayList;
-import java.util.List;
 
 import caffeine.entity.Entity;
 import caffeine.world.Location;
 
 public class Camera {
-  protected List<Sprite> sprites = new ArrayList<Sprite>();
   protected Dimension dims;
   protected Location loc;
 
@@ -45,9 +42,9 @@ public class Camera {
       y = 0;
     }
 
-    Image image = mapview.getImage();
+    Image mapViewImage = mapview.getImage();
     int renderX = w/2 - loc.x();
     int renderY = h/2 - loc.y();
-    g.drawImage(image, renderX, renderY, null);
+    g.drawImage(mapViewImage, renderX, renderY, null);
   }
 }

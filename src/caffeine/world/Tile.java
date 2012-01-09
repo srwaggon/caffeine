@@ -54,7 +54,8 @@ public class Tile{
 
   public void paint(Graphics2D g2, Rectangle box){
     AffineTransform xform = new AffineTransform(box.width / sprite.getWidth(null), 0, 0, box.height / sprite.getHeight(null), box.x, box.y);
-    g2.drawImage(sprite, xform, null);
+    g2.drawImage(sprite, box.x, box.y, null);
+    //g2.drawImage(sprite, xform, null);
   }
 
   public void remove(Entity e){

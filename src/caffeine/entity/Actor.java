@@ -14,14 +14,14 @@ public class Actor extends Entity{
   protected Brain brain = new RandomBrain();
   protected Motion motion;
 
-  public Actor(Location l){
+  protected Actor(Location l){
     super(l);
     motion = new StaticMotion(loc);
   }
 
   public Motion motion(){return motion;}
 
-  public Actor instance(Location location){
+  public static Actor create(Location location){
     return new Actor(location);
   }
 

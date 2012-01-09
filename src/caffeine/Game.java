@@ -24,7 +24,7 @@ public final class Game {
   public final static Game GAME = new Game();  // Instance
 
   static final InteractionHandler interactionHandler = new InteractionHandler(); // Handles input from Keyboard and Mouse
-  private static final GFX gfx = new GFX(); // handles graphics
+  private static final GFX GFX = new GFX(); // handles graphics
   protected World world = new World(); // handles entities and interactions
 
 
@@ -40,13 +40,13 @@ public final class Game {
     g.gfx().camera().focusOn(adam);
 
 
-    Actor a = new Actor(l);
+    Actor a = Actor.create(l);
     a.brain(new RandomBrain());
 
-    a = new Actor(l);
+    a = Actor.create(l);
     a.brain(new LeftBrain());
 
-    a = new Actor(l);
+    a = Actor.create(l);
     a.brain(new RightBrain());
   }
 
@@ -54,7 +54,7 @@ public final class Game {
     clock.add(new TimerTask(){
       public void run(){
         world.tick();
-        gfx.tick();
+        GFX.tick();
       }
     });
     clock.start();
@@ -70,7 +70,7 @@ public final class Game {
 
 
   public GFX gfx() {
-    return gfx;
+    return GFX;
   }
 
   public static InteractionHandler interactionHandler() {

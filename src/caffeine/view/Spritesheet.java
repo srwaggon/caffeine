@@ -20,8 +20,8 @@ import javax.imageio.ImageIO;
  */
 public class Spritesheet{
   private static BufferedImage sheet;
-  protected int tileHeight = 32;
-  protected int tileWidth = 32;
+  protected int tileSize = 32;
+
   protected HashMap<Integer, Image> sprites = new HashMap<Integer, Image>();
   /**
    * Creates a Spritesheet from the file located in the path provided.
@@ -31,9 +31,16 @@ public class Spritesheet{
     try{
       BufferedImage sht = ImageIO.read(new File(path));
       sheet = ImageIO.read(new File(path));
-      //sheet = (BufferedImage)transformBlackToTransparency(sht);
     } catch (Throwable ex){ }
 
+  }
+
+  /**
+   * Used to change the size in pixels of each sprite tile in the spritesheet.
+   * @param size in pixels for sprite tiles to be
+   */
+  public void setTileSizeTo(int size){
+    tileSize = size;
   }
 
   /**
@@ -65,7 +72,7 @@ public class Spritesheet{
 
 
   /**
-   * Retrieves a 32x32 tile from the indicated spritesheet
+   * Retrieves a tile from the indicated spritesheet
    * @param index of sprite from spritesheet
    * @return image representing the sprite at the requested index.
    */
@@ -73,11 +80,11 @@ public class Spritesheet{
     if(sprites.containsKey(index)){
       return sprites.get(index);
     }else{
-      int tilesPerCol = sheet.getHeight()/tileHeight;
-      int tilesPerRow = sheet.getWidth()/tileWidth;
-      int x = index % tilesPerRow * tileWidth;
-      int y = index / tilesPerCol * tileHeight;
-      BufferedImage subimage = sheet.getSubimage(x, y, tileWidth, tileHeight);
+      int tilesPerCol = sheet.getHeight()/tileSize;
+      int tilesPerRow = sheet.getWidth()/tileSize;
+      int x = index % tilesPerRow * tileSize;
+      int y = index / tilesPerCol * tileSize;
+      BufferedImage subimage = sheet.getSubimage(x, y, tileSize, tileSize);
       Image sprite = transformBlackToTransparency(subimage);
       sprites.put(index, sprite);
       return sprite;

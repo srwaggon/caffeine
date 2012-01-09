@@ -146,7 +146,7 @@ public class Map{
 
     /* Now draw the entities on the world */
     for(Entity e : entities) {
-      e.sprite().paint(g2);
+      e.paint(g2);
     }
   }
 }

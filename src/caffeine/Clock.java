@@ -14,7 +14,7 @@ public class Clock {
       public void run(){
         tick();
       }
-    }, 0, 1000/16);
+    }, 0, 1000/30);
   }
 
   public void add(TimerTask t){
@@ -42,6 +42,7 @@ public class Clock {
       }
       catch(Throwable ex){
         System.err.println("Exception caught: " + ex.toString());
+        //ex.printStackTrace();
       }
     }
   }

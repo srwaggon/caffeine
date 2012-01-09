@@ -10,7 +10,7 @@ public class StaticMotion implements Motion{
   protected Direction facing = Direction.W;
   private int xdir = 0;
   private int ydir = 0;
-  public int speed = 4;
+  public int speed = 2;
   int moveTimer;
 
   public StaticMotion(Location l){
