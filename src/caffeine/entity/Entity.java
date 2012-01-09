@@ -31,7 +31,7 @@ public class Entity{
   public Entity(Location l){
     id = numCharacters++;
     loc = l.copy();
-    sprite = GFX.getSprite(2);
+    sprite = GFX.getSprite(3);
 
     name = "" + id;
     tile().add(this);

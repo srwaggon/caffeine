@@ -30,21 +30,27 @@ public class Camera {
 
   public void view(Graphics g){
     MapView mapview = new MapView(loc.map());
-    int w = dims.width  > mapview.getWidth()  ? mapview.getWidth()  : dims.width;
-    int h = dims.height > mapview.getHeight() ? mapview.getHeight() : dims.height;
-    int x = loc.x() - w / 2;
-    int y = loc.y() - h / 2;
-
-    if (x < 0) {
-      x = 0;
-    }
-    if (y < 0) {
-      y = 0;
-    }
+    int w = dims.width;
+    int h = dims.height;
+    int x = loc.x();
+    int y = loc.y();
 
     Image mapViewImage = mapview.getImage();
-    int renderX = w/2 - loc.x();
-    int renderY = h/2 - loc.y();
+    int renderX = w/2 - x;
+    int renderY = h/2 - y;
+
+    if(w/2 >= x){
+      renderX = 0;
+    } else if (mapview.getWidth() <= x + w/2){
+      renderX = w - mapview.getWidth();
+    }
+
+    if(y <= h/2){
+      renderY = 0;
+    } else if (mapview.getHeight() <= y + h/2){
+      renderY = h - mapview.getHeight();
+    }
+
     g.drawImage(mapViewImage, renderX, renderY, null);
   }
 }
