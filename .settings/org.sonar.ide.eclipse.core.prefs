@@ -1,0 +1,8 @@
+#Sat Dec 31 04:13:14 EST 2011
+analyseLocally=true
+eclipse.preferences.version=1
+projectArtifactId=sonar-flex-plugin
+projectBranch=
+projectGroupId=org.codehaus.sonar-plugins
+serverUrl=http\://nemo.sonarsource.org
+version=1
