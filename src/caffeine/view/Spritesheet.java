@@ -72,7 +72,7 @@ public class Spritesheet{
 
 
   /**
-   * Retrieves a tile from the indicated spritesheet
+   * Retrieves a tile from the indicated spritesheet using the default tile size.
    * @param index of sprite from spritesheet
    * @return image representing the sprite at the requested index.
    */
@@ -80,14 +80,26 @@ public class Spritesheet{
     if(sprites.containsKey(index)){
       return sprites.get(index);
     }else{
-      int tilesPerCol = sheet.getHeight()/tileSize;
-      int tilesPerRow = sheet.getWidth()/tileSize;
-      int x = index % tilesPerRow * tileSize;
-      int y = index / tilesPerCol * tileSize;
-      BufferedImage subimage = sheet.getSubimage(x, y, tileSize, tileSize);
-      Image sprite = transformBlackToTransparency(subimage);
+      Image sprite = get(index, tileSize);
       sprites.put(index, sprite);
       return sprite;
     }
+  }
+
+  /**
+   * Retrieves a tile from the indicated spritesheet using the provided tile size.
+   * @param index of sprite from spritesheet
+   * @return image representing the sprite at the requested index.
+   */
+  public Image get(int index, int tileSize){
+    int tilesPerCol = sheet.getHeight()/tileSize;
+    int tilesPerRow = sheet.getWidth()/tileSize;
+    int x = index % tilesPerRow * tileSize;
+    int y = index / tilesPerCol * tileSize;
+
+    BufferedImage subimage = sheet.getSubimage(x, y, tileSize, tileSize);
+    Image sprite = transformBlackToTransparency(subimage);
+
+    return sprite;
   }
 }
