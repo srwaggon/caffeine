@@ -1,11 +1,8 @@
 package caffeine.entity;
 
-import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
-import caffeine.view.GFX;
 import caffeine.world.Location;
 import caffeine.world.Tile;
 
@@ -21,7 +18,7 @@ public class Entity{
   protected int radius = 10;
   protected Location loc;
   private Rectangle frame;
-  protected Image sprite;
+  protected int spriteID;
   protected String name;
 
   public Entity(){
@@ -31,11 +28,15 @@ public class Entity{
   public Entity(Location l){
     id = numCharacters++;
     loc = l.copy();
-    sprite = GFX.getSprite(3);
+    spriteID = 3;
 
     name = "" + id;
     tile().add(this);
     System.err.println("Spawning Entity " + name + " at " + loc);
+  }
+
+  public int getID(){
+    return id;
   }
 
   public Rectangle hitbox(){
@@ -50,18 +51,9 @@ public class Entity{
     tile().add(this);
   }
 
-  public void paint(Graphics g){
-    int spriteWidth  = sprite.getHeight(null);
-    int spriteHeight = sprite.getWidth(null);
-    /* Center it, by moving the sprite halfway up and halfway left */
-    int renderX = loc.x() - spriteWidth / 2;
-    int renderY = loc.y() - spriteHeight / 2;
-    g.drawImage(sprite, renderX, renderY, null);
-  }
-
   public int radius(){return radius;}
 
-  public Image sprite(){return sprite;}
+  public int spriteID(){return spriteID;}
 
   public void tick(){
   }

@@ -42,7 +42,7 @@ public class Clock {
       }
       catch(Throwable ex){
         System.err.println("Exception caught: " + ex.toString());
-        //ex.printStackTrace();
+        ex.printStackTrace();
       }
     }
   }

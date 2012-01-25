@@ -21,12 +21,10 @@ import caffeine.world.World;
  */
 public final class Game {
   private Clock clock = new Clock(); // Heartbeat.  Handles game cycles and tick alerts.
-  public final static Game GAME = new Game();  // Instance
-
-  static final InteractionHandler interactionHandler = new InteractionHandler(); // Handles input from Keyboard and Mouse
+  final static InteractionHandler interactionHandler = new InteractionHandler(); // Handles input from Keyboard and Mouse
   private static final GFX GFX = new GFX(); // handles graphics
   protected World world = new World(); // handles entities and interactions
-
+  public final static Game GAME = new Game();  // Instance
 
   /**
    * Main method
@@ -38,7 +36,6 @@ public final class Game {
     Player adam = new Player(l);
 
     g.gfx().camera().focusOn(adam);
-
 
     Actor a = Actor.create(l);
     a.brain(new RandomBrain());

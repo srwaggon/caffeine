@@ -1,15 +1,15 @@
 package caffeine.world;
 
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
 import caffeine.entity.Entity;
 
-public class Map{
-  protected int height, width;
+public class Map implements Iterable<Tile>{
+  protected int numRows, numCols;
   protected Tile[][] map;
   protected int tileSize = 32;
 
@@ -38,29 +38,30 @@ public class Map{
   }
 
   public Map(int cols, int rows, int tileSize){
-    height = rows;
-    width = cols;
+    numRows = rows;
+    numCols = cols;
     this.tileSize = tileSize;
     map = new Tile[cols][rows];
 
-    for(int y = 0; y < width; y++){
-      for(int x = 0; x < height; x++){
+    for(int y = 0; y < numCols; y++){
+      for(int x = 0; x < numRows; x++){
         map[x][y] = new Tile();
       }
     }
   }
+
   public Map(String s){
     Scanner scans = new Scanner(s);
-    width = Integer.parseInt(scans.next());
-    height = Integer.parseInt(scans.next());
+    numCols = Integer.parseInt(scans.next());
+    numRows = Integer.parseInt(scans.next());
     tileSize = Integer.parseInt(scans.next());
 
-    map = new Tile[width][height];
+    map = new Tile[numCols][numRows];
     String line = scans.next();
-    for(int i = 0; i < height*width; i++){
+    for(int i = 0; i < numRows*numCols; i++){
       char c = line.charAt(i);
       System.err.print(c);
-      map[i%width][i/width] = new Tile(c);
+      map[i%numCols][i/numCols] = new Tile(c);
     }
     System.err.println();
   }
@@ -72,11 +73,11 @@ public class Map{
     if (y < 0) {
       y = 0;
     }
-    if (x >= width) {
-      x = width - 1;
+    if (x >= numCols) {
+      x = numCols - 1;
     }
-    if (y >= height) {
-      y = height -1;
+    if (y >= numRows) {
+      y = numRows -1;
     }
     return map[x][y];
   }
@@ -85,43 +86,35 @@ public class Map{
     return getTile(x/tileSize, y/tileSize);
   }
 
-  public int height(){return height*tileSize;}
 
-  public int width(){return width*tileSize;}
-
-  public List<Entity> entities(){
-    List<Entity> entities = new LinkedList<Entity>();
-    for (Tile t : tiles()){
-      entities.addAll(t.occupants());
-    }
-    return entities;
-  }
+  public int numCols(){return numCols;}
+  public int numRows(){return numRows;}
+  public int height(){return numRows*tileSize;}
+  public int width(){return numCols*tileSize;}
+  public int tileSize(){return tileSize;}
 
   public boolean withinBounds(int x, int y){
-    return  0 <= x && x < width*tileSize &&
-        0 <= y && y < height*tileSize;
+    return  0 <= x && x < numCols*tileSize &&
+        0 <= y && y < numRows*tileSize;
   }
 
   public void tick(){
-    for(Entity e : entities()){
+    Collection<Entity> entities = new LinkedList<Entity>();
+    Iterator<Tile> tileIterator = iterator();
+    while(tileIterator.hasNext()){
+      Tile t = tileIterator.next();
+      entities.addAll(t.occupants());
+      t.tick();
+    }
+    for(Entity e : entities){
       e.tick();
     }
   }
 
-  public List<Tile> tiles() {
-    List<Tile> tiles = new LinkedList<Tile>();
-    for(int y = 0; y < height; y++) {
-      for(int x = 0; x < width; x++) {
-        tiles.add(map[x][y]);
-      }
-    }
-    return tiles;
-  }
-
   public String toString(){
     String s = "";
-    for(int y = 0; y < height; y++){
-      for(int x = 0; x < width; x++){
+    for(int y = 0; y < numRows; y++){
+      for(int x = 0; x < numCols; x++){
         s += map[x][y];
       }
       s += "\n";
@@ -129,24 +122,38 @@ public class Map{
     return s;
   }
 
-  public void paint(Graphics2D g2) {
-    /* A place to store entity sprites, we'll draw these after we've drawn the world */
-    List<Entity> entities = new LinkedList<Entity>();
 
-    /* Draw the world, tile by tile */
-    for(int y = 0; y < height; y++){
-      for(int x = 0; x < width; x++){
-        Tile t = map[x][y];
-        entities.addAll(t.occupants());
+  public Iterator<Tile> iterator() {
+    return new Iterator<Tile>(){
+      int x = 0;
+      int y = 0;
 
-        Rectangle r = new Rectangle(x*tileSize, y*tileSize, tileSize, tileSize);
-        t.paint(g2, r);
+      public boolean hasNext() {
+        return y < numRows && x < numCols;
       }
-    }
 
-    /* Now draw the entities on the world */
-    for(Entity e : entities) {
-      e.paint(g2);
-    }
+      public Tile next() {
+        if(x >= numRows){
+          x = 0;
+          y++;
+        }
+        return getTile(x++, y);
+      }
+
+      public void remove() {
+        // :V  Yeah, no.
+      }
+    };
   }
+
+  public List<Entity> entities() {
+    List<Entity> entities = new LinkedList<Entity>();
+    Iterator<Tile> tileIt = iterator();
+    while(tileIt.hasNext()) {
+      Tile t = tileIt.next();
+      entities.addAll(t.occupants());
+    }
+    return entities;
+  }
+
 }

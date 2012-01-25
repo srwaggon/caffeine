@@ -1,21 +1,18 @@
 package caffeine.world;
 
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Rectangle;
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 
 import caffeine.entity.Entity;
-import caffeine.view.GFX;
 
 public class Tile{
   public static Tile block = new Tile(false, 0, 1, '#');
   public static Tile safe = new Tile(true, 0, 0, '.');
 
-  protected ArrayList<Entity> occupants = new ArrayList<Entity>();
+  protected HashMap<Integer, Entity> occupants = new HashMap<Integer, Entity>();
   protected boolean pass = true;
   protected int damage = 0;
-  protected Image sprite = GFX.getSprite(0);
+  protected int spriteID = 0;
   protected char symbol;
 
   public Tile(){}
@@ -24,23 +21,23 @@ public class Tile{
     symbol = c;
     if(c == '#'){
       pass = false;
-      sprite = GFX.getSprite(1);
+      spriteID = 1;
     }
   }
 
   private Tile(boolean pass, int damage, int spriteID, char symbol){
     this.pass = pass;
     this.damage = damage;
-    sprite = GFX.getSprite(spriteID);
+    this.spriteID = spriteID;
     this.symbol = symbol;
   }
 
   public void add(Entity e){
-    occupants.add(e);
+    occupants.put(e.getID(), e);
   }
 
-  public ArrayList<Entity> occupants(){
-    return occupants;
+  public Collection<Entity> occupants(){
+    return occupants.values();
   }
 
   public boolean isEmpty(){
@@ -51,12 +48,8 @@ public class Tile{
     return pass;
   }
 
-  public void paint(Graphics2D g2, Rectangle box){
-    g2.drawImage(sprite, box.x, box.y, null);
-  }
-
   public void remove(Entity e){
-    occupants.remove(e);
+    occupants.remove(e.getID());
   }
 
   public boolean safe(){
@@ -67,7 +60,10 @@ public class Tile{
     return ""+symbol;
   }
 
-  public Image sprite() {
-    return sprite;
+  public int spriteID() {
+    return spriteID;
+  }
+
+  public void tick() {
   }
 }
