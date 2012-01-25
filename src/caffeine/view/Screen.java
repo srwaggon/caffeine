@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 
 
 public class Screen extends JPanel {
+  private static final long serialVersionUID = 1941560650859760887L;
   Camera camera;
 
   public Screen(){

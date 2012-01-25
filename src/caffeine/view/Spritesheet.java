@@ -29,7 +29,6 @@ public class Spritesheet{
    */
   public Spritesheet(String path){
     try{
-      BufferedImage sht = ImageIO.read(new File(path));
       sheet = ImageIO.read(new File(path));
     } catch (Throwable ex){ }
 
