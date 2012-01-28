@@ -26,14 +26,13 @@ public class StaticMotion implements Motion{
     if(validMove(m, performer)){
       Direction d = m.dir();
       facing = d;
-
       /* Determine direction(s) of motion, but they can't be conflicting */
       switch (d) {
-        case  W: xdir = xdir == 0 ? -1 : 0; break;
-        case  N: ydir = ydir == 0 ? -1 : 0; break;
-        case  E: xdir = xdir == 0 ?  1 : 0; break;
-        case  S: ydir = ydir == 0 ?  1 : 0; break;
-        default: break;
+      case  W: xdir = xdir == 0 ? -1 : 0; break;
+      case  N: ydir = ydir == 0 ? -1 : 0; break;
+      case  E: xdir = xdir == 0 ?  1 : 0; break;
+      case  S: ydir = ydir == 0 ?  1 : 0; break;
+      default: break;
       }
       newLoc.set(loc.project(xdir*speed, ydir*speed));
     }
@@ -50,11 +49,11 @@ public class StaticMotion implements Motion{
     /* Determine what this move is adjusting */
     Direction d = m.dir();
     switch (d) {
-      case  W: xdirTest = -1; break;
-      case  N: ydirTest = -1; break;
-      case  E: xdirTest =  1; break;
-      case  S: ydirTest =  1; break;
-      default: break;
+    case  W: xdirTest = -1; break;
+    case  N: ydirTest = -1; break;
+    case  E: xdirTest =  1; break;
+    case  S: ydirTest =  1; break;
+    default: break;
     }
 
     /* For each vertex of the performing Actor,

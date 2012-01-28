@@ -18,6 +18,7 @@ public class MapView{
   BufferedImage view;
   protected Map map;
 
+
   public MapView(Map m) {
     map = m;
     view = new BufferedImage(map.width(), map.height(), BufferedImage.TYPE_INT_ARGB);
@@ -42,8 +43,8 @@ public class MapView{
 
   public void paintComponent(Graphics g) {
     Graphics2D g2 = (Graphics2D) g;
-
     Collection<Entity> entities = new LinkedList<Entity>();
+
     int numCols = map.numCols();
     int numRows = map.numRows();
     int tileSize = map.tileSize();
@@ -72,7 +73,7 @@ public class MapView{
 
       g2.drawImage(sprite, renderX, renderY, null);
     }
-
+    entities.clear();
   }
 }
 

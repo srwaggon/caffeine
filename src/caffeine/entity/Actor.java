@@ -34,13 +34,14 @@ public class Actor extends Entity{
   }
 
   public void tick(){
+
     if(isAlive){
       for(Action a : brain.next(this)){
         a.perform(this);
       }
-      loc.tile().remove(this);
+      tile().remove(this);
       motion.tick();
-      loc.tile().add(this);
+      tile().add(this);
     }
   }
 }

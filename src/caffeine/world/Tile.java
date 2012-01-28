@@ -6,14 +6,14 @@ import java.util.HashMap;
 import caffeine.entity.Entity;
 
 public class Tile{
-  public static Tile block = new Tile(false, 0, 1, '#');
-  public static Tile safe = new Tile(true, 0, 0, '.');
-
   protected HashMap<Integer, Entity> occupants = new HashMap<Integer, Entity>();
   protected boolean pass = true;
   protected int damage = 0;
   protected int spriteID = 0;
   protected char symbol;
+
+  public static Tile block = new Tile(false, 0, 1, '#');
+  public static Tile safe = new Tile(true, 0, 0, '.');
 
   public Tile(){}
 

@@ -37,6 +37,7 @@ public final class Game {
 
     g.gfx().camera().focusOn(adam);
 
+
     Actor a = Actor.create(l);
     a.brain(new RandomBrain());
 

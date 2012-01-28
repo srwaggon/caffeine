@@ -42,7 +42,7 @@ public class Location {
    * @return boolean representing whether or not this location exists within the width and height of the board.
    */
   public boolean validLocation() {
-    return map().withinBounds(x,  y);
+    return map().onMap(x,  y);
   }
 
   /**
