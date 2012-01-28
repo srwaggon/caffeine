@@ -2,7 +2,7 @@ package caffeine.view;
 
 import javax.swing.JFrame;
 
-import caffeine.Game;
+import caffeine.Server;
 
 @SuppressWarnings("serial")
 public class GUI extends JFrame {
@@ -15,7 +15,7 @@ public class GUI extends JFrame {
     pack();
     //setResizable(false);
     setVisible(true);
-    addKeyListener(new KeyInputComponent(Game.interactionHandler()));
+    addKeyListener(new KeyInputComponent(Server.interactionHandler()));
   }
 
   public Screen getContentPane(){

@@ -1,5 +1,11 @@
 package caffeine;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.List;
 import java.util.TimerTask;
 
@@ -19,19 +25,77 @@ import caffeine.world.World;
  * Games handle everything, from graphics to the heartbeat, as well as the mechanics, but are broken down into smaller components.
  * @author Fnar
  */
-public final class Game {
+public final class Server {
   private Clock clock = new Clock(); // Heartbeat.  Handles game cycles and tick alerts.
   final static InteractionHandler interactionHandler = new InteractionHandler(); // Handles input from Keyboard and Mouse
   private static final GFX GFX = new GFX(); // handles graphics
   protected World world = new World(); // handles entities and interactions
-  public final static Game GAME = new Game();  // Instance
+  public final static Server GAME = new Server();  // Instance
+
+  /* Networking Objects */
+  ServerSocket server = null;
+  Socket client = null;
+  BufferedReader in = null;
+  PrintWriter out = null;
+  String line;
+
+  public void listenSocket(){
+
+    try{
+      server = new ServerSocket(4444);
+    } catch (IOException e) {
+      System.out.println("Could not listen on port 4444");
+      System.exit(-1);
+    }
+
+    try{
+      client = server.accept();
+    } catch (IOException e) {
+      System.out.println("Accept failed: 4444");
+      System.exit(-1);
+    }
+
+    try{
+      in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+      out = new PrintWriter(client.getOutputStream(), true);
+    } catch (IOException e) {
+      System.out.println("Accept failed: 4444");
+      System.exit(-1);
+    }
+
+    while(true){
+      try{
+        line = in.readLine();
+        //Send data back to client
+        out.println(line);
+      } catch (IOException e) {
+        System.out.println("Read failed");
+        System.exit(-1);
+      }
+    }
+  }
+
+  protected void finalize(){
+    //Clean up
+    try{
+      in.close();
+      out.close();
+      server.close();
+    } catch (IOException e) {
+      System.out.println("Could not close.");
+      System.exit(-1);
+    }
+  }
+
+
+
 
   /**
    * Main method
    * @param args
    */
   public static void main(String args[]){
-    Game g = Game.game();
+    Server g = Server.game();
     Location l = new Location(0, 48, 48);
     Player adam = new Player(l);
 
@@ -46,9 +110,11 @@ public final class Game {
 
     a = Actor.create(l);
     a.brain(new RightBrain());
+
+    g.listenSocket();
   }
 
-  private Game(){
+  private Server(){
     clock.add(new TimerTask(){
       public void run(){
         world.tick();
@@ -62,7 +128,7 @@ public final class Game {
     return world.get(mapID).entities();
   }
 
-  public static Game game(){
+  public static Server game(){
     return GAME;
   }
 
