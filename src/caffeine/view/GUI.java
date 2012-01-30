@@ -2,20 +2,18 @@ package caffeine.view;
 
 import javax.swing.JFrame;
 
-import caffeine.Server;
-
 @SuppressWarnings("serial")
 public class GUI extends JFrame {
   protected Screen screen = new Screen();
 
-  public GUI() {
+  public GUI(InteractionHandler interactions) {
     super("Caffeine Game Engine Demo");
     setDefaultCloseOperation(EXIT_ON_CLOSE);
     setContentPane(screen);
     pack();
-    //setResizable(false);
+    setResizable(false);
     setVisible(true);
-    addKeyListener(new KeyInputComponent(Server.interactionHandler()));
+    addKeyListener(new KeyInputComponent(interactions));
   }
 
   public Screen getContentPane(){

@@ -15,13 +15,14 @@ import caffeine.world.Tile;
 
 
 public class MapView{
-  BufferedImage view;
-  protected Map map;
+  private BufferedImage view;
+  private Map map;
+  private Spritesheet tilesheet;
 
-
-  public MapView(Map m) {
+  public MapView(Map m, Spritesheet tilesheet) {
     map = m;
     view = new BufferedImage(map.width(), map.height(), BufferedImage.TYPE_INT_ARGB);
+    this.tilesheet = tilesheet;
     paintComponent(view.createGraphics());
   }
 
@@ -56,7 +57,7 @@ public class MapView{
         Tile t = map.getTile(x, y);
         entities.addAll(t.occupants());
         int spriteID = t.spriteID();
-        Image img = GFX.spritesheet.get(spriteID);
+        Image img = tilesheet.get(spriteID);
 
         g2.drawImage(img, x*tileSize, y*tileSize, tileSize, tileSize, null);
       }
@@ -64,7 +65,7 @@ public class MapView{
 
     for(Entity e : entities){
       Location loc = e.loc();
-      Image sprite = GFX.spritesheet.get(e.spriteID());
+      Image sprite = tilesheet.get(e.spriteID());
       int spriteWidth  = sprite.getHeight(null);
       int spriteHeight = sprite.getWidth(null);
       /* Center it, by moving the sprite halfway up and halfway left */

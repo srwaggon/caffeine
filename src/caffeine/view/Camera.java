@@ -1,15 +1,16 @@
 package caffeine.view;
 
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.Image;
 
 import caffeine.entity.Entity;
 import caffeine.world.Location;
+import caffeine.world.Map;
 
 public class Camera {
   protected Dimension dims;
   protected Location loc;
+  protected Spritesheet sprites = new Spritesheet("res/sprites.png");
 
   public Camera(Dimension d){
     dims = d;
@@ -28,8 +29,8 @@ public class Camera {
     return loc;
   }
 
-  public void view(Graphics g){
-    MapView mapview = new MapView(loc.map());
+  public Image view(Map map){
+    MapView mapview = new MapView(map, sprites);
     int w = dims.width;
     int h = dims.height;
     int x = loc.x();
@@ -50,7 +51,7 @@ public class Camera {
     } else if (mapview.getHeight() <= y + h/2){
       renderY = h - mapview.getHeight();
     }
-
-    g.drawImage(mapViewImage, renderX, renderY, null);
+    return mapview.getSubimage(renderX, renderY, w, h);
+    //g.drawImage(mapViewImage, renderX, renderY, null);
   }
 }

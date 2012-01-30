@@ -1,5 +1,6 @@
 package caffeine.view;
 
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
@@ -21,6 +22,7 @@ import javax.imageio.ImageIO;
 public class Spritesheet{
   private static BufferedImage sheet;
   protected int tileSize = 32;
+  private Dimension dim;
 
   protected HashMap<Integer, Image> sprites = new HashMap<Integer, Image>();
   /**
@@ -30,6 +32,7 @@ public class Spritesheet{
   public Spritesheet(String path){
     try{
       sheet = ImageIO.read(new File(path));
+      dim = new Dimension(sheet.getWidth(), sheet.getHeight());
     } catch (Throwable ex){ }
 
   }
@@ -91,8 +94,9 @@ public class Spritesheet{
    * @return image representing the sprite at the requested index.
    */
   public Image get(int index, int tileSize){
-    int tilesPerCol = sheet.getHeight()/tileSize;
-    int tilesPerRow = sheet.getWidth()/tileSize;
+    System.out.println(dim.height + " " + tileSize);
+    int tilesPerCol = dim.height/tileSize;
+    int tilesPerRow = dim.width/tileSize;
     int x = index % tilesPerRow * tileSize;
     int y = index / tilesPerCol * tileSize;
 

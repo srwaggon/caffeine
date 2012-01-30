@@ -2,7 +2,6 @@ package caffeine;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -15,8 +14,9 @@ import caffeine.entity.Player;
 import caffeine.entity.brain.LeftBrain;
 import caffeine.entity.brain.RandomBrain;
 import caffeine.entity.brain.RightBrain;
-import caffeine.view.GFX;
+import caffeine.view.GUI;
 import caffeine.view.InteractionHandler;
+import caffeine.view.Screen;
 import caffeine.world.Location;
 import caffeine.world.World;
 
@@ -26,50 +26,34 @@ import caffeine.world.World;
  * @author Fnar
  */
 public final class Server {
+  /* Engine Fields */
+  protected World world = new World(); // handles entities and interactions
   private Clock clock = new Clock(); // Heartbeat.  Handles game cycles and tick alerts.
   final static InteractionHandler interactionHandler = new InteractionHandler(); // Handles input from Keyboard and Mouse
-  private static final GFX GFX = new GFX(); // handles graphics
-  protected World world = new World(); // handles entities and interactions
+  private static GUI gui = new GUI(interactionHandler); // handles graphics
   public final static Server GAME = new Server();  // Instance
-
-  /* Networking Objects */
-  ServerSocket server = null;
-  Socket client = null;
-  BufferedReader in = null;
-  PrintWriter out = null;
-  String line;
+  /* Networking Fields */
+  private ServerSocket server = null;
+  private Socket client = null;
+  private BufferedReader in = null;
+  private PrintWriter out = null;
+  private String line;
 
   public void listenSocket(){
-
     try{
       server = new ServerSocket(4444);
     } catch (IOException e) {
       System.out.println("Could not listen on port 4444");
       System.exit(-1);
     }
-
-    try{
-      client = server.accept();
-    } catch (IOException e) {
-      System.out.println("Accept failed: 4444");
-      System.exit(-1);
-    }
-
-    try{
-      in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-      out = new PrintWriter(client.getOutputStream(), true);
-    } catch (IOException e) {
-      System.out.println("Accept failed: 4444");
-      System.exit(-1);
-    }
-
     while(true){
+      ClientWorker w;
       try{
-        line = in.readLine();
-        //Send data back to client
-        out.println(line);
+        w = new ClientWorker(server.accept());
+        Thread t = new Thread(w);
+        t.start();
       } catch (IOException e) {
-        System.out.println("Read failed");
+        System.out.println("Accept failed: 4444");
         System.exit(-1);
       }
     }
@@ -90,17 +74,15 @@ public final class Server {
 
 
 
-  /**
-   * Main method
-   * @param args
-   */
+  /* Main method */
   public static void main(String args[]){
     Server g = Server.game();
     Location l = new Location(0, 48, 48);
     Player adam = new Player(l);
 
-    g.gfx().camera().focusOn(adam);
-
+    Screen s = gui.getContentPane();
+    s.setCurrentMap(g.world().get(0));
+    s.camera().focusOn(adam);
 
     Actor a = Actor.create(l);
     a.brain(new RandomBrain());
@@ -118,7 +100,7 @@ public final class Server {
     clock.add(new TimerTask(){
       public void run(){
         world.tick();
-        GFX.tick();
+        gui.repaint();
       }
     });
     clock.start();
@@ -130,11 +112,6 @@ public final class Server {
 
   public static Server game(){
     return GAME;
-  }
-
-
-  public GFX gfx() {
-    return GFX;
   }
 
   public static InteractionHandler interactionHandler() {
