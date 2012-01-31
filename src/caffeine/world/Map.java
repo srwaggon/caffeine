@@ -62,10 +62,8 @@ public class Map implements Iterable<Tile>{
     String line = scans.next();
     for(int i = 0; i < numRows*numCols; i++){
       char c = line.charAt(i);
-      System.err.print(c);
       map[i%numCols][i/numCols] = new Tile(c);
     }
-    System.err.println();
   }
 
   public Tile getTile(int x, int y){
@@ -123,7 +121,6 @@ public class Map implements Iterable<Tile>{
       for(int x = 0; x < numCols; x++){
         s += map[x][y];
       }
-      //s += "\n";
     }
     return s;
   }

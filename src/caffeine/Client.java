@@ -30,12 +30,12 @@ public class Client implements Runnable{
 
   /* Constructor */
   public Client(){
-    listenSocket();
+    connectSocket();
     gui = new GUI(interactions);
     run();
   }
 
-  public void listenSocket(){
+  public void connectSocket(){
     //Create socket connection
     String host = "127.0.0.1";
     try{
@@ -55,16 +55,17 @@ public class Client implements Runnable{
 
   @Override
   public void run() {
-    //Receive text from server
-    try{
-      String line = in.readLine();
-      System.out.println("Text received: " + line);
-      map = new Map(line);
-      gui.getContentPane().setCurrentMap(map);
-    } catch (IOException e){
-      System.out.println("Read failed");
-      System.exit(1);
+    while(true){
+      //Receive text from server
+      try{
+        String line = in.readLine();
+        map = new Map(line);
+        gui.getContentPane().setCurrentMap(map);
+      } catch (IOException e){
+        System.out.println("Read failed");
+        System.exit(1);
+      }
+      gui.repaint();
     }
-    gui.repaint();
   }
 }

@@ -26,15 +26,8 @@ class ClientWorker implements Runnable {
     }
 
     while(true){
-      //try{
-      //Send data back to client
       line = Server.GAME.world().get(0).toString();
       out.println(line);
-      /* }catch (IOException e) {
-        System.out.println("Read failed");
-        System.exit(-1);
-      }
-       */
     }
   }
 }
