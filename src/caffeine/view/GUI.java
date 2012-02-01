@@ -6,14 +6,14 @@ import javax.swing.JFrame;
 public class GUI extends JFrame {
   protected Screen screen = new Screen();
 
-  public GUI(InteractionHandler interactions) {
-    super("Caffeine Game Engine Demo");
+  public GUI(String title, InteractionHandler interactions) {
+    super(title);
     setDefaultCloseOperation(EXIT_ON_CLOSE);
     setContentPane(screen);
     pack();
     setResizable(false);
     setVisible(true);
-    addKeyListener(new KeyInputComponent(interactions));
+    addKeyListener(interactions);
   }
 
   public Screen getContentPane(){

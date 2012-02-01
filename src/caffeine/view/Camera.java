@@ -10,7 +10,6 @@ import caffeine.world.Map;
 public class Camera {
   protected Dimension dims;
   protected Location loc;
-  protected Spritesheet sprites = new Spritesheet("res/sprites.png");
 
   public Camera(Dimension d){
     dims = d;
@@ -30,28 +29,26 @@ public class Camera {
   }
 
   public Image view(Map map){
-    MapView mapview = new MapView(map, sprites);
+    MapView mapview = new MapView(map);
     int w = dims.width;
     int h = dims.height;
-    int x = loc.x();
-    int y = loc.y();
+    int x = loc.x() - (w / 2);
+    int y = loc.y() - (h / 2);
 
-    Image mapViewImage = mapview.getImage();
-    int renderX = w/2 - x;
-    int renderY = h/2 - y;
-
-    if(w/2 >= x){
-      renderX = 0;
-    } else if (mapview.getWidth() <= x + w/2){
-      renderX = w - mapview.getWidth();
+    if (x < 0) {
+      x = 0;
+    }
+    if (x + w >= mapview.getWidth()) {
+      x = mapview.getWidth() - w;
+    }
+    if (y < 0) {
+      y = 0;
+    }
+    if (y + h >= mapview.getHeight()) {
+      y = mapview.getHeight() - h;
     }
 
-    if(y <= h/2){
-      renderY = 0;
-    } else if (mapview.getHeight() <= y + h/2){
-      renderY = h - mapview.getHeight();
-    }
-    return mapview.getSubimage(renderX, renderY, w, h);
-    //g.drawImage(mapViewImage, renderX, renderY, null);
+
+    return mapview.getSubimage(x, y, w, h);
   }
 }

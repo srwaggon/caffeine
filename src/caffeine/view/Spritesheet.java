@@ -23,8 +23,12 @@ public class Spritesheet{
   private static BufferedImage sheet;
   protected int tileSize = 32;
   private Dimension dim;
-
   protected HashMap<Integer, Image> sprites = new HashMap<Integer, Image>();
+
+
+  public Spritesheet(){
+    this("res/sprites.png");
+  }
   /**
    * Creates a Spritesheet from the file located in the path provided.
    * @param path indicating sprite image file location

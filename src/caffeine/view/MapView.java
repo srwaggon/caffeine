@@ -19,6 +19,13 @@ public class MapView{
   private Map map;
   private Spritesheet tilesheet;
 
+  public MapView(Map m){
+    map = m;
+    view = new BufferedImage(map.width(), map.height(), BufferedImage.TYPE_INT_ARGB);
+    tilesheet = new Spritesheet();
+    paintComponent(view.createGraphics());
+  }
+
   public MapView(Map m, Spritesheet tilesheet) {
     map = m;
     view = new BufferedImage(map.width(), map.height(), BufferedImage.TYPE_INT_ARGB);

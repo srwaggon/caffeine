@@ -11,7 +11,8 @@ public class Player extends Actor {
   }
   public Player(Location loc){
     super(loc);
-    brain = new PlayerBrain(Server.interactionHandler());
+    Server.instance();
+    brain = new PlayerBrain(Server.instance().interactionHandler());
     spriteID = 2;
   }
 }

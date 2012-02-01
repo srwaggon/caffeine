@@ -116,12 +116,13 @@ public class Map implements Iterable<Tile>{
   }
 
   public String toString(){
-    String s = "" + numCols + " " + numRows + " " + tileSize + " ";
+    String s = "map " + numCols + " " + numRows + " " + tileSize + " ";
     for(int y = 0; y < numRows; y++){
       for(int x = 0; x < numCols; x++){
         s += map[x][y];
       }
     }
+    s += "\n";
     return s;
   }
 

@@ -21,7 +21,7 @@ public class Location {
   }
 
   public Map map(){
-    return Server.GAME.world().get(mapID);
+    return Server.instance().world().get(mapID);
   }
 
   public Tile tile(){
@@ -56,11 +56,11 @@ public class Location {
     int newY = y;
 
     switch (d) {
-      case  W: newX -= dist; break;
-      case  N: newY -= dist; break;
-      case  E: newX += dist; break;
-      case  S: newY += dist; break;
-      default: break;
+    case  W: newX -= dist; break;
+    case  N: newY -= dist; break;
+    case  E: newX += dist; break;
+    case  S: newY += dist; break;
+    default: break;
     }
     return new Location(mapID, newX, newY);
 

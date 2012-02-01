@@ -32,7 +32,7 @@ public class Entity{
 
     name = "" + id;
     tile().add(this);
-    System.err.println("Spawning Entity " + name + " at " + loc);
+    System.out.println("Spawning Entity " + name + " at " + loc);
   }
 
   public int getID(){

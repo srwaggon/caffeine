@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Scanner;
 
 import caffeine.view.GUI;
 import caffeine.view.InteractionHandler;
@@ -15,12 +16,13 @@ import caffeine.world.Map;
 public class Client implements Runnable{
   /* Engine Fields */
   protected InteractionHandler interactions = new InteractionHandler();
-  protected GUI gui;
-  private Map map;
+  private Map map = new Map();
+  protected GUI gui = null;
   /* Networking Fields */
   private Socket socket = null;
   private PrintWriter out = null;
   private BufferedReader in = null;
+  private Scanner lineParser = null;
 
 
   /* MAIN METHOD */
@@ -31,7 +33,7 @@ public class Client implements Runnable{
   /* Constructor */
   public Client(){
     connectSocket();
-    gui = new GUI(interactions);
+    gui = new GUI("Caffeine Client", interactions);
     run();
   }
 
@@ -43,6 +45,7 @@ public class Client implements Runnable{
       socket = new Socket(host, 4444);
       out = new PrintWriter(socket.getOutputStream(), true);
       in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+      lineParser = new Scanner(in);
     } catch (UnknownHostException e) {
       System.out.println("Unknown host: " + host);
       System.exit(1);
@@ -55,17 +58,21 @@ public class Client implements Runnable{
 
   @Override
   public void run() {
-    while(true){
-      //Receive text from server
-      try{
-        String line = in.readLine();
-        map = new Map(line);
-        gui.getContentPane().setCurrentMap(map);
-      } catch (IOException e){
-        System.out.println("Read failed");
-        System.exit(1);
+    boolean running = true;
+    while(running){
+      if(lineParser.hasNext()){
+        String line = lineParser.next();
+        System.out.println("Received from server:" + line + "!!!");
+        if(line.equals("EOT")){
+          System.out.println("Server disconnected.");
+          running = false;
+        } else if (line.equals("map")){
+          map = new Map(lineParser.nextLine());
+          gui.getContentPane().setCurrentMap(map);
+          gui.repaint();
+        }
       }
-      gui.repaint();
     }
+    System.exit(0);
   }
 }
