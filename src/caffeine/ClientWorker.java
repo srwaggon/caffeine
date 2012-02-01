@@ -29,21 +29,19 @@ class ClientWorker implements Runnable {
       System.exit(-1);
     }
     String line;
-    while(running){
+    while(!client.isClosed()){
       Map m = Server.instance().world().get(0); 
       out.println(m.toString());
-      /*
-      for(Entity entity : m.entities()){
-        out.println(entity.toString());
-      }
-      */
     }
-    // terminate connection : Send end of transmission
-    out.println("EOT");
   }
 
   public void stop(){
-    running = false;
+    try {
+      out.println("eot");
+      client.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
 }

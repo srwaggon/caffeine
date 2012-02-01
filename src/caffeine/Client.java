@@ -20,7 +20,7 @@ public class Client implements Runnable{
   private Map map = new Map();
   protected GUI gui = null;
   /* Networking Fields */
-  private Socket socket = null;
+  private Socket connection = null;
   private PrintWriter out = null;
   private BufferedReader in = null;
   private Scanner lineParser = null;
@@ -43,9 +43,9 @@ public class Client implements Runnable{
     String host = "127.0.0.1";
     try{
       System.out.println("Connecting to 127.0.0.1 ...");
-      socket = new Socket(host, 4444);
-      out = new PrintWriter(socket.getOutputStream(), true);
-      in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+      connection = new Socket(host, 4444);
+      out = new PrintWriter(connection.getOutputStream(), true);
+      in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
       lineParser = new Scanner(in);
     } catch (UnknownHostException e) {
       System.out.println("Unknown host: " + host);
@@ -57,28 +57,28 @@ public class Client implements Runnable{
     System.out.println("Connection established.");
   }
 
-  @Override
   public void run() {
-    boolean running = true;
-    while(running){
-      while(lineParser.hasNext()){
+    while (!connection.isClosed()) {
+      gui.repaint();
+      if (lineParser.hasNext()){
+        // Read the line, and report it.
         String line = lineParser.next();
-        //System.out.println("Received from server:" + line + "!!!");
-        if(line.equals("EOT")){
-          System.out.println("Server disconnected.");
-          running = false;
-        } else if (line.equals("map")){
+        
+        // Handle the input
+        if (line.equals("eot")){
+          try {
+            connection.close();
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+          break;
+        } else if (line.equals("map")) {
           map = new Map(lineParser.nextLine());
           gui.getContentPane().setCurrentMap(map);
-          /*
-        } else if (line.equals("entity")){
-          String entityData = lineParser.nextLine();
-          //map.add(Entity.newEntity(entityData));
-           */
         }
       }
-      gui.repaint();
     }
+    System.out.println("Server disconnected.");
     System.exit(0);
   }
 }

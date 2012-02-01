@@ -1,5 +1,8 @@
 package caffeine;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
@@ -38,9 +41,12 @@ public final class Server {
   private PrintWriter out = null;
   private List<ClientWorker> clients = new ArrayList<ClientWorker>();
 
+  
+  
+  
   /* Main method */
   public static void main(String args[]){
-    Server g = Server.instance();
+    final Server g = Server.instance();
 
     Location l = new Location(0, 48, 48);
     Player adam = new Player(l);
@@ -53,15 +59,30 @@ public final class Server {
 
     a = Actor.create(l);
     a.brain(new RightBrain());
-
+    
     g.createGUI();
     Screen s = g.gui().getContentPane();
     s.setCurrentMap(g.world().get(0));
     s.camera().focusOn(adam);
+    
+    WindowListener winListener = new WindowAdapter() {
+      public void windowClosing(WindowEvent e) {
+        for(ClientWorker w : g.clients()){
+          w.stop();
+        }
+        System.exit(0);
+      }
+    };
+    g.gui().addWindowListener(winListener);
 
     g.listenSocket();
   }
 
+  
+  
+  
+  
+  
   /* CONSTRUCTORS */
   private Server(){
     initSockets();
@@ -78,6 +99,10 @@ public final class Server {
     return world.get(mapID).entities();
   }
 
+  public List<ClientWorker> clients(){
+    return clients;
+  }
+  
   public GUI gui(){
     return gui;
   }
@@ -105,6 +130,7 @@ public final class Server {
       });
     }
   }
+  
 
   public void initSockets(){
     try{
@@ -133,9 +159,6 @@ public final class Server {
   protected void finalize(){
     //Clean up
     try{
-      for(ClientWorker w : clients){
-        w.stop();
-      }
       out.close();
       server.close();
       super.finalize();
