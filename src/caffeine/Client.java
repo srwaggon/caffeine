@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
+import caffeine.entity.Entity;
 import caffeine.view.GUI;
 import caffeine.view.InteractionHandler;
 import caffeine.world.Map;
@@ -60,18 +61,23 @@ public class Client implements Runnable{
   public void run() {
     boolean running = true;
     while(running){
-      if(lineParser.hasNext()){
+      while(lineParser.hasNext()){
         String line = lineParser.next();
-        System.out.println("Received from server:" + line + "!!!");
+        //System.out.println("Received from server:" + line + "!!!");
         if(line.equals("EOT")){
           System.out.println("Server disconnected.");
           running = false;
         } else if (line.equals("map")){
           map = new Map(lineParser.nextLine());
           gui.getContentPane().setCurrentMap(map);
-          gui.repaint();
+          /*
+        } else if (line.equals("entity")){
+          String entityData = lineParser.nextLine();
+          //map.add(Entity.newEntity(entityData));
+           */
         }
       }
+      gui.repaint();
     }
     System.exit(0);
   }

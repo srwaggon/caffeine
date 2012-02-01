@@ -2,6 +2,7 @@ package caffeine.entity;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import caffeine.world.Location;
 import caffeine.world.Tile;
@@ -59,7 +60,16 @@ public class Entity{
   }
 
   public Tile tile(){return loc.tile();}
-
+  
+  public static Entity newEntity(String data){
+    Scanner scans = new Scanner(data);
+    int mapID = scans.nextInt();
+    int x = scans.nextInt();
+    int y = scans.nextInt();
+    Location l = new Location(mapID, x, y);
+    return new Entity(l);
+  }
+  
   public ArrayList<Location> vertices(){
     ArrayList<Location> vertices = new ArrayList<Location>();
     int mapID = loc.mapID();
@@ -75,6 +85,7 @@ public class Entity{
   }
   @Override
   public String toString(){
-    return name;
+    String locString = "" + loc.mapID() + " " + loc.x() + " " + loc.y();
+    return "entity " + name + " " + locString;
   }
 }

@@ -6,6 +6,9 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import caffeine.entity.Entity;
+import caffeine.world.Map;
+
 class ClientWorker implements Runnable {
   private Socket client;
   BufferedReader in = null;
@@ -27,8 +30,13 @@ class ClientWorker implements Runnable {
     }
     String line;
     while(running){
-      line = Server.instance().world().get(0).toString();
-      out.println(line);
+      Map m = Server.instance().world().get(0); 
+      out.println(m.toString());
+      /*
+      for(Entity entity : m.entities()){
+        out.println(entity.toString());
+      }
+      */
     }
     // terminate connection : Send end of transmission
     out.println("EOT");

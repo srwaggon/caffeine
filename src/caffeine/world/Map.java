@@ -125,6 +125,10 @@ public class Map implements Iterable<Tile>{
     s += "\n";
     return s;
   }
+  
+  public void add(Entity e){
+    e.loc().tile().add(e);
+  }
 
 
   public Iterator<Tile> iterator() {
