@@ -13,14 +13,13 @@ class ClientWorker implements Runnable {
   private Socket client;
   BufferedReader in = null;
   PrintWriter out = null;
-  private boolean running = false;
 
   ClientWorker(Socket client) {
     this.client = client;
+    System.out.println("" + client.getInetAddress().toString() + ":" + client.getPort());
   }
 
   public void run(){
-    running = true;
     try{
       in = new BufferedReader(new InputStreamReader(client.getInputStream()));
       out = new PrintWriter(client.getOutputStream(), true);
@@ -28,10 +27,24 @@ class ClientWorker implements Runnable {
       System.out.println("in or out failed");
       System.exit(-1);
     }
+    
+    Map m = Server.instance().world().get(0); 
+    out.println(m.toString());
+    
     String line;
     while(!client.isClosed()){
-      Map m = Server.instance().world().get(0); 
-      out.println(m.toString());
+      // Relay world state
+      
+      
+      
+      for(Entity e : m.entities()){
+        out.println(e.toString());
+      }
+      
+      
+      // Receive input
+      
+      // Handle input
     }
   }
 

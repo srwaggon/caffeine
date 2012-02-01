@@ -127,7 +127,10 @@ public class Map implements Iterable<Tile>{
   }
   
   public void add(Entity e){
-    e.loc().tile().add(e);
+    Location loc = e.loc();
+    int x = loc.x();
+    int y = loc.y();
+    getTileAt(x, y).add(e);
   }
 
 

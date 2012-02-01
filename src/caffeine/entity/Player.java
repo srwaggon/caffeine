@@ -1,18 +1,14 @@
 package caffeine.entity;
 
-import caffeine.Server;
 import caffeine.entity.brain.PlayerBrain;
+import caffeine.view.InteractionHandler;
 import caffeine.world.Location;
 
 public class Player extends Actor {
 
-  public Player(){
-    this(new Location());
-  }
-  public Player(Location loc){
+  public Player(Location loc, InteractionHandler interactions){
     super(loc);
-    Server.instance();
-    brain = new PlayerBrain(Server.instance().interactionHandler());
+    brain = new PlayerBrain(interactions);
     spriteID = 2;
   }
 }

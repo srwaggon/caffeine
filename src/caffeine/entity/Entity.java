@@ -32,7 +32,6 @@ public class Entity{
     spriteID = 3;
 
     name = "" + id;
-    tile().add(this);
     System.out.println("Spawning Entity " + name + " at " + loc);
   }
 
@@ -47,9 +46,7 @@ public class Entity{
   public Location loc(){return loc;}
 
   public void loc(Location loc){
-    tile().remove(this);
     this.loc = loc;
-    tile().add(this);
   }
 
   public int radius(){return radius;}
@@ -63,11 +60,15 @@ public class Entity{
   
   public static Entity newEntity(String data){
     Scanner scans = new Scanner(data);
+    
+    int id = scans.nextInt();
     int mapID = scans.nextInt();
     int x = scans.nextInt();
     int y = scans.nextInt();
     Location l = new Location(mapID, x, y);
-    return new Entity(l);
+    Entity entity = new Entity(l);
+    entity.id = id;
+    return entity;
   }
   
   public ArrayList<Location> vertices(){
@@ -85,7 +86,6 @@ public class Entity{
   }
   @Override
   public String toString(){
-    String locString = "" + loc.mapID() + " " + loc.x() + " " + loc.y();
-    return "entity " + name + " " + locString;
+    return "entity" + " " + id + " " + loc.mapID() + " " + loc.x() + " " + loc.y();
   }
 }

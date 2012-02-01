@@ -20,6 +20,7 @@ import caffeine.view.GUI;
 import caffeine.view.InteractionHandler;
 import caffeine.view.Screen;
 import caffeine.world.Location;
+import caffeine.world.Map;
 import caffeine.world.World;
 
 /**
@@ -47,33 +48,27 @@ public final class Server {
   /* Main method */
   public static void main(String args[]){
     final Server g = Server.instance();
-
+    Map map = g.world().get(0);
+    
     Location l = new Location(0, 48, 48);
-    Player adam = new Player(l);
-
+    Player adam = new Player(l, g.interactionHandler());
+    map.add(adam);
+    
     Actor a = Actor.create(l);
     a.brain(new RandomBrain());
-
+    map.add(a);
+    
     a = Actor.create(l);
     a.brain(new LeftBrain());
+    map.add(a);
 
     a = Actor.create(l);
     a.brain(new RightBrain());
+    map.add(a);
     
-    g.createGUI();
     Screen s = g.gui().getContentPane();
     s.setCurrentMap(g.world().get(0));
     s.camera().focusOn(adam);
-    
-    WindowListener winListener = new WindowAdapter() {
-      public void windowClosing(WindowEvent e) {
-        for(ClientWorker w : g.clients()){
-          w.stop();
-        }
-        System.exit(0);
-      }
-    };
-    g.gui().addWindowListener(winListener);
 
     g.listenSocket();
   }
@@ -86,12 +81,14 @@ public final class Server {
   /* CONSTRUCTORS */
   private Server(){
     initSockets();
+    createGUI();
     clock.add(new TimerTask(){
       public void run(){
         world.tick();
       }
     });
     clock.start();
+    
   }
 
   /* ACCESSORS */
@@ -120,19 +117,29 @@ public final class Server {
   }
 
   /* HELPERS */
-  public void createGUI(){
-    if(gui == null){
+  private void createGUI(){
+    if (gui == null) {
       gui = new GUI("Caffeine Server", interactionHandler);
       clock.add(new TimerTask(){
         public void run(){
           gui.repaint();
         }
       });
+      
+      WindowListener winListener = new WindowAdapter() {
+        public void windowClosing(WindowEvent e) {
+          for (ClientWorker w : clients) {
+            w.stop();
+          }
+          System.exit(0);
+        }
+      };
+      gui.addWindowListener(winListener);
     }
   }
-  
 
-  public void initSockets(){
+
+  private void initSockets(){
     try{
       server = new ServerSocket(4444);
     } catch (IOException e) {
@@ -141,7 +148,7 @@ public final class Server {
     }
   }
 
-  public void listenSocket(){
+  private void listenSocket(){
     while(true){
       ClientWorker w;
       try{

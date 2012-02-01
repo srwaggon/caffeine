@@ -19,13 +19,21 @@ public class Location {
     this.x = x;
     this.y = y;
   }
-
+  
   public Map map(){
+    // TODO fix absolute reference
     return Server.instance().world().get(mapID);
   }
 
   public Tile tile(){
     return map().getTileAt(x, y);
+  }
+    /**
+   * Returns a boolean representing whether or not this location exists within the width and height of the board.
+   * @return boolean representing whether or not this location exists within the width and height of the board.
+   */
+  public boolean validLocation() {
+    return map().onMap(x,  y);
   }
 
   public Location project(int xdist, int ydist){
@@ -34,15 +42,6 @@ public class Location {
 
   public String toString(){
     return "[" + mapID + "(" + x + "," + y + ")]";
-  }
-
-
-  /**
-   * Returns a boolean representing whether or not this location exists within the width and height of the board.
-   * @return boolean representing whether or not this location exists within the width and height of the board.
-   */
-  public boolean validLocation() {
-    return map().onMap(x,  y);
   }
 
   /**
@@ -116,5 +115,11 @@ public class Location {
    */
   public int y(){
     return y;
+  }
+
+  public void set(int mapID, int x, int y) {
+    this.mapID = mapID;
+    this.x = x;
+    this.y = y;
   }
 }
