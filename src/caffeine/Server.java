@@ -42,22 +42,22 @@ public final class Server {
   private PrintWriter out = null;
   private List<ClientWorker> clients = new ArrayList<ClientWorker>();
 
-  
-  
-  
+
+
+
   /* Main method */
   public static void main(String args[]){
     final Server g = Server.instance();
     Map map = g.world().get(0);
-    
+
     Location l = new Location(0, 48, 48);
     Player adam = new Player(l, g.interactionHandler());
     map.add(adam);
-    
+
     Actor a = Actor.create(l);
     a.brain(new RandomBrain());
     map.add(a);
-    
+
     a = Actor.create(l);
     a.brain(new LeftBrain());
     map.add(a);
@@ -65,7 +65,7 @@ public final class Server {
     a = Actor.create(l);
     a.brain(new RightBrain());
     map.add(a);
-    
+
     Screen s = g.gui().getContentPane();
     s.setCurrentMap(g.world().get(0));
     s.camera().focusOn(adam);
@@ -73,11 +73,11 @@ public final class Server {
     g.listenSocket();
   }
 
-  
-  
-  
-  
-  
+
+
+
+
+
   /* CONSTRUCTORS */
   private Server(){
     initSockets();
@@ -88,7 +88,6 @@ public final class Server {
       }
     });
     clock.start();
-    
   }
 
   /* ACCESSORS */
@@ -99,7 +98,7 @@ public final class Server {
   public List<ClientWorker> clients(){
     return clients;
   }
-  
+
   public GUI gui(){
     return gui;
   }
@@ -125,7 +124,7 @@ public final class Server {
           gui.repaint();
         }
       });
-      
+
       WindowListener winListener = new WindowAdapter() {
         public void windowClosing(WindowEvent e) {
           for (ClientWorker w : clients) {

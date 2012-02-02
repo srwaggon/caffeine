@@ -61,53 +61,59 @@ public class Client implements Runnable{
   }
 
   public void run() {
-    Scanner lineParser;
+    /* While connected */
     while (!connection.isClosed()) {
-      
-      if(scans.hasNext()){
-        String line = scans.nextLine();
-        System.out.println(line);
-        
-        gui.repaint();
-        
-        lineParser = new Scanner(line);
-        if (lineParser.hasNext()){
-          String word = lineParser.next();
-          
-          // Handle the input
-          if (word.equals("eot")){
-            try {
-              connection.close();
-            } catch (IOException e) {
-              e.printStackTrace();
-            }
-            break;
-          } else if (word.equals("map")) {
-            map = new Map(lineParser.nextLine());
-            gui.getContentPane().setCurrentMap(map);
-          } else if (word.equals("entity")) {
-            
-            int entityID = lineParser.nextInt();
-            if (entities.containsKey(entityID)) {
-              
-              int mapID = lineParser.nextInt();
-              int x = lineParser.nextInt();
-              int y = lineParser.nextInt();
-              Location l = entities.get(entityID).loc();
-              l.set(mapID, x, y);
-              //lineParser.nextLine(); // clean out scanner
-              
-            } else {
-              Entity e = Entity.newEntity(entityID + " " + lineParser.nextLine());
-              map.add(e);
-              entities.put(entityID, e);
-            }
-            
-          }
-
-        }
-      }
+      /* Read from in-stream and process it */
+      String line = scans.nextLine();
+      System.out.println(line);
+      processServerResponse(line);
     }
     System.out.println("Server disconnected.");
   }
+
+
+  public void processServerResponse(String response){
+    Scanner lineParser = new Scanner(response);
+    String next;
+
+    while (lineParser.hasNext()){
+      next = lineParser.next();
+
+      /* Handle the input */
+      if (next.equals("eot")){
+        /* End of transmission */
+        try {
+          connection.close();
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+        break;
+
+      } else if (next.equals("map")) {
+        /* Update map */
+        map = new Map(lineParser.nextLine());
+        gui.getContentPane().setCurrentMap(map);
+
+      } else if (next.equals("entity")) {
+        /* Update entity */
+        int entityID = lineParser.nextInt();
+        if (entities.containsKey(entityID)) {
+
+          int mapID = lineParser.nextInt();
+          int x = lineParser.nextInt();
+          int y = lineParser.nextInt();
+
+          Location l = entities.get(entityID).loc();
+          l.set(mapID, x, y);
+
+        } else {
+          Entity e = Entity.newEntity(entityID + " " + lineParser.nextLine());
+          map.add(e);
+          entities.put(entityID, e);
+        }
+      }
+      gui.repaint();
+    }
+  }
 }
+
