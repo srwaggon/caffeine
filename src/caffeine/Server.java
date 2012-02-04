@@ -118,7 +118,8 @@ public final class Server {
   /* HELPERS */
   private void createGUI(){
     if (gui == null) {
-      gui = new GUI("Caffeine Server", interactionHandler);
+      gui = new GUI(world.get(0), interactionHandler);
+      gui.setTitle("Caffeine Server");
       clock.add(new TimerTask(){
         public void run(){
           gui.repaint();

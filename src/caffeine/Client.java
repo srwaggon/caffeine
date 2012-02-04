@@ -36,8 +36,8 @@ public class Client implements Runnable{
   /* Constructor */
   public Client(){
     connectSocket();
-    gui = new GUI("Caffeine Client", interactions);
-    gui.getContentPane().setCurrentMap(map);
+    gui = new GUI(map, interactions);
+    gui.setTitle("Caffeine Client");
     run();
   }
 

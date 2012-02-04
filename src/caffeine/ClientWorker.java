@@ -28,8 +28,9 @@ class ClientWorker implements Runnable {
     try {
       String input;
       while((input = in.readLine()) != null){
-        System.out.println(input);
-        System.out.println("From Client: " + input);
+        if(!input.equals("")) {
+          System.out.println(input);
+        }
       }
     }catch (Exception e){ }
     System.out.println(client.getInetAddress().toString() + " disconnected.");

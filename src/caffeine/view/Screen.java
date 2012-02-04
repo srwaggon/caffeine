@@ -15,7 +15,8 @@ public class Screen extends JPanel {
   Camera camera;
   Map map;
 
-  public Screen(){
+  public Screen(Map m){
+    map = m;
     camera = new Camera(getPreferredSize());
     setBackground(Color.black);
   }
