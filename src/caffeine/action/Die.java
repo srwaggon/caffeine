@@ -11,6 +11,6 @@ public class Die implements Action {
   public void perform(Actor performer){
     performer.alive(false);
     performer.tile().remove(performer);
-    System.err.println(performer + " has died from " + cause);
+    System.out.println(performer + " has died from " + cause);
   }
 }

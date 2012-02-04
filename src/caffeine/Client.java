@@ -26,7 +26,6 @@ public class Client implements Runnable{
   private Socket connection = null;
   private PrintWriter out = null;
   private BufferedReader in = null;
-  private Scanner scans = null;
 
 
   /* MAIN METHOD */
@@ -38,6 +37,7 @@ public class Client implements Runnable{
   public Client(){
     connectSocket();
     gui = new GUI("Caffeine Client", interactions);
+    gui.getContentPane().setCurrentMap(map);
     run();
   }
 
@@ -45,11 +45,10 @@ public class Client implements Runnable{
     //Create socket connection
     String host = "127.0.0.1";
     try{
-      System.out.println("Connecting to 127.0.0.1 ...");
+      System.out.println("Connecting to "+ host);
       connection = new Socket(host, 4444);
       out = new PrintWriter(connection.getOutputStream(), true);
       in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-      scans = new Scanner(in);
     } catch (UnknownHostException e) {
       System.out.println("Unknown host: " + host);
       System.exit(1);
@@ -61,16 +60,33 @@ public class Client implements Runnable{
   }
 
   public void run() {
-    /* While connected */
-    while (!connection.isClosed()) {
-      /* Read from in-stream and process it */
-      String line = scans.nextLine();
-      System.out.println(line);
-      processServerResponse(line);
-    }
-    System.out.println("Server disconnected.");
-  }
 
+    String input;
+    try {
+      int i = 0;
+      while(i < 1){
+        String output = "";
+        for(Integer key : interactions.getKeys()) {
+          if(interactions.get(key)){
+            output += key;
+          }
+        }
+        out.println(output);
+      }
+
+      /* While connected */
+      while((input = in.readLine()) != null){
+
+
+
+        /* Read from in-stream and process it */
+      }
+      System.out.println("Server disconnected.");
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 
   public void processServerResponse(String response){
     Scanner lineParser = new Scanner(response);

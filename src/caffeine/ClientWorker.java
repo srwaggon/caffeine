@@ -6,9 +6,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-import caffeine.entity.Entity;
-import caffeine.world.Map;
-
 class ClientWorker implements Runnable {
   private Socket client;
   BufferedReader in = null;
@@ -16,7 +13,7 @@ class ClientWorker implements Runnable {
 
   ClientWorker(Socket client) {
     this.client = client;
-    System.out.println("" + client.getInetAddress().toString() + ":" + client.getPort());
+    System.out.println("" + client.getInetAddress().toString() + ":" + client.getPort() + " connecting");
   }
 
   public void run(){
@@ -27,25 +24,16 @@ class ClientWorker implements Runnable {
       System.out.println("in or out failed");
       System.exit(-1);
     }
-    
-    Map m = Server.instance().world().get(0); 
-    out.println(m.toString());
-    
-    String line;
-    while(!client.isClosed()){
-      // Relay world state
-      
-      
-      
-      for(Entity e : m.entities()){
-        out.println(e.toString());
+
+    try {
+      String input;
+      while((input = in.readLine()) != null){
+        System.out.println(input);
+        System.out.println("From Client: " + input);
       }
-      
-      
-      // Receive input
-      
-      // Handle input
-    }
+    }catch (Exception e){ }
+    System.out.println(client.getInetAddress().toString() + " disconnected.");
+
   }
 
   public void stop(){

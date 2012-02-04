@@ -17,7 +17,7 @@ public class Attack implements Action {
       if(e instanceof Actor){
         Actor a = (Actor)e;
         if(!a.equals(performer) && a.loc().distanceTo(performer.loc()) < attackRadius){
-          System.err.println(performer + " attacking " + a);
+          System.out.println(performer + " attacking " + a);
           new Hurt(attack, performer).perform(a);
         }
       }

@@ -29,7 +29,7 @@ public class InteractionHandler extends JComponent implements KeyListener{
 
   @Override
   public void keyTyped(KeyEvent e) {
-    System.err.print(e.getKeyChar());
+    //System.err.print(e.getKeyChar());
   }
 
   public Set<Integer> getKeys(){
