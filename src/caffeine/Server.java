@@ -48,11 +48,12 @@ public final class Server {
   /* Main method */
   public static void main(String args[]){
     final Server g = Server.instance();
-    Map map = g.world().get(0);
+    Map map = new Map();
+    g.world().add(map);
+    
+    g.createGUI();
 
     Location l = new Location(0, 48, 48);
-    Player adam = new Player(l, g.interactionHandler());
-    map.add(adam);
 
     Actor a = Actor.create(l);
     a.brain(new RandomBrain());
@@ -66,10 +67,6 @@ public final class Server {
     a.brain(new RightBrain());
     map.add(a);
 
-    Screen s = g.gui().getContentPane();
-    s.setCurrentMap(g.world().get(0));
-    s.camera().focusOn(adam);
-
     g.listenSocket();
   }
 
@@ -81,7 +78,6 @@ public final class Server {
   /* CONSTRUCTORS */
   private Server(){
     initSockets();
-    createGUI();
     clock.add(new TimerTask(){
       public void run(){
         world.tick();

@@ -39,7 +39,7 @@ class ClientWorker extends Thread {
           response += e.toString() + " ";
         }
         out.println(response);
-        sleep(100);
+        sleep(10);
       }
       System.out.println(client.getInetAddress().toString() + " disconnected.");
     } catch (InterruptedException e) {

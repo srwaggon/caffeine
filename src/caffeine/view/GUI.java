@@ -12,11 +12,11 @@ public class GUI extends JFrame {
     screen = new Screen(map);
     setContentPane(screen);
     setDefaultCloseOperation(EXIT_ON_CLOSE);
+    setLocationRelativeTo(null);
+    setResizable(false);
     pack();
-    //setResizable(false);
-    setVisible(true);
     addKeyListener(interactions);
-
+    setVisible(true);
   }
 
   public Screen getContentPane(){

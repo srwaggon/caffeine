@@ -1,12 +1,17 @@
 package caffeine.world;
 
-import caffeine.Server;
+//import caffeine.Server;
 import caffeine.util.Util;
 
 public class Location {
+  protected static World realm;
   protected int mapID;
   protected int x;
   protected int y;
+  
+  public static void setRealm(World realm){
+    Location.realm = realm;
+  }
   
   public Location(){
     mapID = 0;
@@ -22,7 +27,7 @@ public class Location {
   
   public Map map(){
     // TODO fix absolute reference
-    return Server.instance().world().get(mapID);
+    return realm.get(mapID);
   }
   
   public Tile tile(){

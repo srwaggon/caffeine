@@ -10,16 +10,19 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 import caffeine.entity.Entity;
+import caffeine.entity.Player;
 import caffeine.view.GUI;
 import caffeine.view.InteractionHandler;
+import caffeine.view.Screen;
 import caffeine.world.Location;
 import caffeine.world.Map;
+import caffeine.world.World;
 
 
 public class Client extends Thread{
   /* Engine Fields */
   protected InteractionHandler interactions = new InteractionHandler();
-  private Map map = null;
+  private World realm = null;
   private HashMap<Integer, Entity> entities = new HashMap<Integer, Entity>();
   protected GUI gui = null;
   /* Networking Fields */
@@ -36,7 +39,9 @@ public class Client extends Thread{
   /* Constructor */
   public Client(){
     connectSocket();
-    map = new Map();
+    realm = new World();
+    Map map = new Map();
+    realm.add(map);
     gui = new GUI(map, interactions);
     gui.setTitle("Caffeine Client");
     run();
@@ -68,12 +73,20 @@ public class Client extends Thread{
       System.out.println("Connecting to " + connection.getInetAddress().toString() + "...");
       out.println("Hello server");
       
+      Location l = new Location(0, 48, 48);
+      Player adam = new Player(l, interactions);
+      realm.get(0).add(adam);
+      Screen s = gui.getContentPane();
+      s.camera().focusOn(adam);
+      
       /* While connected with server */
       while((input = in.readLine()) != null){
+        
         /* Read from in-stream and process it */
         processServerResponse(input);
         out.println("Ok.");
-        sleep(100);
+        adam.tick();
+        sleep(10);
       }
       System.out.println("Server disconnected.");
       
@@ -103,9 +116,10 @@ public class Client extends Thread{
         
       } else if (next.equals("map")) {
         /* Update map */
+        /*
         map = new Map(lineParser.nextLine());
         gui.getContentPane().setCurrentMap(map);
-        
+        */
       } else if (next.equals("entity")) {
         /* Update entity */
         int entityID = lineParser.nextInt();
@@ -119,7 +133,7 @@ public class Client extends Thread{
           
         } else {
           Entity e = new Entity(new Location(mapID, x, y));
-          map.add(e);
+          realm.get(0).add(e);
           entities.put(entityID, e);
         }
       }
