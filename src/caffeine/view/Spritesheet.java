@@ -98,8 +98,8 @@ public class Spritesheet{
    * @return image representing the sprite at the requested index.
    */
   public Image get(int index, int tileSize){
-    int tilesPerCol = dim.height/tileSize;
-    int tilesPerRow = dim.width/tileSize;
+    int tilesPerCol = dim.height / tileSize;
+    int tilesPerRow = dim.width / tileSize;
     int x = index % tilesPerRow * tileSize;
     int y = index / tilesPerCol * tileSize;
 

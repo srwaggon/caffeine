@@ -21,41 +21,41 @@ public class Entity{
   private Rectangle frame;
   protected int spriteID;
   protected String name;
-
+  
   public Entity(){
     this(new Location());
   }
-
+  
   public Entity(Location l){
     id = numCharacters++;
     loc = l.copy();
     spriteID = 3;
-
+    
     name = "" + id;
     System.out.println("Spawning Entity " + name + " at " + loc);
   }
-
+  
   public int getID(){
     return id;
   }
-
+  
   public Rectangle hitbox(){
     return frame;
   }
-
+  
   public Location loc(){return loc;}
-
+  
   public void loc(Location loc){
     this.loc = loc;
   }
-
+  
   public int radius(){return radius;}
-
+  
   public int spriteID(){return spriteID;}
-
+  
   public void tick(){
   }
-
+  
   public Tile tile(){return loc.tile();}
   
   public static Entity newEntity(String data){
@@ -76,7 +76,7 @@ public class Entity{
     int mapID = loc.mapID();
     int x = loc.x();
     int y = loc.y();
-
+    
     // topleft, topright, bottomleft, bottomright
     vertices.add(new Location(mapID, x - radius, y - radius));
     vertices.add(new Location(mapID, x - radius, y + radius));
@@ -86,6 +86,6 @@ public class Entity{
   }
   @Override
   public String toString(){
-    return "entity" + " " + id + " " + loc.mapID() + " " + loc.x() + " " + loc.y();
+    return "entity" + " " + id + " " + loc.toString();
   }
 }

@@ -13,7 +13,7 @@ public class GUI extends JFrame {
     setContentPane(screen);
     setDefaultCloseOperation(EXIT_ON_CLOSE);
     pack();
-    setResizable(false);
+    //setResizable(false);
     setVisible(true);
     addKeyListener(interactions);
 

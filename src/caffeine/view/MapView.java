@@ -76,8 +76,8 @@ public class MapView{
       int spriteWidth  = sprite.getHeight(null);
       int spriteHeight = sprite.getWidth(null);
       /* Center it, by moving the sprite halfway up and halfway left */
-      int renderX = loc.x() - spriteWidth / 2;
-      int renderY = loc.y() - spriteHeight / 2;
+      int renderX = loc.x() - spriteWidth / 2 + 1;
+      int renderY = loc.y() - spriteHeight / 2 + 1;
 
       g2.drawImage(sprite, renderX, renderY, null);
     }

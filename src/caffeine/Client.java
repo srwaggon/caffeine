@@ -16,31 +16,32 @@ import caffeine.world.Location;
 import caffeine.world.Map;
 
 
-public class Client implements Runnable{
+public class Client extends Thread{
   /* Engine Fields */
   protected InteractionHandler interactions = new InteractionHandler();
-  private Map map = new Map();
+  private Map map = null;
   private HashMap<Integer, Entity> entities = new HashMap<Integer, Entity>();
   protected GUI gui = null;
   /* Networking Fields */
   private Socket connection = null;
   private PrintWriter out = null;
   private BufferedReader in = null;
-
-
+  
+  
   /* MAIN METHOD */
   public static void main(String[] args){
     Client c = new Client();
   }
-
+  
   /* Constructor */
   public Client(){
     connectSocket();
+    map = new Map();
     gui = new GUI(map, interactions);
     gui.setTitle("Caffeine Client");
     run();
   }
-
+  
   public void connectSocket(){
     //Create socket connection
     String host = "127.0.0.1";
@@ -58,43 +59,38 @@ public class Client implements Runnable{
     }
     System.out.println("Connection established.");
   }
-
+  
   public void run() {
-
-    String input;
+    
+    String input  = "";
+    String output = "";
     try {
-      int i = 0;
-      while(i < 1){
-        String output = "";
-        for(Integer key : interactions.getKeys()) {
-          if(interactions.get(key)){
-            output += key;
-          }
-        }
-        out.println(output);
-      }
-
-      /* While connected */
+      System.out.println("Connecting to " + connection.getInetAddress().toString() + "...");
+      out.println("Hello server");
+      
+      /* While connected with server */
       while((input = in.readLine()) != null){
-
-
-
         /* Read from in-stream and process it */
+        processServerResponse(input);
+        out.println("Ok.");
+        sleep(100);
       }
       System.out.println("Server disconnected.");
-
+      
     } catch (IOException e) {
+      e.printStackTrace();
+    } catch (InterruptedException e) {
       e.printStackTrace();
     }
   }
-
+  
   public void processServerResponse(String response){
     Scanner lineParser = new Scanner(response);
     String next;
-
+    
     while (lineParser.hasNext()){
       next = lineParser.next();
-
+      
       /* Handle the input */
       if (next.equals("eot")){
         /* End of transmission */
@@ -104,26 +100,25 @@ public class Client implements Runnable{
           e.printStackTrace();
         }
         break;
-
+        
       } else if (next.equals("map")) {
         /* Update map */
         map = new Map(lineParser.nextLine());
         gui.getContentPane().setCurrentMap(map);
-
+        
       } else if (next.equals("entity")) {
         /* Update entity */
         int entityID = lineParser.nextInt();
+        int mapID = lineParser.nextInt();
+        int x = lineParser.nextInt();
+        int y = lineParser.nextInt();
+        
         if (entities.containsKey(entityID)) {
-
-          int mapID = lineParser.nextInt();
-          int x = lineParser.nextInt();
-          int y = lineParser.nextInt();
-
-          Location l = entities.get(entityID).loc();
-          l.set(mapID, x, y);
-
+          
+          entities.get(entityID).loc().set(mapID, x, y);
+          
         } else {
-          Entity e = Entity.newEntity(entityID + " " + lineParser.nextLine());
+          Entity e = new Entity(new Location(mapID, x, y));
           map.add(e);
           entities.put(entityID, e);
         }
