@@ -1,16 +1,15 @@
 package caffeine.entity.brain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import caffeine.action.Action;
 import caffeine.entity.Actor;
 
-/**
- * The basic
- * @author Fnar
- *
- */
-public interface Brain {
-
-  public List<Action> next(Actor actor);
+public class Brain {
+  List<Action> actionPlan = new ArrayList<Action>();
+  
+  public List<Action> next(Actor actor) {
+    return actionPlan;
+  }
 }

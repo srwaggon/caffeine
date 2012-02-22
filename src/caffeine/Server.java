@@ -1,8 +1,5 @@
 package caffeine;
 
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
@@ -13,9 +10,6 @@ import java.util.TimerTask;
 import caffeine.entity.Actor;
 import caffeine.entity.Entity;
 import caffeine.entity.Player;
-import caffeine.entity.brain.LeftBrain;
-import caffeine.entity.brain.RandomBrain;
-import caffeine.entity.brain.RightBrain;
 import caffeine.view.GUI;
 import caffeine.view.InteractionHandler;
 import caffeine.view.Screen;
@@ -28,53 +22,56 @@ import caffeine.world.World;
  * Games handle everything, from graphics to the heartbeat, as well as the mechanics, but are broken down into smaller components.
  * @author Fnar
  */
-public final class Server {
+public final class Server extends Thread {
   /* Engine Fields */
   private final static Server INSTANCE = new Server();  // Instance
   private World world = new World(); // Space
   private Clock clock = new Clock(); // Time
   private InteractionHandler interactionHandler = new InteractionHandler(); // Input
   private GUI gui = null;
-
-
+  
+  
   /* Networking Fields */
   private ServerSocket server = null;
   private PrintWriter out = null;
   private List<ClientWorker> clients = new ArrayList<ClientWorker>();
-
-
-
-
+  
+  
+  
   /* Main method */
   public static void main(String args[]){
-    final Server g = Server.instance();
-    Map map = new Map();
-    g.world().add(map);
     
-    g.createGUI();
-
+    // Get the game
+    final Server game = Server.instance();
+    
+    // Add some data: A world, some entities
+    Map map = new Map();
+    game.world().add(map);
+    game.createGUI();
+    
     Location l = new Location(0, 48, 48);
+    
+    Actor steve = new Actor(l);
+    map.add(steve);
+    
+    // steve.brain(new RandomBrain());
+    // steve.brain(new RightBrain());
+    // seteve.brain(new LeftBrain());
+    
+    Player p1 = new Player(l, game.interactions());
+    map.add(p1);
+    
+    
 
-    Actor a = Actor.create(l);
-    a.brain(new RandomBrain());
-    map.add(a);
-
-    a = Actor.create(l);
-    a.brain(new LeftBrain());
-    map.add(a);
-
-    a = Actor.create(l);
-    a.brain(new RightBrain());
-    map.add(a);
-
-    g.listenSocket();
+    Screen s = game.gui().getContentPane();
+    s.camera().focusOn(p1);
+    
+    // Start the game
+    game.run();
   }
-
-
-
-
-
-
+  
+  
+  
   /* CONSTRUCTORS */
   private Server(){
     initSockets();
@@ -85,32 +82,38 @@ public final class Server {
     });
     clock.start();
   }
-
+  
+  public void run() {
+    
+    // createGUI();
+    listenSocket();
+  }
+  
   /* ACCESSORS */
   public List<Entity> entities(int mapID){
     return world.get(mapID).entities();
   }
-
+  
   public List<ClientWorker> clients(){
     return clients;
   }
-
+  
   public GUI gui(){
     return gui;
   }
-
+  
   public static Server instance(){
-    return INSTANCE;
+    return Server.INSTANCE;
   }
-
-  public InteractionHandler interactionHandler() {
+  
+  public InteractionHandler interactions() {
     return interactionHandler;
   }
-
+  
   public World world(){
     return world;
   }
-
+  
   /* HELPERS */
   private void createGUI(){
     if (gui == null) {
@@ -121,20 +124,9 @@ public final class Server {
           gui.repaint();
         }
       });
-
-      WindowListener winListener = new WindowAdapter() {
-        public void windowClosing(WindowEvent e) {
-          for (ClientWorker w : clients) {
-            w.stop();
-          }
-          System.exit(0);
-        }
-      };
-      gui.addWindowListener(winListener);
     }
   }
-
-
+  
   private void initSockets(){
     try{
       server = new ServerSocket(4444);
@@ -143,7 +135,7 @@ public final class Server {
       System.exit(-1);
     }
   }
-
+  
   private void listenSocket(){
     while(true){
       ClientWorker w;
@@ -152,13 +144,16 @@ public final class Server {
         Thread t = new Thread(w);
         clients.add(w);
         t.start();
+        Thread.sleep(100);
       } catch (IOException e) {
         System.out.println("Accept failed: 4444");
         System.exit(-1);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
       }
     }
   }
-
+  
   protected void finalize(){
     //Clean up
     try{
