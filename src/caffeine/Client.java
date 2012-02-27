@@ -11,52 +11,50 @@ import java.util.Scanner;
 
 import caffeine.entity.Entity;
 import caffeine.view.GUI;
-import caffeine.view.InteractionHandler;
 import caffeine.world.Location;
 import caffeine.world.Map;
 import caffeine.world.World;
 
-
-public class Client extends Thread{
+public class Client extends Thread {
   /* Engine Fields */
-  protected InteractionHandler interactions = new InteractionHandler();
-  private World realm = null;
-  private HashMap<Integer, Entity> entities = new HashMap<Integer, Entity>();
-  protected GUI gui = null;
+  private World                          realm      = null;
+  private final HashMap<Integer, Entity> entities   = new HashMap<Integer, Entity>();
+  protected GUI                          gui        = null;
   /* Networking Fields */
-  private Socket connection = null;
-  private PrintWriter out = null;
-  private BufferedReader in = null;
-  
+  private Socket                         connection = null;
+  private PrintWriter                    out        = null;
+  private BufferedReader                 in         = null;
   
   /* MAIN METHOD */
-  public static void main(String[] args){
+  public static void main(String[] args) {
     Client c = new Client();
     c.run();
   }
   
   /* Constructor */
-  public Client(){
+  public Client() {
     connectSocket();
     realm = new World();
     Map map = new Map();
     realm.add(map);
-    gui = new GUI(map, interactions);
+    gui = new GUI(map);
     gui.setTitle("Caffeine Client");
+    new Thread(gui).start();
   }
   
-  public void connectSocket(){
-    //Create socket connection
+  public void connectSocket() {
+    // Create socket connection
     String host = "127.0.0.1";
-    try{
-      System.out.println("Connecting to "+ host);
+    try {
+      System.out.println("Connecting to " + host);
       connection = new Socket(host, 4444);
       out = new PrintWriter(connection.getOutputStream(), true);
-      in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+      in = new BufferedReader(
+          new InputStreamReader(connection.getInputStream()));
     } catch (UnknownHostException e) {
       System.out.println("Unknown host: " + host);
       System.exit(1);
-    } catch  (IOException e) {
+    } catch (IOException e) {
       System.out.println("No I/O");
       System.exit(1);
     }
@@ -64,10 +62,11 @@ public class Client extends Thread{
   }
   
   public void run() {
-    String input  = "";
+    String input = "";
     String output = "";
     try {
-      System.out.println("Connecting to " + connection.getInetAddress().toString() + "...");
+      System.out.println("Connecting to "
+          + connection.getInetAddress().toString() + "...");
       out.println("Hello server");
       
       input = in.readLine();
@@ -76,7 +75,8 @@ public class Client extends Thread{
         
         /* Read from in-stream and process it */
         processServerResponse(input);
-        out.println("Ok.");
+        output = "Ok.";
+        out.println(output);
         Thread.sleep(10);
         input = in.readLine();
       }
@@ -89,17 +89,18 @@ public class Client extends Thread{
     } catch (Exception e) {
       // e.printStackTrace();
     }
+    
   }
   
-  public void processServerResponse(String response){
+  public void processServerResponse(String response) {
     Scanner lineParser = new Scanner(response);
     String next;
     
-    while (lineParser.hasNext()){
+    while (lineParser.hasNext()) {
       next = lineParser.next();
       
       /* Handle the input */
-      if (next.equals("eot")){
+      if (next.equals("eot")) {
         /* End of transmission */
         try {
           connection.close();
@@ -111,8 +112,8 @@ public class Client extends Thread{
       } else if (next.equals("map")) {
         /* Update map */
         /*
-        map = new Map(lineParser.nextLine());
-        gui.getContentPane().setCurrentMap(map);
+         * map = new Map(lineParser.nextLine());
+         * gui.getContentPane().setCurrentMap(map);
          */
       } else if (next.equals("entity")) {
         /* Update entity */
@@ -133,8 +134,6 @@ public class Client extends Thread{
       } else {
         lineParser.nextLine();
       }
-      gui.repaint();
     }
   }
 }
-

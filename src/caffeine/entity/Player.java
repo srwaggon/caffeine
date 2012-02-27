@@ -5,8 +5,8 @@ import caffeine.view.InteractionHandler;
 import caffeine.world.Location;
 
 public class Player extends Actor {
-
-  public Player(Location loc, InteractionHandler interactions){
+  
+  public Player(Location loc, InteractionHandler interactions) {
     super(loc);
     brain = new PlayerBrain(interactions);
     spriteID = 2;
