@@ -1,9 +1,12 @@
 package caffeine.entity;
 
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import caffeine.view.Spritesheet;
 import caffeine.world.Location;
 import caffeine.world.Tile;
 
@@ -84,6 +87,18 @@ public class Entity{
     vertices.add(new Location(mapID, x + radius, y + radius));
     return vertices;
   }
+  
+  public void render(Graphics2D g2, Spritesheet sheet){
+    Image sprite = sheet.get(spriteID);
+    int spriteWidth  = sprite.getHeight(null);
+    int spriteHeight = sprite.getWidth(null);
+    /* Center it, by moving the sprite halfway up and halfway left */
+    int renderX = loc.x() - spriteWidth / 2 + 1;
+    int renderY = loc.y() - spriteHeight / 2 + 1;
+    
+    g2.drawImage(sprite, renderX, renderY, null);
+  }
+  
   @Override
   public String toString(){
     return "entity" + " " + id + " " + loc.toString();

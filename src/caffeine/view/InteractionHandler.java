@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.swing.JComponent;
 
+@SuppressWarnings("serial")
 public class InteractionHandler extends JComponent implements KeyListener {
   HashMap<Integer, Boolean> actionCodes = new HashMap<Integer, Boolean>();
   
