@@ -33,7 +33,7 @@ public class GUI extends JFrame implements Runnable {
     try {
       while (true) {
         repaint();
-        Thread.sleep(10);
+        Thread.sleep(1000 / 30);
       }
     } catch (InterruptedException e) {
       e.printStackTrace();

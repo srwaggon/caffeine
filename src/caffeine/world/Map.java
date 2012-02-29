@@ -40,7 +40,7 @@ public class Map implements Iterable<Tile>{
       "########################################";
   
   public Map(){
-    this(defaultMapString);
+    this(Map.defaultMapString);
   }
   
   public Map(int cols, int rows, int tileSize){
@@ -153,7 +153,7 @@ public class Map implements Iterable<Tile>{
   
   public void renderEntities(Graphics2D g2, Spritesheet spritesheet){
     for(Entity e : entities()){
-      e.render(g2, spritesheet);
+      e.render(g2);
     }
   }
   

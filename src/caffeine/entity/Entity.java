@@ -1,12 +1,11 @@
 package caffeine.entity;
 
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import caffeine.view.Spritesheet;
+import caffeine.view.Animation;
 import caffeine.world.Location;
 import caffeine.world.Tile;
 
@@ -19,10 +18,11 @@ import caffeine.world.Tile;
 public class Entity{
   protected static int numCharacters = 0;
   protected int id = 0;
-  protected int radius = 10;
+  protected int size = 30;
   protected Location loc;
   private Rectangle frame;
   protected int spriteID;
+  protected Animation walkAnim;
   protected String name;
   
   public Entity(){
@@ -30,10 +30,12 @@ public class Entity{
   }
   
   public Entity(Location l){
-    id = numCharacters++;
+    id = Entity.numCharacters++;
     loc = l.copy();
     spriteID = 3;
     
+    int[] walkSprites = { 2, 3 };
+    walkAnim = new Animation(walkSprites, 500, true);
     name = "" + id;
     System.out.println("Spawning Entity " + name + " at " + loc);
   }
@@ -52,7 +54,7 @@ public class Entity{
     this.loc = loc;
   }
   
-  public int radius(){return radius;}
+  public int radius(){return size;}
   
   public int spriteID(){return spriteID;}
   
@@ -81,22 +83,15 @@ public class Entity{
     int y = loc.y();
     
     // topleft, topright, bottomleft, bottomright
-    vertices.add(new Location(mapID, x - radius, y - radius));
-    vertices.add(new Location(mapID, x - radius, y + radius));
-    vertices.add(new Location(mapID, x + radius, y - radius));
-    vertices.add(new Location(mapID, x + radius, y + radius));
+    vertices.add(new Location(mapID, x, y));
+    vertices.add(new Location(mapID, x, y + size));
+    vertices.add(new Location(mapID, x + size, y));
+    vertices.add(new Location(mapID, x + size, y + size));
     return vertices;
   }
   
-  public void render(Graphics2D g2, Spritesheet sheet){
-    Image sprite = sheet.get(spriteID);
-    int spriteWidth  = sprite.getHeight(null);
-    int spriteHeight = sprite.getWidth(null);
-    /* Center it, by moving the sprite halfway up and halfway left */
-    int renderX = loc.x() - spriteWidth / 2 + 1;
-    int renderY = loc.y() - spriteHeight / 2 + 1;
-    
-    g2.drawImage(sprite, renderX, renderY, null);
+  public void render(Graphics2D g2) {
+    walkAnim.render(g2, loc);
   }
   
   @Override
