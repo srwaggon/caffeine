@@ -8,24 +8,24 @@ import java.util.Set;
 import javax.swing.JComponent;
 
 @SuppressWarnings("serial")
-public class InteractionHandler extends JComponent implements KeyListener {
-  HashMap<Integer, Boolean> actionCodes = new HashMap<Integer, Boolean>();
+public class InputHandler extends JComponent implements KeyListener {
+  HashMap<Integer, Boolean> keys = new HashMap<Integer, Boolean>();
   
   public boolean get(int keyCode) {
-    if (actionCodes.containsKey(keyCode)) {
-      return actionCodes.get(keyCode);
+    if (keys.containsKey(keyCode)) {
+      return keys.get(keyCode);
     }
     return false;
   }
   
   @Override
   public void keyPressed(KeyEvent event) {
-    actionCodes.put(event.getKeyCode(), true);
+    keys.put(event.getKeyCode(), true);
   }
   
   @Override
   public void keyReleased(KeyEvent event) {
-    actionCodes.put(event.getKeyCode(), false);
+    keys.put(event.getKeyCode(), false);
   }
   
   @Override
@@ -34,6 +34,6 @@ public class InteractionHandler extends JComponent implements KeyListener {
   }
   
   public Set<Integer> getKeys() {
-    return actionCodes.keySet();
+    return keys.keySet();
   }
 }

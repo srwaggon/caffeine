@@ -4,12 +4,12 @@ import java.awt.event.KeyEvent;
 
 import caffeine.action.Attack;
 import caffeine.action.Move;
-import caffeine.view.InteractionHandler;
+import caffeine.view.InputHandler;
 import caffeine.world.Direction;
 
 public class PlayerBrain extends InteractiveBrain{
 
-  public PlayerBrain(InteractionHandler i){
+  public PlayerBrain(InputHandler i){
     super(i);
     actionMap.put(KeyEvent.VK_UP, new Move(Direction.N));
     actionMap.put(KeyEvent.VK_DOWN, new Move(Direction.S));

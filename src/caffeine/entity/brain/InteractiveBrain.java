@@ -7,17 +7,17 @@ import java.util.List;
 import caffeine.action.Action;
 import caffeine.action.Report;
 import caffeine.entity.Actor;
-import caffeine.view.InteractionHandler;
+import caffeine.view.InputHandler;
 
 public class InteractiveBrain extends Brain {
   HashMap<Integer, Action> actionMap = new HashMap<Integer, Action>();
-  InteractionHandler interactions;
+  InputHandler interactions;
   
   /**
    * Creates an InteractiveBrain.  This type of brain responds to keyboard input.
-   * @param InteractionHandler to read keyboard input from.
+   * @param InputHandler to read keyboard input from.
    */
-  public InteractiveBrain(InteractionHandler ih){
+  public InteractiveBrain(InputHandler ih){
     interactions = ih;
     actionMap.put(KeyEvent.VK_UP, new Report("Up pressed"));
     actionMap.put(KeyEvent.VK_DOWN, new Report("Down pressed"));

@@ -7,7 +7,7 @@ import caffeine.world.Map;
 @SuppressWarnings("serial")
 public class GUI extends JFrame implements Runnable {
   Screen                       screen       = null;
-  protected InteractionHandler interactions = new InteractionHandler();
+  protected InputHandler interactions = new InputHandler();
   
   public GUI(Map map) {
     screen = new Screen(map);
@@ -24,7 +24,7 @@ public class GUI extends JFrame implements Runnable {
     return screen;
   }
   
-  public InteractionHandler getInteractions() {
+  public InputHandler getInteractions() {
     return interactions;
   }
   
