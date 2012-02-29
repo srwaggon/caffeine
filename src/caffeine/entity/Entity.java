@@ -34,8 +34,8 @@ public class Entity {
     loc = l.copy();
     spriteID = 3;
     
-    int[] walkSprites = { 2, 3 };
-    walkAnim = new Animation(walkSprites, 500, false);
+    int[] walkSprites = { 3, 4 };
+    walkAnim = new Animation(walkSprites, 200, true);
     name = "" + id;
     System.out.println("Spawning Entity " + name + " at " + loc);
   }
@@ -89,17 +89,19 @@ public class Entity {
     int mapID = loc.mapID();
     int x = loc.x();
     int y = loc.y();
+    int ts = loc.map().tileSize();
+    int padding = ts - size;
     
     // topleft, topright, bottomleft, bottomright
-    vertices.add(new Location(mapID, x, y));
-    vertices.add(new Location(mapID, x, y + size));
-    vertices.add(new Location(mapID, x + size, y));
-    vertices.add(new Location(mapID, x + size, y + size));
+    vertices.add(new Location(mapID, x + padding, y + padding));
+    vertices.add(new Location(mapID, x + padding, y + ts - padding));
+    vertices.add(new Location(mapID, x + ts - padding, y + padding));
+    vertices.add(new Location(mapID, x + ts - padding, y + ts - padding));
     return vertices;
   }
   
   public void render(Graphics2D g2) {
-    walkAnim.render(g2, loc);
+    walkAnim.render(g2, loc.x(), loc.y());
   }
   
   @Override

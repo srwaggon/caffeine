@@ -2,12 +2,11 @@ package caffeine.view;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import caffeine.world.Location;
-
 public class Animation {
-  List<Sprite> frames = new ArrayList<Sprite>();
+  List<Frame> frames = new ArrayList<Frame>();
   boolean isLooping;
   int frameDuration;
   int currentFrame = 0;
@@ -15,14 +14,28 @@ public class Animation {
   
   public Animation(int[] sprites, int frameDuration, boolean isLooping) {
     for (int n : sprites) {
-      frames.add(new Sprite(n));
+      frames.add(new Frame(new Sprite(n, 0, 0), 0, 0));
     }
     this.frameDuration = frameDuration / 30;
     this.isLooping = isLooping;
   }
   
-  public void render(Graphics2D g2, Location loc) {
-    frames.get(currentFrame).render(g2, loc);
+  public Animation(Sprite[] sprites, int frameDuration, boolean isLooping) {
+    for (Sprite s : sprites) {
+      frames.add(new Frame(s, 0, 0));
+    }
+    this.frameDuration = frameDuration / 30;
+    this.isLooping = isLooping;
+  }
+  
+  public Animation(Frame[] frames, int frameDuration, boolean isLooping) {
+    this.frames.addAll(Arrays.asList(frames));
+    this.frameDuration = frameDuration / 30;
+    this.isLooping = isLooping;
+  }
+  
+  public void render(Graphics2D g2, int x, int y) {
+    frames.get(currentFrame).render(g2, x, y);
     
     currentFrameTime++;
     if (currentFrameTime < frameDuration) {
