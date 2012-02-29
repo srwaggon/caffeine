@@ -11,7 +11,7 @@ public class Animation {
   boolean isLooping;
   int frameDuration;
   int currentFrame = 0;
-  int currentFrameDuration = 0;
+  int currentFrameTime = 0;
   
   public Animation(int[] sprites, int frameDuration, boolean isLooping) {
     for (int n : sprites) {
@@ -24,14 +24,20 @@ public class Animation {
   public void render(Graphics2D g2, Location loc) {
     frames.get(currentFrame).render(g2, loc);
     
-    currentFrameDuration++;
-    if (currentFrameDuration >= frameDuration) {
-      currentFrameDuration = 0;
-      currentFrame++;
+    currentFrameTime++;
+    if (currentFrameTime < frameDuration) {
+      return;
     }
+    currentFrameTime = 0;
+    currentFrame++;
     
-    if (isLooping && currentFrame >= frames.size()) {
-      currentFrame = 0;
+    // handle looping
+    if (currentFrame >= frames.size()) {
+      if (isLooping) {
+        currentFrame = 0;
+      } else {
+        currentFrame--;
+      }
     }
   }
 }

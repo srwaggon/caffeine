@@ -9,13 +9,13 @@ import caffeine.view.Animation;
 import caffeine.world.Location;
 import caffeine.world.Tile;
 
-
 /**
- * base class representing objects in the world.  Entities have a location
+ * base class representing objects in the world. Entities have a location
+ * 
  * @author srwaggon
- *
+ * 
  */
-public class Entity{
+public class Entity {
   protected static int numCharacters = 0;
   protected int id = 0;
   protected int size = 30;
@@ -25,45 +25,53 @@ public class Entity{
   protected Animation walkAnim;
   protected String name;
   
-  public Entity(){
+  public Entity() {
     this(new Location());
   }
   
-  public Entity(Location l){
+  public Entity(Location l) {
     id = Entity.numCharacters++;
     loc = l.copy();
     spriteID = 3;
     
     int[] walkSprites = { 2, 3 };
-    walkAnim = new Animation(walkSprites, 500, true);
+    walkAnim = new Animation(walkSprites, 500, false);
     name = "" + id;
     System.out.println("Spawning Entity " + name + " at " + loc);
   }
   
-  public int getID(){
+  public int getID() {
     return id;
   }
   
-  public Rectangle hitbox(){
+  public Rectangle hitbox() {
     return frame;
   }
   
-  public Location loc(){return loc;}
+  public Location loc() {
+    return loc;
+  }
   
-  public void loc(Location loc){
+  public void loc(Location loc) {
     this.loc = loc;
   }
   
-  public int radius(){return size;}
-  
-  public int spriteID(){return spriteID;}
-  
-  public void tick(){
+  public int radius() {
+    return size;
   }
   
-  public Tile tile(){return loc.tile();}
+  public int spriteID() {
+    return spriteID;
+  }
   
-  public static Entity newEntity(String data){
+  public void tick() {
+  }
+  
+  public Tile tile() {
+    return loc.tile();
+  }
+  
+  public static Entity newEntity(String data) {
     Scanner scans = new Scanner(data);
     
     int id = scans.nextInt();
@@ -76,7 +84,7 @@ public class Entity{
     return entity;
   }
   
-  public ArrayList<Location> vertices(){
+  public ArrayList<Location> vertices() {
     ArrayList<Location> vertices = new ArrayList<Location>();
     int mapID = loc.mapID();
     int x = loc.x();
@@ -95,7 +103,7 @@ public class Entity{
   }
   
   @Override
-  public String toString(){
+  public String toString() {
     return "entity" + " " + id + " " + loc.toString();
   }
 }
