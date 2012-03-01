@@ -18,7 +18,7 @@ import caffeine.world.Tile;
 public class Entity {
   protected static int numCharacters = 0;
   protected int id = 0;
-  protected int size = 30;
+  protected int size = 24;
   protected Location loc;
   private Rectangle frame;
   protected int spriteID;
@@ -94,9 +94,10 @@ public class Entity {
     
     // topleft, topright, bottomleft, bottomright
     vertices.add(new Location(mapID, x + padding, y + padding));
-    vertices.add(new Location(mapID, x + padding, y + ts - padding));
-    vertices.add(new Location(mapID, x + ts - padding, y + padding));
-    vertices.add(new Location(mapID, x + ts - padding, y + ts - padding));
+    vertices.add(new Location(mapID, x + padding, y + ts - padding - 1));
+    vertices.add(new Location(mapID, x + ts - padding - 1, y + padding));
+    vertices
+        .add(new Location(mapID, x + ts - padding - 1, y + ts - padding - 1));
     return vertices;
   }
   

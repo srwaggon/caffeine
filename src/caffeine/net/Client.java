@@ -16,12 +16,6 @@ public class Client extends Thread {
   protected GUI gui = null;
   private final Connection host;
   
-  /* MAIN METHOD */
-  public static void main(String[] args) {
-    Client c = new Client();
-    c.run();
-  }
-  
   /* Constructor */
   public Client() {
     host = new Connection("127.0.0.1");

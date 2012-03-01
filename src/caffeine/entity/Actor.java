@@ -7,11 +7,11 @@ import caffeine.entity.brain.Brain;
 import caffeine.world.Location;
 
 public class Actor extends Entity {
-  public int        attack  = 1;
-  public int        health  = 10;
+  public int attack = 1;
+  public int health = 10;
   protected boolean isAlive = true;
-  protected Brain   brain   = new Brain();
-  protected Motion  motion;
+  protected Brain brain = new Brain();
+  protected Motion motion;
   
   public Actor(Location l) {
     super(l);

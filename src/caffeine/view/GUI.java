@@ -6,7 +6,7 @@ import caffeine.world.Map;
 
 @SuppressWarnings("serial")
 public class GUI extends JFrame implements Runnable {
-  Screen                       screen       = null;
+  Screen screen = null;
   protected InputHandler interactions = new InputHandler();
   
   public GUI(Map map) {
