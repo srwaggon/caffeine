@@ -1,4 +1,4 @@
-package caffeine;
+package caffeine.net;
 
 import java.util.HashMap;
 import java.util.Scanner;
@@ -35,8 +35,8 @@ public class Client extends Thread {
   }
   
   public void run() {
-    host.send("Hello server");
     try {
+      host.send("Hello server");
       while (host.isConnected()) {
         String input = host.read();
         processServerResponse(input);
@@ -44,7 +44,7 @@ public class Client extends Thread {
         host.send(response);
         Thread.sleep(10);
       }
-    } catch (Exception e) {
+    } catch (InterruptedException e) {
     }
   }
   
@@ -62,11 +62,9 @@ public class Client extends Thread {
         break;
         
       } else if (next.equals("map")) {
-        /* Update map */
-        /*
-         * map = new Map(lineParser.nextLine());
-         * gui.getContentPane().setCurrentMap(map);
-         */
+        Map map = new Map(lineParser.nextLine());
+        
+        gui.getContentPane().setCurrentMap(map);
       } else if (next.equals("entity")) {
         /* Update entity */
         int entityID = lineParser.nextInt();
@@ -75,9 +73,7 @@ public class Client extends Thread {
         int y = lineParser.nextInt();
         
         if (entities.containsKey(entityID)) {
-          
           entities.get(entityID).loc().set(mapID, x, y);
-          
         } else {
           Entity e = new Entity(new Location(mapID, x, y));
           realm.get(0).add(e);

@@ -1,26 +1,27 @@
-package caffeine;
+package caffeine.net;
 
 import java.net.Socket;
 
+import caffeine.Game;
 import caffeine.entity.Entity;
 import caffeine.world.Map;
 
-class ClientWorker extends Thread {
+public class ClientWorker extends Thread {
   private final Connection client;
+  String input;
+  String response = "";
+  Map m;
   
-  ClientWorker(Socket client) {
+  public ClientWorker(Socket client) {
     this.client = new Connection(client);
     System.out.println("" + client.getInetAddress().toString() + ":"
         + client.getPort() + " connecting");
   }
   
   public void run() {
-    String input;
-    String response = "";
-    client.send("Hello client");
-    Map m = Server.instance().world().get(0);
-    
     try {
+      client.send("Hello client");
+      m = Game.instance().world().get(0);
       while (client.isConnected()) {
         response = "";
         input = client.read();
@@ -30,7 +31,7 @@ class ClientWorker extends Thread {
         client.send(response);
         Thread.sleep(10);
       }
-    } catch (Exception e) {
+    } catch (InterruptedException e) {
     }
   }
 }

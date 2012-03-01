@@ -1,4 +1,4 @@
-package caffeine;
+package caffeine.net;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,9 +8,9 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class Connection {
-  private Socket socket;
-  BufferedReader in = null;
-  PrintWriter out = null;
+  protected Socket socket;
+  protected BufferedReader in = null;
+  protected PrintWriter out = null;
   
   public Connection(String host) {
     try {
@@ -45,7 +45,6 @@ public class Connection {
   }
   
   public String read() {
-    System.out.println(this + " reading");
     String input = "";
     try {
       input = in.readLine();
