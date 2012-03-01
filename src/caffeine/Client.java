@@ -1,11 +1,5 @@
 package caffeine;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -17,13 +11,10 @@ import caffeine.world.World;
 
 public class Client extends Thread {
   /* Engine Fields */
-  private World                          realm      = null;
-  private final HashMap<Integer, Entity> entities   = new HashMap<Integer, Entity>();
-  protected GUI                          gui        = null;
-  /* Networking Fields */
-  private Socket                         connection = null;
-  private PrintWriter                    out        = null;
-  private BufferedReader                 in         = null;
+  private World realm = null;
+  private final HashMap<Integer, Entity> entities = new HashMap<Integer, Entity>();
+  protected GUI gui = null;
+  private final Connection host;
   
   /* MAIN METHOD */
   public static void main(String[] args) {
@@ -33,7 +24,8 @@ public class Client extends Thread {
   
   /* Constructor */
   public Client() {
-    connectSocket();
+    host = new Connection("127.0.0.1");
+    
     realm = new World();
     Map map = new Map();
     realm.add(map);
@@ -42,54 +34,18 @@ public class Client extends Thread {
     new Thread(gui).start();
   }
   
-  public void connectSocket() {
-    // Create socket connection
-    String host = "127.0.0.1";
-    try {
-      System.out.println("Connecting to " + host);
-      connection = new Socket(host, 4444);
-      out = new PrintWriter(connection.getOutputStream(), true);
-      in = new BufferedReader(
-          new InputStreamReader(connection.getInputStream()));
-    } catch (UnknownHostException e) {
-      System.out.println("Unknown host: " + host);
-      System.exit(1);
-    } catch (IOException e) {
-      System.out.println("No I/O");
-      System.exit(1);
-    }
-    System.out.println("Connection established.");
-  }
-  
   public void run() {
-    String input = "";
-    String output = "";
+    host.send("Hello server");
     try {
-      System.out.println("Connecting to "
-          + connection.getInetAddress().toString() + "...");
-      out.println("Hello server");
-      
-      input = in.readLine();
-      /* While connected with server */
-      while (input != null) {
-        
-        /* Read from in-stream and process it */
+      while (host.isConnected()) {
+        String input = host.read();
         processServerResponse(input);
-        output = "Ok.";
-        out.println(output);
+        String response = "Ok.";
+        host.send(response);
         Thread.sleep(10);
-        input = in.readLine();
       }
-      System.out.println("Server disconnected.");
-      
-    } catch (IOException e) {
-      e.printStackTrace();
-    } catch (InterruptedException e) {
-      e.printStackTrace();
     } catch (Exception e) {
-      // e.printStackTrace();
     }
-    
   }
   
   public void processServerResponse(String response) {
@@ -102,11 +58,7 @@ public class Client extends Thread {
       /* Handle the input */
       if (next.equals("eot")) {
         /* End of transmission */
-        try {
-          connection.close();
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
+        host.disconnect();
         break;
         
       } else if (next.equals("map")) {
