@@ -6,13 +6,16 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Clock {
-  private final Timer timer  = new Timer();
-  List<TimerTask>     events = new ArrayList<TimerTask>();
+  private final Timer timer = new Timer();
+  private List<TimerTask> events = new ArrayList<TimerTask>();
+  private boolean running = true;
   
   public Clock() {
     timer.scheduleAtFixedRate(new TimerTask() {
       public void run() {
-        tick();
+        if (running) {
+          tick();
+        }
       }
     }, 0, 1000 / 30);
   }
@@ -23,6 +26,14 @@ public class Clock {
   
   public void clear() {
     events = new ArrayList<TimerTask>();
+  }
+  
+  public void start() {
+    running = true;
+  }
+  
+  public void stop() {
+    running = false;
   }
   
   private void tick() {

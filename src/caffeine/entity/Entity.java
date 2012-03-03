@@ -3,7 +3,6 @@ package caffeine.entity;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import caffeine.view.Animation;
 import caffeine.world.Location;
@@ -22,7 +21,7 @@ public class Entity {
   protected Location loc;
   private Rectangle frame;
   protected int spriteID;
-  protected Animation walkAnim;
+  protected Animation anim;
   protected String name;
   
   public Entity() {
@@ -35,7 +34,8 @@ public class Entity {
     spriteID = 3;
     
     int[] walkSprites = { 3, 4 };
-    walkAnim = new Animation(walkSprites, 200, true);
+    Animation walkAnim = new Animation(walkSprites, 200, true);
+    anim = walkAnim;
     name = "" + id;
     System.out.println("Spawning Entity " + name + " at " + loc);
   }
@@ -71,19 +71,6 @@ public class Entity {
     return loc.tile();
   }
   
-  public static Entity newEntity(String data) {
-    Scanner scans = new Scanner(data);
-    
-    int id = scans.nextInt();
-    int mapID = scans.nextInt();
-    int x = scans.nextInt();
-    int y = scans.nextInt();
-    Location l = new Location(mapID, x, y);
-    Entity entity = new Entity(l);
-    entity.id = id;
-    return entity;
-  }
-  
   public ArrayList<Location> vertices() {
     ArrayList<Location> vertices = new ArrayList<Location>();
     int mapID = loc.mapID();
@@ -102,7 +89,7 @@ public class Entity {
   }
   
   public void render(Graphics2D g2) {
-    walkAnim.render(g2, loc.x(), loc.y());
+    anim.render(g2, loc.x(), loc.y());
   }
   
   @Override

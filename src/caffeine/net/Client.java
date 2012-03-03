@@ -34,7 +34,7 @@ public class Client {
   
   public void run() {
     try {
-      host.send("Hello server");
+      host.send("Hello server.");
       while (host.isConnected()) {
         String input = host.read();
         processServerResponse(input);

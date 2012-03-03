@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import caffeine.Game;
+import caffeine.Player;
 
 public class GameServer extends Thread {
   private final Game game;
@@ -31,6 +32,7 @@ public class GameServer extends Thread {
         w = new ClientWorker(game, socket.accept());
         Thread t = new Thread(w);
         clients.add(w);
+        game.addPlayer(new Player(w));
         t.start();
         Thread.sleep(1000);
       }

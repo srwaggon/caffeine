@@ -4,9 +4,9 @@ import caffeine.entity.brain.PlayerBrain;
 import caffeine.view.InputHandler;
 import caffeine.world.Location;
 
-public class Player extends Actor {
+public class PlayerEntity extends Actor {
   
-  public Player(Location loc, InputHandler interactions) {
+  public PlayerEntity(Location loc, InputHandler interactions) {
     super(loc);
     brain = new PlayerBrain(interactions);
     spriteID = 2;

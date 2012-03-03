@@ -1,85 +1,20 @@
 package caffeine;
 
 import java.util.List;
-import java.util.TimerTask;
 
-import caffeine.entity.Entity;
-import caffeine.entity.Player;
-import caffeine.net.GameServer;
-import caffeine.view.GUI;
-import caffeine.view.Screen;
-import caffeine.world.Location;
-import caffeine.world.Map;
-import caffeine.world.World;
-
-/**
- * A game is the mover and shaker of the engine and represents a single play.
- * Games handle everything, from graphics to the heartbeat, as well as the
- * mechanics, but are broken down into smaller components.
- * 
- * @author Fnar
- */
-public final class Game {
-  /* Engine Fields */
-  private final static Game INSTANCE = new Game(); // Instance
-  private final World world = new World(); // Space
-  private final Clock clock = new Clock(); // Time
-  private GUI gui = null;
+public interface Game {
   
-  /* Main method */
-  public static void main(String args[]) {
-    
-    // Get the game
-    Game game = Game.instance();
-    
-    // Add some data: A world, some entities
-    Map map = new Map();
-    game.world().add(map);
-    
-    game.createGUI();
-    Location l = new Location(0, 48, 48);
-    Player p1 = new Player(l, game.gui().getInteractions());
-    map.add(p1);
-    
-    Screen s = game.gui().getContentPane();
-    s.camera().focusOn(p1);
-    
-    GameServer gs = new GameServer(game, 4444);
-    gs.run();
-  }
+  void addPlayer(Player p);
   
-  /* CONSTRUCTORS */
-  private Game() {
-    clock.add(new TimerTask() {
-      public void run() {
-        world.tick();
-      }
-    });
-  }
+  void createGUI();
   
-  /* ACCESSORS */
-  public List<Entity> entities(int mapID) {
-    return world.get(mapID).entities();
-  }
+  int numRoundsPlayed();
   
-  public GUI gui() {
-    return gui;
-  }
+  void pause();
   
-  public static Game instance() {
-    return Game.INSTANCE;
-  }
+  void play();
   
-  public World world() {
-    return world;
-  }
+  List<Player> players();
   
-  /* HELPERS */
-  public void createGUI() {
-    if (gui == null) {
-      gui = new GUI(world.get(0));
-      gui.setTitle("Caffeine Server");
-      new Thread(gui).start();
-    }
-  }
+  void round();
 }
