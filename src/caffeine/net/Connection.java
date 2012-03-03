@@ -12,10 +12,10 @@ public class Connection {
   protected BufferedReader in = null;
   protected PrintWriter out = null;
   
-  public Connection(String host) {
+  public Connection(String host, int port) {
     try {
       System.out.println("Connecting to " + host);
-      socket = new Socket(host, 4444);
+      socket = new Socket(host, port);
       out = new PrintWriter(socket.getOutputStream(), true);
       in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
     } catch (UnknownHostException e) {
@@ -56,6 +56,7 @@ public class Connection {
   
   public void disconnect() {
     try {
+      System.out.println("disconnecting from" + this);
       socket.close();
     } catch (IOException e) {
       e.printStackTrace();

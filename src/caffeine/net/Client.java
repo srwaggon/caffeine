@@ -9,16 +9,20 @@ import caffeine.world.Location;
 import caffeine.world.Map;
 import caffeine.world.World;
 
-public class Client extends Thread {
+public class Client {
   /* Engine Fields */
   private World realm = null;
   private final HashMap<Integer, Entity> entities = new HashMap<Integer, Entity>();
   protected GUI gui = null;
   private final Connection host;
   
+  public static void main(String[] args) {
+    new Client("127.0.0.1", 4444).run();
+  }
+  
   /* Constructor */
-  public Client() {
-    host = new Connection("127.0.0.1");
+  public Client(String ip, int port) {
+    host = new Connection(ip, port);
     
     realm = new World();
     Map map = new Map();
