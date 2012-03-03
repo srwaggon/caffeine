@@ -5,7 +5,7 @@ import java.util.TimerTask;
 
 import caffeine.entity.Entity;
 import caffeine.entity.Player;
-import caffeine.net.Server;
+import caffeine.net.GameServer;
 import caffeine.view.GUI;
 import caffeine.view.Screen;
 import caffeine.world.Location;
@@ -26,9 +26,6 @@ public final class Game {
   private final Clock clock = new Clock(); // Time
   private GUI gui = null;
   
-  /* Networking Fields */
-  private final Server server = new Server(4444);
-  
   /* Main method */
   public static void main(String args[]) {
     
@@ -47,6 +44,8 @@ public final class Game {
     Screen s = game.gui().getContentPane();
     s.camera().focusOn(p1);
     
+    GameServer gs = new GameServer(game, 4444);
+    gs.run();
   }
   
   /* CONSTRUCTORS */
@@ -56,7 +55,6 @@ public final class Game {
         world.tick();
       }
     });
-    new Thread(server).start();
   }
   
   /* ACCESSORS */

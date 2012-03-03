@@ -4,15 +4,15 @@ import java.net.Socket;
 
 import caffeine.Game;
 import caffeine.entity.Entity;
-import caffeine.world.Map;
 
 public class ClientWorker extends Thread {
   private final Connection client;
   String input;
   String response = "";
-  Map m;
+  Game game;
   
-  public ClientWorker(Socket client) {
+  public ClientWorker(Game g, Socket client) {
+    game = g;
     this.client = new Connection(client);
     System.out.println("" + client.getInetAddress().toString() + ":"
         + client.getPort() + " connecting");
@@ -21,11 +21,10 @@ public class ClientWorker extends Thread {
   public void run() {
     try {
       client.send("Hello client");
-      m = Game.instance().world().get(0);
       while (client.isConnected()) {
         response = "";
         input = client.read();
-        for (Entity e : m.entities()) {
+        for (Entity e : game.world().get(0).entities()) {
           response += e.toString() + " ";
         }
         client.send(response);

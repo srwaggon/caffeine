@@ -5,13 +5,16 @@ import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.List;
 
+import caffeine.Game;
 
-public class Server extends Thread {
+public class GameServer extends Thread {
+  private final Game game;
   private ServerSocket socket = null;
   private final int port;
   private final List<ClientWorker> clients = new ArrayList<ClientWorker>();
   
-  public Server(int port) {
+  public GameServer(Game g, int port) {
+    game = g;
     this.port = port;
     try {
       socket = new ServerSocket(port);
@@ -25,7 +28,7 @@ public class Server extends Thread {
     try {
       ClientWorker w;
       while (true) {
-        w = new ClientWorker(socket.accept());
+        w = new ClientWorker(game, socket.accept());
         Thread t = new Thread(w);
         clients.add(w);
         t.start();
