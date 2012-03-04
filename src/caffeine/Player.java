@@ -10,4 +10,5 @@ public class Player {
   public Player(ClientWorker cw) {
     client = cw;
   }
+  
 }

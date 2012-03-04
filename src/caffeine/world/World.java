@@ -30,9 +30,9 @@ public class World {
   }
   
   public String toString() {
-    String s = "";
-    for (Map m : world.values()) {
-      s += m;
+    String s = "world " + world.size() + " ";
+    for (int k : world.keySet()) {
+      s += k;
     }
     return s;
   }

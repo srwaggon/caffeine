@@ -35,7 +35,7 @@ public class Connection {
           new InputStreamReader(connection.getInputStream()));
       out = new PrintWriter(connection.getOutputStream(), true);
     } catch (IOException e) {
-      System.out.println("No I/O");
+      System.out.println("No I/O.");
       System.exit(-1);
     }
   }
@@ -56,7 +56,7 @@ public class Connection {
   
   public void disconnect() {
     try {
-      System.out.println("disconnecting from" + this);
+      System.out.println("Disconnecting from " + this + ".");
       socket.close();
     } catch (IOException e) {
       e.printStackTrace();

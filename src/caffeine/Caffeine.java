@@ -8,7 +8,7 @@ import caffeine.entity.Entity;
 import caffeine.entity.PlayerEntity;
 import caffeine.net.GameServer;
 import caffeine.view.GUI;
-import caffeine.view.Screen;
+import caffeine.view.screens.Screen;
 import caffeine.world.Location;
 import caffeine.world.Map;
 import caffeine.world.World;
@@ -38,6 +38,7 @@ public final class Caffeine implements Game {
     caffeine.world().add(map);
     
     caffeine.createGUI();
+    caffeine.gui().view(map);
     Location l = new Location(0, 48, 48);
     PlayerEntity p1 = new PlayerEntity(l, caffeine.gui().getInteractions());
     map.add(p1);
@@ -71,15 +72,6 @@ public final class Caffeine implements Game {
     return world;
   }
   
-  /* HELPERS */
-  public void createGUI() {
-    if (gui == null) {
-      gui = new GUI(world.get(0));
-      gui.setTitle("Caffeine Server");
-      new Thread(gui).start();
-    }
-  }
-  
   public void addPlayer(Player p) {
     players.add(p);
   }
@@ -102,5 +94,12 @@ public final class Caffeine implements Game {
   
   public void round() {
     world.tick();
+  }
+  
+  public void createGUI() {
+    if (gui == null) {
+      gui = new GUI("Caffeine Game Server");
+      new Thread(gui).start();
+    }
   }
 }

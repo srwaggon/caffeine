@@ -5,16 +5,11 @@ import java.util.Scanner;
 
 import caffeine.entity.Entity;
 import caffeine.view.GUI;
-import caffeine.world.Location;
-import caffeine.world.Map;
-import caffeine.world.World;
 
 public class Client {
-  /* Engine Fields */
-  private World realm = null;
-  private final HashMap<Integer, Entity> entities = new HashMap<Integer, Entity>();
-  protected GUI gui = null;
-  private final Connection host;
+  protected HashMap<Integer, Entity> entities = new HashMap<Integer, Entity>();
+  protected GUI gui = new GUI("Caffeine Game Client");
+  protected Connection host;
   
   public static void main(String[] args) {
     new Client("127.0.0.1", 4444).run();
@@ -23,23 +18,17 @@ public class Client {
   /* Constructor */
   public Client(String ip, int port) {
     host = new Connection(ip, port);
-    
-    realm = new World();
-    Map map = new Map();
-    realm.add(map);
-    gui = new GUI(map);
-    gui.setTitle("Caffeine Client");
     new Thread(gui).start();
   }
   
   public void run() {
     try {
-      host.send("Hello server.");
+      String query = "Hello Server.";
+      String response = "";
       while (host.isConnected()) {
-        String input = host.read();
-        processServerResponse(input);
-        String response = "Ok.";
-        host.send(response);
+        host.send(query);
+        response = host.read();
+        processServerResponse(response);
         Thread.sleep(10);
       }
     } catch (InterruptedException e) {
@@ -52,34 +41,6 @@ public class Client {
     
     while (lineParser.hasNext()) {
       next = lineParser.next();
-      
-      /* Handle the input */
-      if (next.equals("eot")) {
-        /* End of transmission */
-        host.disconnect();
-        break;
-        
-      } else if (next.equals("map")) {
-        Map map = new Map(lineParser.nextLine());
-        
-        gui.getContentPane().setCurrentMap(map);
-      } else if (next.equals("entity")) {
-        /* Update entity */
-        int entityID = lineParser.nextInt();
-        int mapID = lineParser.nextInt();
-        int x = lineParser.nextInt();
-        int y = lineParser.nextInt();
-        
-        if (entities.containsKey(entityID)) {
-          entities.get(entityID).loc().set(mapID, x, y);
-        } else {
-          Entity e = new Entity(new Location(mapID, x, y));
-          realm.get(0).add(e);
-          entities.put(entityID, e);
-        }
-      } else {
-        lineParser.nextLine();
-      }
     }
   }
 }

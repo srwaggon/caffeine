@@ -29,6 +29,7 @@ public class Entity {
   }
   
   public Entity(Location l) {
+    
     id = Entity.numCharacters++;
     loc = l.copy();
     spriteID = 3;
