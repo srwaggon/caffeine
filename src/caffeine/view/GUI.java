@@ -2,16 +2,16 @@ package caffeine.view;
 
 import javax.swing.JFrame;
 
-import caffeine.view.screens.MenuScreen;
-import caffeine.view.screens.Screen;
-import caffeine.view.screens.WorldScreen;
+import caffeine.view.screen.MenuScreen;
+import caffeine.view.screen.Screen;
+import caffeine.view.screen.WorldScreen;
 import caffeine.world.Map;
 
 public class GUI extends JFrame implements Runnable {
   private static final long serialVersionUID = -7225184243885275201L;
   Screen screen = null;
   WorldScreen worldScreen = new WorldScreen();
-  protected InputHandler interactions = new InputHandler();
+  protected InputHandler input = new InputHandler();
   
   public GUI(String title) {
     setTitle(title);
@@ -21,15 +21,15 @@ public class GUI extends JFrame implements Runnable {
     setLocationRelativeTo(null);
     setResizable(false);
     pack();
-    addKeyListener(interactions);
+    addKeyListener(input);
   }
   
   public Screen getContentPane() {
     return screen;
   }
   
-  public InputHandler getInteractions() {
-    return interactions;
+  public InputHandler input() {
+    return input;
   }
   
   public void view(Map map) {

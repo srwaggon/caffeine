@@ -6,7 +6,8 @@ import caffeine.world.Direction;
 import caffeine.world.Location;
 
 public class StaticMotion implements Motion {
-  protected Direction facing = Direction.W;
+  protected Direction facing = Direction.E;
+  protected Direction moveDir = Direction.E;
   protected Location loc;
   protected Location newLoc;
   private int xdir = 0;
@@ -55,8 +56,8 @@ public class StaticMotion implements Motion {
     }
     
     if (validMove(move, performer)) {
+      moveDir = d;
       newLoc.set(loc.project(xdir * speed, ydir * speed));
-      facing = d;
     }
   }
   
@@ -71,10 +72,13 @@ public class StaticMotion implements Motion {
   /**
    * Updates the location field by the accumulated (valid) moves.
    */
-  public void tick() {
+  public void move(Actor owner) {
     if (moveTimer <= 0) {
+      owner.loc().tile().remove(owner);
       loc.set(newLoc);
       newLoc.set(loc);
+      facing = moveDir;
+      owner.loc().tile().add(owner);
       xdir = 0;
       ydir = 0;
       moveTimer = 0;

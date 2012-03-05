@@ -1,23 +1,19 @@
 package caffeine.entity;
 
 import caffeine.Rule;
-import caffeine.action.Die;
 import caffeine.action.Move;
 import caffeine.view.Animation;
-import caffeine.world.Direction;
 import caffeine.world.Location;
 
 public class Projectile extends Actor {
   protected Entity owner;
-  protected Direction dir;
-  int lifespan;
+  Move move;
   
-  public Projectile(final Actor owner, int lifespan) {
-    super(owner.loc());
-    loc.map().add(this);
+  public Projectile(final Actor owner) {
+    super(owner.loc().copy());
     this.owner = owner;
-    this.lifespan = lifespan;
-    dir = owner.motion().facing();
+    
+    move = Move.fetch(owner.motion().facing());
     motion.speed(12);
     size = 15;
     
@@ -36,13 +32,11 @@ public class Projectile extends Actor {
   }
   
   public void tick() {
-    if (lifespan-- > 0) {
-      new Move(dir).perform(this);
-      tile().remove(this);
-      motion.tick();
-      tile().add(this);
+    if (motion.validMove(move, this)) {
+      move.perform(this);
+      motion.move(this);
     } else {
-      new Die("LOLOOLLOLO").perform(this);
+      loc.tile().remove(this);
     }
   }
 }

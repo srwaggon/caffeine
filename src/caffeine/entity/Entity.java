@@ -1,7 +1,6 @@
 package caffeine.entity;
 
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.util.ArrayList;
 
 import caffeine.view.Animation;
@@ -15,12 +14,10 @@ import caffeine.world.Tile;
  * 
  */
 public class Entity {
-  protected static int numCharacters = 0;
+  protected static int numEntities = 0;
   protected int id = 0;
   protected int size = 24;
   protected Location loc;
-  private Rectangle frame;
-  protected int spriteID;
   protected Animation anim;
   protected String name;
   
@@ -29,24 +26,24 @@ public class Entity {
   }
   
   public Entity(Location l) {
-    
-    id = Entity.numCharacters++;
-    loc = l.copy();
-    spriteID = 3;
+    id = Entity.numEntities++; // This must stay first.
+    name = "" + id;
+    loc = l;
+    loc.tile().add(this);
     
     int[] walkSprites = { 3, 4 };
     Animation walkAnim = new Animation(walkSprites, 200, true);
     anim = walkAnim;
-    name = "" + id;
-    System.out.println("Spawning Entity " + name + " at " + loc);
+    
+    // System.out.println("Spawning Entity " + this);
+  }
+  
+  public static int count() {
+    return Entity.numEntities;
   }
   
   public int getID() {
     return id;
-  }
-  
-  public Rectangle hitbox() {
-    return frame;
   }
   
   public Location loc() {
@@ -59,13 +56,6 @@ public class Entity {
   
   public int radius() {
     return size;
-  }
-  
-  public int spriteID() {
-    return spriteID;
-  }
-  
-  public void tick() {
   }
   
   public Tile tile() {
@@ -91,10 +81,23 @@ public class Entity {
   
   public void render(Graphics2D g2) {
     anim.render(g2, loc.x(), loc.y());
+    // System.out.println("Rendering " + this);
   }
   
-  @Override
   public String toString() {
     return "entity" + " " + id + " " + loc.toString();
+  }
+  
+  public void finalize() {
+    try {
+      System.out.println("--");
+      Entity.numEntities--;
+      super.finalize();
+    } catch (Throwable e) {
+      e.printStackTrace();
+    }
+  }
+  
+  public void tick() {
   }
 }

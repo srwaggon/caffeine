@@ -11,52 +11,51 @@ import java.util.Scanner;
 import caffeine.entity.Entity;
 import caffeine.view.Spritesheet;
 
-public class Map implements Iterable<Tile>{
+public class Map implements Iterable<Tile> {
   protected int numRows, numCols;
   protected Tile[][] map;
   protected int tileSize = 32;
-  //TODO make maps entity-managers again, rather than tiles.
   
-  private static String defaultMapString = "40 20 32 "+
-      "########################################"+
-      "#...#...#...#..........................."+
-      "#......................................."+
-      "#.....#................................."+
-      "##..#..................................."+
-      "#.........#............................."+
-      "#..#....#....#.........................."+
-      "#......#.#.............................."+
-      "##....#...#............................."+
-      "#......#.#.............................."+
-      "#....#..#..............................."+
-      "#...........#..........................."+
-      "##.........#............................"+
-      "#.....#................................."+
-      "#......................................."+
-      "#......................................."+
-      "#......................................."+
-      "#......................................."+
-      "#......................................."+
-      "########################################";
+  private static String defaultMapString = "40 20 32 "
+      + "..######################################"
+      + "....#...#...#..........................."
+      + "#......................................."
+      + "#.....#................................."
+      + "##..#..................................."
+      + "#.........#............................."
+      + "#..#....#....#.........................."
+      + "#......#.#.............................."
+      + "##....#...#............................."
+      + "#......#.#.............................."
+      + "#....#..#..............................."
+      + "#...........#..........................."
+      + "##.........#............................"
+      + "#.....#................................."
+      + "#......................................."
+      + "#......................................."
+      + "#......................................."
+      + "#......................................."
+      + "#......................................."
+      + "########################################";
   
-  public Map(){
+  public Map() {
     this(Map.defaultMapString);
   }
   
-  public Map(int cols, int rows, int tileSize){
+  public Map(int cols, int rows, int tileSize) {
     numRows = rows;
     numCols = cols;
     this.tileSize = tileSize;
     map = new Tile[cols][rows];
     
-    for(int y = 0; y < numCols; y++){
-      for(int x = 0; x < numRows; x++){
+    for (int y = 0; y < numCols; y++) {
+      for (int x = 0; x < numRows; x++) {
         map[x][y] = new Tile();
       }
     }
   }
   
-  public Map(String s){
+  public Map(String s) {
     Scanner scans = new Scanner(s);
     numCols = Integer.parseInt(scans.next());
     numRows = Integer.parseInt(scans.next());
@@ -64,13 +63,13 @@ public class Map implements Iterable<Tile>{
     
     map = new Tile[numCols][numRows];
     String line = scans.next();
-    for(int i = 0; i < numRows*numCols; i++){
+    for (int i = 0; i < numRows * numCols; i++) {
       char c = line.charAt(i);
-      map[i%numCols][i/numCols] = new Tile(c);
+      map[i % numCols][i / numCols] = new Tile(c);
     }
   }
   
-  public Tile getTile(int x, int y){
+  public Tile getTile(int x, int y) {
     if (x < 0) {
       x = 0;
     }
@@ -86,43 +85,56 @@ public class Map implements Iterable<Tile>{
     return map[x][y];
   }
   
-  public Tile getTileAt(int x, int y){
-    return getTile(x/tileSize, y/tileSize);
+  public Tile getTileAt(int x, int y) {
+    return getTile(x / tileSize, y / tileSize);
   }
   
-  public int numCols(){return numCols;}
-  public int numRows(){return numRows;}
-  public int height(){return numRows*tileSize;}
-  public int width(){return numCols*tileSize;}
-  public int tileSize(){return tileSize;}
-  
-  public boolean onMap(int x, int y){
-    return 0 <= x && x < numCols*tileSize
-        && 0 <= y && y < numRows*tileSize;
+  public int numCols() {
+    return numCols;
   }
   
-  public boolean inRange(int x, int y){
-    return x >= 0 && x < numCols
-        && y >= 0 && y < numRows;
+  public int numRows() {
+    return numRows;
   }
   
-  public void tick(){
+  public int height() {
+    return numRows * tileSize;
+  }
+  
+  public int width() {
+    return numCols * tileSize;
+  }
+  
+  public int tileSize() {
+    return tileSize;
+  }
+  
+  public boolean onMap(int x, int y) {
+    return 0 <= x && x < numCols * tileSize && 0 <= y && y < numRows * tileSize;
+  }
+  
+  public boolean inRange(int x, int y) {
+    return x >= 0 && x < numCols && y >= 0 && y < numRows;
+  }
+  
+  public void tick() {
     Collection<Entity> entities = new LinkedList<Entity>();
     Iterator<Tile> tileIterator = iterator();
-    while(tileIterator.hasNext()){
+    
+    while (tileIterator.hasNext()) {
       Tile t = tileIterator.next();
       entities.addAll(t.occupants());
       t.tick();
     }
-    for(Entity e : entities){
+    for (Entity e : entities) {
       e.tick();
     }
   }
   
-  public String toString(){
+  public String toString() {
     String s = "map " + numCols + " " + numRows + " " + tileSize + " ";
-    for(int y = 0; y < numRows; y++){
-      for(int x = 0; x < numCols; x++){
+    for (int y = 0; y < numRows; y++) {
+      for (int x = 0; x < numCols; x++) {
         s += map[x][y];
       }
     }
@@ -130,36 +142,28 @@ public class Map implements Iterable<Tile>{
     return s;
   }
   
-  public void add(Entity e){
-    Location loc = e.loc();
-    int x = loc.x();
-    int y = loc.y();
-    getTileAt(x, y).add(e);
-  }
-  
-  public void renderTiles(Graphics2D g2, Spritesheet tilesheet){
+  public void renderTiles(Graphics2D g2, Spritesheet tilesheet) {
     /* Draw the world, tile by tile */
-    for(int y = 0; y < numRows; y++){
-      for(int x = 0; x < numCols; x++){
+    for (int y = 0; y < numRows; y++) {
+      for (int x = 0; x < numCols; x++) {
         
         Tile t = getTile(x, y);
         int spriteID = t.spriteID();
         Image img = tilesheet.get(spriteID);
         
-        g2.drawImage(img, x*tileSize, y*tileSize, tileSize, tileSize, null);
+        g2.drawImage(img, x * tileSize, y * tileSize, tileSize, tileSize, null);
       }
     }
   }
   
-  public void renderEntities(Graphics2D g2, Spritesheet spritesheet){
-    for(Entity e : entities()){
+  public void renderEntities(Graphics2D g2) {
+    for (Entity e : entities()) {
       e.render(g2);
     }
   }
   
-  
   public Iterator<Tile> iterator() {
-    return new Iterator<Tile>(){
+    return new Iterator<Tile>() {
       int x = 0;
       int y = 0;
       
@@ -169,7 +173,7 @@ public class Map implements Iterable<Tile>{
       
       public Tile next() {
         Tile t = getTile(x, y);
-        if(++x == numCols){
+        if (++x == numCols) {
           x = 0;
           y++;
         }
@@ -177,7 +181,7 @@ public class Map implements Iterable<Tile>{
       }
       
       public void remove() {
-        // :V  Yeah, no.
+        // :V Yeah, no.
       }
     };
   }
@@ -185,7 +189,7 @@ public class Map implements Iterable<Tile>{
   public List<Entity> entities() {
     List<Entity> entities = new LinkedList<Entity>();
     Iterator<Tile> tileIt = iterator();
-    while(tileIt.hasNext()) {
+    while (tileIt.hasNext()) {
       Tile t = tileIt.next();
       entities.addAll(t.occupants());
     }

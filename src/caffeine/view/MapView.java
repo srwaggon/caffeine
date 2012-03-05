@@ -47,6 +47,6 @@ public class MapView {
   public void paintComponent(Graphics g) {
     Graphics2D g2 = (Graphics2D) g;
     map.renderTiles(g2, tilesheet);
-    map.renderEntities(g2, tilesheet);
+    map.renderEntities(g2);
   }
 }

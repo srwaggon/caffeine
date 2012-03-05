@@ -13,6 +13,10 @@ public class Actor extends Entity {
   protected Brain brain = new Brain();
   protected Motion motion;
   
+  public Actor() {
+    motion = new StaticMotion(loc);
+  }
+  
   public Actor(Location l) {
     super(l);
     motion = new StaticMotion(loc);
@@ -39,9 +43,7 @@ public class Actor extends Entity {
       for (Action a : brain.next(this)) {
         a.perform(this);
       }
-      tile().remove(this);
-      motion.tick();
-      tile().add(this);
+      motion.move(this);
     }
   }
 }

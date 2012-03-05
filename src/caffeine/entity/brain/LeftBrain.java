@@ -12,11 +12,11 @@ public class LeftBrain extends Brain {
   
   public List<Action> next(Actor a) {
     actionPlan.clear();
-    Move m = new Move(dir);
+    Move move = Move.fetch(dir);
     
-    if(a.motion().validMove(m, a)) {
-      actionPlan.add(m);
-    }else{
+    if (a.motion().validMove(move, a)) {
+      actionPlan.add(move);
+    } else {
       dir = dir.prev();
     }
     return actionPlan;

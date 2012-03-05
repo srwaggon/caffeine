@@ -6,7 +6,10 @@ import caffeine.entity.Projectile;
 public class CreateProjectile implements Action {
   
   public void perform(Actor performer) {
-    new Projectile(performer, 100);
+    new Projectile(performer);
   }
   
+  public String toString() {
+    return "projectile creation";
+  }
 }

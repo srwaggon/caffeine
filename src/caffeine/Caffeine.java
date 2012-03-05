@@ -1,14 +1,17 @@
 package caffeine;
 
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.TimerTask;
 
+import caffeine.entity.Actor;
 import caffeine.entity.Entity;
-import caffeine.entity.PlayerEntity;
+import caffeine.entity.brain.LeftBrain;
 import caffeine.net.GameServer;
 import caffeine.view.GUI;
-import caffeine.view.screens.Screen;
+import caffeine.view.screen.Screen;
 import caffeine.world.Location;
 import caffeine.world.Map;
 import caffeine.world.World;
@@ -39,12 +42,15 @@ public final class Caffeine implements Game {
     
     caffeine.createGUI();
     caffeine.gui().view(map);
-    Location l = new Location(0, 48, 48);
-    PlayerEntity p1 = new PlayerEntity(l, caffeine.gui().getInteractions());
-    map.add(p1);
+    
+    Actor otherbot = new Actor(new Location());
+    otherbot.brain(new LeftBrain());
+    
+    Player p1 = new Player(caffeine);
+    caffeine.addPlayer(p1);
     
     Screen s = caffeine.gui().getContentPane();
-    s.camera().focusOn(p1);
+    s.camera().focusOn(p1.playerEntity().loc());
     
     GameServer gs = new GameServer(caffeine, 4444);
     gs.run();
@@ -72,6 +78,14 @@ public final class Caffeine implements Game {
     return world;
   }
   
+  public Set<Map> activeMaps() {
+    Set<Map> activeMaps = new LinkedHashSet<Map>();
+    for (Player p : players()) {
+      activeMaps.add(p.playerEntity().loc().map());
+    }
+    return activeMaps;
+  }
+  
   public void addPlayer(Player p) {
     players.add(p);
   }
@@ -93,7 +107,9 @@ public final class Caffeine implements Game {
   }
   
   public void round() {
-    world.tick();
+    for (Map map : activeMaps()) {
+      map.tick();
+    }
   }
   
   public void createGUI() {

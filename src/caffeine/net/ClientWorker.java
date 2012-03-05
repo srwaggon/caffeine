@@ -7,14 +7,18 @@ import caffeine.Caffeine;
 import caffeine.Game;
 
 public class ClientWorker extends Thread {
-  private final Connection client;
-  Caffeine game;
+  protected final Connection client;
+  protected Caffeine game;
   
   public ClientWorker(Game g, Socket client) {
     game = (Caffeine) g;
     this.client = new Connection(client);
     System.out.println("" + client.getInetAddress().toString() + ":"
         + client.getPort() + " connecting");
+  }
+  
+  public Game game() {
+    return game;
   }
   
   public void run() {

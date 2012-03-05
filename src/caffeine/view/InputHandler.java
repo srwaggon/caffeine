@@ -18,17 +18,14 @@ public class InputHandler extends JComponent implements KeyListener {
     return false;
   }
   
-  @Override
   public void keyPressed(KeyEvent event) {
     keys.put(event.getKeyCode(), true);
   }
   
-  @Override
   public void keyReleased(KeyEvent event) {
     keys.put(event.getKeyCode(), false);
   }
   
-  @Override
   public void keyTyped(KeyEvent e) {
     // System.out.print(e.getKeyChar());
   }

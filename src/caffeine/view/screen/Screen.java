@@ -1,4 +1,4 @@
-package caffeine.view.screens;
+package caffeine.view.screen;
 
 import java.awt.Dimension;
 

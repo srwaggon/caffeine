@@ -10,6 +10,8 @@ public interface Motion {
   
   public void handleMove(Move move, Actor target);
   
+  public void move(Actor performer);
+  
   public int speed();
   
   public void speed(int speed);
@@ -19,7 +21,5 @@ public interface Motion {
   public void validLocRule(Rule r);
   
   public boolean validMove(Move m, Actor a);
-  
-  public void tick();
   
 }
