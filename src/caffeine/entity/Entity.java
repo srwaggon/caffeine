@@ -1,6 +1,8 @@
 package caffeine.entity;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 
 import caffeine.view.Animation;
@@ -22,7 +24,7 @@ public class Entity {
   protected String name;
   
   public Entity() {
-    this(new Location());
+    this(new Location(0, 32, 32));
   }
   
   public Entity(Location l) {
@@ -62,26 +64,28 @@ public class Entity {
     return loc.tile();
   }
   
+  public Rectangle hitbox() {
+    return new Rectangle(loc.x(), loc.y(), size, size);
+  }
+  
   public ArrayList<Location> vertices() {
     ArrayList<Location> vertices = new ArrayList<Location>();
     int mapID = loc.mapID();
     int x = loc.x();
     int y = loc.y();
-    int ts = loc.map().tileSize();
-    int padding = ts - size;
     
     // topleft, topright, bottomleft, bottomright
-    vertices.add(new Location(mapID, x + padding, y + padding));
-    vertices.add(new Location(mapID, x + padding, y + ts - padding - 1));
-    vertices.add(new Location(mapID, x + ts - padding - 1, y + padding));
-    vertices
-        .add(new Location(mapID, x + ts - padding - 1, y + ts - padding - 1));
+    vertices.add(new Location(mapID, x, y));
+    vertices.add(new Location(mapID, x, y + size));
+    vertices.add(new Location(mapID, x + size, y));
+    vertices.add(new Location(mapID, x + size, y + size));
     return vertices;
   }
   
   public void render(Graphics2D g2) {
     anim.render(g2, loc.x(), loc.y());
-    // System.out.println("Rendering " + this);
+    g2.setColor(Color.RED);
+    g2.draw(hitbox());
   }
   
   public String toString() {

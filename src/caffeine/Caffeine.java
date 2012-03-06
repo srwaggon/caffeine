@@ -9,10 +9,10 @@ import java.util.TimerTask;
 import caffeine.entity.Actor;
 import caffeine.entity.Entity;
 import caffeine.entity.brain.LeftBrain;
+import caffeine.entity.brain.RightBrain;
 import caffeine.net.GameServer;
 import caffeine.view.GUI;
 import caffeine.view.screen.Screen;
-import caffeine.world.Location;
 import caffeine.world.Map;
 import caffeine.world.World;
 
@@ -43,11 +43,13 @@ public final class Caffeine implements Game {
     caffeine.createGUI();
     caffeine.gui().view(map);
     
-    Actor otherbot = new Actor(new Location());
-    otherbot.brain(new LeftBrain());
-    
     Player p1 = new Player(caffeine);
     caffeine.addPlayer(p1);
+    
+    Actor leftbot = new Actor();
+    leftbot.brain(new LeftBrain());
+    Actor rightbot = new Actor();
+    rightbot.brain(new RightBrain());
     
     Screen s = caffeine.gui().getContentPane();
     s.camera().focusOn(p1.playerEntity().loc());

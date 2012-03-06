@@ -1,6 +1,7 @@
 package caffeine.entity;
 
 import caffeine.Rule;
+import caffeine.action.Hurt;
 import caffeine.action.Move;
 import caffeine.view.Animation;
 import caffeine.world.Location;
@@ -35,6 +36,13 @@ public class Projectile extends Actor {
     if (motion.validMove(move, this)) {
       move.perform(this);
       motion.move(this);
+      for (Entity e : loc.tile().occupants()) {
+        if (e instanceof Actor && !(e instanceof Projectile)
+            && !e.equals(owner) && hitbox().intersects(e.hitbox())) {
+          Actor a = (Actor) e;
+          new Hurt(1, this).perform(a);
+        }
+      }
     } else {
       loc.tile().remove(this);
     }
