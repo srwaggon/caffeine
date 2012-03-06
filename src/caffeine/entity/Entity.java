@@ -1,6 +1,5 @@
 package caffeine.entity;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -84,7 +83,6 @@ public class Entity {
   
   public void render(Graphics2D g2) {
     anim.render(g2, loc.x(), loc.y());
-    g2.setColor(Color.RED);
     g2.draw(hitbox());
   }
   
