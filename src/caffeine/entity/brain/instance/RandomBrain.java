@@ -1,10 +1,11 @@
-package caffeine.entity.brain;
+package caffeine.entity.brain.instance;
 
 import java.util.List;
 
 import caffeine.action.Action;
 import caffeine.action.Move;
 import caffeine.entity.Actor;
+import caffeine.entity.brain.Brain;
 import caffeine.world.Direction;
 
 /**

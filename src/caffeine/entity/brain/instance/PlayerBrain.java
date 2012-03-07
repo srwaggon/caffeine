@@ -1,9 +1,10 @@
-package caffeine.entity.brain;
+package caffeine.entity.brain.instance;
 
 import java.awt.event.KeyEvent;
 
 import caffeine.action.CreateProjectile;
 import caffeine.action.Move;
+import caffeine.entity.brain.InteractiveBrain;
 import caffeine.view.InputHandler;
 
 public class PlayerBrain extends InteractiveBrain {

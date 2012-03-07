@@ -1,6 +1,7 @@
-package caffeine.entity;
+package caffeine.entity.instance;
 
-import caffeine.entity.brain.PlayerBrain;
+import caffeine.entity.Actor;
+import caffeine.entity.brain.instance.PlayerBrain;
 import caffeine.view.InputHandler;
 
 public class PlayerEntity extends Actor {

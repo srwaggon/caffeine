@@ -10,14 +10,16 @@ import caffeine.entity.Actor;
 import caffeine.view.InputHandler;
 
 public class InteractiveBrain extends Brain {
-  HashMap<Integer, Action> actionMap = new HashMap<Integer, Action>();
-  InputHandler input;
+  protected HashMap<Integer, Action> actionMap = new HashMap<Integer, Action>();
+  protected InputHandler input;
   
   /**
-   * Creates an InteractiveBrain.  This type of brain responds to keyboard input.
-   * @param InputHandler to read keyboard input from.
+   * Creates an InteractiveBrain. This type of brain responds to keyboard input.
+   * 
+   * @param InputHandler
+   *          to read keyboard input from.
    */
-  public InteractiveBrain(InputHandler ih){
+  public InteractiveBrain(InputHandler ih) {
     input = ih;
     actionMap.put(KeyEvent.VK_UP, new Report("Up pressed"));
     actionMap.put(KeyEvent.VK_DOWN, new Report("Down pressed"));
@@ -26,13 +28,13 @@ public class InteractiveBrain extends Brain {
   }
   
   /**
-   * Plans what this brain intends to do on each turn.
-   * <br />In this case, determined by keyboard input
+   * Plans what this brain intends to do on each turn. <br />
+   * In this case, determined by keyboard input
    */
   public List<Action> next(Actor actor) {
     actionPlan.clear();
-    for(int keyCode : actionMap.keySet()){
-      if(input.get(keyCode)) {
+    for (int keyCode : actionMap.keySet()) {
+      if (input.get(keyCode)) {
         actionPlan.add(actionMap.get(keyCode));
       }
     }

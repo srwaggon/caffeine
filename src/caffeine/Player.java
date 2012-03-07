@@ -1,6 +1,6 @@
 package caffeine;
 
-import caffeine.entity.PlayerEntity;
+import caffeine.entity.instance.PlayerEntity;
 import caffeine.net.ClientWorker;
 
 public class Player {

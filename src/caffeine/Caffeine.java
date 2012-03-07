@@ -8,8 +8,8 @@ import java.util.TimerTask;
 
 import caffeine.entity.Actor;
 import caffeine.entity.Entity;
-import caffeine.entity.brain.LeftBrain;
-import caffeine.entity.brain.RightBrain;
+import caffeine.entity.brain.instance.LeftBrain;
+import caffeine.entity.brain.instance.RightBrain;
 import caffeine.net.GameServer;
 import caffeine.view.GUI;
 import caffeine.view.screen.Screen;
