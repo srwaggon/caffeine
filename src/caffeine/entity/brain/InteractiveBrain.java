@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import caffeine.action.Action;
-import caffeine.action.Report;
+import caffeine.action.instance.Report;
 import caffeine.entity.Actor;
 import caffeine.view.InputHandler;
 

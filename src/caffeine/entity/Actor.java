@@ -2,7 +2,7 @@ package caffeine.entity;
 
 import caffeine.action.Action;
 import caffeine.action.Motion;
-import caffeine.action.StaticMotion;
+import caffeine.action.instance.StaticMotion;
 import caffeine.entity.brain.Brain;
 import caffeine.world.Location;
 

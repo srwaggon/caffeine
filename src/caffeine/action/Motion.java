@@ -1,6 +1,7 @@
 package caffeine.action;
 
 import caffeine.Rule;
+import caffeine.action.instance.Move;
 import caffeine.entity.Actor;
 import caffeine.world.Direction;
 

@@ -2,8 +2,8 @@ package caffeine.entity.brain.instance;
 
 import java.awt.event.KeyEvent;
 
-import caffeine.action.CreateProjectile;
-import caffeine.action.Move;
+import caffeine.action.instance.CreateProjectile;
+import caffeine.action.instance.Move;
 import caffeine.entity.brain.InteractiveBrain;
 import caffeine.view.InputHandler;
 

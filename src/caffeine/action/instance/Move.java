@@ -1,5 +1,6 @@
-package caffeine.action;
+package caffeine.action.instance;
 
+import caffeine.action.Action;
 import caffeine.entity.Actor;
 import caffeine.world.Direction;
 
