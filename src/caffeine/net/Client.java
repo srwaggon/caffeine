@@ -37,10 +37,8 @@ public class Client {
   
   public void processServerResponse(String response) {
     Scanner lineParser = new Scanner(response);
-    String next;
-    
     while (lineParser.hasNext()) {
-      next = lineParser.next();
+      lineParser.next();
     }
   }
 }
