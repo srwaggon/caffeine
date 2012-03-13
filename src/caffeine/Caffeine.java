@@ -13,6 +13,7 @@ import caffeine.entity.brain.instance.RightBrain;
 import caffeine.net.GameServer;
 import caffeine.view.GUI;
 import caffeine.view.screen.Screen;
+import caffeine.world.Location;
 import caffeine.world.Map;
 import caffeine.world.World;
 
@@ -27,7 +28,7 @@ public final class Caffeine implements Game {
   /* Engine Fields */
   private final World world = new World(); // Space
   private final Clock clock = new Clock(); // Time
-  private List<Player> players = new LinkedList<Player>();
+  private final List<Player> players = new LinkedList<Player>();
   private GUI gui = null;
   
   /* Main method */
@@ -46,13 +47,16 @@ public final class Caffeine implements Game {
     Player p1 = new Player(caffeine);
     caffeine.addPlayer(p1);
     
-    Actor leftbot = new Actor();
+    Actor leftbot = new Actor(new Location(0, 48, 80));
     leftbot.brain(new LeftBrain());
-    Actor rightbot = new Actor();
+    leftbot.loc().tile().add(leftbot);
+    
+    Actor rightbot = new Actor(new Location(0, 80, 48));
     rightbot.brain(new RightBrain());
+    rightbot.loc().tile().add(rightbot);
     
     Screen s = caffeine.gui().getContentPane();
-    s.camera().focusOn(p1.playerEntity().loc());
+    s.camera().focusOn(p1.playerEntity());
     
     GameServer gs = new GameServer(caffeine, 4444);
     gs.run();
@@ -90,6 +94,7 @@ public final class Caffeine implements Game {
   
   public void addPlayer(Player p) {
     players.add(p);
+    p.playerEntity().tile().add(p.playerEntity());
   }
   
   public int numRoundsPlayed() {

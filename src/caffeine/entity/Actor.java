@@ -14,12 +14,12 @@ public class Actor extends Entity {
   protected Motion motion;
   
   public Actor() {
-    motion = new StaticMotion(loc);
+    motion = new StaticMotion(getID(), loc);
   }
   
   public Actor(Location l) {
     super(l);
-    motion = new StaticMotion(loc);
+    motion = new StaticMotion(getID(), loc);
   }
   
   public Motion motion() {

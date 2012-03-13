@@ -6,34 +6,30 @@ import caffeine.action.instance.Move;
 import caffeine.entity.Actor;
 import caffeine.entity.Entity;
 import caffeine.view.Animation;
-import caffeine.world.Location;
 
 public class Projectile extends Actor {
   protected Entity owner;
   Move move;
-
+  
   public Projectile(final Actor owner) {
     super(owner.loc().copy());
     this.owner = owner;
-
+    
     move = Move.fetch(owner.motion().facing());
     motion.speed(12);
     size = 4;
-
+    
     int[] sprites = { 8 };
     anim = new Animation(sprites, 1, false);
-
+    
     motion().validLocRule(new Rule() {
       public boolean appliesTo(Object o) {
-        if (o instanceof Location) {
-          Location loc = (Location) o;
-          return loc.validLocation() && loc.tile().pass();
-        }
-        return false;
+        return true;
       }
     });
+    loc().tile().add(this);
   }
-
+  
   public void tick() {
     if (motion.validMove(move, this)) {
       move.perform(this);

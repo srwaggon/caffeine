@@ -2,6 +2,7 @@ package caffeine.world;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -9,14 +10,17 @@ import java.util.List;
 import java.util.Scanner;
 
 import caffeine.entity.Entity;
+import caffeine.entity.instance.Boulder;
 import caffeine.view.Spritesheet;
 
 public class Map implements Iterable<Tile> {
+  private static int numMaps = 0;
+  protected int id;
   protected int numRows, numCols;
+  protected static int tileSize = 32;
   protected Tile[][] map;
-  protected int tileSize = 32;
   
-  private static String defaultMapString = "40 20 32 "
+  private static String defaultMapString = "40 20 "
       + "########################################"
       + "#...#...#...#..........................."
       + "#......................................."
@@ -42,31 +46,53 @@ public class Map implements Iterable<Tile> {
     this(Map.defaultMapString);
   }
   
-  public Map(int cols, int rows, int tileSize) {
+  public Map(int cols, int rows) {
+    id = Map.numMaps++;
     numRows = rows;
     numCols = cols;
-    this.tileSize = tileSize;
     map = new Tile[cols][rows];
     
     for (int y = 0; y < numCols; y++) {
       for (int x = 0; x < numRows; x++) {
-        map[x][y] = new Tile();
+        map[x][y] = new Tile(x, y);
       }
     }
   }
   
   public Map(String s) {
     Scanner scans = new Scanner(s);
+    id = Map.numMaps++;
     numCols = Integer.parseInt(scans.next());
     numRows = Integer.parseInt(scans.next());
-    tileSize = Integer.parseInt(scans.next());
-    
     map = new Tile[numCols][numRows];
+    
     String line = scans.next();
     for (int i = 0; i < numRows * numCols; i++) {
+      int x = i % numCols;
+      int y = i / numCols;
       char c = line.charAt(i);
-      map[i % numCols][i / numCols] = new Tile(c);
+      map[x][y] = new Tile(x, y);
+      if (c == '#') {
+        map[x][y].add(new Boulder(new Location(id, x * Tile.size()
+            + Tile.size() / 2, y * Tile.size() + Tile.size() / 2)));
+      }
     }
+  }
+  
+  public int getID() {
+    return id;
+  }
+  
+  public List<Tile> getOverlappingTiles(Rectangle r) {
+    List<Tile> overlapping = new LinkedList<Tile>();
+    
+    for (Tile t : this) {
+      if (r.intersects(t.frame())) {
+        overlapping.add(t);
+      }
+      // TODO: secure a more efficient algorithm.
+    }
+    return overlapping;
   }
   
   public Tile getTile(int x, int y) {
@@ -86,7 +112,7 @@ public class Map implements Iterable<Tile> {
   }
   
   public Tile getTileAt(int x, int y) {
-    return getTile(x / tileSize, y / tileSize);
+    return getTile(x / Map.tileSize, y / Map.tileSize);
   }
   
   public int numCols() {
@@ -98,19 +124,20 @@ public class Map implements Iterable<Tile> {
   }
   
   public int height() {
-    return numRows * tileSize;
+    return numRows * Map.tileSize;
   }
   
   public int width() {
-    return numCols * tileSize;
+    return numCols * Map.tileSize;
   }
   
   public int tileSize() {
-    return tileSize;
+    return Map.tileSize;
   }
   
   public boolean onMap(int x, int y) {
-    return 0 <= x && x < numCols * tileSize && 0 <= y && y < numRows * tileSize;
+    return 0 <= x && x < numCols * Map.tileSize && 0 <= y
+        && y < numRows * Map.tileSize;
   }
   
   public boolean inRange(int x, int y) {
@@ -132,7 +159,7 @@ public class Map implements Iterable<Tile> {
   }
   
   public String toString() {
-    String s = "map " + numCols + " " + numRows + " " + tileSize + " ";
+    String s = "map " + numCols + " " + numRows + " " + Map.tileSize + " ";
     for (int y = 0; y < numRows; y++) {
       for (int x = 0; x < numCols; x++) {
         s += map[x][y];
@@ -151,7 +178,8 @@ public class Map implements Iterable<Tile> {
         int spriteID = t.spriteID();
         Image img = tilesheet.get(spriteID);
         
-        g2.drawImage(img, x * tileSize, y * tileSize, tileSize, tileSize, null);
+        g2.drawImage(img, x * Map.tileSize, y * Map.tileSize, Map.tileSize,
+            Map.tileSize, null);
       }
     }
   }

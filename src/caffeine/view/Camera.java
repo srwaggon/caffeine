@@ -9,11 +9,10 @@ import caffeine.world.Map;
 
 public class Camera {
   protected Dimension dims;
-  protected Location loc;
+  protected Location loc = new Location();;
   
   public Camera(Dimension d) {
     dims = d;
-    loc = new Location();
   }
   
   public void focusOn(Location l) {

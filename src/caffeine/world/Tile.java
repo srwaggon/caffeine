@@ -1,5 +1,6 @@
 package caffeine.world;
 
+import java.awt.Rectangle;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -10,43 +11,35 @@ public class Tile {
   protected boolean pass = true;
   protected int damage = 0;
   protected int spriteID = 0;
-  protected char symbol;
+  protected static int size = 32;
+  protected Rectangle rect;
   
-  public static Tile block = new Tile(false, 0, 1, '#');
-  public static Tile safe = new Tile(true, 0, 0, '.');
-  
-  public Tile() {
-  }
-  
-  public Tile(char c) {
-    symbol = c;
-    if (c == '#') {
-      pass = false;
-      spriteID = 1;
-    }
-  }
-  
-  private Tile(boolean pass, int damage, int spriteID, char symbol) {
-    this.pass = pass;
-    this.damage = damage;
-    this.spriteID = spriteID;
-    this.symbol = symbol;
+  public Tile(int x, int y) {
+    rect = new Rectangle(x * Tile.size, y * Tile.size, Tile.size, Tile.size);
   }
   
   public void add(Entity e) {
     occupants.put(e.getID(), e);
   }
   
-  public Collection<Entity> occupants() {
-    return occupants.values();
+  public Rectangle frame() {
+    return rect;
   }
   
   public boolean isEmpty() {
     return occupants.isEmpty();
   }
   
+  public Collection<Entity> occupants() {
+    return occupants.values();
+  }
+  
   public boolean pass() {
     return pass;
+  }
+  
+  public void pass(boolean b) {
+    pass = b;
   }
   
   public void remove(Entity e) {
@@ -57,12 +50,22 @@ public class Tile {
     return damage <= 0;
   }
   
-  public String toString() {
-    return "" + symbol;
+  public static int size() {
+    return Tile.size;
+  }
+  
+  public static void size(int setTo) {
+    if (setTo > 0) {
+      Tile.size = setTo;
+    }
   }
   
   public int spriteID() {
     return spriteID;
+  }
+  
+  public void spriteID(int id) {
+    spriteID = id;
   }
   
   public void tick() {

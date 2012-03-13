@@ -1,31 +1,43 @@
 package caffeine.action.instance;
 
+import java.awt.Rectangle;
+
 import caffeine.Rule;
 import caffeine.action.Motion;
 import caffeine.entity.Actor;
+import caffeine.entity.Entity;
 import caffeine.world.Direction;
 import caffeine.world.Location;
+import caffeine.world.Tile;
 
 public class StaticMotion implements Motion {
-  protected Direction facing = Direction.E;
-  protected Direction moveDir = Direction.E;
+  protected Direction facing = Direction.pickOneAtRandom();
   protected Location loc;
   protected Location newLoc;
-  private int xdir = 0;
-  private int ydir = 0;
+  private int dx = 0;
+  private int dy = 0;
   protected int speed = 2;
   protected int moveTimer;
   protected Rule validLocRule;
   
-  public StaticMotion(Location l) {
+  public StaticMotion(final int ownerID, Location l) {
     loc = l;
     newLoc = l.copy();
-    
     validLocRule = new Rule() {
+      
       public boolean appliesTo(Object o) {
-        if (o instanceof Location) {
-          Location l = (Location) o;
-          return l.validLocation() && l.tile().pass();
+        
+        if (o instanceof Rectangle) {
+          Rectangle projection = (Rectangle) o;
+          for (Tile t : loc.map().getOverlappingTiles(projection)) {
+            t.spriteID(10);
+            for (Entity e : t.occupants()) {
+              if (e.getID() != ownerID && projection.intersects(e.hitbox())) {
+                return false;
+              }
+            }
+          }
+          return true;
         }
         return false;
       }
@@ -38,27 +50,28 @@ public class StaticMotion implements Motion {
   
   public void handleMove(Move move, Actor performer) {
     Direction d = move.dir();
+    
     /* Determine direction(s) of motion, but they can't be conflicting */
     switch (d) {
       case W:
-        xdir = xdir == 0 ? -1 : 0;
+        dx = dx == 0 ? -speed : 0;
         break;
       case N:
-        ydir = ydir == 0 ? -1 : 0;
+        dy = dy == 0 ? -speed : 0;
         break;
       case E:
-        xdir = xdir == 0 ? 1 : 0;
+        dx = dx == 0 ? speed : 0;
         break;
       case S:
-        ydir = ydir == 0 ? 1 : 0;
+        dy = dy == 0 ? speed : 0;
         break;
       default:
         break;
     }
     
+    facing = d;
     if (validMove(move, performer)) {
-      moveDir = d;
-      newLoc.set(loc.project(xdir * speed, ydir * speed));
+      newLoc.set(loc.project(dx, dy));
     }
   }
   
@@ -67,7 +80,7 @@ public class StaticMotion implements Motion {
   }
   
   public void speed(int speed) {
-    this.speed = speed;
+    this.speed = speed > 0 ? speed : this.speed;
   }
   
   /**
@@ -78,10 +91,9 @@ public class StaticMotion implements Motion {
       owner.loc().tile().remove(owner);
       loc.set(newLoc);
       newLoc.set(loc);
-      facing = moveDir;
       owner.loc().tile().add(owner);
-      xdir = 0;
-      ydir = 0;
+      dx = 0;
+      dy = 0;
       moveTimer = 0;
     } else {
       moveTimer--;
@@ -89,34 +101,30 @@ public class StaticMotion implements Motion {
   }
   
   public boolean validMove(Move move, Actor performer) {
-    Direction d = move.dir();
-    /* Determine direction(s) of motion, but they can't be conflicting */
-    int xdir = 0;
-    int ydir = 0;
-    switch (d) {
+    
+    int dx = 0;
+    int dy = 0;
+    
+    switch (move.dir()) {
       case W:
-        xdir = xdir == 0 ? -1 : 0;
+        dx = -speed;
         break;
       case N:
-        ydir = ydir == 0 ? -1 : 0;
+        dy = -speed;
         break;
       case E:
-        xdir = xdir == 0 ? 1 : 0;
+        dx = speed;
         break;
       case S:
-        ydir = ydir == 0 ? 1 : 0;
+        dy = speed;
         break;
       default:
         break;
     }
+    Rectangle projection = performer.hitbox().getBounds();
+    projection.translate(dx, dy);
     
-    for (Location corner : performer.vertices()) {
-      Location projection = corner.project(xdir * speed, ydir * speed);
-      if (!validLocRule.appliesTo(projection)) {
-        return false;
-      }
-    }
-    return true;
+    return validLocRule.appliesTo(projection);
   }
   
   public Rule validLocRule() {
