@@ -16,7 +16,7 @@ public class Animation {
     for (int n : sprites) {
       frames.add(new Frame(new Sprite(n, 0, 0), 0, 0));
     }
-    this.frameDuration = frameDuration / GUI.fps();
+    this.frameDuration = frameDuration * GUI.fps() / 1000;
     this.isLooping = isLooping;
   }
   
@@ -24,13 +24,13 @@ public class Animation {
     for (Sprite s : sprites) {
       frames.add(new Frame(s, 0, 0));
     }
-    this.frameDuration = frameDuration / GUI.fps();
+    this.frameDuration = frameDuration * GUI.fps() / 1000;
     this.isLooping = isLooping;
   }
   
   public Animation(Frame[] frames, int frameDuration, boolean isLooping) {
     this.frames.addAll(Arrays.asList(frames));
-    this.frameDuration = frameDuration / GUI.fps();
+    this.frameDuration = frameDuration * GUI.fps() / 1000;
     this.isLooping = isLooping;
   }
   

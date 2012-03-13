@@ -9,7 +9,7 @@ import caffeine.world.Map;
 
 public class Camera {
   protected Dimension dims;
-  protected Location loc = new Location();;
+  protected Location loc;
   
   public Camera(Dimension d) {
     dims = d;
