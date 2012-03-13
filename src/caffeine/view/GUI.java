@@ -36,6 +36,7 @@ public class GUI extends JFrame implements Runnable {
     worldScreen.setCurrentMap(map);
     screen = worldScreen;
     setContentPane(screen);
+    // TODO this is sloppy. Shouldn't have to set this multiple times.
   }
   
   public static int fps() {

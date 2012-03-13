@@ -85,12 +85,11 @@ public class Map implements Iterable<Tile> {
   
   public List<Tile> getOverlappingTiles(Rectangle r) {
     List<Tile> overlapping = new LinkedList<Tile>();
-    
-    for (Tile t : this) {
-      if (r.intersects(t.frame())) {
-        overlapping.add(t);
+    int ts = Tile.size();
+    for (int y = r.y / ts; y <= (r.y + r.height) / ts; y++) {
+      for (int x = r.x / ts; x <= (r.x + r.width) / Tile.size(); x++) {
+        overlapping.add(getTile(x, y));
       }
-      // TODO: secure a more efficient algorithm.
     }
     return overlapping;
   }
