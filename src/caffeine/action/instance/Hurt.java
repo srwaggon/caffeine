@@ -12,12 +12,12 @@ public class Hurt implements Action {
     this.sender = sender;
   }
   
-  public void perform(Actor performer) {
+  public void performBy(Actor performer) {
     performer.health -= amt;
     System.out.println(performer + " hurt by " + sender);
     
     if (performer.health <= 0) {
-      new Die(sender.toString()).perform(performer);
+      new Die(sender.toString()).performBy(performer);
     }
   }
   

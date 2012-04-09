@@ -6,7 +6,7 @@ import caffeine.entity.Actor;
 public interface Action {
   /* An example/basic action: Inaction! */
   public static Action Inaction = new Action() {
-    public void perform(Actor performer) {
+    public void performBy(Actor performer) {
       ;// Do nothing
     }
   };
@@ -18,7 +18,7 @@ public interface Action {
    * 
    * @param performer
    */
-  void perform(Actor performer);
+  void performBy(Actor performer);
   
   String toString();
 }

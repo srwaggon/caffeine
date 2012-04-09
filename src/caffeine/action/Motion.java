@@ -7,11 +7,9 @@ import caffeine.world.Direction;
 
 public interface Motion {
   
+  public void face(Direction dir);
+  
   public Direction facing();
-  
-  public void handleMove(Move move, Actor target);
-  
-  public void move(Actor performer);
   
   public int speed();
   

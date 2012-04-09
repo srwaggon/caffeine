@@ -4,7 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 import caffeine.view.Animation;
-import caffeine.world.Location;
+import caffeine.world.Loc;
 import caffeine.world.Tile;
 
 /**
@@ -17,21 +17,22 @@ public class Entity {
   protected static int numEntities = 0;
   protected int id = 0;
   protected int size = 24;
-  protected Location loc;
+  protected Loc loc;
   protected Animation anim;
   protected String name;
   
   public Entity() {
-    this(new Location(0, 48, 48));
+    this(new Loc(0, 48, 48));
   }
   
-  public Entity(Location l) {
+  public Entity(Loc l) {
     id = Entity.numEntities++; // This must stay first.
     name = "" + id;
     loc = l;
     // loc.tile().add(this);
     
     int[] walkSprites = { 3, 4 };
+    
     Animation walkAnim = new Animation(walkSprites, 200, true);
     anim = walkAnim;
   }
@@ -44,12 +45,14 @@ public class Entity {
     return id;
   }
   
-  public Location loc() {
+  public Loc loc() {
     return loc;
   }
   
-  public void loc(Location loc) {
+  public void loc(Loc loc) {
+    this.loc.tile().remove(this);
     this.loc = loc;
+    loc.tile().add(this);
   }
   
   public int radius() {

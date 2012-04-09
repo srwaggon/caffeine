@@ -73,7 +73,7 @@ public class Map implements Iterable<Tile> {
       char c = line.charAt(i);
       map[x][y] = new Tile(x, y);
       if (c == '#') {
-        map[x][y].add(new Boulder(new Location(id, x * Tile.size()
+        map[x][y].add(new Boulder(new Loc(id, x * Tile.size()
             + Tile.size() / 2, y * Tile.size() + Tile.size() / 2)));
       }
     }

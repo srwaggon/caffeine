@@ -6,7 +6,7 @@ public class World {
   public HashMap<Integer, Map> world = new HashMap<Integer, Map>();
   
   public World() {
-    Location.setRealm(this);
+    Loc.setRealm(this);
   }
   
   public int size() {

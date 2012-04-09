@@ -15,6 +15,8 @@ public class Projectile extends Actor {
     super(owner.loc().copy());
     this.owner = owner;
     
+    loc.translate(owner.motion().facing(), owner.size());
+    
     move = Move.fetch(owner.motion().facing());
     motion.speed(12);
     size = 4;
@@ -32,13 +34,12 @@ public class Projectile extends Actor {
   
   public void tick() {
     if (motion.validMove(move, this)) {
-      move.perform(this);
-      motion.move(this);
+      move.performBy(this);
       for (Entity e : loc.tile().occupants()) {
         if (e instanceof Actor && !(e instanceof Projectile)
             && !e.equals(owner) && hitbox().intersects(e.hitbox())) {
           Actor a = (Actor) e;
-          new Hurt(1, this).perform(a);
+          new Hurt(1, this).performBy(a);
         }
       }
     } else {

@@ -11,7 +11,7 @@ public class Push implements Action {
     pushee = who;
   }
   
-  public void perform(Actor performer) {
+  public void performBy(Actor performer) {
     
   }
   

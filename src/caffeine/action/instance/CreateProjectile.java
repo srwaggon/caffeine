@@ -6,7 +6,7 @@ import caffeine.entity.instance.Projectile;
 
 public class CreateProjectile implements Action {
   
-  public void perform(Actor performer) {
+  public void performBy(Actor performer) {
     new Projectile(performer);
   }
   

@@ -4,18 +4,18 @@ import java.awt.Dimension;
 import java.awt.Image;
 
 import caffeine.entity.Entity;
-import caffeine.world.Location;
+import caffeine.world.Loc;
 import caffeine.world.Map;
 
 public class Camera {
   protected Dimension dims;
-  protected Location loc;
+  protected Loc loc;
   
   public Camera(Dimension d) {
     dims = d;
   }
   
-  public void focusOn(Location l) {
+  public void focusOn(Loc l) {
     loc = l;
   }
   
@@ -23,7 +23,7 @@ public class Camera {
     loc = e.loc();
   }
   
-  public Location loc() {
+  public Loc loc() {
     return loc;
   }
   

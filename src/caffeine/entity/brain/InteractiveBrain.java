@@ -1,6 +1,7 @@
 package caffeine.entity.brain;
 
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import caffeine.entity.Actor;
 import caffeine.view.InputHandler;
 
 public class InteractiveBrain extends Brain {
-  protected HashMap<Integer, Action> actionMap = new HashMap<Integer, Action>();
+  protected HashMap<Integer, Action[]> actionMap = new HashMap<Integer, Action[]>();
   protected InputHandler input;
   
   /**
@@ -21,10 +22,13 @@ public class InteractiveBrain extends Brain {
    */
   public InteractiveBrain(InputHandler ih) {
     input = ih;
-    actionMap.put(KeyEvent.VK_UP, new Report("Up pressed"));
-    actionMap.put(KeyEvent.VK_DOWN, new Report("Down pressed"));
-    actionMap.put(KeyEvent.VK_LEFT, new Report("Left pressed"));
-    actionMap.put(KeyEvent.VK_RIGHT, new Report("Right pressed"));
+    actionMap.put(KeyEvent.VK_UP, new Action[] { new Report("Up pressed") });
+    actionMap
+        .put(KeyEvent.VK_DOWN, new Action[] { new Report("Down pressed") });
+    actionMap
+        .put(KeyEvent.VK_LEFT, new Action[] { new Report("Left pressed") });
+    actionMap.put(KeyEvent.VK_RIGHT,
+        new Action[] { new Report("Right pressed") });
   }
   
   /**
@@ -35,7 +39,7 @@ public class InteractiveBrain extends Brain {
     actionPlan.clear();
     for (int keyCode : actionMap.keySet()) {
       if (input.get(keyCode)) {
-        actionPlan.add(actionMap.get(keyCode));
+        actionPlan.addAll(Arrays.asList(actionMap.get(keyCode)));
       }
     }
     return actionPlan;

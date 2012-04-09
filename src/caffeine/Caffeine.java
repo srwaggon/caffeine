@@ -13,7 +13,7 @@ import caffeine.entity.brain.instance.RightBrain;
 import caffeine.net.GameServer;
 import caffeine.view.GUI;
 import caffeine.view.screen.Screen;
-import caffeine.world.Location;
+import caffeine.world.Loc;
 import caffeine.world.Map;
 import caffeine.world.World;
 
@@ -47,11 +47,11 @@ public final class Caffeine implements Game {
     Player p1 = new Player(caffeine);
     caffeine.addPlayer(p1);
     
-    Actor leftbot = new Actor(new Location(0, 48, 80));
+    Actor leftbot = new Actor(new Loc(0, 48, 80));
     leftbot.brain(new LeftBrain());
     leftbot.loc().tile().add(leftbot);
     
-    Actor rightbot = new Actor(new Location(0, 80, 48));
+    Actor rightbot = new Actor(new Loc(0, 80, 48));
     rightbot.brain(new RightBrain());
     rightbot.loc().tile().add(rightbot);
     
