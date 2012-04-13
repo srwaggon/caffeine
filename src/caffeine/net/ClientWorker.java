@@ -38,20 +38,27 @@ public class ClientWorker extends Thread {
   public String processQuery(String query) {
     Scanner reader = new Scanner(query);
     String result = "";
-    
-    if (reader.hasNext()) {
-      String queryType = reader.next();
-      
-      if (queryType.equals("world")) {
-        result = game.world().toString();
-        
-      } else if (queryType.equals("map")) {
-        result = game.world().get(reader.nextInt()).toString();
+    System.err.println("Processing query: " + query);
+    try {
+      if (reader.hasNext()) {
+        String queryType = reader.next();
+        if (queryType.equals("world")) {
+          result = game.world().toString();
+          
+        } else if (queryType.equals("map")) {
+          result = game.world().get(reader.nextInt()).toString();
+          
+        } else if (queryType.equals("entity")) {
+          result = game.entity(reader.nextInt()).toString();
+        } else {
+          result = "unmatched query";
+        }
         
       }
-      
+    } catch (Exception e) {
+      result = "bad query";
     }
-    
+    System.err.println("Sending result: " + result);
     return result;
   }
 }

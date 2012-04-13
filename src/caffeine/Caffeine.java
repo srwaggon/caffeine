@@ -56,7 +56,7 @@ public final class Caffeine implements Game {
     rightbot.loc().tile().add(rightbot);
     
     Screen s = caffeine.gui().getContentPane();
-    s.camera().focusOn(p1.playerEntity());
+    s.camera().focusOn(p1.actor());
     
     GameServer gs = new GameServer(caffeine, 4444);
     gs.run();
@@ -87,14 +87,20 @@ public final class Caffeine implements Game {
   public Set<Map> activeMaps() {
     Set<Map> activeMaps = new LinkedHashSet<Map>();
     for (Player p : players()) {
-      activeMaps.add(p.playerEntity().loc().map());
+      activeMaps.add(p.actor().loc().map());
     }
     return activeMaps;
   }
   
+  public String toString() {
+    return "Caffeine Demo";
+  }
+  
+  /* MUTATORS*/
+  
   public void addPlayer(Player p) {
     players.add(p);
-    p.playerEntity().tile().add(p.playerEntity());
+    p.actor().tile().add(p.actor());
   }
   
   public int numRoundsPlayed() {
@@ -121,8 +127,25 @@ public final class Caffeine implements Game {
   
   public void createGUI() {
     if (gui == null) {
-      gui = new GUI("Caffeine Game Server");
+      gui = new GUI(this);
       new Thread(gui).start();
     }
+  }
+  
+  public Entity entity(int entityID) {
+    for (Map map : activeMaps()) {
+      for (Entity e : map.entities()) {
+        if (e.getID() == entityID) {
+          return e;
+        }
+      }
+    }
+    return null;
+  }
+  
+  @Override
+  public boolean isOnline() {
+    // TODO Auto-generated method stub
+    return false;
   }
 }

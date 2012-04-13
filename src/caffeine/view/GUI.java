@@ -1,7 +1,10 @@
 package caffeine.view;
 
+import java.awt.event.KeyListener;
+
 import javax.swing.JFrame;
 
+import caffeine.Game;
 import caffeine.view.screen.MenuScreen;
 import caffeine.view.screen.Screen;
 import caffeine.view.screen.WorldScreen;
@@ -10,17 +13,19 @@ import caffeine.world.Map;
 public class GUI extends JFrame implements Runnable {
   private static final long serialVersionUID = -7225184243885275201L;
   private static int fps = 60;
-  Screen screen = null;
-  WorldScreen worldScreen = new WorldScreen();
-  protected InputHandler input = new InputHandler();
+  protected Screen screen;
+  protected InputHandler input;
+  protected KeyListener focus;
   
-  public GUI(String title) {
-    setTitle(title);
+  public GUI(Game game) {
+    setTitle(game.toString());
     screen = new MenuScreen();
     setContentPane(screen);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setResizable(false);
     pack();
+    
+    input = new InputHandler(game);
     addKeyListener(input);
   }
   
@@ -33,10 +38,8 @@ public class GUI extends JFrame implements Runnable {
   }
   
   public void view(Map map) {
-    worldScreen.setCurrentMap(map);
-    screen = worldScreen;
+    screen = new WorldScreen(map);
     setContentPane(screen);
-    // TODO this is sloppy. Shouldn't have to set this multiple times.
   }
   
   public static int fps() {

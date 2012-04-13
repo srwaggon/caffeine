@@ -75,9 +75,12 @@ public class StaticMotion implements Motion {
       default:
         break;
     }
+    
     Rectangle projectedHB = performer.hitbox().getBounds();
-    Loc projectedLoc = performer.loc().copy();
     projectedHB.translate(dx, dy);
+    
+    Loc projectedLoc = performer.loc().copy();
+    projectedLoc.translate(dx, dy);
     
     return validLocRule.appliesTo(projectedHB) && projectedLoc.isValid();
   }

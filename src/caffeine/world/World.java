@@ -28,10 +28,10 @@ public class World {
   }
   
   public String toString() {
-    String s = "world " + world.size() + " ";
+    String s = "world " + world.size() + " {";
     for (int k : world.keySet()) {
-      s += k;
+      s += " " + k;
     }
-    return s;
+    return s + " }";
   }
 }

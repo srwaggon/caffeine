@@ -7,9 +7,9 @@ import caffeine.world.Map;
 
 public class WorldScreen extends Screen {
   private static final long serialVersionUID = 3103847269699914556L;
-  private Map map;
+  private final Map map;
   
-  public void setCurrentMap(Map map) {
+  public WorldScreen(Map map) {
     this.map = map;
   }
   

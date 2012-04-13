@@ -15,7 +15,7 @@ import caffeine.world.Tile;
  */
 public class Entity {
   protected static int numEntities = 0;
-  protected int id = 0;
+  protected int id;
   protected int size = 24;
   protected Loc loc;
   protected Animation anim;
@@ -29,7 +29,6 @@ public class Entity {
     id = Entity.numEntities++; // This must stay first.
     name = "" + id;
     loc = l;
-    // loc.tile().add(this);
     
     int[] walkSprites = { 3, 4 };
     

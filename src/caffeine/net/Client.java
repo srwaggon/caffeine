@@ -4,11 +4,10 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 import caffeine.entity.Entity;
-import caffeine.view.GUI;
 
 public class Client {
   protected HashMap<Integer, Entity> entities = new HashMap<Integer, Entity>();
-  protected GUI gui = new GUI("Caffeine Game Client");
+  // protected GUI gui = new GUI("");
   protected Connection host;
   
   public static void main(String[] args) {
@@ -18,14 +17,16 @@ public class Client {
   /* Constructor */
   public Client(String ip, int port) {
     host = new Connection(ip, port);
-    new Thread(gui).start();
+    // new Thread(gui).start();
   }
   
   public void run() {
     try {
       String query = "Hello Server.";
       String response = "";
+      Scanner scan = new Scanner(System.in);
       while (host.isConnected()) {
+        query = scan.nextLine();
         host.send(query);
         response = host.read();
         processServerResponse(response);
@@ -37,6 +38,7 @@ public class Client {
   
   public void processServerResponse(String response) {
     Scanner lineParser = new Scanner(response);
+    System.out.println(response);
     while (lineParser.hasNext()) {
       lineParser.next();
     }
