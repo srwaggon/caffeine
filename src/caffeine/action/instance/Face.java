@@ -1,7 +1,7 @@
 package caffeine.action.instance;
 
 import caffeine.action.Action;
-import caffeine.entity.Actor;
+import caffeine.entity.Entity;
 import caffeine.world.Direction;
 
 public class Face implements Action {
@@ -15,7 +15,7 @@ public class Face implements Action {
     dir = d;
   }
   
-  public void performBy(Actor performer) {
+  public void performBy(Entity performer) {
     performer.motion().face(dir);
   }
   

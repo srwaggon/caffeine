@@ -1,12 +1,12 @@
 package caffeine.action;
 
-import caffeine.entity.Actor;
+import caffeine.entity.Entity;
 
 /* Represents a general action to be performed by an Actor */
 public interface Action {
   /* An example/basic action: Inaction! */
   public static Action Inaction = new Action() {
-    public void performBy(Actor performer) {
+    public void performBy(Entity performer) {
       ;// Do nothing
     }
   };
@@ -18,7 +18,7 @@ public interface Action {
    * 
    * @param performer
    */
-  void performBy(Actor performer);
+  void performBy(Entity performer);
   
   String toString();
 }

@@ -4,18 +4,18 @@ import java.util.List;
 
 import caffeine.action.Action;
 import caffeine.action.instance.Move;
-import caffeine.entity.Actor;
+import caffeine.entity.Entity;
 import caffeine.entity.brain.Brain;
 import caffeine.world.Direction;
 
 public class RightBrain extends Brain {
   Direction dir = Direction.E;
   
-  public List<Action> next(Actor a) {
+  public List<Action> next(Entity actor) {
     actionPlan.clear();
     Move move = Move.fetch(dir);
     
-    if (a.motion().validMove(move, a)) {
+    if (actor.motion().validMove(move, actor)) {
       actionPlan.add(move);
     } else {
       dir = dir.next();

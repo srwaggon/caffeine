@@ -2,7 +2,7 @@ package caffeine.action;
 
 import caffeine.Rule;
 import caffeine.action.instance.Move;
-import caffeine.entity.Actor;
+import caffeine.entity.Entity;
 import caffeine.world.Direction;
 
 public interface Motion {
@@ -19,6 +19,6 @@ public interface Motion {
   
   public void validLocRule(Rule r);
   
-  public boolean validMove(Move m, Actor a);
+  public boolean validMove(Move m, Entity movingEntity);
   
 }

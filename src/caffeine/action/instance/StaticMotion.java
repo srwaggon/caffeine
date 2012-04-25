@@ -4,7 +4,6 @@ import java.awt.Rectangle;
 
 import caffeine.Rule;
 import caffeine.action.Motion;
-import caffeine.entity.Actor;
 import caffeine.entity.Entity;
 import caffeine.world.Direction;
 import caffeine.world.Loc;
@@ -54,7 +53,7 @@ public class StaticMotion implements Motion {
     this.speed = speed > 0 ? speed : this.speed;
   }
   
-  public boolean validMove(Move move, Actor performer) {
+  public boolean validMove(Move move, Entity performer) {
     
     int dx = 0;
     int dy = 0;

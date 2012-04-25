@@ -7,7 +7,7 @@ import java.util.List;
 
 import caffeine.action.Action;
 import caffeine.action.instance.Report;
-import caffeine.entity.Actor;
+import caffeine.entity.Entity;
 import caffeine.view.InputHandler;
 
 public class InteractiveBrain extends Brain {
@@ -35,7 +35,7 @@ public class InteractiveBrain extends Brain {
    * Plans what this brain intends to do on each turn. <br />
    * In this case, determined by keyboard input
    */
-  public List<Action> next(Actor actor) {
+  public List<Action> next(Entity actor) {
     actionPlan.clear();
     for (int keyCode : actionMap.keySet()) {
       if (input.get(keyCode)) {

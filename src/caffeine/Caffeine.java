@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.TimerTask;
 
-import caffeine.entity.Actor;
 import caffeine.entity.Entity;
 import caffeine.entity.brain.instance.LeftBrain;
 import caffeine.entity.brain.instance.RightBrain;
@@ -47,16 +46,16 @@ public final class Caffeine implements Game {
     Player p1 = new Player(caffeine);
     caffeine.addPlayer(p1);
     
-    Actor leftbot = new Actor(new Loc(0, 48, 80));
+    Entity leftbot = new Entity(new Loc(0, 48, 80));
     leftbot.brain(new LeftBrain());
     leftbot.loc().tile().add(leftbot);
     
-    Actor rightbot = new Actor(new Loc(0, 80, 48));
+    Entity rightbot = new Entity(new Loc(0, 80, 48));
     rightbot.brain(new RightBrain());
     rightbot.loc().tile().add(rightbot);
     
     Screen s = caffeine.gui().getContentPane();
-    s.camera().focusOn(p1.actor());
+    s.camera().focusOn(p1.entity());
     
     GameServer gs = new GameServer(caffeine, 4444);
     gs.run();
@@ -87,7 +86,7 @@ public final class Caffeine implements Game {
   public Set<Map> activeMaps() {
     Set<Map> activeMaps = new LinkedHashSet<Map>();
     for (Player p : players()) {
-      activeMaps.add(p.actor().loc().map());
+      activeMaps.add(p.entity().loc().map());
     }
     return activeMaps;
   }
@@ -100,7 +99,7 @@ public final class Caffeine implements Game {
   
   public void addPlayer(Player p) {
     players.add(p);
-    p.actor().tile().add(p.actor());
+    p.entity().tile().add(p.entity());
   }
   
   public int numRoundsPlayed() {

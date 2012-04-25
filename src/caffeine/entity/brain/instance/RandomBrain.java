@@ -4,7 +4,7 @@ import java.util.List;
 
 import caffeine.action.Action;
 import caffeine.action.instance.Move;
-import caffeine.entity.Actor;
+import caffeine.entity.Entity;
 import caffeine.entity.brain.Brain;
 import caffeine.world.Direction;
 
@@ -22,7 +22,7 @@ public class RandomBrain extends Brain {
    * 
    * @return a list of actions planned for this brain's owners next turn
    */
-  public List<Action> next(Actor actor) {
+  public List<Action> next(Entity actor) {
     actionPlan.clear();
     if (numSteps <= 0) {
       dir = Direction.pickOneAtRandom();

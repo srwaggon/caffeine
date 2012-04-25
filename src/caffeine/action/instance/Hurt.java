@@ -1,18 +1,18 @@
 package caffeine.action.instance;
 
 import caffeine.action.Action;
-import caffeine.entity.Actor;
+import caffeine.entity.Entity;
 
 public class Hurt implements Action {
   int amt;
-  Actor sender = null;
+  Entity sender = null;
   
-  public Hurt(int amount, Actor sender) {
+  public Hurt(int amount, Entity sender) {
     amt = amount;
     this.sender = sender;
   }
   
-  public void performBy(Actor performer) {
+  public void performBy(Entity performer) {
     performer.health -= amt;
     System.out.println(performer + " hurt by " + sender);
     

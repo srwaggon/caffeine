@@ -3,15 +3,14 @@ package caffeine.entity.instance;
 import caffeine.Rule;
 import caffeine.action.instance.Hurt;
 import caffeine.action.instance.Move;
-import caffeine.entity.Actor;
 import caffeine.entity.Entity;
 import caffeine.view.Animation;
 
-public class Projectile extends Actor {
+public class Projectile extends Entity {
   protected Entity owner;
   Move move;
   
-  public Projectile(final Actor owner) {
+  public Projectile(final Entity owner) {
     super(owner.loc().copy());
     this.owner = owner;
     
@@ -36,10 +35,9 @@ public class Projectile extends Actor {
     if (motion.validMove(move, this)) {
       move.performBy(this);
       for (Entity e : loc.tile().occupants()) {
-        if (e instanceof Actor && !(e instanceof Projectile)
-            && !e.equals(owner) && hitbox().intersects(e.hitbox())) {
-          Actor a = (Actor) e;
-          new Hurt(1, this).performBy(a);
+        if (!(e instanceof Projectile) && !e.equals(owner)
+            && hitbox().intersects(e.hitbox())) {
+          new Hurt(1, this).performBy(e);
         }
       }
     } else {

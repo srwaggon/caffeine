@@ -3,7 +3,7 @@ package caffeine.action.instance;
 import java.awt.Rectangle;
 
 import caffeine.action.Action;
-import caffeine.entity.Actor;
+import caffeine.entity.Entity;
 import caffeine.world.Direction;
 import caffeine.world.Tile;
 
@@ -42,7 +42,7 @@ public class Move implements Action {
     }
   }
   
-  public void performBy(Actor performer) {
+  public void performBy(Entity performer) {
     int speed = performer.motion().speed();
     int dx = 0;
     int dy = 0;

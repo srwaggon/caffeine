@@ -1,7 +1,7 @@
 package caffeine.action.instance;
 
 import caffeine.action.Action;
-import caffeine.entity.Actor;
+import caffeine.entity.Entity;
 
 public class Die implements Action {
   String cause;
@@ -10,7 +10,7 @@ public class Die implements Action {
     this.cause = cause;
   }
   
-  public void performBy(Actor performer) {
+  public void performBy(Entity performer) {
     performer.alive(false);
     performer.tile().remove(performer);
     System.out.println(performer + " has died from " + cause);

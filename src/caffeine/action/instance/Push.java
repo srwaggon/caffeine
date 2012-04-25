@@ -1,7 +1,6 @@
 package caffeine.action.instance;
 
 import caffeine.action.Action;
-import caffeine.entity.Actor;
 import caffeine.entity.Entity;
 
 public class Push implements Action {
@@ -11,7 +10,7 @@ public class Push implements Action {
     pushee = who;
   }
   
-  public void performBy(Actor performer) {
+  public void performBy(Entity performer) {
     
   }
   
