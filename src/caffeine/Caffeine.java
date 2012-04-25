@@ -142,10 +142,4 @@ public final class Caffeine implements Game {
     }
     return null;
   }
-  
-  @Override
-  public boolean isOnline() {
-    // TODO Auto-generated method stub
-    return false;
-  }
 }
