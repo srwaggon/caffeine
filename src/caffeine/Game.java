@@ -8,8 +8,6 @@ public interface Game {
   
   void addPlayer(Player p);
   
-  void createGUI();
-  
   GUI gui();
   
   int numRoundsPlayed();

@@ -5,41 +5,36 @@ import java.awt.event.KeyListener;
 import javax.swing.JFrame;
 
 import caffeine.Game;
-import caffeine.view.screen.MenuScreen;
 import caffeine.view.screen.Screen;
-import caffeine.view.screen.WorldScreen;
-import caffeine.world.Map;
 
 public class GUI extends JFrame implements Runnable {
   private static final long serialVersionUID = -7225184243885275201L;
   private static int fps = 60;
-  protected Screen screen;
   protected InputHandler input;
   protected KeyListener focus;
+  protected Screen screen;
   
   public GUI(Game game) {
     setTitle(game.toString());
-    screen = new MenuScreen();
-    setContentPane(screen);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setSize(600, 400);
     setResizable(false);
-    pack();
-    
     input = new InputHandler(game);
     addKeyListener(input);
-  }
-  
-  public Screen getContentPane() {
-    return screen;
   }
   
   public InputHandler input() {
     return input;
   }
   
-  public void view(Map map) {
-    screen = new WorldScreen(map);
+  public Screen getScreen() {
+    return screen;
+  }
+  
+  public void setScreen(Screen screen) {
+    this.screen = screen;
     setContentPane(screen);
+    pack();
   }
   
   public static int fps() {

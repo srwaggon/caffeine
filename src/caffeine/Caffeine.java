@@ -12,6 +12,7 @@ import caffeine.entity.brain.instance.RightBrain;
 import caffeine.net.GameServer;
 import caffeine.view.GUI;
 import caffeine.view.screen.Screen;
+import caffeine.view.screen.WorldScreen;
 import caffeine.world.Loc;
 import caffeine.world.Map;
 import caffeine.world.World;
@@ -21,7 +22,7 @@ import caffeine.world.World;
  * Games handle everything, from graphics to the heartbeat, as well as the
  * mechanics, but are broken down into smaller components.
  * 
- * @author Fnar
+ * @author srwaggon
  */
 public final class Caffeine implements Game {
   /* Engine Fields */
@@ -40,8 +41,7 @@ public final class Caffeine implements Game {
     Map map = new Map();
     caffeine.world().add(map);
     
-    caffeine.createGUI();
-    caffeine.gui().view(map);
+    caffeine.gui().setScreen(new WorldScreen(map));
     
     Player p1 = new Player(caffeine);
     caffeine.addPlayer(p1);
@@ -54,11 +54,12 @@ public final class Caffeine implements Game {
     rightbot.brain(new RightBrain());
     rightbot.loc().tile().add(rightbot);
     
-    Screen s = caffeine.gui().getContentPane();
+    Screen s = caffeine.gui().getScreen();
     s.camera().focusOn(p1.entity());
     
     GameServer gs = new GameServer(caffeine, 4444);
     gs.run();
+    
   }
   
   /* CONSTRUCTOR */
@@ -68,6 +69,8 @@ public final class Caffeine implements Game {
         round();
       }
     });
+    gui = new GUI(this);
+    new Thread(gui).start();
   }
   
   /* ACCESSORS */
@@ -121,13 +124,6 @@ public final class Caffeine implements Game {
   public void round() {
     for (Map map : activeMaps()) {
       map.tick();
-    }
-  }
-  
-  public void createGUI() {
-    if (gui == null) {
-      gui = new GUI(this);
-      new Thread(gui).start();
     }
   }
   
