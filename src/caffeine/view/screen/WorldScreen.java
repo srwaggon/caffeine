@@ -1,22 +1,20 @@
 package caffeine.view.screen;
 
 import java.awt.Graphics;
-import java.awt.Image;
 
 import caffeine.world.Map;
 
 public class WorldScreen extends Screen {
   private static final long serialVersionUID = 3103847269699914556L;
-  private final Map map;
+  private Map map;
   
-  public WorldScreen(Map map) {
+  public void setMap(Map map) {
     this.map = map;
   }
   
   public void paintComponent(Graphics g) {
+    img = camera.view(map);
     super.paintComponent(g);
-    Image img = camera.view(map);
-    g.drawImage(img, 0, 0, null);
   }
   
 }

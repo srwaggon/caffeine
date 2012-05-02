@@ -41,7 +41,9 @@ public final class Caffeine implements Game {
     Map map = new Map();
     caffeine.world().add(map);
     
-    caffeine.gui().setScreen(new WorldScreen(map));
+    WorldScreen ws = new WorldScreen();
+    ws.setMap(map);
+    caffeine.gui().setScreen(ws);
     
     Player p1 = new Player(caffeine);
     caffeine.addPlayer(p1);
