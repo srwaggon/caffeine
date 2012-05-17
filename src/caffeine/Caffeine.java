@@ -19,12 +19,12 @@ import caffeine.world.World;
 
 /**
  * A game is the mover and shaker of the engine and represents a single play.
- * Games handle everything, from graphics to the heartbeat, as well as the
- * mechanics, but are broken down into smaller components.
+ * Games handle everything, from graphics to the heart beat, as well as the
+ * mechanisms, but are broken down into smaller components.
  * 
  * @author srwaggon
  */
-public final class Caffeine implements Game {
+public class Caffeine implements Game {
   /* Engine Fields */
   private final World world = new World(); // Space
   private final Clock clock = new Clock(); // Time
@@ -34,7 +34,6 @@ public final class Caffeine implements Game {
   /* Main method */
   public static void main(String args[]) {
     
-    // Get the game
     Caffeine caffeine = new Caffeine();
     
     // Add some data: A world, some entities
