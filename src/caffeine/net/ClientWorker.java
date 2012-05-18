@@ -58,7 +58,7 @@ public class ClientWorker extends Thread {
     } catch (Exception e) {
       result = "bad query";
     }
-    System.err.println("Sending result: " + result);
+    // System.err.println("Sending result: " + result);
     return result;
   }
 }

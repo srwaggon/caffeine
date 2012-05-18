@@ -7,19 +7,9 @@ import java.awt.event.MouseListener;
 import java.util.HashMap;
 import java.util.Set;
 
-import javax.swing.JComponent;
-
-import caffeine.Game;
-
 @SuppressWarnings("serial")
-public class InputHandler extends JComponent implements KeyListener,
-    MouseListener {
-  protected final Game game;
+public class InputHandler implements KeyListener, MouseListener {
   HashMap<Integer, Boolean> keys = new HashMap<Integer, Boolean>();
-  
-  public InputHandler(Game game) {
-    this.game = game;
-  }
   
   public boolean get(int keyCode) {
     if (keys.containsKey(keyCode)) {

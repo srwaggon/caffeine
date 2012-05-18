@@ -57,7 +57,7 @@ public class Caffeine implements Game {
     
     Screen s = caffeine.gui().getScreen();
     s.camera().focusOn(p1.entity());
-    
+    caffeine.play();
     GameServer gs = new GameServer(caffeine, 4444);
     gs.run();
     
@@ -70,8 +70,7 @@ public class Caffeine implements Game {
         round();
       }
     });
-    gui = new GUI(this);
-    new Thread(gui).start();
+    gui = new GUI("Caffeine Server");
   }
   
   /* ACCESSORS */
@@ -116,6 +115,7 @@ public class Caffeine implements Game {
   
   public void play() {
     clock.start();
+    new Thread(gui).start();
   }
   
   public List<Player> players() {
