@@ -1,6 +1,5 @@
-package caffeine.action.instance;
+package caffeine.action;
 
-import caffeine.action.Action;
 import caffeine.entity.Entity;
 import caffeine.world.Direction;
 
@@ -10,13 +9,14 @@ public class Face implements Action {
   public final static Face SOUTH = new Face(Direction.S);
   public final static Face WEST = new Face(Direction.W);
   Direction dir;
-  
+
   private Face(Direction d) {
     dir = d;
   }
-  
+
+  @Override
   public void performBy(Entity performer) {
-    performer.motion().face(dir);
+    performer.face(dir);
   }
-  
+
 }

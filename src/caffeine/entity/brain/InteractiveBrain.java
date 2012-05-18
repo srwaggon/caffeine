@@ -6,14 +6,15 @@ import java.util.HashMap;
 import java.util.List;
 
 import caffeine.action.Action;
-import caffeine.action.instance.Report;
+import caffeine.action.Report;
 import caffeine.entity.Entity;
 import caffeine.view.InputHandler;
+import caffeine.world.Map;
 
 public class InteractiveBrain extends Brain {
   protected HashMap<Integer, Action[]> actionMap = new HashMap<Integer, Action[]>();
   protected InputHandler input;
-  
+
   /**
    * Creates an InteractiveBrain. This type of brain responds to keyboard input.
    * 
@@ -30,12 +31,13 @@ public class InteractiveBrain extends Brain {
     actionMap.put(KeyEvent.VK_RIGHT,
         new Action[] { new Report("Right pressed") });
   }
-  
+
   /**
    * Plans what this brain intends to do on each turn. <br />
    * In this case, determined by keyboard input
    */
-  public List<Action> next(Entity actor) {
+  @Override
+  public List<Action> next(Entity actor, Map map) {
     actionPlan.clear();
     for (int keyCode : actionMap.keySet()) {
       if (input.get(keyCode)) {
@@ -44,5 +46,5 @@ public class InteractiveBrain extends Brain {
     }
     return actionPlan;
   }
-  
+
 }

@@ -1,26 +1,27 @@
-package caffeine.entity.brain.instance;
+package caffeine.entity.brain;
 
 import java.util.List;
 
 import caffeine.action.Action;
-import caffeine.action.instance.Move;
+import caffeine.action.Move;
 import caffeine.entity.Entity;
-import caffeine.entity.brain.Brain;
 import caffeine.world.Direction;
+import caffeine.world.Map;
 
 public class RightBrain extends Brain {
   Direction dir = Direction.E;
-  
-  public List<Action> next(Entity actor) {
+
+  @Override
+  public List<Action> next(Entity actor, Map m) {
     actionPlan.clear();
     Move move = Move.fetch(dir);
-    
-    if (actor.motion().validMove(move, actor)) {
+
+    if (false) {
       actionPlan.add(move);
     } else {
       dir = dir.next();
     }
     return actionPlan;
   }
-  
+
 }

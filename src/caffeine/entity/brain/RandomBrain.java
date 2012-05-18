@@ -1,12 +1,12 @@
-package caffeine.entity.brain.instance;
+package caffeine.entity.brain;
 
 import java.util.List;
 
 import caffeine.action.Action;
-import caffeine.action.instance.Move;
+import caffeine.action.Move;
 import caffeine.entity.Entity;
-import caffeine.entity.brain.Brain;
 import caffeine.world.Direction;
+import caffeine.world.Map;
 
 /**
  * Creates a brain which moves in a random direction.
@@ -16,13 +16,14 @@ import caffeine.world.Direction;
 public class RandomBrain extends Brain {
   Direction dir = Direction.pickOneAtRandom();
   int numSteps = 0;
-  
+
   /**
    * Returns a list of actions planned for this brain's owners next turn.
    * 
    * @return a list of actions planned for this brain's owners next turn
    */
-  public List<Action> next(Entity actor) {
+  @Override
+  public List<Action> next(Entity actor, Map map) {
     actionPlan.clear();
     if (numSteps <= 0) {
       dir = Direction.pickOneAtRandom();
@@ -32,5 +33,5 @@ public class RandomBrain extends Brain {
     actionPlan.add(Move.fetch(dir));
     return actionPlan;
   }
-  
+
 }

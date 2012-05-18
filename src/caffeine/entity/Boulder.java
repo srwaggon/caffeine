@@ -1,6 +1,5 @@
-package caffeine.entity.instance;
+package caffeine.entity;
 
-import caffeine.entity.Entity;
 import caffeine.view.Animation;
 import caffeine.view.Sprite;
 import caffeine.world.Loc;

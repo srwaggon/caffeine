@@ -1,6 +1,5 @@
-package caffeine.action.instance;
+package caffeine.action;
 
-import caffeine.action.Action;
 import caffeine.entity.Entity;
 
 public class Push implements Action {
