@@ -39,7 +39,7 @@ public class ClientWorker extends Thread {
 
   public String processQuery(String strquery) {
     String result = "";
-    System.err.println("Processing query: " + strquery);
+    // System.err.println("Processing query: " + strquery);
     try {
 
       Query query = new Query(strquery);
@@ -57,7 +57,7 @@ public class ClientWorker extends Thread {
       result = "bad query";
     }
 
-    System.err.println("Sending result: " + result);
+    // System.err.println("Sending result: " + result);
     return result;
   }
 }

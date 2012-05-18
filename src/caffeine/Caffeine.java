@@ -12,7 +12,6 @@ import caffeine.entity.brain.RightBrain;
 import caffeine.net.GameServer;
 import caffeine.view.GUI;
 import caffeine.view.screen.Screen;
-import caffeine.view.screen.WorldScreen;
 import caffeine.world.Loc;
 import caffeine.world.Map;
 import caffeine.world.World;
@@ -28,8 +27,8 @@ public class Caffeine implements Game {
   /* Engine Fields */
   private final World world = new World(); // Space
   private final Clock clock = new Clock(); // Time
-  private final List<Player> players = new LinkedList<Player>();
-  private GUI gui = null;
+  private final List<Player> players = new LinkedList<Player>(); // Life
+  private GUI gui = new GUI("Caffeine Server"); // Light
 
   /* Main method */
   public static void main(String args[]) {
@@ -40,9 +39,7 @@ public class Caffeine implements Game {
     Map map = new Map();
     caffeine.world().add(map);
 
-    WorldScreen ws = new WorldScreen();
-    ws.setMap(map);
-    caffeine.gui().setScreen(ws);
+    caffeine.gui().render(map);
 
     Player p1 = new Player(caffeine);
     caffeine.addPlayer(p1);
@@ -58,6 +55,7 @@ public class Caffeine implements Game {
     Screen s = caffeine.gui().getScreen();
     s.camera().focusOn(p1.entity());
     caffeine.play();
+
     GameServer gs = new GameServer(caffeine, 4444);
     gs.run();
 
@@ -71,7 +69,6 @@ public class Caffeine implements Game {
         round();
       }
     });
-    gui = new GUI("Caffeine Server");
   }
 
   /* ACCESSORS */
@@ -96,13 +93,7 @@ public class Caffeine implements Game {
     return activeMaps;
   }
 
-  @Override
-  public String toString() {
-    return "Caffeine Demo";
-  }
-
   /* MUTATORS */
-
   @Override
   public void addPlayer(Player p) {
     players.add(p);

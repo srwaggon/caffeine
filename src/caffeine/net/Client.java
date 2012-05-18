@@ -28,14 +28,14 @@ public class Client {
   public void run() {
     new Thread(gui).start();
     try {
-      String query = "Hello Server!";
+      String query = "get map 0";
+
       String response = "";
       Scanner scan = new Scanner(System.in);
       while (host.isConnected()) {
-        query = scan.nextLine();
         host.send(query);
-        response = host.read();
         processServerResponse(response);
+        response = host.read();
         Thread.sleep(10);
       }
 
