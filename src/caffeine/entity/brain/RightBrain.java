@@ -14,7 +14,7 @@ public class RightBrain extends Brain {
   @Override
   public List<Action> next(Entity actor, Map m) {
     actionPlan.clear();
-    Move move = Move.fetch(dir);
+    Move move = new Move(dir);
 
     if (false) {
       actionPlan.add(move);

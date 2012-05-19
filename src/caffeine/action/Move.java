@@ -11,17 +11,12 @@ public class Move implements Action {
   public static final Action SOUTH = new Move(Direction.S);
   public static final Action WEST = new Move(Direction.W);
 
-  private Move(Direction dir) {
+  public Move(Direction dir) {
     this.dir = dir;
   }
 
   @Override
-  public void performBy(Entity performer) {
-
+  public void performBy(Entity actor) {
+    actor.loc().translate(dir, actor.speed());
   }
-
-  public static Move fetch(Direction dir) {
-    return null;
-  }
-
 }

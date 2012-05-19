@@ -30,7 +30,7 @@ public class RandomBrain extends Brain {
       numSteps = 9;
     }
     numSteps--;
-    actionPlan.add(Move.fetch(dir));
+    actionPlan.add(new Move(dir));
     return actionPlan;
   }
 

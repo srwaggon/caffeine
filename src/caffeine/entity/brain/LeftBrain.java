@@ -6,6 +6,7 @@ import caffeine.action.Action;
 import caffeine.action.Move;
 import caffeine.entity.Entity;
 import caffeine.world.Direction;
+import caffeine.world.Loc;
 import caffeine.world.Map;
 
 public class LeftBrain extends Brain {
@@ -14,9 +15,10 @@ public class LeftBrain extends Brain {
   @Override
   public List<Action> next(Entity actor, Map map) {
     actionPlan.clear();
-    Move move = Move.fetch(dir);
-
-    if (false) {
+    Move move = new Move(dir);
+    Loc projection = actor.loc().copy();
+    projection.translate(dir, actor.speed());
+    if (map.getTileAt(projection)) {
       actionPlan.add(move);
     } else {
       dir = dir.prev();

@@ -26,6 +26,7 @@ public class Entity {
   protected int id;
   protected boolean isAlive = true;
   protected int size = 24;
+  protected int speed = 1;
 
   /* object fields */
   protected Animation anim;
@@ -93,6 +94,14 @@ public class Entity {
    */
   public Loc loc() {
     return loc;
+  }
+
+  /**
+   * 
+   * @return speed that this entity can move
+   */
+  public int speed() {
+    return speed;
   }
 
   /**
