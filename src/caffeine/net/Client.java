@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import caffeine.entity.Entity;
 import caffeine.view.GUI;
+import caffeine.view.screen.WorldScreen;
 import caffeine.world.Map;
 
 public class Client {
@@ -12,11 +13,11 @@ public class Client {
   protected GUI gui;
   protected Connection host;
   protected NetworkInputHandler input;
-
+  
   public static void main(String[] args) {
     new Client("127.0.0.1", 4444).run();
   }
-
+  
   /* Constructor */
   public Client(String ip, int port) {
     host = new Connection(ip, port);
@@ -24,12 +25,12 @@ public class Client {
     gui = new GUI("Caffeine Client");
     gui.addInputHandler(input);
   }
-
+  
   public void run() {
     new Thread(gui).start();
     try {
       String query = "get map 0";
-
+      
       String response = "";
       Scanner scan = new Scanner(System.in);
       while (host.isConnected()) {
@@ -38,26 +39,29 @@ public class Client {
         response = host.read();
         Thread.sleep(10);
       }
-
+      
     } catch (InterruptedException e) {
-
+      
     }
   }
-
+  
   public void processServerResponse(String response) {
     Scanner lineParser = new Scanner(response);
     System.out.println(response);
     while (lineParser.hasNext()) {
       String strmap = lineParser.next();
       String mapID = lineParser.next();
-
+      
       String mapData = lineParser.nextLine();
       System.out.println(mapData);
-
+      
       Map map = new Map(mapData);
       System.out.println(map);
-
-      gui.render(map);
+      
+      WorldScreen ws = new WorldScreen();
+      ws.setMap(map);
+      
+      gui.setScreen(ws);
     }
   }
 }
