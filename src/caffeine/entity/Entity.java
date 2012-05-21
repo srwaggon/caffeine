@@ -53,14 +53,14 @@ public class Entity {
   }
 
   /* ACCESSORS */
-  public boolean alive() {
+  public boolean isAlive() {
     return isAlive;
   }
 
-
-  public Brain brain(){
+  public Brain getBrain() {
     return brain;
   }
+
   /**
    * Returns the number of currently existing entities. This number is
    * incremented each time an entity is created and reduced each time an entity
@@ -68,7 +68,7 @@ public class Entity {
    * 
    * @return The number of entities.
    */
-  public static int count() {
+  public static int getPopulation() {
     return Entity.numEntities;
   }
 
@@ -89,7 +89,7 @@ public class Entity {
    * 
    * @return rectangle of which this entity occupies
    */
-  public Rectangle hitbox() {
+  public Rectangle getHitbox() {
     return new Rectangle(loc.x() - size / 2, loc.y() - size / 2, size, size);
   }
 
@@ -98,7 +98,7 @@ public class Entity {
    * 
    * @return location of entity
    */
-  public Loc loc() {
+  public Loc getLoc() {
     return loc;
   }
 
@@ -106,7 +106,7 @@ public class Entity {
    * 
    * @return speed that this entity can move
    */
-  public int speed() {
+  public int getSpeed() {
     return speed;
   }
 
@@ -118,30 +118,31 @@ public class Entity {
    * @return boolean representing whether or not this tile is a validly
    *         accessible location.
    */
-  public boolean validLoc(Tile tile) {
-    return tile.pass();
+  public boolean isValidLoc(Tile tile) {
+    return tile.canPass();
   }
 
   /* MUTATORS */
-  public void act(){
-    if (!actionPlans.isEmpty()){
+  public void act() {
+    if (!actionPlans.isEmpty()) {
       actionPlans.poll().performBy(this);
     }
   }
 
-  public void alive(Boolean b) {
-    isAlive = b;
+  public void die() {
+    isAlive = false;
   }
 
-  public void brain(Brain b) {
+  public void setBrain(Brain b) {
     brain = b;
   }
 
-  public void collideWith(Entity e){
-    ;
+  public void collideWith(Entity e) {
+    e.die();
+    System.out.println(this + " colliding with " + e);
   }
 
-  public void face(Direction dir) {
+  public void setFacing(Direction dir) {
     this.dir = dir;
   }
 
@@ -153,7 +154,7 @@ public class Entity {
    */
   public final void render(Graphics g) {
     Graphics2D g2 = (Graphics2D) g;
-    g2.draw(hitbox());
+    g2.draw(getHitbox());
     anim.render(g2, loc.x(), loc.y());
   }
 
@@ -162,7 +163,7 @@ public class Entity {
    */
   public void tick(Map map) {
     if (isAlive) {
-      if(brain != null){
+      if (brain != null) {
         actionPlans.addAll(brain.next());
       }
       act();

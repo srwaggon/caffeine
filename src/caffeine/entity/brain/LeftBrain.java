@@ -8,12 +8,12 @@ import caffeine.action.Action;
 import caffeine.action.Move;
 import caffeine.entity.Entity;
 import caffeine.world.Direction;
-import caffeine.world.Loc;
+import caffeine.world.Map;
 
 public class LeftBrain extends Brain {
   private Direction dir = Direction.S;
 
-  public LeftBrain(Game game, Entity owner){
+  public LeftBrain(Game game, Entity owner) {
     super(game, owner);
   }
 
@@ -21,16 +21,15 @@ public class LeftBrain extends Brain {
   public List<Action> next() {
     Caffeine caff = (Caffeine) game;
     actionPlan.clear();
-    Move move = new Move(dir);
-    Loc projection = owner.loc().copy();
-    projection.translate(dir, owner.speed());
+    Map map = caff.world().getMap(owner.getLoc().mapID());
 
-    if (caff.world().getTile(projection).pass()) {
+    Move move = new Move(map, dir);
+
+    if (move.dryRun(owner)) {
       actionPlan.add(move);
     } else {
       dir = dir.prev();
     }
     return actionPlan;
   }
-
 }

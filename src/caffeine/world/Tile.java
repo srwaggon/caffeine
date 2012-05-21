@@ -12,18 +12,21 @@ public class Tile {
   protected int damage = 0;
   protected int spriteID = 0;
   protected static int size = 32;
-  protected Rectangle rect;
 
-  public Tile(int x, int y) {
-    rect = new Rectangle(x * Tile.size, y * Tile.size, Tile.size, Tile.size);
+  protected Map parent;
+  protected Rectangle bounds;
+
+  public Tile(int x, int y, int tileSize, Map parent) {
+    bounds = new Rectangle(x * tileSize, y * tileSize, tileSize, tileSize);
+    this.parent = parent;
   }
 
-  public void add(Entity e) {
+  public void addEntity(Entity e) {
     occupants.put(e.getID(), e);
   }
 
-  public Rectangle frame() {
-    return rect;
+  public Rectangle getBounds() {
+    return bounds;
   }
 
   public boolean isEmpty() {
@@ -34,37 +37,31 @@ public class Tile {
     return occupants.values();
   }
 
-  public boolean pass() {
+  public boolean canPass() {
     return pass;
   }
 
-  public void pass(boolean b) {
+  public Map getMap() {
+    return parent;
+  }
+
+  public void setPass(boolean b) {
     pass = b;
   }
 
-  public void remove(Entity e) {
+  public void removeEntity(Entity e) {
     occupants.remove(e.getID());
   }
 
-  public boolean safe() {
+  public boolean isSafe() {
     return damage <= 0;
   }
 
-  public static int size() {
-    return Tile.size;
-  }
-
-  public static void size(int setTo) {
-    if (setTo > 0) {
-      Tile.size = setTo;
-    }
-  }
-
-  public int spriteID() {
+  public int getSpriteID() {
     return spriteID;
   }
 
-  public void spriteID(int id) {
+  public void setSpriteID(int id) {
     spriteID = id;
   }
 

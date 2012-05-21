@@ -20,7 +20,7 @@ public class Camera {
   }
 
   public void focusOn(Entity e) {
-    loc = e.loc();
+    loc = e.getLoc();
   }
 
   public Loc loc() {

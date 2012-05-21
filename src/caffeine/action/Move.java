@@ -1,30 +1,46 @@
 package caffeine.action;
 
+import java.awt.Rectangle;
+
 import caffeine.entity.Entity;
 import caffeine.world.Direction;
+import caffeine.world.Loc;
+import caffeine.world.Map;
+import caffeine.world.Tile;
 
 public class Move implements Action {
-  private Direction dir;
+  protected Direction dir;
+  protected Map map;
 
-  public static final Action NORTH = new Move(Direction.N);
-  public static final Action EAST = new Move(Direction.E);
-  public static final Action SOUTH = new Move(Direction.S);
-  public static final Action WEST = new Move(Direction.W);
-
-  public Move(Direction dir) {
+  public Move(Map map, Direction dir) {
+    this.map = map;
     this.dir = dir;
   }
 
+  public boolean dryRun(Entity actor) {
+    Loc end = actor.getLoc().copy().translate(dir, actor.getSpeed());
+    Tile endTile = map.getTileAt(end.x(), end.y());
+    return endTile.canPass();
+  }
+
   @Override
-  public void performBy(Entity actor) {
-    actor.loc().translate(dir, actor.speed());
+  public boolean performBy(Entity actor) {
+    Loc start = actor.getLoc();
+    Loc end = start.copy().translate(dir, actor.getSpeed());
 
-    // for each tile under each corner of the entity
+    Tile endTile = map.getTileAt(end.x(), end.y());
 
-    // for each entity in that tile
+    if (endTile.canPass()) {
+      start.set(end);
 
-    // check overlap
-
-    // and if collision, call collide with
+      Rectangle hitbox = actor.getHitbox();
+      for (Entity e : endTile.occupants()) {
+        if (!actor.equals(e) && hitbox.intersects(e.getHitbox())) {
+          actor.collideWith(e);
+        }
+      }
+      return true;
+    }
+    return false;
   }
 }

@@ -15,8 +15,9 @@ public class Face implements Action {
   }
 
   @Override
-  public void performBy(Entity performer) {
-    performer.face(dir);
+  public boolean performBy(Entity performer) {
+    performer.setFacing(dir);
+    return true;
   }
 
 }

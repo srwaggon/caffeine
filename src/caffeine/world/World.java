@@ -9,20 +9,20 @@ public class World {
     world = new HashMap<Integer, Map>();
   }
 
-  public int size() {
+  public int getSize() {
     return world.size();
   }
 
-  public void add(Map m) {
+  public void addMap(Map m) {
     world.put(m.getID(), m);
   }
 
-  public Map get(int mapID) {
+  public Map getMap(int mapID) {
     return world.get(mapID);
   }
 
   public Tile getTile(Loc loc) {
-    return get(loc.mapID()).getTileAt(loc.x(), loc.y());
+    return getMap(loc.mapID()).getTileAt(loc.x(), loc.y());
   }
 
   public void tick() {

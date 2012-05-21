@@ -20,8 +20,8 @@ public class Loc {
     this.y = y;
   }
 
-  public Loc project(int xdist, int ydist){
-    return new Loc(mapID, x+xdist, y+ydist);
+  public Loc project(int xdist, int ydist) {
+    return new Loc(mapID, x + xdist, y + ydist);
   }
 
   public void translate(int xdist, int ydist) {
@@ -66,24 +66,29 @@ public class Loc {
     this.y = y;
   }
 
-  public void translate(Direction dir, int magnitude) {
+  public Loc translate(Direction dir, int magnitude) {
     int dx = 0, dy = 0;
     switch (dir) {
-      case N:
-        dy = -magnitude;
-        break;
-      case E:
-        dx = magnitude;
-        break;
-      case S:
-        dy = magnitude;
-        break;
-      case W:
-        dx = -magnitude;
-        break;
-      default:
-        break;
+    case N:
+      dy = -magnitude;
+      break;
+    case E:
+      dx = magnitude;
+      break;
+    case S:
+      dy = magnitude;
+      break;
+    case W:
+      dx = -magnitude;
+      break;
+    default:
+      break;
     }
     translate(dx, dy);
+    return this;
+  }
+
+  public Loc project(Direction dir, int magnitude) {
+    return copy().translate(dir, magnitude);
   }
 }

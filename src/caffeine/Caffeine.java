@@ -38,7 +38,7 @@ public class Caffeine implements Game {
 
     // Add some data: A world, some entities
     Map map = new Map();
-    caffeine.world().add(map);
+    caffeine.world().addMap(map);
 
     WorldScreen ws = new WorldScreen();
     ws.setMap(map);
@@ -48,16 +48,15 @@ public class Caffeine implements Game {
     caffeine.addPlayer(p1);
 
     Entity leftbot = new Entity(new Loc(0, 48, 80));
-    leftbot.brain(new LeftBrain(caffeine, leftbot));
-    map.getTileAt(48, 80).add(leftbot);
+    leftbot.setBrain(new LeftBrain(caffeine, leftbot));
+    map.getTileAt(48, 80).addEntity(leftbot);
 
     Entity rightbot = new Entity(new Loc(0, 80, 48));
-    rightbot.brain(new RightBrain(caffeine, rightbot));
-    map.getTileAt(80, 48).add(rightbot);
+    rightbot.setBrain(new RightBrain(caffeine, rightbot));
+    map.getTileAt(80, 48).addEntity(rightbot);
 
     Screen s = caffeine.gui().getScreen();
     s.camera().focusOn(p1.entity());
-
 
     GameServer gs = new GameServer(caffeine, 4444);
     gs.run();
@@ -78,7 +77,7 @@ public class Caffeine implements Game {
 
   /* ACCESSORS */
   public List<Entity> entities(int mapID) {
-    return world.get(mapID).entities();
+    return world.getMap(mapID).entities();
   }
 
   @Override
@@ -93,7 +92,7 @@ public class Caffeine implements Game {
   public Set<Map> activeMaps() {
     Set<Map> activeMaps = new LinkedHashSet<Map>();
     for (Player p : players()) {
-      activeMaps.add(world.get(p.entity().loc().mapID()));
+      activeMaps.add(world.getMap(p.entity().getLoc().mapID()));
     }
     return activeMaps;
   }
@@ -102,7 +101,7 @@ public class Caffeine implements Game {
   @Override
   public void addPlayer(Player p) {
     players.add(p);
-    world.getTile(p.entity().loc()).add(p.entity());
+    world.getTile(p.entity().getLoc()).addEntity(p.entity());
   }
 
   @Override

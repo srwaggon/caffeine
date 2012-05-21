@@ -6,19 +6,22 @@ import caffeine.entity.Entity;
 public interface Action {
   /* An example/basic action: Inaction! */
   public static Action Inaction = new Action() {
-    public void performBy(Entity performer) {
-      ;// Do nothing
+    @Override
+    public boolean performBy(Entity performer) {
+      return true; // do nothing
     }
   };
-  
+
   // Could require a 'target' in constructor
-  
+
   /**
    * Takes an Actor and applies the result of this action on it.
    * 
    * @param performer
+   * @return true if this action succeeds
    */
-  void performBy(Entity performer);
-  
+  boolean performBy(Entity performer);
+
+  @Override
   String toString();
 }

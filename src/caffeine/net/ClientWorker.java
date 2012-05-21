@@ -48,7 +48,7 @@ public class ClientWorker extends Thread {
 
       if (qtype.equals("map")) {
         // TODO: too fucking filthy.
-        result = game.world().get(Integer.parseInt(param[2])).toString();
+        result = game.world().getMap(Integer.parseInt(param[2])).toString();
       } else if (qtype.equals("entity")) {
         result = game.entity(Integer.parseInt(param[2])).toString();
       }

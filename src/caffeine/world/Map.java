@@ -54,7 +54,7 @@ public class Map implements Iterable<Tile> {
 
     for (int y = 0; y < numCols; y++) {
       for (int x = 0; x < numRows; x++) {
-        map[x][y] = new Tile(x, y);
+        map[x][y] = new Tile(x, y, Map.tileSize, this);
       }
     }
   }
@@ -71,13 +71,13 @@ public class Map implements Iterable<Tile> {
       int x = i % numCols;
       int y = i / numCols;
       char c = line.charAt(i);
-      Tile t = new Tile(x, y);
+      Tile t = new Tile(x, y, Map.tileSize, this);
       map[x][y] = t;
       if (c == '#') {
-        t.add(new Boulder(new Loc(id,
-            x * Tile.size() + Tile.size() / 2, y * Tile.size() + Tile.size()
-            / 2)));
-        t.pass(false);
+        t.addEntity(new Boulder(new Loc(id,
+            x * Map.tileSize + Map.tileSize / 2, y * Map.tileSize
+                + Map.tileSize / 2)));
+        t.setPass(false);
       }
 
     }
@@ -89,9 +89,8 @@ public class Map implements Iterable<Tile> {
 
   public List<Tile> getOverlappingTiles(Rectangle r) {
     List<Tile> overlapping = new LinkedList<Tile>();
-    int ts = Tile.size();
-    for (int y = r.y / ts; y <= (r.y + r.height) / ts; y++) {
-      for (int x = r.x / ts; x <= (r.x + r.width) / Tile.size(); x++) {
+    for (int y = r.y / Map.tileSize; y <= (r.y + r.height) / Map.tileSize; y++) {
+      for (int x = r.x / Map.tileSize; x <= (r.x + r.width) / Map.tileSize; x++) {
         overlapping.add(getTile(x, y));
       }
     }
@@ -179,7 +178,7 @@ public class Map implements Iterable<Tile> {
       for (int x = 0; x < numCols; x++) {
 
         Tile t = getTile(x, y);
-        int spriteID = t.spriteID();
+        int spriteID = t.getSpriteID();
         Image img = tilesheet.get(spriteID);
 
         g2.drawImage(img, x * Map.tileSize, y * Map.tileSize, Map.tileSize,
