@@ -18,5 +18,13 @@ public class Move implements Action {
   @Override
   public void performBy(Entity actor) {
     actor.loc().translate(dir, actor.speed());
+
+    // for each tile under each corner of the entity
+
+    // for each entity in that tile
+
+    // check overlap
+
+    // and if collision, call collide with
   }
 }

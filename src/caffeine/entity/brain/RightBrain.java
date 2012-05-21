@@ -2,17 +2,21 @@ package caffeine.entity.brain;
 
 import java.util.List;
 
+import caffeine.Game;
 import caffeine.action.Action;
 import caffeine.action.Move;
 import caffeine.entity.Entity;
 import caffeine.world.Direction;
-import caffeine.world.Map;
 
 public class RightBrain extends Brain {
   Direction dir = Direction.E;
 
+  public RightBrain(Game g, Entity owner){
+    super(g, owner);
+  }
+
   @Override
-  public List<Action> next(Entity actor, Map m) {
+  public List<Action> next() {
     actionPlan.clear();
     Move move = new Move(dir);
 

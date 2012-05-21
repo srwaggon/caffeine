@@ -5,11 +5,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import caffeine.Game;
 import caffeine.action.Action;
 import caffeine.action.Report;
 import caffeine.entity.Entity;
 import caffeine.view.InputHandler;
-import caffeine.world.Map;
 
 public class InteractiveBrain extends Brain {
   protected HashMap<Integer, Action[]> actionMap = new HashMap<Integer, Action[]>();
@@ -21,13 +21,14 @@ public class InteractiveBrain extends Brain {
    * @param InputHandler
    *          to read keyboard input from.
    */
-  public InteractiveBrain(InputHandler ih) {
+  public InteractiveBrain(Game game, Entity owner, InputHandler ih) {
+    super(game, owner);
     input = ih;
     actionMap.put(KeyEvent.VK_UP, new Action[] { new Report("Up pressed") });
     actionMap
-        .put(KeyEvent.VK_DOWN, new Action[] { new Report("Down pressed") });
+    .put(KeyEvent.VK_DOWN, new Action[] { new Report("Down pressed") });
     actionMap
-        .put(KeyEvent.VK_LEFT, new Action[] { new Report("Left pressed") });
+    .put(KeyEvent.VK_LEFT, new Action[] { new Report("Left pressed") });
     actionMap.put(KeyEvent.VK_RIGHT,
         new Action[] { new Report("Right pressed") });
   }
@@ -37,7 +38,7 @@ public class InteractiveBrain extends Brain {
    * In this case, determined by keyboard input
    */
   @Override
-  public List<Action> next(Entity actor, Map map) {
+  public List<Action> next() {
     actionPlan.clear();
     for (int keyCode : actionMap.keySet()) {
       if (input.get(keyCode)) {

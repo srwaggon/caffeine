@@ -3,6 +3,7 @@ package caffeine.entity;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.util.LinkedList;
 
 import caffeine.action.Action;
 import caffeine.entity.brain.Brain;
@@ -29,8 +30,9 @@ public class Entity {
   protected int speed = 1;
 
   /* object fields */
+  protected LinkedList<Action> actionPlans = new LinkedList<Action>();
   protected Animation anim;
-  protected Brain brain = new Brain();
+  protected Brain brain = null;
   protected Direction dir = Direction.S;
   protected Loc loc;
   protected String name;
@@ -55,6 +57,10 @@ public class Entity {
     return isAlive;
   }
 
+
+  public Brain brain(){
+    return brain;
+  }
   /**
    * Returns the number of currently existing entities. This number is
    * incremented each time an entity is created and reduced each time an entity
@@ -113,16 +119,26 @@ public class Entity {
    *         accessible location.
    */
   public boolean validLoc(Tile tile) {
-    return tile.isEmpty();
+    return tile.pass();
   }
 
   /* MUTATORS */
+  public void act(){
+    if (!actionPlans.isEmpty()){
+      actionPlans.poll().performBy(this);
+    }
+  }
+
   public void alive(Boolean b) {
     isAlive = b;
   }
 
   public void brain(Brain b) {
     brain = b;
+  }
+
+  public void collideWith(Entity e){
+    ;
   }
 
   public void face(Direction dir) {
@@ -146,9 +162,10 @@ public class Entity {
    */
   public void tick(Map map) {
     if (isAlive) {
-      for (Action act : brain.next(this, map)) {
-        act.performBy(this);
+      if(brain != null){
+        actionPlans.addAll(brain.next());
       }
+      act();
     }
   }
 

@@ -71,12 +71,15 @@ public class Map implements Iterable<Tile> {
       int x = i % numCols;
       int y = i / numCols;
       char c = line.charAt(i);
-      map[x][y] = new Tile(x, y);
+      Tile t = new Tile(x, y);
+      map[x][y] = t;
       if (c == '#') {
-        map[x][y].add(new Boulder(new Loc(id,
+        t.add(new Boulder(new Loc(id,
             x * Tile.size() + Tile.size() / 2, y * Tile.size() + Tile.size()
-                / 2)));
+            / 2)));
+        t.pass(false);
       }
+
     }
   }
 
