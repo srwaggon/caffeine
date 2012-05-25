@@ -10,13 +10,13 @@ import caffeine.entity.Entity;
 public abstract class Brain {
   protected List<Action> actionPlan = new LinkedList<Action>();
   protected Game game;
-  protected Entity owner;
-
-  public Brain(Game game, Entity owner){
+  protected Entity self;
+  
+  public Brain(Game game, Entity self) {
     this.game = game;
-    this.owner = owner;
+    this.self = self;
   }
-
+  
   public List<Action> next() {
     return actionPlan;
   }

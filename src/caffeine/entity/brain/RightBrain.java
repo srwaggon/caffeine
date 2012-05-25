@@ -12,24 +12,24 @@ import caffeine.world.Map;
 
 public class RightBrain extends Brain {
   Direction dir = Direction.E;
-
+  
   public RightBrain(Game g, Entity owner) {
     super(g, owner);
   }
-
+  
   @Override
   public List<Action> next() {
     Caffeine caff = (Caffeine) game;
     actionPlan.clear();
-    Map map = caff.world().getMap(owner.getLoc().mapID());
+    Map map = caff.world().getMap(self.getLoc().mapID());
     Move move = new Move(map, dir);
-
-    if (move.dryRun(owner)) {
+    
+    if (move.dryRun(self)) {
       actionPlan.add(move);
     } else {
       dir = dir.next();
     }
     return actionPlan;
   }
-
+  
 }

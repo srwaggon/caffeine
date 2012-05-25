@@ -7,7 +7,6 @@ import java.awt.event.MouseListener;
 import java.util.HashMap;
 import java.util.Set;
 
-@SuppressWarnings("serial")
 public class InputHandler implements KeyListener, MouseListener {
   HashMap<Integer, Boolean> keys = new HashMap<Integer, Boolean>();
   
