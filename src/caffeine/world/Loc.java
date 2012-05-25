@@ -31,7 +31,7 @@ public class Loc {
 
   @Override
   public String toString() {
-    return mapID + " " + x + " " + y;
+    return String.format("{%d:(%d,%d)}", mapID, x, y);
   }
 
   public Loc copy() {
@@ -69,20 +69,20 @@ public class Loc {
   public Loc translate(Direction dir, int magnitude) {
     int dx = 0, dy = 0;
     switch (dir) {
-    case N:
-      dy = -magnitude;
-      break;
-    case E:
-      dx = magnitude;
-      break;
-    case S:
-      dy = magnitude;
-      break;
-    case W:
-      dx = -magnitude;
-      break;
-    default:
-      break;
+      case N:
+        dy = -magnitude;
+        break;
+      case E:
+        dx = magnitude;
+        break;
+      case S:
+        dy = magnitude;
+        break;
+      case W:
+        dx = -magnitude;
+        break;
+      default:
+        break;
     }
     translate(dx, dy);
     return this;

@@ -19,53 +19,53 @@ public class Map implements Iterable<Tile> {
   protected int numRows, numCols;
   protected static int tileSize = 32;
   protected Tile[][] map;
-  
+
   private static String defaultMapString = "40 20 "
       + "########################################"
-      + "#...#...#...#..........................."
-      + "#......................................."
-      + "#.....#................................."
-      + "##..#..................................."
-      + "#.........#............................."
-      + "#..#....#....#.........................."
-      + "#......#.#.............................."
-      + "##....#...#............................."
-      + "#......#.#.............................."
-      + "#....#..#..............................."
-      + "#...........#..........................."
-      + "##.........#............................"
-      + "#.....#................................."
-      + "#......................................."
-      + "#......................................."
-      + "#......................................."
-      + "#......................................."
-      + "#......................................."
+      + "#...#...#...#..........................#"
+      + "#......................................#"
+      + "#.....#................................#"
+      + "##..#..................................#"
+      + "#.........#............................#"
+      + "#..#....#....#.........................#"
+      + "#......#.#.............................#"
+      + "##....#...#............................#"
+      + "#......#.#.............................#"
+      + "#....#..#..............................#"
+      + "#...........#..........................#"
+      + "##.........#...........................#"
+      + "#.....#................................#"
+      + "#......................................#"
+      + "#......................................#"
+      + "#......................................#"
+      + "#......................................#"
+      + "#......................................#"
       + "########################################";
-  
+
   public Map() {
     this(Map.defaultMapString);
   }
-  
+
   public Map(int cols, int rows) {
     id = Map.numMaps++;
     numRows = rows;
     numCols = cols;
     map = new Tile[cols][rows];
-    
+
     for (int y = 0; y < numCols; y++) {
       for (int x = 0; x < numRows; x++) {
         map[x][y] = new Tile(x, y, Map.tileSize, this);
       }
     }
   }
-  
+
   public Map(String s) {
     Scanner scans = new Scanner(s);
     id = Map.numMaps++;
     numCols = Integer.parseInt(scans.next());
     numRows = Integer.parseInt(scans.next());
     map = new Tile[numCols][numRows];
-    
+
     String line = scans.next();
     for (int i = 0; i < numRows * numCols; i++) {
       int x = i % numCols;
@@ -76,17 +76,17 @@ public class Map implements Iterable<Tile> {
       if (c == '#') {
         t.addEntity(new Boulder(new Loc(id,
             x * Map.tileSize + Map.tileSize / 2, y * Map.tileSize
-                + Map.tileSize / 2)));
+            + Map.tileSize / 2)));
         t.setPass(false);
       }
-      
+
     }
   }
-  
+
   public int getID() {
     return id;
   }
-  
+
   public List<Tile> getOverlappingTiles(Rectangle r) {
     List<Tile> overlapping = new LinkedList<Tile>();
     for (int y = r.y / Map.tileSize; y <= (r.y + r.height) / Map.tileSize; y++) {
@@ -96,7 +96,7 @@ public class Map implements Iterable<Tile> {
     }
     return overlapping;
   }
-  
+
   private Tile getTile(int x, int y) {
     if (x < 0) {
       x = 0;
@@ -112,32 +112,32 @@ public class Map implements Iterable<Tile> {
     }
     return map[x][y];
   }
-  
+
   private Tile getTile(Coord coord) {
     return getTile(coord.x(), coord.y());
   }
-  
+
   public Tile getTileAt(int x, int y) {
     return getTile(x / Map.tileSize, y / Map.tileSize);
   }
-  
+
   public Tile getTileAt(Loc l) {
     if (l.mapID() != id) {
       // throw new MismatchingMapIDException();
     }
     return getTileAt(l.x(), l.y());
   }
-  
+
   public boolean hasNeighbor(Tile tile, Direction dir) {
     boolean result = false;
     result = inRange(tile.getCoord().next(dir));
     return result;
   }
-  
+
   public Tile getNeighbor(Tile tile, Direction dir) {
     return getTile(tile.getCoord().next(dir));
   }
-  
+
   public List<Tile> getNeighbors(Tile tile) {
     List<Tile> neighbs = new LinkedList<Tile>();
     for (Direction dir : Direction.values()) {
@@ -147,44 +147,44 @@ public class Map implements Iterable<Tile> {
     }
     return neighbs;
   }
-  
+
   public int numCols() {
     return numCols;
   }
-  
+
   public int numRows() {
     return numRows;
   }
-  
+
   public int height() {
     return numRows * Map.tileSize;
   }
-  
+
   public int width() {
     return numCols * Map.tileSize;
   }
-  
+
   public int tileSize() {
     return Map.tileSize;
   }
-  
+
   public boolean validLoc(Loc loc) {
     int x = loc.x();
     int y = loc.y();
     return 0 <= x && x < numCols * Map.tileSize && 0 <= y
         && y < numRows * Map.tileSize;
   }
-  
+
   protected boolean inRange(Coord coord) {
     int x = coord.x();
     int y = coord.y();
     return x >= 0 && x < numCols && y >= 0 && y < numRows;
   }
-  
+
   public void tick() {
     Collection<Entity> entities = new LinkedList<Entity>();
     Iterator<Tile> tileIterator = iterator();
-    
+
     while (tileIterator.hasNext()) {
       Tile t = tileIterator.next();
       entities.addAll(t.occupants());
@@ -194,7 +194,7 @@ public class Map implements Iterable<Tile> {
       e.tick(this);
     }
   }
-  
+
   @Override
   public String toString() {
     String s = "map " + numCols + " " + numRows + " " + Map.tileSize + " ";
@@ -206,39 +206,39 @@ public class Map implements Iterable<Tile> {
     s += "\n";
     return s;
   }
-  
+
   public void renderTiles(Graphics2D g2, Spritesheet tilesheet) {
     /* Draw the world, tile by tile */
     for (int y = 0; y < numRows; y++) {
       for (int x = 0; x < numCols; x++) {
-        
+
         Tile t = getTile(x, y);
         int spriteID = t.getSpriteID();
         Image img = tilesheet.get(spriteID);
-        
+
         g2.drawImage(img, x * Map.tileSize, y * Map.tileSize, Map.tileSize,
             Map.tileSize, null);
       }
     }
   }
-  
+
   public void renderEntities(Graphics2D g2) {
     for (Entity e : entities()) {
       e.render(g2);
     }
   }
-  
+
   @Override
   public Iterator<Tile> iterator() {
     return new Iterator<Tile>() {
       int x = 0;
       int y = 0;
-      
+
       @Override
       public boolean hasNext() {
         return inRange(new Coord(x, y));
       }
-      
+
       @Override
       public Tile next() {
         Tile t = getTile(x, y);
@@ -248,14 +248,14 @@ public class Map implements Iterable<Tile> {
         }
         return t;
       }
-      
+
       @Override
       public void remove() {
         // :V Yeah, no.
       }
     };
   }
-  
+
   public List<Entity> entities() {
     List<Entity> entities = new LinkedList<Entity>();
     Iterator<Tile> tileIt = iterator();
@@ -265,5 +265,5 @@ public class Map implements Iterable<Tile> {
     }
     return entities;
   }
-  
+
 }

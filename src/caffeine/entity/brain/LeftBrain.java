@@ -14,30 +14,31 @@ import caffeine.world.Tile;
 
 public class LeftBrain extends Brain {
   private Direction dir = Direction.S;
-  
+
   public LeftBrain(Game game, Entity self) {
     super(game, self);
   }
-  
+
   @Override
   public List<Action> next() {
     Caffeine caff = (Caffeine) game;
     actionPlan.clear();
     Map map = caff.world().getMap(self.getLoc().mapID());
-    
+
     Move move = new Move(map, dir);
     Loc selfLoc = self.getLoc();
     Tile selfTile = map.getTileAt(selfLoc);
-    
-    // if (move.dryRun(self)) {
+
+    if (move.dryRun(self)) {
+      /*
     if (map.hasNeighbor(selfTile, dir)) {
       if (map.getNeighbor(selfTile, dir).canPass()) {
-        
-        actionPlan.add(move);
-      } else {
-        dir = dir.prev();
-      }
+       */
+      actionPlan.add(move);
+    } else {
+      dir = dir.prev();
     }
+    //}
     return actionPlan;
   }
 }
