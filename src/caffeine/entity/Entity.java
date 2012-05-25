@@ -22,45 +22,43 @@ import caffeine.world.Tile;
 public class Entity {
   /* static fields */
   protected static int numEntities = 0;
-
+  
   /* primitive fields */
-  protected int id;
+  protected int id = Entity.numEntities++;
   protected boolean isAlive = true;
   protected int size = 24;
   protected int speed = 1;
-
+  
   /* object fields */
   protected LinkedList<Action> actionPlans = new LinkedList<Action>();
   protected Animation anim;
   protected Brain brain = null;
   protected Direction dir = Direction.S;
   protected Loc loc;
-  protected String name;
-
+  protected String name = "Entity{" + id + "}";
+  
   public Entity() {
     this(new Loc(0, 48, 48));
   }
-
+  
   /* CONSTRUCTORS */
-  public Entity(Loc l) {
-    id = Entity.numEntities++; // This must stay first.
-    name = "" + id;
-    loc = l;
+  public Entity(Loc loc) {
+    this.loc = loc;
     int[] walkSprites = { 3, 4 };
-
+    
     Animation walkAnim = new Animation(walkSprites, 200, true);
     anim = walkAnim;
   }
-
+  
   /* ACCESSORS */
   public boolean isAlive() {
     return isAlive;
   }
-
+  
   public Brain getBrain() {
     return brain;
   }
-
+  
   /**
    * Returns the number of currently existing entities. This number is
    * incremented each time an entity is created and reduced each time an entity
@@ -71,7 +69,7 @@ public class Entity {
   public static int getPopulation() {
     return Entity.numEntities;
   }
-
+  
   /**
    * Returns a unique numerical digit representing the entity's identification.
    * 
@@ -80,7 +78,7 @@ public class Entity {
   public int getID() {
     return id;
   }
-
+  
   /**
    * Returns a Rectangle object of which the entity is considered to occupy in
    * space. Objects which fall within the rectangle or overlap with the
@@ -92,7 +90,7 @@ public class Entity {
   public Rectangle getHitbox() {
     return new Rectangle(loc.x() - size / 2, loc.y() - size / 2, size, size);
   }
-
+  
   /**
    * Returns the current Location of the entity.
    * 
@@ -101,7 +99,7 @@ public class Entity {
   public Loc getLoc() {
     return loc;
   }
-
+  
   /**
    * 
    * @return speed that this entity can move
@@ -109,7 +107,7 @@ public class Entity {
   public int getSpeed() {
     return speed;
   }
-
+  
   /**
    * Takes a tile and determines if the tile is a validly accessible location
    * according to this entity for movement purposes.
@@ -121,31 +119,31 @@ public class Entity {
   public boolean isValidLoc(Tile tile) {
     return tile.canPass();
   }
-
+  
   /* MUTATORS */
   public void act() {
     if (!actionPlans.isEmpty()) {
       actionPlans.poll().performBy(this);
     }
   }
-
+  
   public void die() {
     isAlive = false;
   }
-
+  
   public void setBrain(Brain b) {
     brain = b;
   }
-
+  
   public void collideWith(Entity e) {
     e.die();
     System.out.println(this + " colliding with " + e);
   }
-
+  
   public void setFacing(Direction dir) {
     this.dir = dir;
   }
-
+  
   /**
    * Takes a graphics object and draws the representation of this entity.
    * 
@@ -157,7 +155,7 @@ public class Entity {
     g2.draw(getHitbox());
     anim.render(g2, loc.x(), loc.y());
   }
-
+  
   /**
    * Enact the regularly scheduled routines this entity must perform.
    */
@@ -169,12 +167,12 @@ public class Entity {
       act();
     }
   }
-
+  
   @Override
   public String toString() {
     return "entity" + " " + id + " " + loc.toString();
   }
-
+  
   @Override
   public void finalize() {
     try {
@@ -184,5 +182,5 @@ public class Entity {
       e.printStackTrace();
     }
   }
-
+  
 }
