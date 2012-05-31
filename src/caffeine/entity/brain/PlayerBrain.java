@@ -17,7 +17,7 @@ public class PlayerBrain extends InteractiveBrain {
   public PlayerBrain(Game g, Entity self, InputHandler i) {
     super(g, self, i);
     Caffeine caff = (Caffeine) game;
-    Map map = caff.world().getMap(self.getLoc().mapID());
+    Map map = caff.world().getMap(self.getLoc().mapID);
     actionMap.put(KeyEvent.VK_UP, new Action[] { new Move(map, Direction.N),
         Face.NORTH });
     actionMap.put(KeyEvent.VK_DOWN, new Action[] { new Move(map, Direction.S),

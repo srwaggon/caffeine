@@ -42,18 +42,22 @@ public class Caffeine implements Game {
     Map map = new Map();
     caffeine.world().addMap(map);
     
+    // create a GUI
     WorldScreen ws = new WorldScreen();
     ws.setMap(map);
     caffeine.gui().setScreen(ws);
     
+    // receive input
     InputHandler input = new InputHandler();
     caffeine.gui().addInputHandler(input);
     
+    // add a player
     Player p1 = new Player(caffeine);
     caffeine.addPlayer(p1);
     Entity p1Entity = p1.getEntity();
     p1Entity.setBrain(new PlayerBrain(caffeine, p1Entity, input));
     
+    // add some AI
     Entity leftbot = new Entity(new Loc(0, 48, 80));
     leftbot.setBrain(new LeftBrain(caffeine, leftbot));
     map.getTileAt(48, 80).addEntity(leftbot);
@@ -99,7 +103,7 @@ public class Caffeine implements Game {
   public Set<Map> activeMaps() {
     Set<Map> activeMaps = new LinkedHashSet<Map>();
     for (Player p : players()) {
-      activeMaps.add(world.getMap(p.getEntity().getLoc().mapID()));
+      activeMaps.add(world.getMap(p.getEntity().getLoc().mapID));
     }
     return activeMaps;
   }

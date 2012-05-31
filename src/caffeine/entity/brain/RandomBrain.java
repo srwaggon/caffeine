@@ -39,7 +39,7 @@ public class RandomBrain extends Brain {
       numSteps = 9;
     }
     numSteps--;
-    Map map = caff.world().getMap(self.getLoc().mapID());
+    Map map = caff.world().getMap(self.getLoc().mapID);
     actionPlan.add(new Move(map, dir));
     return actionPlan;
   }

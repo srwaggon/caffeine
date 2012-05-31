@@ -19,7 +19,11 @@ public class Move implements Action {
   
   public boolean dryRun(Entity actor) {
     Loc end = actor.getLoc().copy().translate(dir, actor.getSpeed());
-    Tile endTile = map.getTileAt(end.x(), end.y());
+    Rectangle hitbox = (Rectangle) actor.getHitbox().clone();
+    
+    hitbox.setLocation(end.x, end.y);
+    
+    Tile endTile = map.getTileAt(end.x, end.y);
     return endTile.canPass();
   }
   

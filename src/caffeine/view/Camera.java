@@ -10,30 +10,30 @@ import caffeine.world.Map;
 public class Camera {
   protected Dimension dims;
   protected Loc loc = new Loc(0, 0, 0);
-
+  
   public Camera(Dimension d) {
     dims = d;
   }
-
+  
   public void focusOn(Loc l) {
     loc = l;
   }
-
+  
   public void focusOn(Entity e) {
     loc = e.getLoc();
   }
-
+  
   public Loc loc() {
     return loc;
   }
-
+  
   public Image view(Map map) {
     MapView mapview = new MapView(map);
     int w = dims.width;
     int h = dims.height;
-    int x = loc.x() - (w / 2);
-    int y = loc.y() - (h / 2);
-
+    int x = loc.x - (w / 2);
+    int y = loc.y - (h / 2);
+    
     if (x < 0) {
       x = 0;
     }
