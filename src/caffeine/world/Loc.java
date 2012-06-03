@@ -5,8 +5,8 @@ import caffeine.util.Util;
 
 public class Loc {
   public int mapID;
-  public int x;
-  public int y;
+  public double x;
+  public double y;
 
   public Loc() {
     mapID = 0;
@@ -14,24 +14,25 @@ public class Loc {
     y = 0;
   }
 
-  public Loc(int mapID, int x, int y) {
+  public Loc(int mapID, double x, double y) {
     this.mapID = mapID;
     this.x = x;
     this.y = y;
   }
 
-  public Loc project(int xdist, int ydist) {
+  public Loc project(double xdist, double ydist) {
     return new Loc(mapID, x + xdist, y + ydist);
   }
 
-  public void translate(int xdist, int ydist) {
+  public Loc translate(double xdist, double ydist) {
     x += xdist;
     y += ydist;
+    return this;
   }
 
   @Override
   public String toString() {
-    return String.format("{%d:(%d,%d)}", mapID, x, y);
+    return String.format("{%d:(%f,%f)}", mapID, x, y);
   }
 
   public Loc copy() {
@@ -48,35 +49,9 @@ public class Loc {
     y = l.y;
   }
 
-  public void set(int mapID, int x, int y) {
+  public void set(int mapID, double x, double y) {
     this.mapID = mapID;
     this.x = x;
     this.y = y;
-  }
-
-  public Loc translate(Direction dir, int magnitude) {
-    int dx = 0, dy = 0;
-    switch (dir) {
-      case NORTH:
-        dy = -magnitude;
-        break;
-      case EAST:
-        dx = magnitude;
-        break;
-      case SOUTH:
-        dy = magnitude;
-        break;
-      case WEST:
-        dx = -magnitude;
-        break;
-      default:
-        break;
-    }
-    translate(dx, dy);
-    return this;
-  }
-
-  public Loc project(Direction dir, int magnitude) {
-    return copy().translate(dir, magnitude);
   }
 }

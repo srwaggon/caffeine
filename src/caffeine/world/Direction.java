@@ -5,6 +5,20 @@ import java.util.Random;
 public enum Direction {
   NORTH, EAST, SOUTH, WEST;
 
+  public double dx(){
+    double dx = 0;
+    dx = this == EAST ?  1 : dx;
+    dx = this == WEST ? -1 : dx;
+    return dx;
+  }
+
+  public double dy(){
+    double dy = 0;
+    dy = this == NORTH ? -1 : dy;
+    dy = this == SOUTH ?  1 : dy;
+    return dy;
+  }
+
   /**
    * Returns the next direction from this enumeration from the following order: N, E, S, W
    * @return The next direction from this enumeration
