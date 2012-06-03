@@ -11,19 +11,19 @@ import caffeine.world.Direction;
 import caffeine.world.Map;
 
 public class RightBrain extends Brain {
-  Direction dir = Direction.E;
-  
+  Direction dir = Direction.EAST;
+
   public RightBrain(Game g, Entity owner) {
     super(g, owner);
   }
-  
+
   @Override
   public List<Action> next() {
     Caffeine caff = (Caffeine) game;
     actionPlan.clear();
     Map map = caff.world().getMap(self.getLoc().mapID);
     Move move = new Move(map, dir);
-    
+
     if (move.dryRun(self)) {
       actionPlan.add(move);
     } else {
@@ -31,5 +31,5 @@ public class RightBrain extends Brain {
     }
     return actionPlan;
   }
-  
+
 }

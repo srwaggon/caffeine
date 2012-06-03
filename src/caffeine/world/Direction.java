@@ -3,7 +3,7 @@ package caffeine.world;
 import java.util.Random;
 
 public enum Direction {
-  N, E, S, W;
+  NORTH, EAST, SOUTH, WEST;
 
   /**
    * Returns the next direction from this enumeration from the following order: N, E, S, W

@@ -13,7 +13,7 @@ import caffeine.world.Map;
 import caffeine.world.Tile;
 
 public class LeftBrain extends Brain {
-  private Direction dir = Direction.S;
+  private Direction dir = Direction.SOUTH;
   
   public LeftBrain(Game game, Entity self) {
     super(game, self);

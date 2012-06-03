@@ -4,10 +4,10 @@ import caffeine.entity.Entity;
 import caffeine.world.Direction;
 
 public class Face implements Action {
-  public final static Face NORTH = new Face(Direction.N);
-  public final static Face EAST = new Face(Direction.E);
-  public final static Face SOUTH = new Face(Direction.S);
-  public final static Face WEST = new Face(Direction.W);
+  public final static Face NORTH = new Face(Direction.NORTH);
+  public final static Face EAST = new Face(Direction.EAST);
+  public final static Face SOUTH = new Face(Direction.SOUTH);
+  public final static Face WEST = new Face(Direction.WEST);
   Direction dir;
 
   private Face(Direction d) {

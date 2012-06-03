@@ -33,7 +33,7 @@ public class Entity {
   protected LinkedList<Action> actionPlans = new LinkedList<Action>();
   protected Animation anim;
   protected Brain brain = null;
-  protected Direction dir = Direction.S;
+  protected Direction dir = Direction.SOUTH;
   protected Loc loc;
   protected String name = "Entity-" + id;
   
