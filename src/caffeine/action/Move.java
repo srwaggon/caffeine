@@ -40,10 +40,10 @@ public class Move implements Action {
     hitbox.translate((int)dir.dx(), (int)dir.dy());
 
     // for each corner, if valid tile
-    Tile upleft    = map.getTileAt(hitbox.x,                hitbox.y);
-    Tile upright   = map.getTileAt(hitbox.x + hitbox.width, hitbox.y);
-    Tile downleft  = map.getTileAt(hitbox.x,                hitbox.y + hitbox.height);
-    Tile downright = map.getTileAt(hitbox.x + hitbox.width, hitbox.y + hitbox.height);
+    Tile upleft    = map.getTileAt(hitbox.x,                   hitbox.y);
+    Tile upright   = map.getTileAt(hitbox.x + hitbox.width -1, hitbox.y);
+    Tile downleft  = map.getTileAt(hitbox.x,                   hitbox.y + hitbox.height -1);
+    Tile downright = map.getTileAt(hitbox.x + hitbox.width -1, hitbox.y + hitbox.height -1);
 
     boolean validTiles;
     switch(dir){
@@ -103,10 +103,10 @@ public class Move implements Action {
     hitbox.translate((int)dir.dx(), (int)dir.dy());
 
     // for each corner, if valid tile
-    Tile upleft    = map.getTileAt(hitbox.x,                hitbox.y);
-    Tile upright   = map.getTileAt(hitbox.x + hitbox.width, hitbox.y);
-    Tile downleft  = map.getTileAt(hitbox.x,                hitbox.y + hitbox.height);
-    Tile downright = map.getTileAt(hitbox.x + hitbox.width, hitbox.y + hitbox.height);
+    Tile upleft    = map.getTileAt(hitbox.x,                   hitbox.y);
+    Tile upright   = map.getTileAt(hitbox.x + hitbox.width -1, hitbox.y);
+    Tile downleft  = map.getTileAt(hitbox.x,                   hitbox.y + hitbox.height -1);
+    Tile downright = map.getTileAt(hitbox.x + hitbox.width -1, hitbox.y + hitbox.height -1);
 
     boolean validTiles;
     switch(dir){
@@ -128,6 +128,12 @@ public class Move implements Action {
     }
 
     if (validTiles) {
+      /*
+      upleft.setSpriteID(14);
+      upright.setSpriteID(14);
+      downleft.setSpriteID(14);
+      downright.setSpriteID(14);
+       */
       // Coral all potential colliders.
       List<Entity> potentialColliders = new LinkedList<Entity>();
       potentialColliders.addAll(upleft.occupants());
@@ -150,9 +156,27 @@ public class Move implements Action {
 
       // If each collision successful, move successfully.
       Tile endTile = map.getTileAt(end);
-      map.getTileAt(actor.getLoc()).removeEntity(actor);
+
+      //
+      hitbox = actor.getHitbox();
+      int hx = hitbox.x;
+      int hy = hitbox.y;
+
+      // Vacate old tiles.
+      map.getTileAt(hitbox.x, hitbox.y).removeEntity(actor);
+      map.getTileAt(hitbox.x + hitbox.width - 1, hitbox.y).removeEntity(actor);
+      map.getTileAt(hitbox.x, hitbox.y + hitbox.height - 1).removeEntity(actor);
+      map.getTileAt(hitbox.x + hitbox.width - 1, hitbox.y + hitbox.height - 1).removeEntity(actor);
+
+      // Occupy new tiles.
+      upleft.addEntity(actor);
+      upright.addEntity(actor);
+      downleft.addEntity(actor);
+      downright.addEntity(actor);
+
+      // Change location.
       start.set(end);
-      endTile.addEntity(actor);
+
       return true;
     }
     return false;

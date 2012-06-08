@@ -3,11 +3,12 @@ package caffeine.world;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
-import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
 import caffeine.entity.Boulder;
 import caffeine.entity.Entity;
@@ -182,7 +183,7 @@ public class Map implements Iterable<Tile> {
   }
 
   public void tick() {
-    Collection<Entity> entities = new LinkedList<Entity>();
+    Set<Entity> entities = new HashSet<Entity>();
     Iterator<Tile> tileIterator = iterator();
 
     while (tileIterator.hasNext()) {

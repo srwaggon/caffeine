@@ -26,7 +26,7 @@ public class Entity {
   /* primitive fields */
   protected int id = Entity.numEntities++;
   protected boolean isAlive = true;
-  protected int size = 24;
+  protected int size = 32;
   protected int speed = 2;
 
   /* object fields */
@@ -138,7 +138,7 @@ public class Entity {
   public boolean collideWith(Entity e) {
     // e.die();
     System.out.println(this + " colliding with " + e);
-    return true;
+    return false;
   }
 
   public void setFacing(Direction dir) {

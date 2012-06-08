@@ -49,7 +49,7 @@ public class Loc {
     y = l.y;
   }
 
-  public void set(int mapID, double x, double y) {
+  public void set(int mapID, int x, int y) {
     this.mapID = mapID;
     this.x = x;
     this.y = y;
