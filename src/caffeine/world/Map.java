@@ -3,6 +3,7 @@ package caffeine.world;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -10,7 +11,6 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
-import caffeine.entity.Boulder;
 import caffeine.entity.Entity;
 import caffeine.view.Spritesheet;
 
@@ -23,20 +23,20 @@ public class Map implements Iterable<Tile> {
 
   private static String defaultMapString = "40 20 "
       + "########################################"
-      + "#...#...#...#..........................#"
-      + "#......................................#"
-      + "#.....#................................#"
-      + "##..#..................................#"
-      + "#.........#............................#"
-      + "#..#....#....#.........................#"
-      + "#......#.#.............................#"
-      + "##....#...#............................#"
-      + "#......#.#.............................#"
-      + "#....#..#..............................#"
+      + "#...#...#...##.........................#"
+      + "#............#.........................#"
+      + "#.....#......#.........................#"
+      + "##..#........#.........................#"
+      + "#.........#..#.........................#"
+      + "#..#....#....##........................#"
+      + "#......#.#...#.........................#"
+      + "##....#...#..#.........................#"
+      + "#......#.#...#.........................#"
+      + "#....#..#....#.........................#"
       + "#...........#..........................#"
       + "##.........#...........................#"
+      + "###########............................#"
       + "#.....#................................#"
-      + "#......................................#"
       + "#......................................#"
       + "#......................................#"
       + "#......................................#"
@@ -75,9 +75,12 @@ public class Map implements Iterable<Tile> {
       Tile t = new Tile(x, y, Map.tileSize, this);
       map[x][y] = t;
       if (c == '#') {
+        /*
         t.addEntity(new Boulder(new Loc(id,
             x * Map.tileSize + Map.tileSize / 2, y * Map.tileSize
             + Map.tileSize / 2)));
+         */
+        t.setSprite(1);
         t.setPass(false);
       }
 
@@ -209,17 +212,15 @@ public class Map implements Iterable<Tile> {
   }
 
   public void renderTiles(Graphics2D g2, Spritesheet tilesheet) {
+    Set<Entity> entities = new HashSet<Entity>();
     /* Draw the world, tile by tile */
-    for (int y = 0; y < numRows; y++) {
-      for (int x = 0; x < numCols; x++) {
-
-        Tile t = getTile(x, y);
-        int spriteID = t.getSpriteID();
-        Image img = tilesheet.get(spriteID);
-
-        g2.drawImage(img, x * Map.tileSize, y * Map.tileSize, Map.tileSize,
-            Map.tileSize, null);
-      }
+    Iterator<Tile> tileIterator = iterator();
+    while (tileIterator.hasNext()) {
+      Tile tile = tileIterator.next();
+      int spriteID = tile.getSpriteID();
+      Image img = tilesheet.get(spriteID);
+      g2.drawImage(img, tile.coord.x * Map.tileSize, tile.coord.y * Map.tileSize, Map.tileSize,
+          Map.tileSize, null);
     }
   }
 
@@ -257,8 +258,8 @@ public class Map implements Iterable<Tile> {
     };
   }
 
-  public List<Entity> entities() {
-    List<Entity> entities = new LinkedList<Entity>();
+  public Collection<Entity> entities() {
+    Set<Entity> entities = new HashSet<Entity>();
     Iterator<Tile> tileIt = iterator();
     while (tileIt.hasNext()) {
       Tile t = tileIt.next();

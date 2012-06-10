@@ -19,6 +19,10 @@ public enum Direction {
     return dy;
   }
 
+  public Direction opposite(){
+    return next().next();
+  }
+
   /**
    * Returns the next direction from this enumeration from the following order: N, E, S, W
    * @return The next direction from this enumeration

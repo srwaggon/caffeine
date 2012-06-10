@@ -20,21 +20,11 @@ public class Move implements Action {
   }
 
   public boolean dryRun(Entity actor) {
-    /*    int speed = actor.getSpeed();
-    Loc end = actor.getLoc().copy().translate(dir.dx()*speed, dir.dy()*speed);
-    Rectangle hitbox = (Rectangle) actor.getHitbox().clone();
-
-    hitbox.setLocation((int)end.x, (int)end.y);
-
-    Tile endTile = map.getTileAt((int)end.x, (int)end.y);
-    return endTile.canPass();
-     */
     // project entity's location & hitbox
     double speed = actor.getSpeed();
     double dx = dir.dx() * speed;
     double dy = dir.dy() * speed;
     Loc start = actor.getLoc();
-    Loc end = start.copy().translate(dx, dy);
 
     Rectangle hitbox = actor.getHitbox();
     hitbox.translate((int)dir.dx(), (int)dir.dy());
@@ -75,17 +65,15 @@ public class Move implements Action {
       // Check collision with each entity.
       for(Entity collider : potentialColliders){
         // Must not be self, and they must intersect.
-        if (actor.equals(collider) || !hitbox.intersects(collider.getHitbox())) {
-          continue;
-        }
-
-        // If the collision is bad, the move is unsuccessful.
-        if(!actor.collideWith(collider)){
+        if (!actor.equals(collider) && hitbox.intersects(collider.getHitbox())) {
+          System.out.println(actor + " can't move from colliding with " + collider);
           return false;
         }
       }
+
       return true;
     }
+    System.out.println(actor + " can't move from inaccessibility.");
     return false;
   }
 
@@ -128,12 +116,6 @@ public class Move implements Action {
     }
 
     if (validTiles) {
-      /*
-      upleft.setSpriteID(14);
-      upright.setSpriteID(14);
-      downleft.setSpriteID(14);
-      downright.setSpriteID(14);
-       */
       // Coral all potential colliders.
       List<Entity> potentialColliders = new LinkedList<Entity>();
       potentialColliders.addAll(upleft.occupants());
@@ -143,14 +125,14 @@ public class Move implements Action {
 
       // Check collision with each entity.
       for(Entity collider : potentialColliders){
-        // Must not be self, and they must intersect.
-        if (actor.equals(collider) || !hitbox.intersects(collider.getHitbox())) {
-          continue;
-        }
 
-        // If the collision is bad, the move is unsuccessful.
-        if(!actor.collideWith(collider)){
-          return false;
+        // check for collision
+        if (!actor.equals(collider) && hitbox.intersects(collider.getHitbox())) {
+          // If the collision is bad, the move is unsuccessful.
+          System.out.println(actor + " colliding with " + collider);
+          if (actor.handleCollision(this, collider)) {
+            return false;
+          }
         }
       }
 

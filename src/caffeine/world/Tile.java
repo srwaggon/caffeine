@@ -63,7 +63,7 @@ public class Tile {
     return spriteID;
   }
   
-  public void setSpriteID(int id) {
+  public void setSprite(int id) {
     spriteID = id;
   }
   

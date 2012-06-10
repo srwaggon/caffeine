@@ -11,13 +11,11 @@ public abstract class Brain {
   protected List<Action> actionPlan = new LinkedList<Action>();
   protected Game game;
   protected Entity self;
-  
+
   public Brain(Game game, Entity self) {
     this.game = game;
     this.self = self;
   }
-  
-  public List<Action> next() {
-    return actionPlan;
-  }
+
+  public abstract List<Action> next();
 }

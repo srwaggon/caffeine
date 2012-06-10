@@ -1,5 +1,6 @@
 package caffeine;
 
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -7,9 +8,8 @@ import java.util.Set;
 import java.util.TimerTask;
 
 import caffeine.entity.Entity;
-import caffeine.entity.brain.LeftBrain;
 import caffeine.entity.brain.PlayerBrain;
-import caffeine.entity.brain.RightBrain;
+import caffeine.entity.brain.StraightBrain;
 import caffeine.net.GameServer;
 import caffeine.view.GUI;
 import caffeine.view.InputHandler;
@@ -58,14 +58,16 @@ public class Caffeine implements Game {
     p1Entity.setBrain(new PlayerBrain(caffeine, p1Entity, input));
 
     // add some AI
+
     Entity leftbot = new Entity(new Loc(0, 48, 80));
-    leftbot.setBrain(new LeftBrain(caffeine, leftbot));
+    leftbot.setBrain(new StraightBrain(caffeine, leftbot));
     map.getTileAt(48, 80).addEntity(leftbot);
 
+    /*
     Entity rightbot = new Entity(new Loc(0, 80, 48));
     rightbot.setBrain(new RightBrain(caffeine, rightbot));
     map.getTileAt(80, 48).addEntity(rightbot);
-
+     */
     Screen s = caffeine.gui().getScreen();
     s.camera().focusOn(p1.getEntity());
 
@@ -87,7 +89,7 @@ public class Caffeine implements Game {
   }
 
   /* ACCESSORS */
-  public List<Entity> entities(int mapID) {
+  public Collection<Entity> entities(int mapID) {
     return world.getMap(mapID).entities();
   }
 

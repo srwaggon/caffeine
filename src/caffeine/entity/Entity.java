@@ -6,6 +6,8 @@ import java.awt.Rectangle;
 import java.util.LinkedList;
 
 import caffeine.action.Action;
+import caffeine.action.Move;
+import caffeine.action.Push;
 import caffeine.entity.brain.Brain;
 import caffeine.view.Animation;
 import caffeine.world.Direction;
@@ -26,14 +28,14 @@ public class Entity {
   /* primitive fields */
   protected int id = Entity.numEntities++;
   protected boolean isAlive = true;
-  protected int size = 32;
+  protected int size = 24;
   protected int speed = 2;
 
   /* object fields */
-  protected LinkedList<Action> actionPlans = new LinkedList<Action>();
+  public LinkedList<Action> actionPlans = new LinkedList<Action>();
   protected Animation anim;
   protected Brain brain = null;
-  protected Direction dir = Direction.SOUTH;
+  protected Direction facing = Direction.SOUTH;
   protected Loc loc;
   protected String name = "Entity-" + id;
 
@@ -57,6 +59,10 @@ public class Entity {
 
   public Brain getBrain() {
     return brain;
+  }
+
+  public Direction getFacing(){
+    return facing;
   }
 
   /**
@@ -135,14 +141,22 @@ public class Entity {
     brain = b;
   }
 
-  public boolean collideWith(Entity e) {
-    // e.die();
-    System.out.println(this + " colliding with " + e);
-    return false;
+  /**
+   * 
+   * @param Entity of which possible collision
+   * @return true if collision detected
+   */
+  public boolean collidesWith(Entity collider) {
+    return !equals(collider) && getHitbox().intersects(collider.getHitbox());
+  }
+
+  public boolean handleCollision(Move collision, Entity collidingEntity){
+    //actionPlans.add(
+    return new Push(collision, collidingEntity).performBy(this);
   }
 
   public void setFacing(Direction dir) {
-    this.dir = dir;
+    facing = dir;
   }
 
   /**
