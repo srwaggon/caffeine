@@ -10,6 +10,7 @@ import java.util.TimerTask;
 import caffeine.entity.Entity;
 import caffeine.entity.brain.LeftBrain;
 import caffeine.entity.brain.PlayerBrain;
+import caffeine.entity.brain.RandomBrain;
 import caffeine.entity.brain.RightBrain;
 import caffeine.entity.brain.StraightBrain;
 import caffeine.net.GameServer;
@@ -71,6 +72,10 @@ public class Caffeine implements Game {
     Entity straightbot = new Entity(new Loc(0, 80, 80));
     straightbot.setBrain(new StraightBrain(caffeine, straightbot));
     map.getTileAt(straightbot.getLoc()).addEntity(straightbot);
+
+    Entity randombot = new Entity(new Loc(0, 200, 200));
+    randombot.setBrain(new RandomBrain(caffeine, randombot));
+    map.getTileAt(randombot.getLoc()).addEntity(randombot);
 
     Screen s = caffeine.gui().getScreen();
     s.camera().focusOn(p1.getEntity());

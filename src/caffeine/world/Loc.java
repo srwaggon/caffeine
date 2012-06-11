@@ -5,8 +5,8 @@ import caffeine.util.Util;
 
 public class Loc {
   public int mapID;
-  public double x;
-  public double y;
+  public int x;
+  public int y;
 
   public Loc() {
     mapID = 0;
@@ -14,13 +14,13 @@ public class Loc {
     y = 0;
   }
 
-  public Loc(int mapID, double x, double y) {
+  public Loc(int mapID, int x, int y) {
     this.mapID = mapID;
     this.x = x;
     this.y = y;
   }
 
-  public Loc project(double xdist, double ydist) {
+  public Loc project(int xdist, int ydist) {
     return new Loc(mapID, x + xdist, y + ydist);
   }
 
@@ -32,7 +32,7 @@ public class Loc {
 
   @Override
   public String toString() {
-    return String.format("{%d:(%f,%f)}", mapID, x, y);
+    return "{" + mapID + ":(" + x + "," + y + ")}";
   }
 
   public Loc copy() {

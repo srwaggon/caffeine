@@ -7,6 +7,7 @@ import caffeine.Game;
 import caffeine.action.Action;
 import caffeine.action.Move;
 import caffeine.entity.Entity;
+import caffeine.util.Util;
 import caffeine.world.Direction;
 import caffeine.world.Map;
 
@@ -17,12 +18,13 @@ import caffeine.world.Map;
  */
 public class RandomBrain extends Brain {
   Direction dir = Direction.pickOneAtRandom();
-  int numSteps = 0;
-  
+  private double turnThresh = .90;
+  private int numSteps = 0;
+
   public RandomBrain(Game g, Entity owner) {
     super(g, owner);
   }
-  
+
   /**
    * Returns a list of actions planned for this brain's owners next turn.
    * 
@@ -31,15 +33,19 @@ public class RandomBrain extends Brain {
   @Override
   public List<Action> next() {
     actionPlan.clear();
-    
     Caffeine caff = (Caffeine) game;
-    
-    if (numSteps <= 0) {
-      dir = Direction.pickOneAtRandom();
-      numSteps = 9;
+    Map map = caff.world().getMap(self.getLoc().mapID);
+
+    //if (turnThresh < Math.random()) {
+    if (numSteps == 0) {
+      if (Util.coinflip()) {
+        dir = dir.next();
+      } else {
+        dir = dir.prev();
+      }
+      numSteps = (int) (Math.random() * 20) + 5;
     }
     numSteps--;
-    Map map = caff.world().getMap(self.getLoc().mapID);
     actionPlan.add(new Move(map, dir));
     return actionPlan;
   }

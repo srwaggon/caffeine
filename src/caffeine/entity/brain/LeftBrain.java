@@ -35,10 +35,6 @@ public class LeftBrain extends Brain {
     }
 
     if (move.dryRun(self)) {
-      /*
-      if (map.hasNeighbor(selfTile, dir)) {
-      if (map.getNeighbor(selfTile, dir).canPass()) {
-       */
       actionPlan.add(move);
     } else {
       dir = dir.prev();
