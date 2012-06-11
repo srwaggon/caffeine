@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
+import caffeine.entity.Boulder;
 import caffeine.entity.Entity;
 import caffeine.view.Spritesheet;
 
@@ -75,13 +76,13 @@ public class Map implements Iterable<Tile> {
       Tile t = new Tile(x, y, Map.tileSize, this);
       map[x][y] = t;
       if (c == '#') {
-        /*
+
         t.addEntity(new Boulder(new Loc(id,
             x * Map.tileSize + Map.tileSize / 2, y * Map.tileSize
-            + Map.tileSize / 2)));
-         */
-        t.setSprite(1);
-        t.setPass(false);
+                + Map.tileSize / 2)));
+
+        //t.setSprite(1);
+        //t.setPass(false);
       }
 
     }
@@ -129,7 +130,7 @@ public class Map implements Iterable<Tile> {
     if (l.mapID != id) {
       // throw new MismatchingMapIDException();
     }
-    return getTileAt((int)l.x, (int)l.y);
+    return getTileAt((int) l.x, (int) l.y);
   }
 
   public boolean hasNeighbor(Tile tile, Direction dir) {
@@ -173,8 +174,8 @@ public class Map implements Iterable<Tile> {
   }
 
   public boolean validLoc(Loc loc) {
-    int x = (int)loc.x;
-    int y = (int)loc.y;
+    int x = (int) loc.x;
+    int y = (int) loc.y;
     return 0 <= x && x < numCols * Map.tileSize && 0 <= y
         && y < numRows * Map.tileSize;
   }
@@ -219,8 +220,8 @@ public class Map implements Iterable<Tile> {
       Tile tile = tileIterator.next();
       int spriteID = tile.getSpriteID();
       Image img = tilesheet.get(spriteID);
-      g2.drawImage(img, tile.coord.x * Map.tileSize, tile.coord.y * Map.tileSize, Map.tileSize,
-          Map.tileSize, null);
+      g2.drawImage(img, tile.coord.x * Map.tileSize, tile.coord.y
+          * Map.tileSize, Map.tileSize, Map.tileSize, null);
     }
   }
 

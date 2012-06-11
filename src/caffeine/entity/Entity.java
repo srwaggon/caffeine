@@ -61,7 +61,7 @@ public class Entity {
     return brain;
   }
 
-  public Direction getFacing(){
+  public Direction getFacing() {
     return facing;
   }
 
@@ -94,7 +94,8 @@ public class Entity {
    * @return rectangle of which this entity occupies
    */
   public Rectangle getHitbox() {
-    return new Rectangle((int)loc.x - size / 2, (int)loc.y - size / 2, size, size);
+    return new Rectangle((int) loc.x - size / 2, (int) loc.y - size / 2, size,
+        size);
   }
 
   /**
@@ -143,15 +144,15 @@ public class Entity {
 
   /**
    * 
-   * @param Entity of which possible collision
+   * @param Entity
+   *          of which possible collision
    * @return true if collision detected
    */
   public boolean collidesWith(Entity collider) {
     return !equals(collider) && getHitbox().intersects(collider.getHitbox());
   }
 
-  public boolean handleCollision(Move collision, Entity collidingEntity){
-    //actionPlans.add(
+  public boolean handleCollision(Move collision, Entity collidingEntity) {
     return new Push(collision, collidingEntity).performBy(this);
   }
 
@@ -167,7 +168,7 @@ public class Entity {
    */
   public final void render(Graphics g) {
     Graphics2D g2 = (Graphics2D) g;
-    anim.render(g2, (int)loc.x, (int)loc.y);
+    anim.render(g2, (int) loc.x, (int) loc.y);
     g2.draw(getHitbox());
   }
 

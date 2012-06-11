@@ -60,7 +60,6 @@ public class Caffeine implements Game {
     p1Entity.setBrain(new PlayerBrain(caffeine, p1Entity, input));
 
     // add some AI
-
     Entity leftbot = new Entity(new Loc(0, 48, 80));
     leftbot.setBrain(new LeftBrain(caffeine, leftbot));
     map.getTileAt(leftbot.getLoc()).addEntity(leftbot);
@@ -68,11 +67,11 @@ public class Caffeine implements Game {
     Entity rightbot = new Entity(new Loc(0, 80, 48));
     rightbot.setBrain(new RightBrain(caffeine, rightbot));
     map.getTileAt(rightbot.getLoc()).addEntity(rightbot);
-    
+
     Entity straightbot = new Entity(new Loc(0, 80, 80));
     straightbot.setBrain(new StraightBrain(caffeine, straightbot));
     map.getTileAt(straightbot.getLoc()).addEntity(straightbot);
-     
+
     Screen s = caffeine.gui().getScreen();
     s.camera().focusOn(p1.getEntity());
 

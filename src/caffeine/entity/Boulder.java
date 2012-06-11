@@ -9,5 +9,6 @@ public class Boulder extends Entity {
     super(l);
     anim = new Animation(new Sprite(1));
     size = 32;
+    speed = 1;
   }
 }
