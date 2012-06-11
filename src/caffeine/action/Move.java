@@ -66,14 +66,14 @@ public class Move implements Action {
       for(Entity collider : potentialColliders){
         // Must not be self, and they must intersect.
         if (!actor.equals(collider) && hitbox.intersects(collider.getHitbox())) {
-          System.out.println(actor + " can't move from colliding with " + collider);
+          //System.out.println(actor + " can't move from colliding with " + collider);
           return false;
         }
       }
 
       return true;
     }
-    System.out.println(actor + " can't move from inaccessibility.");
+    //System.out.println(actor + " can't move from inaccessibility.");
     return false;
   }
 
@@ -130,7 +130,7 @@ public class Move implements Action {
         if (!actor.equals(collider) && hitbox.intersects(collider.getHitbox())) {
           // If the collision is bad, the move is unsuccessful.
           System.out.println(actor + " colliding with " + collider);
-          if (actor.handleCollision(this, collider)) {
+          if (!actor.handleCollision(this, collider)) {
             return false;
           }
         }

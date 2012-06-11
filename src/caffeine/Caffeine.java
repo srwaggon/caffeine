@@ -8,7 +8,9 @@ import java.util.Set;
 import java.util.TimerTask;
 
 import caffeine.entity.Entity;
+import caffeine.entity.brain.LeftBrain;
 import caffeine.entity.brain.PlayerBrain;
+import caffeine.entity.brain.RightBrain;
 import caffeine.entity.brain.StraightBrain;
 import caffeine.net.GameServer;
 import caffeine.view.GUI;
@@ -60,14 +62,17 @@ public class Caffeine implements Game {
     // add some AI
 
     Entity leftbot = new Entity(new Loc(0, 48, 80));
-    leftbot.setBrain(new StraightBrain(caffeine, leftbot));
-    map.getTileAt(48, 80).addEntity(leftbot);
+    leftbot.setBrain(new LeftBrain(caffeine, leftbot));
+    map.getTileAt(leftbot.getLoc()).addEntity(leftbot);
 
-    /*
     Entity rightbot = new Entity(new Loc(0, 80, 48));
     rightbot.setBrain(new RightBrain(caffeine, rightbot));
-    map.getTileAt(80, 48).addEntity(rightbot);
-     */
+    map.getTileAt(rightbot.getLoc()).addEntity(rightbot);
+    
+    Entity straightbot = new Entity(new Loc(0, 80, 80));
+    straightbot.setBrain(new StraightBrain(caffeine, straightbot));
+    map.getTileAt(straightbot.getLoc()).addEntity(straightbot);
+     
     Screen s = caffeine.gui().getScreen();
     s.camera().focusOn(p1.getEntity());
 

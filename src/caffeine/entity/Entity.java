@@ -37,7 +37,7 @@ public class Entity {
   protected Brain brain = null;
   protected Direction facing = Direction.SOUTH;
   protected Loc loc;
-  protected String name = "Entity-" + id;
+  protected String name = "Entity[" + id + "]";
 
   public Entity() {
     this(new Loc(0, 48, 48));
