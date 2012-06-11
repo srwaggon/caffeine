@@ -76,11 +76,9 @@ public class Map implements Iterable<Tile> {
       Tile t = new Tile(x, y, Map.tileSize, this);
       map[x][y] = t;
       if (c == '#') {
-
         t.addEntity(new Boulder(new Loc(id,
             x * Map.tileSize + Map.tileSize / 2, y * Map.tileSize
                 + Map.tileSize / 2)));
-
         //t.setSprite(1);
         //t.setPass(false);
       }
