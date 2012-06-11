@@ -13,9 +13,9 @@ public class Push implements Action {
 
   @Override
   public boolean performBy(Entity performer) {
-    if(trialMove.dryRun(pushee)){
+    if (trialMove.dryRun(pushee)) {
       boolean result = trialMove.performBy(pushee);
-      if(result){
+      if (result) {
         pushee.actionPlans.clear();
         return true;
       }

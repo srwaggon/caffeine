@@ -127,7 +127,7 @@ public class Move implements Action {
         // check for collision
         if (!actor.equals(collider) && hitbox.intersects(collider.getHitbox())) {
           // If the collision is bad, the move is unsuccessful.
-          System.out.println(actor + " colliding with " + collider);
+          //System.out.println(actor + " colliding with " + collider);
           return actor.handleCollision(this, collider);
         }
       }

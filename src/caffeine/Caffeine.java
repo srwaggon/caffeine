@@ -77,6 +77,14 @@ public class Caffeine implements Game {
     randombot.setBrain(new RandomBrain(caffeine, randombot));
     map.getTileAt(randombot.getLoc()).addEntity(randombot);
 
+    randombot = new Entity(new Loc(0, 230, 200));
+    randombot.setBrain(new RandomBrain(caffeine, randombot));
+    map.getTileAt(randombot.getLoc()).addEntity(randombot);
+
+    randombot = new Entity(new Loc(0, 170, 200));
+    randombot.setBrain(new RandomBrain(caffeine, randombot));
+    map.getTileAt(randombot.getLoc()).addEntity(randombot);
+
     Screen s = caffeine.gui().getScreen();
     s.camera().focusOn(p1.getEntity());
 
