@@ -66,7 +66,7 @@ public class Move implements Action {
         // Must not be self, and they must intersect.
         if (!actor.equals(collider) && hitbox.intersects(collider.getHitbox())) {
           //System.out.println(actor + " can't move from colliding with " + collider);
-          return false;
+          return true;
         }
       }
 
