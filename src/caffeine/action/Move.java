@@ -22,8 +22,10 @@ public class Move implements Action {
   public boolean dryRun(Entity actor) {
     // project entity's location & hitbox
     double speed = actor.getSpeed();
+    double dx = speed * dir.dx();
+    double dy = speed * dir.dy();
     Rectangle hitbox = actor.getHitbox();
-    hitbox.translate((int) dir.dx(), (int) dir.dy());
+    hitbox.translate((int) dx, (int) dy);
 
     // for each corner, if valid tile
     Tile upleft = map.getTileAt(hitbox.x, hitbox.y);
@@ -85,7 +87,7 @@ public class Move implements Action {
     Loc end = start.copy().translate(dx, dy);
 
     Rectangle hitbox = actor.getHitbox();
-    hitbox.translate((int) dir.dx(), (int) dir.dy());
+    hitbox.translate((int) dx, (int) dy);
 
     // for each corner, if valid tile
     Tile upleft = map.getTileAt(hitbox.x, hitbox.y);

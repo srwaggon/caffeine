@@ -94,8 +94,7 @@ public class Entity {
    * @return rectangle of which this entity occupies
    */
   public Rectangle getHitbox() {
-    return new Rectangle((int) loc.x - size / 2, (int) loc.y - size / 2, size,
-        size);
+    return new Rectangle(loc.x - size / 2, loc.y - size / 2, size, size);
   }
 
   /**
@@ -168,7 +167,7 @@ public class Entity {
    */
   public final void render(Graphics g) {
     Graphics2D g2 = (Graphics2D) g;
-    anim.render(g2, (int) loc.x, (int) loc.y);
+    anim.render(g2, loc.x, loc.y);
     g2.draw(getHitbox());
   }
 
