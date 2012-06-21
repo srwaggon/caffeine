@@ -40,10 +40,10 @@ public class Caffeine implements Game {
   public static void main(String args[]) {
 
     Caffeine caffeine = new Caffeine();
+    World world = caffeine.getWorld();
 
     // Add some data: A world, some entities
-    Map map = new Map();
-    caffeine.world().addMap(map);
+    Map map = world.addMap(Map.defaultMapString);
 
     // create a GUI
     WorldScreen ws = new WorldScreen();
@@ -61,27 +61,33 @@ public class Caffeine implements Game {
     p1Entity.setBrain(new PlayerBrain(caffeine, p1Entity, input));
 
     // add some AI
-    Entity leftbot = new Entity(new Loc(0, 48, 80));
+    Entity leftbot = new Entity(world);
+    leftbot.setLoc(new Loc(0, 48, 80));
     leftbot.setBrain(new LeftBrain(caffeine, leftbot));
     map.getTileAt(leftbot.getLoc()).addEntity(leftbot);
 
-    Entity rightbot = new Entity(new Loc(0, 80, 48));
+    Entity rightbot = new Entity(world);
+    rightbot.setLoc(new Loc(0, 80, 48));
     rightbot.setBrain(new RightBrain(caffeine, rightbot));
     map.getTileAt(rightbot.getLoc()).addEntity(rightbot);
 
-    Entity straightbot = new Entity(new Loc(0, 80, 80));
+    Entity straightbot = new Entity(world);
+    straightbot.setLoc(new Loc(0, 80, 80));
     straightbot.setBrain(new StraightBrain(caffeine, straightbot));
     map.getTileAt(straightbot.getLoc()).addEntity(straightbot);
 
-    Entity randombot = new Entity(new Loc(0, 200, 200));
+    Entity randombot = new Entity(world);
+    randombot.setLoc(new Loc(0, 200, 200));
     randombot.setBrain(new RandomBrain(caffeine, randombot));
     map.getTileAt(randombot.getLoc()).addEntity(randombot);
 
-    randombot = new Entity(new Loc(0, 230, 200));
+    randombot = new Entity(world);
+    randombot.setLoc(new Loc(0, 230, 200));
     randombot.setBrain(new RandomBrain(caffeine, randombot));
     map.getTileAt(randombot.getLoc()).addEntity(randombot);
 
-    randombot = new Entity(new Loc(0, 170, 200));
+    randombot = new Entity(world);
+    randombot.setLoc(new Loc(0, 170, 200));
     randombot.setBrain(new RandomBrain(caffeine, randombot));
     map.getTileAt(randombot.getLoc()).addEntity(randombot);
 
@@ -115,7 +121,7 @@ public class Caffeine implements Game {
     return gui;
   }
 
-  public World world() {
+  public World getWorld() {
     return world;
   }
 

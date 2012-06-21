@@ -14,6 +14,7 @@ import caffeine.world.Direction;
 import caffeine.world.Loc;
 import caffeine.world.Map;
 import caffeine.world.Tile;
+import caffeine.world.World;
 
 /**
  * base class representing objects in the world. Entities have a location
@@ -38,14 +39,12 @@ public class Entity {
   protected Direction facing = Direction.SOUTH;
   protected Loc loc;
   protected String name = "Entity[" + id + "]";
-
-  public Entity() {
-    this(new Loc(0, 48, 48));
-  }
+  protected World world;
 
   /* CONSTRUCTORS */
-  public Entity(Loc loc) {
-    this.loc = loc;
+  public Entity(World world) {
+    this.world = world;
+    loc = world.getDefaultSpawn();
     int[] walkSprites = { 3, 4 };
 
     Animation walkAnim = new Animation(walkSprites, 200, true);
@@ -169,6 +168,10 @@ public class Entity {
     Graphics2D g2 = (Graphics2D) g;
     anim.render(g2, loc.x, loc.y);
     g2.draw(getHitbox());
+  }
+
+  public void setLoc(Loc loc) {
+    this.loc = loc;
   }
 
   /**

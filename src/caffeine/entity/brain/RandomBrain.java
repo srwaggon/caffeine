@@ -34,7 +34,7 @@ public class RandomBrain extends Brain {
   public List<Action> next() {
     actionPlan.clear();
     Caffeine caff = (Caffeine) game;
-    Map map = caff.world().getMap(self.getLoc().mapID);
+    Map map = caff.getWorld().getMap(self.getLoc().mapID);
 
     //if (turnThresh < Math.random()) {
     if (numSteps == 0) {

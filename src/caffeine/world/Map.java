@@ -8,10 +8,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.Set;
 
-import caffeine.entity.Boulder;
 import caffeine.entity.Entity;
 import caffeine.view.Spritesheet;
 
@@ -22,31 +20,27 @@ public class Map implements Iterable<Tile> {
   protected static int tileSize = 32;
   protected Tile[][] map;
 
-  private static String defaultMapString = "40 20 "
+  public static String defaultMapString = "40 20 "
       + "########################################"
-      + "#...#...#...##.........................#"
-      + "#............#.........................#"
-      + "#.....#......#.........................#"
-      + "##..#........#.........................#"
-      + "#.........#..#.........................#"
-      + "#..#....#....##........................#"
-      + "#......#.#...#.........................#"
-      + "##....#...#..#.........................#"
-      + "#......#.#...#.........................#"
-      + "#....#..#....#.........................#"
-      + "#...........#..........................#"
-      + "##.........#...........................#"
-      + "###########............................#"
-      + "#.....#................................#"
+      + "#...@...@...@@.........................#"
+      + "#............@.........................#"
+      + "#.....@......@.........................#"
+      + "#@..@........@.........................#"
+      + "#.........@..@.........................#"
+      + "#..@....@....@@........................#"
+      + "#......@.@...@.........................#"
+      + "#@....@...@..@.........................#"
+      + "#......@.@...@.........................#"
+      + "#....@..@....@.........................#"
+      + "#...........@..........................#"
+      + "#@.........@...........................#"
+      + "#@@@@@@@@@@............................#"
+      + "#.....@................................#"
       + "#......................................#"
       + "#......................................#"
       + "#......................................#"
       + "#......................................#"
       + "########################################";
-
-  public Map() {
-    this(Map.defaultMapString);
-  }
 
   public Map(int cols, int rows) {
     id = Map.numMaps++;
@@ -54,35 +48,10 @@ public class Map implements Iterable<Tile> {
     numCols = cols;
     map = new Tile[cols][rows];
 
-    for (int y = 0; y < numCols; y++) {
-      for (int x = 0; x < numRows; x++) {
+    for (int y = 0; y < numRows; y++) {
+      for (int x = 0; x < numCols; x++) {
         map[x][y] = new Tile(x, y, Map.tileSize, this);
       }
-    }
-  }
-
-  public Map(String s) {
-    Scanner scans = new Scanner(s);
-    id = Map.numMaps++;
-    numCols = Integer.parseInt(scans.next());
-    numRows = Integer.parseInt(scans.next());
-    map = new Tile[numCols][numRows];
-
-    String line = scans.next();
-    for (int i = 0; i < numRows * numCols; i++) {
-      int x = i % numCols;
-      int y = i / numCols;
-      char c = line.charAt(i);
-      Tile t = new Tile(x, y, Map.tileSize, this);
-      map[x][y] = t;
-      if (c == '#') {
-        t.addEntity(new Boulder(new Loc(id,
-            x * Map.tileSize + Map.tileSize / 2, y * Map.tileSize
-                + Map.tileSize / 2)));
-        //t.setSprite(1);
-        //t.setPass(false);
-      }
-
     }
   }
 
@@ -100,7 +69,7 @@ public class Map implements Iterable<Tile> {
     return overlapping;
   }
 
-  private Tile getTile(int x, int y) {
+  public Tile getTile(int x, int y) {
     if (x < 0) {
       x = 0;
     }
@@ -128,7 +97,7 @@ public class Map implements Iterable<Tile> {
     if (l.mapID != id) {
       // throw new MismatchingMapIDException();
     }
-    return getTileAt((int) l.x, (int) l.y);
+    return getTileAt(l.x, l.y);
   }
 
   public boolean hasNeighbor(Tile tile, Direction dir) {
@@ -172,8 +141,8 @@ public class Map implements Iterable<Tile> {
   }
 
   public boolean validLoc(Loc loc) {
-    int x = (int) loc.x;
-    int y = (int) loc.y;
+    int x = loc.x;
+    int y = loc.y;
     return 0 <= x && x < numCols * Map.tileSize && 0 <= y
         && y < numRows * Map.tileSize;
   }

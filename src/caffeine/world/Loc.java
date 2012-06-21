@@ -20,6 +20,10 @@ public class Loc {
     this.y = y;
   }
 
+  public Coord coord() {
+    return new Coord(x, y);
+  }
+
   public Loc project(int xdist, int ydist) {
     return new Loc(mapID, x + xdist, y + ydist);
   }

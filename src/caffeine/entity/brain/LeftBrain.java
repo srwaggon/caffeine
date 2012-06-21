@@ -24,7 +24,7 @@ public class LeftBrain extends Brain {
   public List<Action> next() {
     Caffeine caff = (Caffeine) game;
     actionPlan.clear();
-    Map map = caff.world().getMap(self.getLoc().mapID);
+    Map map = caff.getWorld().getMap(self.getLoc().mapID);
 
     Move move = new Move(map, dir);
     Loc selfLoc = self.getLoc();

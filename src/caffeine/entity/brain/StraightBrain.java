@@ -10,7 +10,6 @@ import caffeine.entity.Entity;
 import caffeine.world.Direction;
 import caffeine.world.Map;
 
-
 public class StraightBrain extends Brain {
   protected Direction forward;
 
@@ -19,7 +18,7 @@ public class StraightBrain extends Brain {
     forward = self.getFacing();
   }
 
-  public void setForward(Direction dir){
+  public void setForward(Direction dir) {
     forward = dir;
   }
 
@@ -29,18 +28,17 @@ public class StraightBrain extends Brain {
 
     Caffeine caff = (Caffeine) game;
     actionPlan.clear();
-    Map currentMap = caff.world().getMap(self.getLoc().mapID);
+    Map currentMap = caff.getWorld().getMap(self.getLoc().mapID);
     Move next = new Move(currentMap, forward);
 
     // TODO: Requiring dry-runs allows entities to attempt to perform
     // invalid moves.
-    if(!next.dryRun(self)){
+    if (!next.dryRun(self)) {
       forward = forward.opposite();
     }
 
     actionPlan.add(next);
     return actionPlan;
   }
-
 
 }
