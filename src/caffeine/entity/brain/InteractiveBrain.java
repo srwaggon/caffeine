@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import caffeine.Game;
 import caffeine.action.Action;
 import caffeine.action.Report;
 import caffeine.entity.Entity;
@@ -21,14 +20,14 @@ public class InteractiveBrain extends Brain {
    * @param InputHandler
    *          to read keyboard input from.
    */
-  public InteractiveBrain(Game game, Entity owner, InputHandler ih) {
-    super(game, owner);
+  public InteractiveBrain(Entity owner, InputHandler ih) {
+    super(owner);
     input = ih;
     actionMap.put(KeyEvent.VK_UP, new Action[] { new Report("Up pressed") });
     actionMap
-    .put(KeyEvent.VK_DOWN, new Action[] { new Report("Down pressed") });
+        .put(KeyEvent.VK_DOWN, new Action[] { new Report("Down pressed") });
     actionMap
-    .put(KeyEvent.VK_LEFT, new Action[] { new Report("Left pressed") });
+        .put(KeyEvent.VK_LEFT, new Action[] { new Report("Left pressed") });
     actionMap.put(KeyEvent.VK_RIGHT,
         new Action[] { new Report("Right pressed") });
   }

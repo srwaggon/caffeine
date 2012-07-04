@@ -18,7 +18,6 @@ import caffeine.view.GUI;
 import caffeine.view.InputHandler;
 import caffeine.view.screen.Screen;
 import caffeine.view.screen.WorldScreen;
-import caffeine.world.Loc;
 import caffeine.world.Map;
 import caffeine.world.World;
 
@@ -55,44 +54,34 @@ public class Caffeine implements Game {
     caffeine.gui().addInputListener(input);
 
     // add a player
-    Player p1 = new Player(caffeine);
-    caffeine.addPlayer(p1);
-    Entity p1Entity = p1.getEntity();
-    p1Entity.setBrain(new PlayerBrain(caffeine, p1Entity, input));
+    //Player p1 = new Player(caffeine);
+    //caffeine.addPlayer(p1);
+    //Entity p1Entity = p1.getEntity();
+    //new PlayerBrain(p1Entity, input);
+    PlayerBrain.embody(world, input);
 
     // add some AI
     Entity leftbot = new Entity(world);
-    leftbot.setLoc(new Loc(0, 48, 80));
-    leftbot.setBrain(new LeftBrain(caffeine, leftbot));
-    map.getTileAt(leftbot.getLoc()).addEntity(leftbot);
+    new LeftBrain(leftbot);
 
     Entity rightbot = new Entity(world);
-    rightbot.setLoc(new Loc(0, 80, 48));
-    rightbot.setBrain(new RightBrain(caffeine, rightbot));
-    map.getTileAt(rightbot.getLoc()).addEntity(rightbot);
+    new RightBrain(rightbot);
 
     Entity straightbot = new Entity(world);
-    straightbot.setLoc(new Loc(0, 80, 80));
-    straightbot.setBrain(new StraightBrain(caffeine, straightbot));
-    map.getTileAt(straightbot.getLoc()).addEntity(straightbot);
+
+    new StraightBrain(straightbot);
 
     Entity randombot = new Entity(world);
-    randombot.setLoc(new Loc(0, 200, 200));
-    randombot.setBrain(new RandomBrain(caffeine, randombot));
-    map.getTileAt(randombot.getLoc()).addEntity(randombot);
+    new RandomBrain(randombot);
 
     randombot = new Entity(world);
-    randombot.setLoc(new Loc(0, 230, 200));
-    randombot.setBrain(new RandomBrain(caffeine, randombot));
-    map.getTileAt(randombot.getLoc()).addEntity(randombot);
+    new RandomBrain(randombot);
 
     randombot = new Entity(world);
-    randombot.setLoc(new Loc(0, 170, 200));
-    randombot.setBrain(new RandomBrain(caffeine, randombot));
-    map.getTileAt(randombot.getLoc()).addEntity(randombot);
+    new RandomBrain(randombot);
 
     Screen s = caffeine.gui().getScreen();
-    s.camera().focusOn(p1.getEntity());
+    //s.camera().focusOn(p1.getEntity());
 
     caffeine.play();
 
@@ -163,7 +152,8 @@ public class Caffeine implements Game {
 
   @Override
   public void round() {
-    for (Map map : activeMaps()) {
+    //for (Map map : activeMaps()) {
+    for (Map map : world.world.values()) {
       map.tick();
     }
   }

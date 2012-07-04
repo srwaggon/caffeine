@@ -2,8 +2,6 @@ package caffeine.entity.brain;
 
 import java.util.List;
 
-import caffeine.Caffeine;
-import caffeine.Game;
 import caffeine.action.Action;
 import caffeine.action.Move;
 import caffeine.entity.Entity;
@@ -16,15 +14,16 @@ public class LeftBrain extends Brain {
   private Direction dir = Direction.SOUTH;
   private double turnThresh = .99;
 
-  public LeftBrain(Game game, Entity self) {
-    super(game, self);
+  public LeftBrain(Entity self) {
+    super(self);
   }
 
   @Override
   public List<Action> next() {
-    Caffeine caff = (Caffeine) game;
+
     actionPlan.clear();
-    Map map = caff.getWorld().getMap(self.getLoc().mapID);
+
+    Map map = self.getWorld().getMap(self.getLoc().mapID);
 
     Move move = new Move(map, dir);
     Loc selfLoc = self.getLoc();

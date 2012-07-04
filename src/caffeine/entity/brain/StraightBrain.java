@@ -2,8 +2,6 @@ package caffeine.entity.brain;
 
 import java.util.List;
 
-import caffeine.Caffeine;
-import caffeine.Game;
 import caffeine.action.Action;
 import caffeine.action.Move;
 import caffeine.entity.Entity;
@@ -13,8 +11,8 @@ import caffeine.world.Map;
 public class StraightBrain extends Brain {
   protected Direction forward;
 
-  public StraightBrain(Game game, Entity self) {
-    super(game, self);
+  public StraightBrain(Entity self) {
+    super(self);
     forward = self.getFacing();
   }
 
@@ -26,9 +24,7 @@ public class StraightBrain extends Brain {
   public List<Action> next() {
     actionPlan.clear();
 
-    Caffeine caff = (Caffeine) game;
-    actionPlan.clear();
-    Map currentMap = caff.getWorld().getMap(self.getLoc().mapID);
+    Map currentMap = self.getWorld().getMap(self.getLoc().mapID);
     Move next = new Move(currentMap, forward);
 
     // TODO: Requiring dry-runs allows entities to attempt to perform
@@ -40,5 +36,4 @@ public class StraightBrain extends Brain {
     actionPlan.add(next);
     return actionPlan;
   }
-
 }

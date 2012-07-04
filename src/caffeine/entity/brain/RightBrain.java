@@ -2,26 +2,29 @@ package caffeine.entity.brain;
 
 import java.util.List;
 
-import caffeine.Caffeine;
-import caffeine.Game;
 import caffeine.action.Action;
 import caffeine.action.Move;
 import caffeine.entity.Entity;
 import caffeine.world.Direction;
 import caffeine.world.Map;
+import caffeine.world.World;
 
 public class RightBrain extends Brain {
   Direction dir = Direction.EAST;
 
-  public RightBrain(Game g, Entity owner) {
-    super(g, owner);
+  public RightBrain(Entity self) {
+    super(self);
+  }
+
+  public static Entity embody(World world) {
+    return new RightBrain(new Entity(world)).getEntity();
   }
 
   @Override
   public List<Action> next() {
-    Caffeine caff = (Caffeine) game;
+
     actionPlan.clear();
-    Map map = caff.getWorld().getMap(self.getLoc().mapID);
+    Map map = self.getWorld().getMap(self.getLoc().mapID);
     Move move = new Move(map, dir);
 
     if (move.dryRun(self)) {
@@ -31,5 +34,4 @@ public class RightBrain extends Brain {
     }
     return actionPlan;
   }
-
 }

@@ -61,15 +61,6 @@ public class Move implements Action {
       potentialColliders.addAll(downleft.occupants());
       potentialColliders.addAll(downright.occupants());
 
-      // Check collision with each entity.
-      for (Entity collider : potentialColliders) {
-        // Must not be self, and they must intersect.
-        if (!actor.equals(collider) && hitbox.intersects(collider.getHitbox())) {
-          //System.out.println(actor + " can't move from colliding with " + collider);
-          return true;
-        }
-      }
-
       return true;
     }
     //System.out.println(actor + " can't move from inaccessibility.");
@@ -87,14 +78,17 @@ public class Move implements Action {
     Loc end = start.copy().translate(dx, dy);
 
     Rectangle hitbox = actor.getHitbox();
-    hitbox.translate((int) dx, (int) dy);
+    Rectangle hitboxNext = actor.getHitbox();
+    hitboxNext.translate((int) dx, (int) dy);
 
     // for each corner, if valid tile
-    Tile upleft = map.getTileAt(hitbox.x, hitbox.y);
-    Tile upright = map.getTileAt(hitbox.x + hitbox.width - 1, hitbox.y);
-    Tile downleft = map.getTileAt(hitbox.x, hitbox.y + hitbox.height - 1);
-    Tile downright = map.getTileAt(hitbox.x + hitbox.width - 1, hitbox.y
-        + hitbox.height - 1);
+    Tile upleft = map.getTileAt(hitboxNext.x, hitboxNext.y);
+    Tile upright = map.getTileAt(hitboxNext.x + hitboxNext.width - 1,
+        hitboxNext.y);
+    Tile downleft = map.getTileAt(hitboxNext.x, hitboxNext.y
+        + hitboxNext.height - 1);
+    Tile downright = map.getTileAt(hitboxNext.x + hitboxNext.width - 1,
+        hitboxNext.y + hitboxNext.height - 1);
 
     boolean validTiles;
     switch (dir) {
@@ -125,17 +119,21 @@ public class Move implements Action {
 
       // Check collision with each entity.
       for (Entity collider : potentialColliders) {
+        Rectangle colliderBox = collider.getHitbox();
 
-        // check for collision
-        if (!actor.equals(collider) && hitbox.intersects(collider.getHitbox())) {
+        // if they currently intersect, move freely.
+        if (collider.equals(actor) || hitbox.intersects(colliderBox)) {
+          continue;
+        }
+
+        // If they're going to intersect, inform them.
+        if (!actor.equals(collider) && hitboxNext.intersects(colliderBox)) {
           // If the collision is bad, the move is unsuccessful.
-          //System.out.println(actor + " colliding with " + collider);
           return actor.handleCollision(this, collider);
         }
       }
 
       // If each collision successful, move successfully.
-      hitbox = actor.getHitbox();
 
       // Vacate old tiles.
       map.getTileAt(hitbox.x, hitbox.y).removeEntity(actor);

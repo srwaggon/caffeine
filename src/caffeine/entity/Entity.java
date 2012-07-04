@@ -45,6 +45,8 @@ public class Entity {
   public Entity(World world) {
     this.world = world;
     loc = world.getDefaultSpawn();
+    world.getTile(loc).addEntity(this);
+
     int[] walkSprites = { 3, 4 };
 
     Animation walkAnim = new Animation(walkSprites, 200, true);
@@ -111,6 +113,10 @@ public class Entity {
    */
   public int getSpeed() {
     return speed;
+  }
+
+  public World getWorld() {
+    return world;
   }
 
   /**

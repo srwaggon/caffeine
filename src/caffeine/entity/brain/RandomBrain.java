@@ -2,8 +2,6 @@ package caffeine.entity.brain;
 
 import java.util.List;
 
-import caffeine.Caffeine;
-import caffeine.Game;
 import caffeine.action.Action;
 import caffeine.action.Move;
 import caffeine.entity.Entity;
@@ -21,8 +19,8 @@ public class RandomBrain extends Brain {
   private double turnThresh = .90;
   private int numSteps = 0;
 
-  public RandomBrain(Game g, Entity owner) {
-    super(g, owner);
+  public RandomBrain(Entity self) {
+    super(self);
   }
 
   /**
@@ -33,8 +31,8 @@ public class RandomBrain extends Brain {
   @Override
   public List<Action> next() {
     actionPlan.clear();
-    Caffeine caff = (Caffeine) game;
-    Map map = caff.getWorld().getMap(self.getLoc().mapID);
+
+    Map map = self.getWorld().getMap(self.getLoc().mapID);
 
     //if (turnThresh < Math.random()) {
     if (numSteps == 0) {
