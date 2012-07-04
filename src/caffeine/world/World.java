@@ -3,6 +3,8 @@ package caffeine.world;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import caffeine.entity.Boulder;
+
 public class World {
   public HashMap<Integer, Map> world;
   protected Loc defaultSpawnLoc = new Loc(0, 48, 48);
@@ -24,6 +26,7 @@ public class World {
     int numCols = Integer.parseInt(scans.next());
     int numRows = Integer.parseInt(scans.next());
     Map map = new Map(numCols, numRows);
+    addMap(map);
 
     String line = scans.next();
     for (int i = 0; i < numRows * numCols; i++) {
@@ -34,15 +37,13 @@ public class World {
       if (c == '@') {
         Loc spawnLoc = new Loc(map.id, x * Map.tileSize + Map.tileSize / 2, y
             * Map.tileSize + Map.tileSize / 2);
-        //Entity boulder = new Boulder(this);
-        //boulder.setLoc(spawnLoc);
-        //t.addEntity(boulder);
+        new Boulder(this, spawnLoc);
       } else if (c == '#') {
         t.setPass(false);
         t.setSprite(10);
       }
     }
-    addMap(map);
+
     return map;
   }
 
