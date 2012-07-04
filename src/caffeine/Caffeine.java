@@ -9,13 +9,11 @@ import java.util.TimerTask;
 
 import caffeine.entity.Entity;
 import caffeine.entity.brain.LeftBrain;
-import caffeine.entity.brain.PlayerBrain;
 import caffeine.entity.brain.RandomBrain;
 import caffeine.entity.brain.RightBrain;
 import caffeine.entity.brain.StraightBrain;
 import caffeine.net.GameServer;
 import caffeine.view.GUI;
-import caffeine.view.InputHandler;
 import caffeine.view.screen.Screen;
 import caffeine.view.screen.WorldScreen;
 import caffeine.world.Map;
@@ -49,16 +47,9 @@ public class Caffeine implements Game {
     ws.setMap(map);
     caffeine.gui().setScreen(ws);
 
-    // receive input
-    InputHandler input = new InputHandler();
-    caffeine.gui().addInputListener(input);
-
     // add a player
-    //Player p1 = new Player(caffeine);
-    //caffeine.addPlayer(p1);
-    //Entity p1Entity = p1.getEntity();
-    //new PlayerBrain(p1Entity, input);
-    PlayerBrain.embody(world, input);
+    CaffeinePlayer p1 = new CaffeinePlayer(caffeine);
+    caffeine.addPlayer(p1);
 
     // add some AI
     Entity leftbot = new Entity(world);
@@ -81,7 +72,7 @@ public class Caffeine implements Game {
     new RandomBrain(randombot);
 
     Screen s = caffeine.gui().getScreen();
-    //s.camera().focusOn(p1.getEntity());
+    s.camera().focusOn(p1.getEntity());
 
     caffeine.play();
 
@@ -124,9 +115,9 @@ public class Caffeine implements Game {
 
   /* MUTATORS */
   @Override
-  public void addPlayer(Player p) {
-    players.add(p);
-    world.getTile(p.getEntity().getLoc()).addEntity(p.getEntity());
+  public void addPlayer(Player player) {
+    players.add(player);
+    gui.addInputListener(player.getInputListener());
   }
 
   @Override

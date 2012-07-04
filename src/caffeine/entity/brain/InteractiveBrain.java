@@ -9,10 +9,11 @@ import caffeine.action.Action;
 import caffeine.action.Report;
 import caffeine.entity.Entity;
 import caffeine.view.InputHandler;
+import caffeine.view.InputListener;
 
 public class InteractiveBrain extends Brain {
   protected HashMap<Integer, Action[]> actionMap = new HashMap<Integer, Action[]>();
-  protected InputHandler input;
+  protected InputHandler input = new InputHandler();
 
   /**
    * Creates an InteractiveBrain. This type of brain responds to keyboard input.
@@ -20,9 +21,8 @@ public class InteractiveBrain extends Brain {
    * @param InputHandler
    *          to read keyboard input from.
    */
-  public InteractiveBrain(Entity owner, InputHandler ih) {
+  public InteractiveBrain(Entity owner) {
     super(owner);
-    input = ih;
     actionMap.put(KeyEvent.VK_UP, new Action[] { new Report("Up pressed") });
     actionMap
         .put(KeyEvent.VK_DOWN, new Action[] { new Report("Down pressed") });
@@ -47,4 +47,11 @@ public class InteractiveBrain extends Brain {
     return actionPlan;
   }
 
+  public InputListener getInputListener() {
+    return input;
+  }
+
+  public void setInputListener(InputHandler input) {
+    this.input = input;
+  }
 }

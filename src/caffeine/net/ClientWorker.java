@@ -5,10 +5,13 @@ import java.net.Socket;
 import caffeine.Caffeine;
 import caffeine.Game;
 import caffeine.net.msg.Query;
+import caffeine.view.InputHandler;
+import caffeine.view.InputListener;
 
 public class ClientWorker extends Thread {
   protected final Connection client;
   protected Caffeine game;
+  protected InputListener input = new InputHandler();
 
   public ClientWorker(Game g, Socket client) {
     game = (Caffeine) g;
@@ -59,5 +62,9 @@ public class ClientWorker extends Thread {
 
     // System.err.println("Sending result: " + result);
     return result;
+  }
+
+  public InputListener getInputListener() {
+    return input;
   }
 }

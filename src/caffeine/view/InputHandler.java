@@ -56,7 +56,6 @@ public class InputHandler implements InputListener {
   }
 
   public void mouseReleased(MouseEvent event) {
-    System.out.println(event.getX());
+    System.out.println(event);
   }
-
 }
