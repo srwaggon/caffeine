@@ -42,15 +42,19 @@ public class Entity {
   protected World world;
 
   /* CONSTRUCTORS */
-  public Entity(World world) {
+  public Entity(World world, Loc loc) {
     this.world = world;
-    loc = world.getDefaultSpawn();
+    this.loc = loc;
     world.getTile(loc).addEntity(this);
 
     int[] walkSprites = { 3, 4 };
 
     Animation walkAnim = new Animation(walkSprites, 200, true);
     anim = walkAnim;
+  }
+
+  public Entity(World world) {
+    this(world, world.getDefaultSpawn());
   }
 
   /* ACCESSORS */
