@@ -52,7 +52,7 @@ public class Caffeine implements Game {
 
     // receive input
     InputHandler input = new InputHandler();
-    caffeine.gui().addInputHandler(input);
+    caffeine.gui().addInputListener(input);
 
     // add a player
     Player p1 = new Player(caffeine);
@@ -94,6 +94,8 @@ public class Caffeine implements Game {
     Screen s = caffeine.gui().getScreen();
     s.camera().focusOn(p1.getEntity());
 
+    caffeine.play();
+
     GameServer gs = new GameServer(caffeine, 4444);
     gs.run();
 
@@ -107,8 +109,6 @@ public class Caffeine implements Game {
         round();
       }
     });
-    new Thread(gui).start();
-    play();
   }
 
   /* ACCESSORS */
@@ -152,6 +152,7 @@ public class Caffeine implements Game {
 
   @Override
   public void play() {
+    new Thread(gui).start();
     clock.start();
   }
 
