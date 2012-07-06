@@ -102,6 +102,10 @@ public class Entity {
     return new Rectangle(loc.x - size / 2, loc.y - size / 2, size, size);
   }
 
+  public boolean intersects(Rectangle r){
+    return getHitbox().intersects(r);
+  }
+
   /**
    * Returns the current Location of the entity.
    * 

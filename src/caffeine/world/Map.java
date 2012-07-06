@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -56,18 +55,35 @@ public class Map implements Iterable<Tile> {
     }
   }
 
-  public int getID() {
-    return id;
+  public Collection<Entity> entities() {
+    Set<Entity> entities = new HashSet<Entity>();
+    Iterator<Tile> tileIt = iterator();
+    while (tileIt.hasNext()) {
+      Tile t = tileIt.next();
+      entities.addAll(t.occupants());
+    }
+    return entities;
   }
 
-  public List<Tile> getOverlappingTiles(Rectangle r) {
-    List<Tile> overlapping = new LinkedList<Tile>();
-    for (int y = r.y / Map.tileSize; y <= (r.y + r.height) / Map.tileSize; y++) {
-      for (int x = r.x / Map.tileSize; x <= (r.x + r.width) / Map.tileSize; x++) {
-        overlapping.add(getTile(x, y));
+  public Collection<Entity> getEntities(Rectangle box){
+    Set<Entity> result = new HashSet<Entity>();
+    for (int i = box.x; i <= box.x + box.width; i += tileSize) {
+      for (int j = box.y; j <= box.y + box.height; j += tileSize) {
+        if (inRange(i, j)){
+          Tile t = getTileAt(i, j);
+          for (Entity e : t.occupants()) {
+            if (e.getHitbox().intersects(box)) {
+              result.add(e);
+            }
+          }
+        }
       }
     }
-    return overlapping;
+    return result;
+  }
+
+  public int getID() {
+    return id;
   }
 
   public Tile getTile(int x, int y) {
@@ -97,6 +113,18 @@ public class Map implements Iterable<Tile> {
     return getTileAt(l.x, l.y);
   }
 
+  public List<Tile> getTiles(Rectangle box) {
+    List<Tile> result = new ArrayList<Tile>();
+    for (int j = box.y / tileSize * tileSize; j <= box.y + box.height; j += tileSize) {
+      for (int i = box.x / tileSize * tileSize; i <= box.x + box.width; i += tileSize) {
+        if (isValidLoc(i, j)) {
+          result.add(getTileAt(i, j));
+        }
+      }
+    }
+    return result;
+  }
+
   public int numCols() {
     return numCols;
   }
@@ -113,14 +141,16 @@ public class Map implements Iterable<Tile> {
     return Map.tileSize;
   }
 
-  public boolean validLoc(Loc loc) {
-    int x = loc.x;
-    int y = loc.y;
+  public boolean isValidLoc(Loc loc) {
+    return isValidLoc(loc.x, loc.y);
+  }
+
+  public boolean isValidLoc(int x, int y){
     return 0 <= x && x < numCols * Map.tileSize && 0 <= y
         && y < numRows * Map.tileSize;
   }
 
-  protected boolean inRange(int x, int y) {
+  private boolean inRange(int x, int y) {
     return x >= 0 && x < numCols && y >= 0 && y < numRows;
   }
 
@@ -199,32 +229,5 @@ public class Map implements Iterable<Tile> {
         // :V Yeah, no.
       }
     };
-  }
-
-  public Collection<Entity> entities() {
-    Set<Entity> entities = new HashSet<Entity>();
-    Iterator<Tile> tileIt = iterator();
-    while (tileIt.hasNext()) {
-      Tile t = tileIt.next();
-      entities.addAll(t.occupants());
-    }
-    return entities;
-  }
-
-  public List<Entity> getEntities(int x0, int y0, int x1, int y1){
-    List<Entity> result = new ArrayList<Entity>();
-    for (int i = x0; i <= x1; i += tileSize){
-      for (int j = y0; j <= y1; j += tileSize){
-        if( inRange(i, j) ){
-          Tile t = getTileAt(i, j);
-          for (Entity e : t.occupants()){
-            if (e.getHitbox().intersects(x0, y0, x1, y1)){
-              result.add(e);
-            }
-          }
-        }
-      }
-    }
-    return result;
   }
 }
