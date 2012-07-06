@@ -11,14 +11,15 @@ public class Tile {
   protected boolean pass = true;
   protected int damage = 0;
   protected int spriteID = 0;
-  protected Coord coord;
+  protected int x, y;
   protected static int size = 32;
 
   protected Map parent;
   protected Rectangle bounds;
 
   public Tile(int x, int y, int tileSize, Map parent) {
-    coord = new Coord(x, y);
+    this.x = x;
+    this.y = y;
     bounds = new Rectangle(x * tileSize, y * tileSize, tileSize, tileSize);
     this.parent = parent;
   }
@@ -85,9 +86,5 @@ public class Tile {
   }
 
   public void tick() {
-  }
-
-  public Coord getCoord() {
-    return coord;
   }
 }

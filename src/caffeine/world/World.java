@@ -60,7 +60,7 @@ public class World {
   }
 
   public boolean isValid(Loc l) {
-    return world.containsKey(l.mapID) && world.get(l.mapID).inRange(l.coord());
+    return world.containsKey(l.mapID) && world.get(l.mapID).inRange(l.x, l.y);
   }
 
   /* *** MUTATORS *** */

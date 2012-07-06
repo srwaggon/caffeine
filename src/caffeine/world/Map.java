@@ -3,6 +3,7 @@ package caffeine.world;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -85,10 +86,6 @@ public class Map implements Iterable<Tile> {
     return map[x][y];
   }
 
-  private Tile getTile(Coord coord) {
-    return getTile(coord.x(), coord.y());
-  }
-
   public Tile getTileAt(int x, int y) {
     return getTile(x / Map.tileSize, y / Map.tileSize);
   }
@@ -98,26 +95,6 @@ public class Map implements Iterable<Tile> {
       // throw new MismatchingMapIDException();
     }
     return getTileAt(l.x, l.y);
-  }
-
-  public boolean hasNeighbor(Tile tile, Direction dir) {
-    boolean result = false;
-    result = inRange(tile.getCoord().next(dir));
-    return result;
-  }
-
-  public Tile getNeighbor(Tile tile, Direction dir) {
-    return getTile(tile.getCoord().next(dir));
-  }
-
-  public List<Tile> getNeighbors(Tile tile) {
-    List<Tile> neighbs = new LinkedList<Tile>();
-    for (Direction dir : Direction.values()) {
-      if (hasNeighbor(tile, dir)) {
-        neighbs.add(getNeighbor(tile, dir));
-      }
-    }
-    return neighbs;
   }
 
   public int numCols() {
@@ -132,10 +109,6 @@ public class Map implements Iterable<Tile> {
     return numRows * Map.tileSize;
   }
 
-  public int width() {
-    return numCols * Map.tileSize;
-  }
-
   public int tileSize() {
     return Map.tileSize;
   }
@@ -147,9 +120,7 @@ public class Map implements Iterable<Tile> {
         && y < numRows * Map.tileSize;
   }
 
-  protected boolean inRange(Coord coord) {
-    int x = coord.x();
-    int y = coord.y();
+  protected boolean inRange(int x, int y) {
     return x >= 0 && x < numCols && y >= 0 && y < numRows;
   }
 
@@ -187,7 +158,7 @@ public class Map implements Iterable<Tile> {
       Tile tile = tileIterator.next();
       int spriteID = tile.getSpriteID();
       Image img = tilesheet.get(spriteID);
-      g2.drawImage(img, tile.coord.x * Map.tileSize, tile.coord.y
+      g2.drawImage(img, tile.x * Map.tileSize, tile.y
           * Map.tileSize, Map.tileSize, Map.tileSize, null);
     }
   }
@@ -198,6 +169,10 @@ public class Map implements Iterable<Tile> {
     }
   }
 
+  public int width() {
+    return numCols * Map.tileSize;
+  }
+
   @Override
   public Iterator<Tile> iterator() {
     return new Iterator<Tile>() {
@@ -206,7 +181,7 @@ public class Map implements Iterable<Tile> {
 
       @Override
       public boolean hasNext() {
-        return inRange(new Coord(x, y));
+        return inRange(x, y);
       }
 
       @Override
@@ -236,4 +211,20 @@ public class Map implements Iterable<Tile> {
     return entities;
   }
 
+  public List<Entity> getEntities(int x0, int y0, int x1, int y1){
+    List<Entity> result = new ArrayList<Entity>();
+    for (int i = x0; i <= x1; i += tileSize){
+      for (int j = y0; j <= y1; j += tileSize){
+        if( inRange(i, j) ){
+          Tile t = getTileAt(i, j);
+          for (Entity e : t.occupants()){
+            if (e.getHitbox().intersects(x0, y0, x1, y1)){
+              result.add(e);
+            }
+          }
+        }
+      }
+    }
+    return result;
+  }
 }
