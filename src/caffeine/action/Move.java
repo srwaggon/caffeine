@@ -13,9 +13,8 @@ public class Move implements Action {
 
   @Override
   public boolean performBy(Entity actor) {
-    Motion motion = actor.getMotion();
-    motion.setDirection(dir);
-    motion.isMoving(true);
+    actor.setDirection(dir);
+    actor.isMoving(true);
     return true;
   }
 }

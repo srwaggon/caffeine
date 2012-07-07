@@ -13,7 +13,7 @@ public class StraightBrain extends Brain {
 
   public StraightBrain(Entity self) {
     super(self);
-    forward = self.getMotion().getDirection();
+    forward = self.getDirection();
   }
 
   public void setForward(Direction dir) {

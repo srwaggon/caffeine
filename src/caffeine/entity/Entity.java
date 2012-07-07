@@ -3,14 +3,15 @@ package caffeine.entity;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 
 import caffeine.action.Action;
-import caffeine.action.Motion;
-import caffeine.action.Motion2D;
 import caffeine.action.Push;
 import caffeine.entity.brain.Brain;
 import caffeine.view.Animation;
+import caffeine.world.Direction;
 import caffeine.world.Loc;
 import caffeine.world.Map;
 import caffeine.world.Tile;
@@ -28,15 +29,18 @@ public class Entity {
 
   /* primitive fields */
   protected int id = Entity.numEntities++;
+  protected boolean isMoving = false;
   protected boolean isAlive = true;
   protected int size = 24;
+  protected double speed = 2.0;
+
 
   /* object fields */
   public LinkedList<Action> actionPlans = new LinkedList<Action>();
   protected Animation anim;
   protected Brain brain = null;
+  protected Direction dir = Direction.SOUTH;
   protected Loc loc;
-  protected Motion motion;
   protected String name = "Entity[" + id + "]";
   protected World world;
 
@@ -44,7 +48,6 @@ public class Entity {
   public Entity(World world, Loc loc) {
     this.world = world;
     this.loc = loc;
-    motion = new Motion2D(world, loc);
     world.getMap(loc.mapID).addEntity(this);
 
     int[] walkSprites = { 3, 4 };
@@ -109,10 +112,6 @@ public class Entity {
    */
   public Loc getLoc() {
     return loc;
-  }
-
-  public Motion getMotion(){
-    return motion;
   }
 
   public World getWorld() {
@@ -182,8 +181,8 @@ public class Entity {
       if (brain != null) {
         actionPlans.addAll(brain.next());
       }
-      if (motion.isMoving()){
-        motion.updateLoc(this);
+      if (isMoving){
+        updateLoc();
       }
       while (!actionPlans.isEmpty()) {
         actionPlans.poll().performBy(this);
@@ -191,6 +190,48 @@ public class Entity {
     }
   }
 
+  public boolean updateLoc(){
+    // project entity's location & hitbox
+    double dx = dir.dx() * speed;
+    double dy = dir.dy() * speed;
+    Loc end = loc.copy().translate(dx, dy);
+
+    Rectangle hitbox = getHitbox();
+    Rectangle hitboxNext = getHitbox();
+    hitboxNext.translate((int) dx, (int) dy);
+
+    Map map = world.getMap(loc.mapID);
+    List<Tile> nextTiles = map.getTiles(hitboxNext);
+    Collection<Entity> potentialColliders = map.entities();
+
+    for (Tile t : nextTiles) {
+      if (!t.canPass()) {
+        return false;
+      }
+    }
+
+    // Check collision with each entity.
+    for (Entity collider : potentialColliders) {
+      Rectangle colliderBox = collider.getHitbox();
+
+      // if they currently intersect, move freely.
+      if (collider.equals(this) || hitbox.intersects(colliderBox)) {
+        continue;
+      }
+
+      // If they're going to intersect, inform them.
+      if (!collider.equals(this) && hitboxNext.intersects(colliderBox)) {
+        // If the collision is bad, the move is unsuccessful.
+        return handleCollision(collider);
+      }
+    }
+
+    // Change location.
+    move(dx, dy);
+
+    isMoving = false;
+    return true;
+  }
   @Override
   public String toString() {
     return name + " @ " + loc.toString();
@@ -204,5 +245,17 @@ public class Entity {
     } catch (Throwable e) {
       e.printStackTrace();
     }
+  }
+
+  public void setDirection(Direction dir) {
+    this.dir = dir;
+  }
+
+  public void isMoving(boolean b) {
+    isMoving = b;
+  }
+
+  public Direction getDirection() {
+    return dir;
   }
 }

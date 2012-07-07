@@ -139,10 +139,6 @@ public class Map implements Iterable<Tile> {
         && y < numRows * Map.tileSize;
   }
 
-  private boolean inRange(int x, int y) {
-    return x >= 0 && x < numCols && y >= 0 && y < numRows;
-  }
-
   public void tick() {
 
     Iterator<Tile> tileIterator = iterator();
@@ -198,7 +194,7 @@ public class Map implements Iterable<Tile> {
 
       @Override
       public boolean hasNext() {
-        return inRange(x, y);
+        return x < numCols && y < numRows;
       }
 
       @Override
