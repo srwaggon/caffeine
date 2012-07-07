@@ -16,7 +16,7 @@ public class Face implements Action {
 
   @Override
   public boolean performBy(Entity performer) {
-    performer.setFacing(dir);
+    performer.getMotion().setDirection(dir);
     return true;
   }
 

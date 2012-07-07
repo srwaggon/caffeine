@@ -6,11 +6,11 @@ import java.awt.Rectangle;
 import java.util.LinkedList;
 
 import caffeine.action.Action;
-import caffeine.action.Move;
+import caffeine.action.Motion;
+import caffeine.action.Motion2D;
 import caffeine.action.Push;
 import caffeine.entity.brain.Brain;
 import caffeine.view.Animation;
-import caffeine.world.Direction;
 import caffeine.world.Loc;
 import caffeine.world.Map;
 import caffeine.world.Tile;
@@ -30,14 +30,13 @@ public class Entity {
   protected int id = Entity.numEntities++;
   protected boolean isAlive = true;
   protected int size = 24;
-  protected int speed = 2;
 
   /* object fields */
   public LinkedList<Action> actionPlans = new LinkedList<Action>();
   protected Animation anim;
   protected Brain brain = null;
-  protected Direction facing = Direction.SOUTH;
   protected Loc loc;
+  protected Motion motion;
   protected String name = "Entity[" + id + "]";
   protected World world;
 
@@ -45,7 +44,8 @@ public class Entity {
   public Entity(World world, Loc loc) {
     this.world = world;
     this.loc = loc;
-    world.getTile(loc).addEntity(this);
+    motion = new Motion2D(world, loc);
+    world.getMap(loc.mapID).addEntity(this);
 
     int[] walkSprites = { 3, 4 };
 
@@ -64,10 +64,6 @@ public class Entity {
 
   public Brain getBrain() {
     return brain;
-  }
-
-  public Direction getFacing() {
-    return facing;
   }
 
   /**
@@ -115,12 +111,8 @@ public class Entity {
     return loc;
   }
 
-  /**
-   * 
-   * @return speed that this entity can move
-   */
-  public int getSpeed() {
-    return speed;
+  public Motion getMotion(){
+    return motion;
   }
 
   public World getWorld() {
@@ -139,15 +131,13 @@ public class Entity {
     return tile.canPass();
   }
 
-  /* MUTATORS */
-  public void act() {
-    while (!actionPlans.isEmpty()) {
-      actionPlans.poll().performBy(this);
-    }
-  }
-
   public void die() {
     isAlive = false;
+  }
+
+  public void move(double xa, double ya){
+    loc.x += xa;
+    loc.y += ya;
   }
 
   public void setBrain(Brain b) {
@@ -164,12 +154,8 @@ public class Entity {
     return !equals(collider) && getHitbox().intersects(collider.getHitbox());
   }
 
-  public boolean handleCollision(Move collision, Entity collidingEntity) {
-    return new Push(collision, collidingEntity).performBy(this);
-  }
-
-  public void setFacing(Direction dir) {
-    facing = dir;
+  public boolean handleCollision(Entity collidingEntity) {
+    return new Push(collidingEntity).performBy(this);
   }
 
   /**
@@ -196,7 +182,12 @@ public class Entity {
       if (brain != null) {
         actionPlans.addAll(brain.next());
       }
-      act();
+      if (motion.isMoving()){
+        motion.updateLoc(this);
+      }
+      while (!actionPlans.isEmpty()) {
+        actionPlans.poll().performBy(this);
+      }
     }
   }
 
@@ -214,9 +205,4 @@ public class Entity {
       e.printStackTrace();
     }
   }
-
-  public void setSpeed(int speed) {
-    this.speed = speed;
-  }
-
 }

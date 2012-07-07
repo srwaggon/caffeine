@@ -25,13 +25,10 @@ public class RightBrain extends Brain {
 
     actionPlan.clear();
     Map map = self.getWorld().getMap(self.getLoc().mapID);
-    Move move = new Move(map, dir);
+    Move move = new Move(dir);
 
-    if (move.dryRun(self)) {
-      actionPlan.add(move);
-    } else {
-      dir = dir.next();
-    }
+    actionPlan.add(move);
+
     return actionPlan;
   }
 }

@@ -1,13 +1,9 @@
 package caffeine.world;
 
 import java.awt.Rectangle;
-import java.util.Collection;
-import java.util.HashMap;
-
-import caffeine.entity.Entity;
 
 public class Tile {
-  protected HashMap<Integer, Entity> occupants = new HashMap<Integer, Entity>();
+
   protected boolean pass = true;
   protected int damage = 0;
   protected int spriteID = 0;
@@ -24,32 +20,8 @@ public class Tile {
     this.parent = parent;
   }
 
-  public void addEntity(Entity e) {
-    occupants.put(e.getID(), e);
-  }
-
-  public boolean containsEntityByID(int id) {
-    return occupants.containsKey(id);
-  }
-
-  public boolean containsEntity(Entity entity) {
-    return occupants.containsValue(entity);
-  }
-
   public Rectangle getBounds() {
     return bounds;
-  }
-
-  public Entity getEntity(int id) {
-    return containsEntityByID(id) ? occupants.get(id) : null;
-  }
-
-  public boolean isEmpty() {
-    return occupants.isEmpty();
-  }
-
-  public Collection<Entity> occupants() {
-    return occupants.values();
   }
 
   public boolean canPass() {
@@ -62,10 +34,6 @@ public class Tile {
 
   public void setPass(boolean b) {
     pass = b;
-  }
-
-  public void removeEntity(Entity e) {
-    occupants.remove(e.getID());
   }
 
   public boolean isSafe() {

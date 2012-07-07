@@ -5,6 +5,7 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -14,6 +15,7 @@ import caffeine.entity.Entity;
 import caffeine.view.Spritesheet;
 
 public class Map implements Iterable<Tile> {
+  protected HashMap<Integer, Entity> entities = new HashMap<Integer, Entity>();
   private static int numMaps = 0;
   protected int id;
   protected int numRows, numCols;
@@ -56,27 +58,14 @@ public class Map implements Iterable<Tile> {
   }
 
   public Collection<Entity> entities() {
-    Set<Entity> entities = new HashSet<Entity>();
-    Iterator<Tile> tileIt = iterator();
-    while (tileIt.hasNext()) {
-      Tile t = tileIt.next();
-      entities.addAll(t.occupants());
-    }
-    return entities;
+    return entities.values();
   }
 
   public Collection<Entity> getEntities(Rectangle box){
     Set<Entity> result = new HashSet<Entity>();
-    for (int i = box.x; i <= box.x + box.width; i += tileSize) {
-      for (int j = box.y; j <= box.y + box.height; j += tileSize) {
-        if (inRange(i, j)){
-          Tile t = getTileAt(i, j);
-          for (Entity e : t.occupants()) {
-            if (e.getHitbox().intersects(box)) {
-              result.add(e);
-            }
-          }
-        }
+    for (Entity e : entities.values()) {
+      if (e.getHitbox().intersects(box)) {
+        result.add(e);
       }
     }
     return result;
@@ -155,15 +144,13 @@ public class Map implements Iterable<Tile> {
   }
 
   public void tick() {
-    Set<Entity> entities = new HashSet<Entity>();
-    Iterator<Tile> tileIterator = iterator();
 
+    Iterator<Tile> tileIterator = iterator();
     while (tileIterator.hasNext()) {
       Tile t = tileIterator.next();
-      entities.addAll(t.occupants());
       t.tick();
     }
-    for (Entity e : entities) {
+    for (Entity e : entities.values()) {
       e.tick(this);
     }
   }
@@ -230,4 +217,35 @@ public class Map implements Iterable<Tile> {
       }
     };
   }
+
+
+  public void addEntity(Entity e) {
+    entities.put(e.getID(), e);
+  }
+
+  public boolean containsEntityByID(int id) {
+    return entities.containsKey(id);
+  }
+
+  public boolean containsEntity(Entity entity) {
+    return entities.containsValue(entity);
+  }
+
+
+  public Entity getEntity(int id) {
+    return containsEntityByID(id) ? entities.get(id) : null;
+  }
+
+  public void removeEntity(Entity e) {
+    entities.remove(e.getID());
+  }
+
+  public Collection<Entity> occupants() {
+    return entities.values();
+  }
+
+  public boolean isEmpty() {
+    return entities.isEmpty();
+  }
+
 }

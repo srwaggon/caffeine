@@ -25,7 +25,7 @@ public class LeftBrain extends Brain {
 
     Map map = self.getWorld().getMap(self.getLoc().mapID);
 
-    Move move = new Move(map, dir);
+    Move move = new Move(dir);
     Loc selfLoc = self.getLoc();
     Tile selfTile = map.getTileAt(selfLoc);
 
@@ -33,11 +33,8 @@ public class LeftBrain extends Brain {
       dir = dir.prev();
     }
 
-    if (move.dryRun(self)) {
-      actionPlan.add(move);
-    } else {
-      dir = dir.prev();
-    }
+    actionPlan.add(move);
+
     return actionPlan;
   }
 }

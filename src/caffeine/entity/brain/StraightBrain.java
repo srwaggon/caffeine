@@ -13,7 +13,7 @@ public class StraightBrain extends Brain {
 
   public StraightBrain(Entity self) {
     super(self);
-    forward = self.getFacing();
+    forward = self.getMotion().getDirection();
   }
 
   public void setForward(Direction dir) {
@@ -25,13 +25,12 @@ public class StraightBrain extends Brain {
     actionPlan.clear();
 
     Map currentMap = self.getWorld().getMap(self.getLoc().mapID);
-    Move next = new Move(currentMap, forward);
+    Move next = new Move(forward);
 
     // TODO: Requiring dry-runs allows entities to attempt to perform
     // invalid moves.
-    if (!next.dryRun(self)) {
-      forward = forward.opposite();
-    }
+
+    forward = forward.opposite();
 
     actionPlan.add(next);
     return actionPlan;

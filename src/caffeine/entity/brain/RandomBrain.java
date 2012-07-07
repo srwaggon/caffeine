@@ -44,7 +44,7 @@ public class RandomBrain extends Brain {
       numSteps = (int) (Math.random() * 20) + 5;
     }
     numSteps--;
-    actionPlan.add(new Move(map, dir));
+    actionPlan.add(new Move(dir));
     return actionPlan;
   }
 }
