@@ -3,6 +3,7 @@ package caffeine.entity.brain;
 import java.util.List;
 
 import caffeine.action.Action;
+import caffeine.action.Face;
 import caffeine.action.Move;
 import caffeine.entity.Entity;
 import caffeine.world.Direction;
@@ -32,7 +33,7 @@ public class LeftBrain extends Brain {
     if (turnThresh < Math.random()) {
       dir = dir.prev();
     }
-
+    actionPlan.add(new Face(dir));
     actionPlan.add(move);
 
     return actionPlan;

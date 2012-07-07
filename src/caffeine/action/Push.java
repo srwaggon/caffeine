@@ -12,6 +12,9 @@ public class Push implements Action {
   @Override
   public boolean performBy(Entity performer) {
     pushee.actionPlans.clear();
+    double xa = performer.getDirection().dx();
+    double ya = performer.getDirection().dy();
+    pushee.move(xa, ya, true);
     return true;
   }
 }

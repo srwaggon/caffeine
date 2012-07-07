@@ -35,9 +35,9 @@ public class World {
       char c = line.charAt(i);
       Tile t = map.getTile(x, y);
       if (c == '@') {
-        Loc spawnLoc = new Loc(map.id, x * Map.tileSize + Map.tileSize / 2, y
-            * Map.tileSize + Map.tileSize / 2);
-        new Boulder(this, spawnLoc);
+        Boulder b = new Boulder(this);
+        b.setLoc(new Loc(map.id, x * Map.tileSize + Map.tileSize / 2, y
+            * Map.tileSize + Map.tileSize / 2));
       } else if (c == '#') {
         t.setPass(false);
         t.setSprite(10);

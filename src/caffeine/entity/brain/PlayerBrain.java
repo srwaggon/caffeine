@@ -16,13 +16,13 @@ public class PlayerBrain extends InteractiveBrain {
     super(self);
     Map map = self.getWorld().getMap(self.getLoc().mapID);
     actionMap.put(KeyEvent.VK_UP, new Action[] {
-        new Move(Direction.NORTH), Face.NORTH });
+        Face.NORTH, new Move(Direction.NORTH) });
     actionMap.put(KeyEvent.VK_DOWN, new Action[] {
-        new Move(Direction.SOUTH), Face.SOUTH });
+        Face.SOUTH, new Move(Direction.SOUTH) });
     actionMap.put(KeyEvent.VK_LEFT, new Action[] {
-        new Move(Direction.WEST), Face.WEST });
+        Face.WEST, new Move(Direction.WEST) });
     actionMap.put(KeyEvent.VK_RIGHT, new Action[] {
-        new Move(Direction.EAST), Face.EAST });
+        Face.EAST, new Move(Direction.EAST) });
   }
 
   public static Entity embody(World world) {

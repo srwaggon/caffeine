@@ -16,6 +16,7 @@ public class GUI implements Runnable {
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setSize(600, 400);
     frame.setResizable(false);
+    frame.setLocationRelativeTo(null);
   }
 
   public void addInputListener(InputListener listener) {

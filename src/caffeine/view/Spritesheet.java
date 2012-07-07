@@ -8,9 +8,9 @@ import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageFilter;
 import java.awt.image.ImageProducer;
 import java.awt.image.RGBImageFilter;
-import java.io.File;
-import java.util.HashMap;
 import java.net.URL;
+import java.util.HashMap;
+
 import javax.imageio.ImageIO;
 
 /**
@@ -27,7 +27,6 @@ public class Spritesheet {
   private Dimension dim;
   protected HashMap<Integer, Image> sprites = new HashMap<Integer, Image>();
   protected static String defaultSpritePath = "sprites.png";
-  protected static String eclipseDefaultSpritePath = "res/sprites.png";
 
   public Spritesheet() {
     //this(Spritesheet.eclipseDefaultSpritePath);

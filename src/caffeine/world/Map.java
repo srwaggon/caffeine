@@ -75,20 +75,12 @@ public class Map implements Iterable<Tile> {
     return id;
   }
 
+  protected boolean inRange(int x, int y){
+    return 0 <= x && x < numCols && 0 <= y && y < numRows;
+  }
+
   public Tile getTile(int x, int y) {
-    if (x < 0) {
-      x = 0;
-    }
-    if (y < 0) {
-      y = 0;
-    }
-    if (x >= numCols) {
-      x = numCols - 1;
-    }
-    if (y >= numRows) {
-      y = numRows - 1;
-    }
-    return map[x][y];
+    return inRange(x, y) ? map[x][y] : null;
   }
 
   public Tile getTileAt(int x, int y) {
@@ -112,14 +104,6 @@ public class Map implements Iterable<Tile> {
       }
     }
     return result;
-  }
-
-  public int numCols() {
-    return numCols;
-  }
-
-  public int numRows() {
-    return numRows;
   }
 
   public int height() {
@@ -146,8 +130,14 @@ public class Map implements Iterable<Tile> {
       Tile t = tileIterator.next();
       t.tick();
     }
-    for (Entity e : entities.values()) {
-      e.tick(this);
+    Iterator<Entity> entityIter = entities.values().iterator();
+    while(entityIter.hasNext()){
+      Entity e = entityIter.next();
+      if(!e.isAlive()){
+        entityIter.remove();
+      } else {
+        e.tick();
+      }
     }
   }
 
@@ -163,25 +153,20 @@ public class Map implements Iterable<Tile> {
     return s;
   }
 
-  public void renderTiles(Graphics2D g2, Spritesheet tilesheet) {
-    Set<Entity> entities = new HashSet<Entity>();
-    /* Draw the world, tile by tile */
-    Iterator<Tile> tileIterator = iterator();
-    while (tileIterator.hasNext()) {
-      Tile tile = tileIterator.next();
-      int spriteID = tile.getSpriteID();
-      Image img = tilesheet.get(spriteID);
-      g2.drawImage(img, tile.x * Map.tileSize, tile.y
-          * Map.tileSize, Map.tileSize, Map.tileSize, null);
+  public void render(Graphics2D g2, Spritesheet tilesheet) {
+    for(int x = 0; x < numCols; x++){
+      for(int y = 0; y < numRows; y++){
+        Tile tile = map[x][y];
+        int spriteID = tile.getSpriteID();
+        Image img = tilesheet.get(spriteID);
+        g2.drawImage(img, x * tileSize, y
+            * tileSize, tileSize, tileSize, null);
+      }
     }
-  }
-
-  public void renderEntities(Graphics2D g2) {
     for (Entity e : entities()) {
       e.render(g2);
     }
   }
-
   public int width() {
     return numCols * Map.tileSize;
   }

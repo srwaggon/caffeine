@@ -10,13 +10,15 @@ public class Face implements Action {
   public final static Face WEST = new Face(Direction.WEST);
   Direction dir;
 
-  private Face(Direction d) {
+  public Face(Direction d) {
     dir = d;
   }
 
   @Override
   public boolean performBy(Entity performer) {
+    //if(!performer.isMoving()){
     performer.setDirection(dir);
+    //}
     return true;
   }
 

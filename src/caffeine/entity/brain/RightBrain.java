@@ -3,6 +3,7 @@ package caffeine.entity.brain;
 import java.util.List;
 
 import caffeine.action.Action;
+import caffeine.action.Face;
 import caffeine.action.Move;
 import caffeine.entity.Entity;
 import caffeine.world.Direction;
@@ -27,6 +28,7 @@ public class RightBrain extends Brain {
     Map map = self.getWorld().getMap(self.getLoc().mapID);
     Move move = new Move(dir);
 
+    actionPlan.add(new Face(dir));
     actionPlan.add(move);
 
     return actionPlan;

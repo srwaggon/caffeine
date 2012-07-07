@@ -4,8 +4,7 @@ import caffeine.entity.Entity;
 import caffeine.world.Direction;
 
 public class Move implements Action {
-  protected Direction dir;
-
+  Direction dir;
   public Move(Direction dir) {
     this.dir = dir;
   }
@@ -13,8 +12,10 @@ public class Move implements Action {
 
   @Override
   public boolean performBy(Entity actor) {
+    double dx = actor.getSpeed() * dir.dx();
+    double dy = actor.getSpeed() * dir.dy();
     actor.setDirection(dir);
-    actor.isMoving(true);
+    actor.move(dx,  dy, true);
     return true;
   }
 }

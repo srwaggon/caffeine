@@ -3,6 +3,7 @@ package caffeine.entity.brain;
 import java.util.List;
 
 import caffeine.action.Action;
+import caffeine.action.Face;
 import caffeine.action.Move;
 import caffeine.entity.Entity;
 import caffeine.util.Util;
@@ -44,6 +45,7 @@ public class RandomBrain extends Brain {
       numSteps = (int) (Math.random() * 20) + 5;
     }
     numSteps--;
+    actionPlan.add(new Face(dir));
     actionPlan.add(new Move(dir));
     return actionPlan;
   }
