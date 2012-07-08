@@ -28,7 +28,6 @@ public class Client {
   }
 
   public void run() {
-    new Thread(gui).start();
     try {
       String query = "get map 0";
 

@@ -75,9 +75,10 @@ public class Entity {
     }
   }
 
-  public void move(double xa, double ya){
+  public boolean move(double xa, double ya){
     loc.x += xa;
     loc.y += ya;
+    return true;
   }
 
   public boolean move(double xa, double ya, boolean b){
@@ -108,7 +109,8 @@ public class Entity {
       // If they're going to intersect, inform them.
       if (!collider.equals(this) && hitboxNext.intersects(colliderBox)) {
         // If the collision is bad, the move is unsuccessful.
-        return handleCollision(collider);
+        //return handleCollision(collider);
+        return push(collider, xa, ya);
       }
     }
 
@@ -118,6 +120,11 @@ public class Entity {
 
     isMoving = false;
     return true;
+  }
+
+  public boolean push(Entity pushee, double xa, double ya){
+    pushee.actionPlans.clear();
+    return pushee.move(xa, ya, true);
   }
 
   /**

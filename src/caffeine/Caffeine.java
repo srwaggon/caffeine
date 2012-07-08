@@ -5,13 +5,8 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.TimerTask;
 
 import caffeine.entity.Entity;
-import caffeine.entity.brain.LeftBrain;
-import caffeine.entity.brain.RandomBrain;
-import caffeine.entity.brain.RightBrain;
-import caffeine.entity.brain.StraightBrain;
 import caffeine.net.GameServer;
 import caffeine.view.GUI;
 import caffeine.view.screen.Screen;
@@ -26,10 +21,10 @@ import caffeine.world.World;
  * 
  * @author srwaggon
  */
-public class Caffeine implements Game {
+public class Caffeine implements Runnable {
   /* Engine Fields */
   private final World world = new World(); // Space
-  private final Clock clock = new Clock(); // Time
+  //private final Clock clock = new Clock(); // Time
   private final List<Player> players = new LinkedList<Player>(); // Life
   private final GUI gui = new GUI("Caffeine Server"); // Light
 
@@ -51,7 +46,9 @@ public class Caffeine implements Game {
     CaffeinePlayer p1 = new CaffeinePlayer(caffeine);
     caffeine.addPlayer(p1);
 
+
     // add some AI
+    /*
     Entity leftbot = new Entity(world);
     new LeftBrain(leftbot);
 
@@ -70,11 +67,12 @@ public class Caffeine implements Game {
 
     randombot = new Entity(world);
     new RandomBrain(randombot);
+     */
 
     Screen s = caffeine.gui().getScreen();
     s.camera().focusOn(p1.getEntity());
 
-    caffeine.play();
+    caffeine.start();
 
     GameServer gs = new GameServer(caffeine, 4444);
     gs.run();
@@ -83,12 +81,7 @@ public class Caffeine implements Game {
 
   /* CONSTRUCTOR */
   Caffeine() {
-    clock.add(new TimerTask() {
-      @Override
-      public void run() {
-        round();
-      }
-    });
+
   }
 
   /* ACCESSORS */
@@ -96,7 +89,6 @@ public class Caffeine implements Game {
     return world.getMap(mapID).entities();
   }
 
-  @Override
   public GUI gui() {
     return gui;
   }
@@ -114,35 +106,67 @@ public class Caffeine implements Game {
   }
 
   /* MUTATORS */
-  @Override
+
   public void addPlayer(Player player) {
     players.add(player);
     gui.addInputListener(player.getInputListener());
   }
 
-  @Override
   public int numRoundsPlayed() {
     return 0;
   }
 
-  @Override
-  public void pause() {
-    clock.stop();
+  public void start(){
+    new Thread(this).start();
   }
 
-  @Override
-  public void play() {
-    new Thread(gui).start();
-    clock.start();
+  public void run(){
+    long lastTime = System.nanoTime();
+    double unprocessed = 0;
+    double nsPerTick = 1000000000.0 / 60;
+    int frames = 0;
+    int ticks = 0;
+    long lastTimer1 = System.currentTimeMillis();
+
+    while (true) {
+      long now = System.nanoTime();
+      unprocessed += (now - lastTime) / nsPerTick;
+      lastTime = now;
+      boolean shouldRender = true;
+      while (unprocessed >= 1) {
+        ticks++;
+        tick();
+        unprocessed -= 1;
+        shouldRender = true;
+      }
+
+      try {
+        Thread.sleep(2);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+
+      if (shouldRender) {
+        frames++;
+        gui.repaint();
+      }
+
+      if (System.currentTimeMillis() - lastTimer1 > 1000) {
+        lastTimer1 += 1000;
+        System.out.println(ticks + " ticks, " + frames + " fps");
+        frames = 0;
+        ticks = 0;
+      }
+    }
   }
 
-  @Override
+
   public List<Player> players() {
     return players;
   }
 
-  @Override
-  public void round() {
+
+  public void tick() {
     //for (Map map : activeMaps()) {
     for (Map map : world.world.values()) {
       map.tick();

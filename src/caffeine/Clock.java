@@ -9,7 +9,7 @@ public class Clock {
   private final Timer timer = new Timer();
   private List<TimerTask> events = new ArrayList<TimerTask>();
   private boolean running = true;
-  private double ticksPerSecond = 1000 / 30;
+  private double ticksPerSecond = 1000 / 60;
 
   public Clock() {
     timer.scheduleAtFixedRate(new TimerTask() {

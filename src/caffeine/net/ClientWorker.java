@@ -3,7 +3,6 @@ package caffeine.net;
 import java.net.Socket;
 
 import caffeine.Caffeine;
-import caffeine.Game;
 import caffeine.net.msg.Query;
 import caffeine.view.InputHandler;
 import caffeine.view.InputListener;
@@ -13,14 +12,14 @@ public class ClientWorker extends Thread {
   protected Caffeine game;
   protected InputListener input = new InputHandler();
 
-  public ClientWorker(Game g, Socket client) {
-    game = (Caffeine) g;
+  public ClientWorker(Caffeine g, Socket client) {
+    game = g;
     this.client = new Connection(client);
     System.out.println("" + client.getInetAddress().toString() + ":"
         + client.getPort() + " connecting");
   }
 
-  public Game game() {
+  public Caffeine game() {
     return game;
   }
 

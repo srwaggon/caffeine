@@ -10,9 +10,9 @@ public class Player {
   protected ClientWorker client;
   protected Entity playerEntity;
   protected InputListener input = new InputHandler();
-  protected Game game;
+  protected Caffeine game;
 
-  public Player(Game game) {
+  public Player(Caffeine game) {
     this.game = game;
   }
 

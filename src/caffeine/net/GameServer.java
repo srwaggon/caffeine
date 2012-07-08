@@ -5,16 +5,16 @@ import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.List;
 
-import caffeine.Game;
+import caffeine.Caffeine;
 import caffeine.Player;
 
 public class GameServer extends Thread {
-  private final Game game;
+  private final Caffeine game;
   private ServerSocket socket = null;
   private final int port;
   private final List<ClientWorker> clients = new ArrayList<ClientWorker>();
-  
-  public GameServer(Game g, int port) {
+
+  public GameServer(Caffeine g, int port) {
     game = g;
     this.port = port;
     try {
@@ -24,7 +24,7 @@ public class GameServer extends Thread {
       System.exit(-1);
     }
   }
-  
+
   public void run() {
     try {
       ClientWorker w;
@@ -42,11 +42,11 @@ public class GameServer extends Thread {
     } catch (InterruptedException e) {
     }
   }
-  
+
   public List<ClientWorker> clients() {
     return clients;
   }
-  
+
   protected void finalize() {
     try {
       socket.close();
