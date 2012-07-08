@@ -9,8 +9,6 @@ import java.util.Set;
 import caffeine.entity.Entity;
 import caffeine.net.GameServer;
 import caffeine.view.GUI;
-import caffeine.view.screen.Screen;
-import caffeine.view.screen.WorldScreen;
 import caffeine.world.Map;
 import caffeine.world.World;
 
@@ -24,7 +22,7 @@ import caffeine.world.World;
 public class Caffeine implements Runnable {
   /* Engine Fields */
   private final World world = new World(); // Space
-  //private final Clock clock = new Clock(); // Time
+  protected Map currentMap;
   private final List<Player> players = new LinkedList<Player>(); // Life
   private final GUI gui = new GUI("Caffeine Server"); // Light
 
@@ -33,14 +31,7 @@ public class Caffeine implements Runnable {
 
     Caffeine caffeine = new Caffeine();
     World world = caffeine.getWorld();
-
-    // Add some data: A world, some entities
     Map map = world.addMap(Map.defaultMapString);
-
-    // create a GUI
-    WorldScreen ws = new WorldScreen();
-    ws.setMap(map);
-    caffeine.gui().setScreen(ws);
 
     // add a player
     CaffeinePlayer p1 = new CaffeinePlayer(caffeine);
@@ -68,10 +59,6 @@ public class Caffeine implements Runnable {
     randombot = new Entity(world);
     new RandomBrain(randombot);
      */
-
-    Screen s = caffeine.gui().getScreen();
-    s.camera().focusOn(p1.getEntity());
-
     caffeine.start();
 
     GameServer gs = new GameServer(caffeine, 4444);
@@ -148,7 +135,7 @@ public class Caffeine implements Runnable {
 
       if (shouldRender) {
         frames++;
-        gui.repaint();
+        world.getMap(0).render(gui.screen);
       }
 
       if (System.currentTimeMillis() - lastTimer1 > 1000) {

@@ -26,12 +26,6 @@ public class Spritesheet {
   protected int tileSize = 32;
   private Dimension dim;
   protected HashMap<Integer, Image> sprites = new HashMap<Integer, Image>();
-  protected static String defaultSpritePath = "sprites.png";
-
-  public Spritesheet() {
-    //this(Spritesheet.eclipseDefaultSpritePath);
-    this(Spritesheet.defaultSpritePath);
-  }
 
   /**
    * Creates a Spritesheet from the file located in the path provided.

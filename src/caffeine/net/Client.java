@@ -5,7 +5,6 @@ import java.util.Scanner;
 
 import caffeine.entity.Entity;
 import caffeine.view.GUI;
-import caffeine.view.screen.WorldScreen;
 import caffeine.world.Map;
 import caffeine.world.World;
 
@@ -59,10 +58,6 @@ public class Client {
       Map map = world.getMap(0);
       System.out.println(map);
 
-      WorldScreen ws = new WorldScreen();
-      ws.setMap(map);
-
-      gui.setScreen(ws);
     }
   }
 }

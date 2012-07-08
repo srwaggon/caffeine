@@ -1,7 +1,5 @@
 package caffeine.entity;
 
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -10,7 +8,7 @@ import java.util.List;
 import caffeine.action.Action;
 import caffeine.action.Push;
 import caffeine.entity.brain.Brain;
-import caffeine.view.Animation;
+import caffeine.view.screen.Screen;
 import caffeine.world.Direction;
 import caffeine.world.Loc;
 import caffeine.world.Map;
@@ -31,13 +29,13 @@ public class Entity {
   protected int id = Entity.numEntities++;
   protected boolean isMoving = false;
   protected boolean isAlive = true;
-  protected int size = 24;
+  protected int size = 16;
+  public int spriteID = 3;
   protected double speed = 2.0;
 
 
   /* object fields */
   public LinkedList<Action> actionPlans = new LinkedList<Action>();
-  protected Animation anim;
   protected Brain brain;
   protected Direction dir = Direction.SOUTH;
   protected Loc loc;
@@ -49,11 +47,6 @@ public class Entity {
     this.world = world;
     loc = world.getDefaultSpawn();
     world.getMap(loc.mapID).addEntity(this);
-
-    int[] walkSprites = { 3, 4 };
-
-    Animation walkAnim = new Animation(walkSprites, 200, true);
-    anim = walkAnim;
   }
 
   /**
@@ -133,10 +126,8 @@ public class Entity {
    * @param g
    *          Graphics used to draw this entity
    */
-  public final void render(Graphics g) {
-    Graphics2D g2 = (Graphics2D) g;
-    anim.render(g2, loc.x, loc.y);
-    g2.draw(getHitbox());
+  public final void render(Screen screen) {
+    screen.render(spriteID, loc.x - Map.tileSize/2, loc.y - Map.tileSize/2);
   }
 
   public boolean intersects(Rectangle r){

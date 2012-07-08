@@ -1,27 +1,35 @@
 package caffeine.view.screen;
 
+import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.image.BufferStrategy;
 
-import javax.swing.JPanel;
+import caffeine.view.Spritesheet;
 
-import caffeine.view.Camera;
-
-public class Screen extends JPanel {
+public class Screen extends Canvas {
   private static final long serialVersionUID = -2226504463501471657L;
-  protected Camera camera = new Camera(getPreferredSize());
-  protected Image img = null;
-  
+  protected Spritesheet sprites = new Spritesheet("sprites.png");
+  int xOffset = 0, yOffset = 0;
+  int WIDTH = 400;
+  int HEIGHT = WIDTH * 10 / 16;
+
   public final Dimension getPreferredSize() {
-    return new Dimension(600, 400);
+    return new Dimension(WIDTH, HEIGHT);
   }
-  
-  public Camera camera() {
-    return camera;
-  }
-  
-  public void paintComponent(Graphics g) {
-    g.drawImage(img, 0, 0, null);
+
+  public void render(int spriteID, int x, int y){
+    BufferStrategy bs = getBufferStrategy();
+    if(bs == null){
+      createBufferStrategy(1);
+      return;
+    }
+
+    if(xOffset <= x && x < WIDTH + xOffset && yOffset <= y && y < HEIGHT + yOffset){
+      Graphics gfx = bs.getDrawGraphics();
+      gfx.drawImage(sprites.get(spriteID), x-xOffset, y-yOffset, null);
+      gfx.dispose();
+      bs.show();
+    }
   }
 }

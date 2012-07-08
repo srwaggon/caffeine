@@ -1,7 +1,5 @@
 package caffeine.world;
 
-import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,14 +10,14 @@ import java.util.List;
 import java.util.Set;
 
 import caffeine.entity.Entity;
-import caffeine.view.Spritesheet;
+import caffeine.view.screen.Screen;
 
 public class Map implements Iterable<Tile> {
   protected HashMap<Integer, Entity> entities = new HashMap<Integer, Entity>();
   private static int numMaps = 0;
   protected int id;
   protected int numRows, numCols;
-  protected static int tileSize = 32;
+  public final static int tileSize = 32;
   protected Tile[][] map;
 
   public static String defaultMapString = "40 20 "
@@ -153,20 +151,19 @@ public class Map implements Iterable<Tile> {
     return s;
   }
 
-  public void render(Graphics2D g2, Spritesheet tilesheet) {
+  public void render(Screen screen) {
     for(int x = 0; x < numCols; x++){
       for(int y = 0; y < numRows; y++){
         Tile tile = map[x][y];
-        int spriteID = tile.getSpriteID();
-        Image img = tilesheet.get(spriteID);
-        g2.drawImage(img, x * tileSize, y
-            * tileSize, tileSize, tileSize, null);
+
+        screen.render(tile.getSpriteID(), x* tileSize, y* tileSize);
       }
     }
     for (Entity e : entities()) {
-      e.render(g2);
+      e.render(screen);
     }
   }
+
   public int width() {
     return numCols * Map.tileSize;
   }
