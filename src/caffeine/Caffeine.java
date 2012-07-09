@@ -135,7 +135,10 @@ public class Caffeine implements Runnable {
 
       if (shouldRender) {
         frames++;
-        world.getMap(0).render(gui.screen);
+
+        world.getMap(0).renderBackground(gui.screen);
+        world.getMap(0).renderSprites(gui.screen);
+        gui.screen.render();
       }
 
       if (System.currentTimeMillis() - lastTimer1 > 1000) {

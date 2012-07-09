@@ -151,7 +151,7 @@ public class Map implements Iterable<Tile> {
     return s;
   }
 
-  public void render(Screen screen) {
+  public void renderBackground(Screen screen) {
     for(int x = 0; x < numCols; x++){
       for(int y = 0; y < numRows; y++){
         Tile tile = map[x][y];
@@ -159,6 +159,9 @@ public class Map implements Iterable<Tile> {
         screen.render(tile.getSpriteID(), x* tileSize, y* tileSize);
       }
     }
+  }
+
+  public void renderSprites(Screen screen){
     for (Entity e : entities()) {
       e.render(screen);
     }
