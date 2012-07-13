@@ -31,16 +31,6 @@ public class Screen extends Canvas {
       createBufferStrategy(1);
       return;
     }
-
-    int j = 0;
-    for(int i = 0; i < sprites.pixels.length && i < pixels.length; i++){
-      int x = i % sprites.width;
-      if (0 <= x && x < 32) {
-        pixels[(j % 32) + (j / 32) * WIDTH] = sprites.pixels[i];
-        j++;
-      }
-    }
-
     Graphics gfx = bs.getDrawGraphics();
     gfx.drawImage(screen, 0, 0, null);
     gfx.dispose();
@@ -48,8 +38,15 @@ public class Screen extends Canvas {
   }
 
   public void render(int spriteID, int x, int y){
-    if(xOffset <= x && x < WIDTH + xOffset && yOffset <= y && y < HEIGHT + yOffset){
+    x -= xOffset;
+    y -= yOffset;
+    for (int i = 0; i < 32 * 32; i++) {
+      int spritex = i % sprites.width;
+      int spritey = i / sprites.width;
+      int screenx = i % WIDTH;
+      int screeny = i / WIDTH;
 
+      pixels[(screeny + (WIDTH - sprites.width)) * WIDTH + screenx] = sprites.pixels[spritex + spritey *sprites.width];
     }
   }
 }
