@@ -16,18 +16,19 @@ public class Screen extends Canvas {
   int xOffset = 0, yOffset = 0;
   final int WIDTH = 600;
   final int HEIGHT = WIDTH * 10 / 16;
-  private BufferedImage screen = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-  private int[] pixels = ((DataBufferInt) screen.getRaster().getDataBuffer()).getData();
+  private final BufferedImage screen = new BufferedImage(WIDTH, HEIGHT,
+      BufferedImage.TYPE_INT_RGB);
+  private final int[] pixels = ((DataBufferInt) screen.getRaster()
+      .getDataBuffer()).getData();
   int ticks = 0;
-
 
   public final Dimension getPreferredSize() {
     return new Dimension(WIDTH, HEIGHT);
   }
 
-  public void render(){
+  public void render() {
     BufferStrategy bs = getBufferStrategy();
-    if(bs == null){
+    if (bs == null) {
       createBufferStrategy(1);
       return;
     }
@@ -37,16 +38,23 @@ public class Screen extends Canvas {
     bs.show();
   }
 
-  public void render(int spriteID, int x, int y){
-    x -= xOffset;
-    y -= yOffset;
-    for (int i = 0; i < 32 * 32; i++) {
-      int spritex = i % sprites.width;
-      int spritey = i / sprites.width;
-      int screenx = i % WIDTH;
-      int screeny = i / WIDTH;
+  public void render(int spriteID, int x, int y) {
+    //x -= xOffset;
+    //y -= yOffset;
 
-      pixels[(screeny + (WIDTH - sprites.width)) * WIDTH + screenx] = sprites.pixels[spritex + spritey *sprites.width];
+    // copy the pixel data 
+    for (int row = 0; row < 32; row++) {
+      for (int col = 0; col < 32; col++) {
+
+        int sheet = (spriteID * 32 + row) * 32 + col;
+        int canvas = (32 * (row + y)) + col + x;
+
+        // if the indices are valid, attempt to copy.
+        if (canvas >= 0 && canvas < pixels.length && sheet >= 0
+            && sheet < sprites.pixels.length) {
+          pixels[canvas] = sprites.pixels[sheet];
+        }
+      }
     }
   }
 }
