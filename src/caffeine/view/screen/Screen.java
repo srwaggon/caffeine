@@ -39,20 +39,29 @@ public class Screen extends Canvas {
   }
 
   public void render(int spriteID, int x, int y) {
-    //x -= xOffset;
-    //y -= yOffset;
+    x -= xOffset;
+    y -= yOffset;
 
-    // copy the pixel data 
+    int spriteX = spriteID % 32;
+    int spriteY = spriteID / 32;
+    int spriteOffset = spriteX * 32 + spriteY * 32 * sprites.width;
+
     for (int row = 0; row < 32; row++) {
+      if (y + row < 0 || y + row >= HEIGHT) {
+        continue;
+      }
+
       for (int col = 0; col < 32; col++) {
+        if (x + col < 0 || x + col >= WIDTH) {
+          continue;
+        }
 
-        int sheet = (spriteID * 32 + row) * 32 + col;
-        int canvas = (32 * (row + y)) + col + x;
+        int sheet = col + row * sprites.width + spriteOffset;
+        int canvas = (x + col + (y + row) * WIDTH);
 
-        // if the indices are valid, attempt to copy.
-        if (canvas >= 0 && canvas < pixels.length && sheet >= 0
-            && sheet < sprites.pixels.length) {
-          pixels[canvas] = sprites.pixels[sheet];
+        int colour = sprites.pixels[sheet];
+        if (colour < 255){
+          pixels[canvas] = colour;
         }
       }
     }
