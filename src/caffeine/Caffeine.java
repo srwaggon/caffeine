@@ -7,6 +7,10 @@ import java.util.List;
 import java.util.Set;
 
 import caffeine.entity.Entity;
+import caffeine.entity.brain.LeftBrain;
+import caffeine.entity.brain.RandomBrain;
+import caffeine.entity.brain.RightBrain;
+import caffeine.entity.brain.StraightBrain;
 import caffeine.net.GameServer;
 import caffeine.view.GUI;
 import caffeine.world.Map;
@@ -39,7 +43,7 @@ public class Caffeine implements Runnable {
 
 
     // add some AI
-    /*
+
     Entity leftbot = new Entity(world);
     new LeftBrain(leftbot);
 
@@ -58,7 +62,7 @@ public class Caffeine implements Runnable {
 
     randombot = new Entity(world);
     new RandomBrain(randombot);
-     */
+
     caffeine.start();
 
     GameServer gs = new GameServer(caffeine, 4444);

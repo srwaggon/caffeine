@@ -30,7 +30,7 @@ public class Entity {
   protected boolean isMoving = false;
   protected boolean isAlive = true;
   protected int size = 16;
-  public int spriteID = 10;
+  public int spriteID = 3;
   protected double speed = 2.0;
 
 
