@@ -26,11 +26,12 @@ public class Spritesheet {
       width = sheet.getWidth();
       height = sheet.getHeight();
       pixels = sheet.getRGB(0, 0, width, height, null, 0, width);
-      /*
       for(int i = 0; i < pixels.length; i++){
-        pixels[i] = (pixels[i] & 0xff);
+        //pixels[i] = (pixels[i] & 0xff);
+        if (i < 33){
+          System.out.println(i + " : " + pixels[i]);
+        }
       }
-       */
     } catch (Throwable ex) {
       ex.printStackTrace();
     }

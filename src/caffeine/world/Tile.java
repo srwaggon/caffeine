@@ -6,7 +6,7 @@ public class Tile {
 
   protected boolean pass = true;
   protected int damage = 0;
-  protected int spriteID = 3;
+  protected int spriteID = 0;
   protected int x, y;
   protected static int size = 32;
 

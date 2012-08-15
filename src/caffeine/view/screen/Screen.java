@@ -60,9 +60,10 @@ public class Screen extends Canvas {
         int canvas = (x + col + (y + row) * WIDTH);
 
         int colour = sprites.pixels[sheet];
-        if (colour < 255){
+        if(colour != -16777216){
           pixels[canvas] = colour;
         }
+
       }
     }
   }
