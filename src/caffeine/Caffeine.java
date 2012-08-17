@@ -7,10 +7,6 @@ import java.util.List;
 import java.util.Set;
 
 import caffeine.entity.Entity;
-import caffeine.entity.brain.LeftBrain;
-import caffeine.entity.brain.RandomBrain;
-import caffeine.entity.brain.RightBrain;
-import caffeine.entity.brain.StraightBrain;
 import caffeine.net.GameServer;
 import caffeine.view.GUI;
 import caffeine.world.Map;
@@ -35,33 +31,12 @@ public class Caffeine implements Runnable {
 
     Caffeine caffeine = new Caffeine();
     World world = caffeine.getWorld();
-    Map map = world.addMap(Map.defaultMapString);
+    world.addMap(Map.defaultMapString);
 
-    // add a player
     CaffeinePlayer p1 = new CaffeinePlayer(caffeine);
     caffeine.addPlayer(p1);
 
-
-    // add some AI
-
-    Entity leftbot = new Entity(world);
-    new LeftBrain(leftbot);
-
-    Entity rightbot = new Entity(world);
-    new RightBrain(rightbot);
-
-    Entity straightbot = new Entity(world);
-
-    new StraightBrain(straightbot);
-
-    Entity randombot = new Entity(world);
-    new RandomBrain(randombot);
-
-    randombot = new Entity(world);
-    new RandomBrain(randombot);
-
-    randombot = new Entity(world);
-    new RandomBrain(randombot);
+    //LeftBrain.embody(world);
 
     caffeine.start();
 
@@ -107,11 +82,11 @@ public class Caffeine implements Runnable {
     return 0;
   }
 
-  public void start(){
+  public void start() {
     new Thread(this).start();
   }
 
-  public void run(){
+  public void run() {
     long lastTime = System.nanoTime();
     double unprocessed = 0;
     double nsPerTick = 1000000000.0 / 60;
@@ -154,11 +129,9 @@ public class Caffeine implements Runnable {
     }
   }
 
-
   public List<Player> players() {
     return players;
   }
-
 
   public void tick() {
     //for (Map map : activeMaps()) {

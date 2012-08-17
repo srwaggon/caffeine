@@ -24,7 +24,13 @@ public class Brain {
     return self;
   }
 
-  public List<Action> next() {
-    return new LinkedList<Action>();
+  public List<Action> getActionPlan() {
+    return actionPlan;
+  }
+
+  public void tick() {
+    for (Action a : getActionPlan()) {
+      a.performBy(self);
+    }
   }
 }

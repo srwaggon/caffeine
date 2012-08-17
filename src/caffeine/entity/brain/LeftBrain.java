@@ -10,17 +10,22 @@ import caffeine.world.Direction;
 import caffeine.world.Loc;
 import caffeine.world.Map;
 import caffeine.world.Tile;
+import caffeine.world.World;
 
 public class LeftBrain extends Brain {
   private Direction dir = Direction.SOUTH;
-  private double turnThresh = .99;
+  private final double turnThresh = .99;
 
   public LeftBrain(Entity self) {
     super(self);
   }
 
+  public static Entity embody(World world) {
+    return new LeftBrain(new Entity(world)).getEntity();
+  }
+
   @Override
-  public List<Action> next() {
+  public List<Action> getActionPlan() {
 
     actionPlan.clear();
 

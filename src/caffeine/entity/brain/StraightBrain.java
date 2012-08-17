@@ -21,7 +21,7 @@ public class StraightBrain extends Brain {
   }
 
   @Override
-  public List<Action> next() {
+  public List<Action> getActionPlan() {
     actionPlan.clear();
 
     Map currentMap = self.getWorld().getMap(self.getLoc().mapID);

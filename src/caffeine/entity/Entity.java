@@ -33,7 +33,6 @@ public class Entity {
   public int spriteID = 3;
   protected double speed = 2.0;
 
-
   /* object fields */
   public LinkedList<Action> actionPlans = new LinkedList<Action>();
   protected Brain brain;
@@ -47,6 +46,7 @@ public class Entity {
     this.world = world;
     loc = world.getDefaultSpawn();
     world.getMap(loc.mapID).addEntity(this);
+    brain = new Brain(this);
   }
 
   /**
@@ -54,27 +54,24 @@ public class Entity {
    */
   public void tick() {
     if (isAlive) {
-      if (brain != null) {
-        actionPlans.addAll(brain.next());
-      }
-      if (isMoving){
+      if (isMoving) {
         double xa = dir.dx() * speed;
         double ya = dir.dy() * speed;
         move(xa, ya, true);
       }
-      while (!actionPlans.isEmpty()) {
-        actionPlans.poll().performBy(this);
+      if (brain != null) {
+        brain.tick();
       }
     }
   }
 
-  public boolean move(double xa, double ya){
+  public boolean move(double xa, double ya) {
     loc.x += xa;
     loc.y += ya;
     return true;
   }
 
-  public boolean move(double xa, double ya, boolean b){
+  public boolean move(double xa, double ya, boolean b) {
     // project entity's hitbox
     Map map = world.getMap(loc.mapID);
 
@@ -83,7 +80,7 @@ public class Entity {
 
     List<Tile> nextTiles = map.getTiles(hitboxNext);
     for (Tile t : nextTiles) {
-      if (!isValidTile(t)) {
+      if (!isValidTile(t) || !t.canPass()) {
         return false;
       }
     }
@@ -115,7 +112,7 @@ public class Entity {
     return true;
   }
 
-  public boolean push(Entity pushee, double xa, double ya){
+  public boolean push(Entity pushee, double xa, double ya) {
     pushee.actionPlans.clear();
     return pushee.move(xa, ya, true);
   }
@@ -127,10 +124,10 @@ public class Entity {
    *          Graphics used to draw this entity
    */
   public final void render(Screen screen) {
-    screen.render(spriteID, loc.x - Map.tileSize/2, loc.y - Map.tileSize/2);
+    screen.render(spriteID, loc.x - Map.tileSize / 2, loc.y - Map.tileSize / 2);
   }
 
-  public boolean intersects(Rectangle r){
+  public boolean intersects(Rectangle r) {
     return getHitbox().intersects(r);
   }
 

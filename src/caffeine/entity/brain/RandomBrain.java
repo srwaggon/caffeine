@@ -17,7 +17,7 @@ import caffeine.world.Map;
  */
 public class RandomBrain extends Brain {
   Direction dir = Direction.pickOneAtRandom();
-  private double turnThresh = .90;
+  private final double turnThresh = .90;
   private int numSteps = 0;
 
   public RandomBrain(Entity self) {
@@ -30,7 +30,7 @@ public class RandomBrain extends Brain {
    * @return a list of actions planned for this brain's owners next turn
    */
   @Override
-  public List<Action> next() {
+  public List<Action> getActionPlan() {
     actionPlan.clear();
 
     Map map = self.getWorld().getMap(self.getLoc().mapID);

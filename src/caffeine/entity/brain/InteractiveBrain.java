@@ -37,7 +37,7 @@ public class InteractiveBrain extends Brain {
    * In this case, determined by keyboard input
    */
   @Override
-  public List<Action> next() {
+  public List<Action> getActionPlan() {
     actionPlan.clear();
     for (int keyCode : actionMap.keySet()) {
       if (input.get(keyCode)) {
