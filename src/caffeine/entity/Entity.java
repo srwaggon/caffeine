@@ -1,6 +1,5 @@
 package caffeine.entity;
 
-import java.awt.Rectangle;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,9 +27,10 @@ public class Entity {
   protected int id = Entity.numEntities++;
   protected boolean isMoving = false;
   protected boolean isAlive = true;
-  protected int size = 16;
+  protected int xr = 8;
+  protected int yr = 8;
   public int spriteID = 3;
-  protected double speed = 1.0;
+  protected int speed = 2;
 
   /* object fields */
   public LinkedList<Action> actionPlans = new LinkedList<Action>();
@@ -54,8 +54,8 @@ public class Entity {
   public void tick() {
     if (isAlive) {
       if (isMoving) {
-        double xa = dir.dx() * speed;
-        double ya = dir.dy() * speed;
+        int xa = dir.dx() * speed;
+        int ya = dir.dy() * speed;
         move(xa, ya, true);
       }
       if (brain != null)
@@ -63,36 +63,33 @@ public class Entity {
     }
   }
 
-  public boolean move(double xa, double ya) {
+  public boolean move(int xa, int ya) {
     loc.x += xa;
     loc.y += ya;
     return true;
   }
 
-  public boolean move(double xa, double ya, boolean b) {
-    // project entity's hitbox
+  public boolean move(int xa, int ya, boolean b) {
     Map map = world.getMap(loc.mapID);
 
-    Rectangle hitboxNext = getHitbox();
-    hitboxNext.translate((int) xa, (int) ya);
+    int nx = loc.x + xa; // next x
+    int ny = loc.y + ya; // next y
 
-    List<Tile> nextTiles = map.getTiles(hitboxNext);
+    List<Tile> nextTiles = map.getTiles(nx - xr, ny - yr, nx + xr, ny + yr);
     for (Tile t : nextTiles)
       if (!isValidTile(t) || !t.canPass())
         return false;
 
     // Check collision with each entity.
     Collection<Entity> potentialColliders = map.entities();
-    Rectangle hitbox = getHitbox();
     for (Entity collider : potentialColliders) {
-      Rectangle colliderBox = collider.getHitbox();
 
       // if they currently intersect, move freely.
-      if (collider.equals(this) || hitbox.intersects(colliderBox))
+      if (collider.equals(this) || intersects(collider))
         continue;
 
       // If they're going to intersect, inform them.
-      if (!collider.equals(this) && hitboxNext.intersects(colliderBox))
+      if (collider.intersects(nx - xr, ny - yr, nx + xr, ny + yr))
         // If the collision is bad, the move is unsuccessful.
 
         return false;
@@ -107,7 +104,7 @@ public class Entity {
     return true;
   }
 
-  public boolean push(Entity pushee, double xa, double ya) {
+  public boolean push(Entity pushee, int xa, int ya) {
     pushee.actionPlans.clear();
     return pushee.move(xa, ya, true);
   }
@@ -122,8 +119,8 @@ public class Entity {
     screen.render(spriteID, loc.x - Map.tileSize / 2, loc.y - Map.tileSize / 2);
   }
 
-  public boolean intersects(Rectangle r) {
-    return getHitbox().intersects(r);
+  public boolean intersects(int x0, int y0, int x1, int y1) {
+    return !(loc.x + xr < x0 || loc.y + yr < y0 || loc.x - xr > x1 || loc.y - yr > y1);
   }
 
   /**
@@ -132,8 +129,8 @@ public class Entity {
    *          of which possible collision
    * @return true if collision detected
    */
-  public boolean collidesWith(Entity collider) {
-    return !equals(collider) && getHitbox().intersects(collider.getHitbox());
+  public boolean intersects(Entity e) {
+    return !equals(e) && intersects(e.loc.x - e.xr, e.loc.y - e.yr, e.loc.x + e.xr, e.loc.y + e.yr);
   }
 
   public boolean handleCollision(Entity collidingEntity) {
@@ -190,18 +187,6 @@ public class Entity {
   }
 
   /**
-   * Returns a Rectangle object of which the entity is considered to occupy in
-   * space. Objects which fall within the rectangle or overlap with the
-   * rectangle are considered to be inside of the entity. This rectangle serves
-   * for basic hit detection purposes.
-   * 
-   * @return rectangle of which this entity occupies
-   */
-  public Rectangle getHitbox() {
-    return new Rectangle(loc.x - size / 2, loc.y - size / 2, size, size);
-  }
-
-  /**
    * Returns the current Location of the entity.
    * 
    * @return location of entity
@@ -214,7 +199,7 @@ public class Entity {
     this.loc = loc;
   }
 
-  public double getSpeed() {
+  public int getSpeed() {
     return speed;
   }
 

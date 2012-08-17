@@ -1,13 +1,10 @@
 package caffeine.world;
 
-import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import caffeine.entity.Entity;
 import caffeine.gfx.Screen;
@@ -48,24 +45,20 @@ public class Map implements Iterable<Tile> {
     numCols = cols;
     map = new Tile[cols][rows];
 
-    for (int y = 0; y < numRows; y++) {
-      for (int x = 0; x < numCols; x++) {
+    for (int y = 0; y < numRows; y++)
+      for (int x = 0; x < numCols; x++)
         map[x][y] = new Tile(x, y, Map.tileSize, this);
-      }
-    }
   }
 
   public Collection<Entity> entities() {
     return entities.values();
   }
 
-  public Collection<Entity> getEntities(Rectangle box){
-    Set<Entity> result = new HashSet<Entity>();
-    for (Entity e : entities.values()) {
-      if (e.getHitbox().intersects(box)) {
+  public List<Entity> getEntities(int x0, int y0, int x1, int y1){
+    List<Entity> result = new ArrayList<Entity>();
+    for (Entity e : entities.values())
+      if (e.intersects(x0, y0, x1, y1))
         result.add(e);
-      }
-    }
     return result;
   }
 
@@ -92,15 +85,12 @@ public class Map implements Iterable<Tile> {
     return getTileAt(l.x, l.y);
   }
 
-  public List<Tile> getTiles(Rectangle box) {
+  public List<Tile> getTiles(int x0, int y0, int x1, int y1) {
     List<Tile> result = new ArrayList<Tile>();
-    for (int j = box.y / tileSize * tileSize; j <= box.y + box.height; j += tileSize) {
-      for (int i = box.x / tileSize * tileSize; i <= box.x + box.width; i += tileSize) {
-        if (isValidLoc(i, j)) {
+    for (int j = y0 / tileSize * tileSize; j <= y1; j += tileSize)
+      for (int i = x0 / tileSize * tileSize; i <= x1; i += tileSize)
+        if (isValidLoc(i, j))
           result.add(getTileAt(i, j));
-        }
-      }
-    }
     return result;
   }
 
@@ -131,40 +121,34 @@ public class Map implements Iterable<Tile> {
     Iterator<Entity> entityIter = entities.values().iterator();
     while(entityIter.hasNext()){
       Entity e = entityIter.next();
-      if(!e.isAlive()){
+      if(!e.isAlive())
         entityIter.remove();
-      } else {
-        e.tick();
-      }
+      else e.tick();
     }
   }
 
   @Override
   public String toString() {
     String s = "map " + numCols + " " + numRows + " " + Map.tileSize + " ";
-    for (int y = 0; y < numRows; y++) {
-      for (int x = 0; x < numCols; x++) {
+    for (int y = 0; y < numRows; y++)
+      for (int x = 0; x < numCols; x++)
         s += map[x][y];
-      }
-    }
     s += "\n";
     return s;
   }
 
   public void renderBackground(Screen screen) {
-    for(int x = 0; x < numCols; x++){
+    for(int x = 0; x < numCols; x++)
       for(int y = 0; y < numRows; y++){
         Tile tile = map[x][y];
 
         screen.render(tile.getSpriteID(), x* tileSize, y* tileSize);
       }
-    }
   }
 
   public void renderSprites(Screen screen){
-    for (Entity e : entities()) {
+    for (Entity e : entities())
       e.render(screen);
-    }
   }
 
   public int width() {

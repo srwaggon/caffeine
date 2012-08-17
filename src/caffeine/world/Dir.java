@@ -5,15 +5,15 @@ import java.util.Random;
 public enum Dir {
   UP, RIGHT, DOWN, LEFT;
 
-  public double dx(){
-    double dx = 0;
+  public int dx(){
+    int dx = 0;
     dx = this == RIGHT ?  1 : dx;
     dx = this == LEFT ? -1 : dx;
     return dx;
   }
 
-  public double dy(){
-    double dy = 0;
+  public int dy(){
+    int dy = 0;
     dy = this == UP ? -1 : dy;
     dy = this == DOWN ?  1 : dy;
     return dy;
