@@ -1,38 +1,30 @@
 package caffeine.entity.brain;
 
-import java.util.List;
-
-import caffeine.action.Action;
 import caffeine.action.Move;
 import caffeine.entity.Entity;
-import caffeine.world.Direction;
-import caffeine.world.Map;
+import caffeine.world.Dir;
+import caffeine.world.World;
 
 public class StraightBrain extends Brain {
-  protected Direction forward;
+  protected Dir forward;
 
   public StraightBrain(Entity self) {
     super(self);
     forward = self.getDirection();
   }
 
-  public void setForward(Direction dir) {
+  public void setForward(Dir dir) {
     forward = dir;
   }
 
+  public static Entity embody(World world) {
+    return new StraightBrain(new Entity(world)).getEntity();
+  }
+
   @Override
-  public List<Action> getActionPlan() {
-    actionPlan.clear();
-
-    Map currentMap = self.getWorld().getMap(self.getLoc().mapID);
-    Move next = new Move(forward);
-
-    // TODO: Requiring dry-runs allows entities to attempt to perform
-    // invalid moves.
-
-    forward = forward.opposite();
-
-    actionPlan.add(next);
-    return actionPlan;
+  public void tick() {
+    if(!new Move(forward).performBy(self)){
+      forward = forward.opposite();
+    }
   }
 }

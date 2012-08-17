@@ -1,16 +1,16 @@
 package caffeine.action;
 
 import caffeine.entity.Entity;
-import caffeine.world.Direction;
+import caffeine.world.Dir;
 
 public class Face implements Action {
-  public final static Face NORTH = new Face(Direction.NORTH);
-  public final static Face EAST = new Face(Direction.EAST);
-  public final static Face SOUTH = new Face(Direction.SOUTH);
-  public final static Face WEST = new Face(Direction.WEST);
-  Direction dir;
+  public final static Face NORTH = new Face(Dir.UP);
+  public final static Face EAST = new Face(Dir.RIGHT);
+  public final static Face SOUTH = new Face(Dir.DOWN);
+  public final static Face WEST = new Face(Dir.LEFT);
+  Dir dir;
 
-  public Face(Direction d) {
+  public Face(Dir d) {
     dir = d;
   }
 

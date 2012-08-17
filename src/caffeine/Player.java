@@ -2,14 +2,13 @@ package caffeine;
 
 import caffeine.entity.Entity;
 import caffeine.gfx.InputHandler;
-import caffeine.gfx.InputListener;
 import caffeine.net.ClientWorker;
 
 public class Player {
   protected boolean networkPlayer = false;
   protected ClientWorker client;
   protected Entity playerEntity;
-  protected InputListener input = new InputHandler();
+  protected InputHandler input = new InputHandler();
   protected Caffeine game;
 
   public Player(Caffeine game) {
@@ -19,14 +18,14 @@ public class Player {
   public Player(ClientWorker cw) {
     this(cw.game());
     client = cw;
-    input = client.getInputListener();
+    input = client.getInputHandler();
   }
 
   public Entity getEntity() {
     return playerEntity;
   }
 
-  public InputListener getInputListener() {
+  public InputHandler getInputHandler() {
     return input;
   }
 

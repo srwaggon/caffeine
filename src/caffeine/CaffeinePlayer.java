@@ -11,7 +11,7 @@ public class CaffeinePlayer extends Player {
     super(game);
     this.game = game;
     playerEntity = PlayerBrain.embody(game.getWorld());
-    input = ((PlayerBrain) playerEntity.getBrain()).getInputListener();
+    input = ((PlayerBrain) playerEntity.getBrain()).getInputHandler();
   }
 
   public CaffeinePlayer(ClientWorker cw) {

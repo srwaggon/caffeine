@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Set;
 
 import caffeine.entity.Entity;
+import caffeine.entity.brain.LeftBrain;
+import caffeine.entity.brain.StraightBrain;
 import caffeine.gfx.GUI;
 import caffeine.net.GameServer;
 import caffeine.world.Map;
@@ -36,7 +38,8 @@ public class Caffeine implements Runnable {
     CaffeinePlayer p1 = new CaffeinePlayer(caffeine);
     caffeine.addPlayer(p1);
 
-    //LeftBrain.embody(world);
+    LeftBrain.embody(world);
+    StraightBrain.embody(world);
 
     caffeine.start();
 
@@ -75,7 +78,7 @@ public class Caffeine implements Runnable {
 
   public void addPlayer(Player player) {
     players.add(player);
-    gui.addInputListener(player.getInputListener());
+    gui.addInputListener(player.getInputHandler());
   }
 
   public int numRoundsPlayed() {

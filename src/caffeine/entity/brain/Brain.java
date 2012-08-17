@@ -1,14 +1,9 @@
 package caffeine.entity.brain;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import caffeine.action.Action;
 import caffeine.entity.Entity;
 import caffeine.world.World;
 
 public class Brain {
-  protected List<Action> actionPlan = new LinkedList<Action>();
   protected Entity self;
 
   public Brain(Entity self) {
@@ -24,13 +19,6 @@ public class Brain {
     return self;
   }
 
-  public List<Action> getActionPlan() {
-    return actionPlan;
-  }
-
   public void tick() {
-    for (Action a : getActionPlan()) {
-      a.performBy(self);
-    }
   }
 }

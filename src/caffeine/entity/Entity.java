@@ -6,10 +6,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import caffeine.action.Action;
-import caffeine.action.Push;
 import caffeine.entity.brain.Brain;
 import caffeine.gfx.Screen;
-import caffeine.world.Direction;
+import caffeine.world.Dir;
 import caffeine.world.Loc;
 import caffeine.world.Map;
 import caffeine.world.Tile;
@@ -31,12 +30,12 @@ public class Entity {
   protected boolean isAlive = true;
   protected int size = 16;
   public int spriteID = 3;
-  protected double speed = 2.0;
+  protected double speed = 1.0;
 
   /* object fields */
   public LinkedList<Action> actionPlans = new LinkedList<Action>();
   protected Brain brain;
-  protected Direction dir = Direction.SOUTH;
+  protected Dir dir = Dir.DOWN;
   protected Loc loc;
   protected String name = "Entity[" + id + "]";
   protected World world;
@@ -59,9 +58,8 @@ public class Entity {
         double ya = dir.dy() * speed;
         move(xa, ya, true);
       }
-      if (brain != null) {
+      if (brain != null)
         brain.tick();
-      }
     }
   }
 
@@ -79,11 +77,9 @@ public class Entity {
     hitboxNext.translate((int) xa, (int) ya);
 
     List<Tile> nextTiles = map.getTiles(hitboxNext);
-    for (Tile t : nextTiles) {
-      if (!isValidTile(t) || !t.canPass()) {
+    for (Tile t : nextTiles)
+      if (!isValidTile(t) || !t.canPass())
         return false;
-      }
-    }
 
     // Check collision with each entity.
     Collection<Entity> potentialColliders = map.entities();
@@ -92,16 +88,15 @@ public class Entity {
       Rectangle colliderBox = collider.getHitbox();
 
       // if they currently intersect, move freely.
-      if (collider.equals(this) || hitbox.intersects(colliderBox)) {
+      if (collider.equals(this) || hitbox.intersects(colliderBox))
         continue;
-      }
 
       // If they're going to intersect, inform them.
-      if (!collider.equals(this) && hitboxNext.intersects(colliderBox)) {
+      if (!collider.equals(this) && hitboxNext.intersects(colliderBox))
         // If the collision is bad, the move is unsuccessful.
-        //return handleCollision(collider);
-        return push(collider, xa, ya);
-      }
+
+        return false;
+      //return push(collider, xa, ya);
     }
 
     // Change location.
@@ -142,7 +137,7 @@ public class Entity {
   }
 
   public boolean handleCollision(Entity collidingEntity) {
-    return new Push(collidingEntity).performBy(this);
+    return true;
   }
 
   /* ACCESSORS */
@@ -162,11 +157,11 @@ public class Entity {
     brain = b;
   }
 
-  public Direction getDirection() {
+  public Dir getDirection() {
     return dir;
   }
 
-  public void setDirection(Direction dir) {
+  public void setDirection(Dir dir) {
     this.dir = dir;
   }
 

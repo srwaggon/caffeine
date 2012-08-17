@@ -15,11 +15,12 @@ public class GUI {
     //frame.setResizable(false);
     frame.setVisible(true);
     frame.setLocationRelativeTo(null);
+    screen.requestFocus();
   }
 
-  public void addInputListener(InputListener listener) {
-    screen.addKeyListener(listener);
-    screen.addMouseListener(listener);
-    screen.addMouseMotionListener(listener);
+  public void addInputListener(InputHandler input) {
+    screen.addKeyListener(input);
+    screen.addMouseListener(input);
+    screen.addMouseMotionListener(input);
   }
 }

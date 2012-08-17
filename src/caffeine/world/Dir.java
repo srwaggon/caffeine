@@ -2,24 +2,24 @@ package caffeine.world;
 
 import java.util.Random;
 
-public enum Direction {
-  NORTH, EAST, SOUTH, WEST;
+public enum Dir {
+  UP, RIGHT, DOWN, LEFT;
 
   public double dx(){
     double dx = 0;
-    dx = this == EAST ?  1 : dx;
-    dx = this == WEST ? -1 : dx;
+    dx = this == RIGHT ?  1 : dx;
+    dx = this == LEFT ? -1 : dx;
     return dx;
   }
 
   public double dy(){
     double dy = 0;
-    dy = this == NORTH ? -1 : dy;
-    dy = this == SOUTH ?  1 : dy;
+    dy = this == UP ? -1 : dy;
+    dy = this == DOWN ?  1 : dy;
     return dy;
   }
 
-  public Direction opposite(){
+  public Dir opposite(){
     return next().next();
   }
 
@@ -27,27 +27,27 @@ public enum Direction {
    * Returns the next direction from this enumeration from the following order: N, E, S, W
    * @return The next direction from this enumeration
    */
-  public Direction next(){
-    return ordinal() < Direction.values().length - 1 ?
-        Direction.values()[ordinal() + 1] :
-          Direction.values()[0];
+  public Dir next(){
+    return ordinal() < Dir.values().length - 1 ?
+        Dir.values()[ordinal() + 1] :
+          Dir.values()[0];
   }
 
   /**
    * Returns the previous direction from this enumeration from the following order: W, S, E, N
    * @return The previous direction from this enumeration
    */
-  public Direction prev(){
+  public Dir prev(){
     return ordinal() > 0 ?
-        Direction.values()[ordinal() - 1] :
-          Direction.values()[values().length - 1];
+        Dir.values()[ordinal() - 1] :
+          Dir.values()[values().length - 1];
   }
 
   /**
    * Returns a random direction.
    * @return randomly selected direction
    */
-  public static Direction pickOneAtRandom(){
+  public static Dir pickOneAtRandom(){
     Random rndm = new Random();
     int i = rndm.nextInt(size());
     return values()[i];

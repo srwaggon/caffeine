@@ -4,13 +4,12 @@ import java.net.Socket;
 
 import caffeine.Caffeine;
 import caffeine.gfx.InputHandler;
-import caffeine.gfx.InputListener;
 import caffeine.net.msg.Query;
 
 public class ClientWorker extends Thread {
   protected final Connection client;
   protected Caffeine game;
-  protected InputListener input = new InputHandler();
+  protected InputHandler input = new InputHandler();
 
   public ClientWorker(Caffeine g, Socket client) {
     game = g;
@@ -48,12 +47,11 @@ public class ClientWorker extends Thread {
       String[] param = query.param();
       String qtype = param[1];
 
-      if (qtype.equals("map")) {
+      if (qtype.equals("map"))
         // TODO: too fucking filthy.
         result = game.getWorld().getMap(Integer.parseInt(param[2])).toString();
-      } else if (qtype.equals("entity")) {
+      else if (qtype.equals("entity"))
         result = game.entity(Integer.parseInt(param[2])).toString();
-      }
 
     } catch (Exception e) {
       result = "bad query";
@@ -63,7 +61,7 @@ public class ClientWorker extends Thread {
     return result;
   }
 
-  public InputListener getInputListener() {
+  public InputHandler getInputHandler() {
     return input;
   }
 }
