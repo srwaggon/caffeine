@@ -8,7 +8,7 @@ import java.util.List;
 import caffeine.action.Action;
 import caffeine.action.Push;
 import caffeine.entity.brain.Brain;
-import caffeine.view.screen.Screen;
+import caffeine.gfx.Screen;
 import caffeine.world.Direction;
 import caffeine.world.Loc;
 import caffeine.world.Map;

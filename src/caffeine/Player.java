@@ -1,9 +1,9 @@
 package caffeine;
 
 import caffeine.entity.Entity;
+import caffeine.gfx.InputHandler;
+import caffeine.gfx.InputListener;
 import caffeine.net.ClientWorker;
-import caffeine.view.InputHandler;
-import caffeine.view.InputListener;
 
 public class Player {
   protected boolean networkPlayer = false;

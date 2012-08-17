@@ -8,8 +8,8 @@ import java.util.List;
 import caffeine.action.Action;
 import caffeine.action.Report;
 import caffeine.entity.Entity;
-import caffeine.view.InputHandler;
-import caffeine.view.InputListener;
+import caffeine.gfx.InputHandler;
+import caffeine.gfx.InputListener;
 
 public class InteractiveBrain extends Brain {
   protected HashMap<Integer, Action[]> actionMap = new HashMap<Integer, Action[]>();

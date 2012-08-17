@@ -3,9 +3,9 @@ package caffeine.net;
 import java.net.Socket;
 
 import caffeine.Caffeine;
+import caffeine.gfx.InputHandler;
+import caffeine.gfx.InputListener;
 import caffeine.net.msg.Query;
-import caffeine.view.InputHandler;
-import caffeine.view.InputListener;
 
 public class ClientWorker extends Thread {
   protected final Connection client;

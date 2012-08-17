@@ -1,8 +1,7 @@
-package caffeine.view;
+package caffeine.gfx;
 
 import javax.swing.JFrame;
 
-import caffeine.view.screen.Screen;
 
 public class GUI {
   protected JFrame frame = new JFrame();
@@ -19,8 +18,8 @@ public class GUI {
   }
 
   public void addInputListener(InputListener listener) {
-    frame.addKeyListener(listener);
-    frame.addMouseListener(listener);
-    frame.addMouseMotionListener(listener);
+    screen.addKeyListener(listener);
+    screen.addMouseListener(listener);
+    screen.addMouseMotionListener(listener);
   }
 }

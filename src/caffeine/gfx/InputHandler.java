@@ -1,4 +1,4 @@
-package caffeine.view;
+package caffeine.gfx;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;

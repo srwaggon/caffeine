@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 import caffeine.entity.Entity;
-import caffeine.view.GUI;
+import caffeine.gfx.GUI;
 import caffeine.world.Map;
 import caffeine.world.World;
 

@@ -1,4 +1,4 @@
-package caffeine.view.screen;
+package caffeine.gfx;
 
 import java.awt.Canvas;
 import java.awt.Dimension;
@@ -7,7 +7,6 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
-import caffeine.view.Spritesheet;
 
 public class Screen extends Canvas {
 

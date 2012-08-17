@@ -2,7 +2,7 @@ package caffeine.net;
 
 import java.awt.event.KeyEvent;
 
-import caffeine.view.InputHandler;
+import caffeine.gfx.InputHandler;
 
 public class NetworkInputHandler extends InputHandler {
   Connection connex;

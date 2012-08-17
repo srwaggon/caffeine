@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Set;
 
 import caffeine.entity.Entity;
+import caffeine.gfx.GUI;
 import caffeine.net.GameServer;
-import caffeine.view.GUI;
 import caffeine.world.Map;
 import caffeine.world.World;
 

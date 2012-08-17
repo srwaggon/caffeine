@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 import caffeine.entity.Entity;
-import caffeine.view.screen.Screen;
+import caffeine.gfx.Screen;
 
 public class Map implements Iterable<Tile> {
   protected HashMap<Integer, Entity> entities = new HashMap<Integer, Entity>();
