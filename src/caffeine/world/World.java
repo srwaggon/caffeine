@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class World {
   public HashMap<Integer, Map> world;
-  protected Loc defaultSpawnLoc = new Loc(0, 48, 48);
+  protected Loc defaultSpawnLoc = new Loc(0, 20, 20, 0);
 
   public World() {
     world = new HashMap<Integer, Map>();

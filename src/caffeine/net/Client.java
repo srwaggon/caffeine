@@ -5,7 +5,6 @@ import java.util.Scanner;
 
 import caffeine.entity.Entity;
 import caffeine.gfx.GUI;
-import caffeine.world.Map;
 import caffeine.world.World;
 
 public class Client {
@@ -54,9 +53,9 @@ public class Client {
       String mapData = lineParser.nextLine();
       System.out.println(mapData);
       World world = new World();
-      world.addMap(mapData);
-      Map map = world.getMap(0);
-      System.out.println(map);
+      //world.addMap(mapData);
+      //Map map = world.getMap(0);
+      //System.out.println(map);
 
     }
   }
