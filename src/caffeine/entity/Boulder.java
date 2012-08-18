@@ -2,7 +2,7 @@ package caffeine.entity;
 
 import caffeine.world.World;
 
-public class Boulder extends Entity {
+public class Boulder extends Mob {
   public Boulder(World w) {
     super(w);
     spriteID = 1;

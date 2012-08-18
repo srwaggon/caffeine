@@ -97,11 +97,12 @@ public class Entity {
   }
 
   public void touchedBy(Entity entity){
+  }
 
+  public void takeDamage(int dmg){
   }
 
   public void takeItem(ItemEntity item){
-    item.take(this);
   }
 
   /* ACCESSORS */
@@ -130,6 +131,9 @@ public class Entity {
     this.loc = loc;
   }
 
+  public Map getMap(){
+    return world.getMap(loc.mapID);
+  }
   public int getSpeed() {
     return speed;
   }

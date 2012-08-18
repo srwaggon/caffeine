@@ -60,7 +60,7 @@ MouseListener {
     if (keycode == KeyEvent.VK_DOWN) down.toggle(pressed);
     if (keycode == KeyEvent.VK_LEFT) left.toggle(pressed);
     if (keycode == KeyEvent.VK_RIGHT) right.toggle(pressed);
-    if (keycode == KeyEvent.VK_SPACE) attack.toggle(pressed);
+    if (keycode == KeyEvent.VK_X) attack.toggle(pressed);
   }
 
   public void keyPressed(KeyEvent event) {
