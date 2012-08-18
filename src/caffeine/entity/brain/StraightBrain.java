@@ -7,7 +7,7 @@ import caffeine.world.World;
 
 public class StraightBrain extends Brain {
   protected Dir forward;
-
+  private int timetick = 0;
   public StraightBrain(Mob self) {
     super(self);
     forward = self.getDirection();
@@ -23,7 +23,9 @@ public class StraightBrain extends Brain {
 
   @Override
   public void tick() {
-    if(!new Move(forward).performBy(self))
-      forward = forward.opposite();
+
+    if((timetick++ & 0x3) == 0)
+      if(!new Move(forward).performBy(self))
+        forward = forward.opposite();
   }
 }

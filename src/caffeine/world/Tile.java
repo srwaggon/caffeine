@@ -1,35 +1,20 @@
 package caffeine.world;
 
-import java.awt.Rectangle;
 
 public class Tile {
 
   protected boolean pass = true;
   protected int damage = 0;
-  protected int spriteID = 33;
-  protected int x, y;
-  protected static int size = 32;
+  protected int baseSprite;
+  protected int maskSprite;
 
-  protected Map parent;
-  protected Rectangle bounds;
-
-  public Tile(int x, int y, int tileSize, Map parent) {
-    this.x = x;
-    this.y = y;
-    bounds = new Rectangle(x * tileSize, y * tileSize, tileSize, tileSize);
-    this.parent = parent;
-  }
-
-  public Rectangle getBounds() {
-    return bounds;
+  public Tile(int sprite) {
+    baseSprite = sprite;
+    if (sprite == 7) pass = false;
   }
 
   public boolean canPass() {
     return pass;
-  }
-
-  public Map getMap() {
-    return parent;
   }
 
   public void setPass(boolean b) {
@@ -40,12 +25,12 @@ public class Tile {
     return damage <= 0;
   }
 
-  public int getSpriteID() {
-    return spriteID;
+  public int getSprite() {
+    return baseSprite;
   }
 
   public void setSprite(int id) {
-    spriteID = id;
+    baseSprite = id;
   }
 
   @Override

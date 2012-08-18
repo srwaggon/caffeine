@@ -1,9 +1,6 @@
 package caffeine.world;
 
 import java.util.HashMap;
-import java.util.Scanner;
-
-import caffeine.entity.Boulder;
 
 public class World {
   public HashMap<Integer, Map> world;
@@ -19,32 +16,6 @@ public class World {
 
   public void addMap(Map m) {
     world.put(m.getID(), m);
-  }
-
-  public Map addMap(String s) {
-    Scanner scans = new Scanner(s);
-    int numCols = Integer.parseInt(scans.next());
-    int numRows = Integer.parseInt(scans.next());
-    Map map = new Map(numCols, numRows);
-    addMap(map);
-
-    String line = scans.next();
-    for (int i = 0; i < numRows * numCols; i++) {
-      int x = i % numCols;
-      int y = i / numCols;
-      char c = line.charAt(i);
-      Tile t = map.getTile(x, y);
-      if (c == '@') {
-        Boulder b = new Boulder(this);
-        b.setLoc(new Loc(map.id, x * Map.tileSize + Map.tileSize / 2, y
-            * Map.tileSize + Map.tileSize / 2));
-      } else if (c == '#') {
-        t.setPass(false);
-        t.setSprite(10);
-      }
-    }
-
-    return map;
   }
 
   public Loc getDefaultSpawn() {
@@ -65,23 +36,20 @@ public class World {
 
   /* *** MUTATORS *** */
   public void setDefaultSpawnLoc(Loc l) {
-    if (isValid(l)) {
+    if (isValid(l))
       defaultSpawnLoc = l;
-    }
   }
 
   public void tick() {
-    for (Map m : world.values()) {
+    for (Map m : world.values())
       m.tick();
-    }
   }
 
   @Override
   public String toString() {
     String s = "world " + world.size() + " {";
-    for (int k : world.keySet()) {
+    for (int k : world.keySet())
       s += " " + k;
-    }
     return s + " }";
   }
 }

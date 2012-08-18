@@ -10,6 +10,7 @@ public class LeftBrain extends Brain {
   protected Dir dir = Dir.DOWN;
   protected final double turnThresh = .99;
   protected boolean lastFailed = false;
+  private int timetick = 0;
 
   public LeftBrain(Mob self) {
     super(self);
@@ -24,6 +25,7 @@ public class LeftBrain extends Brain {
     if (turnThresh < Math.random() || lastFailed)
       dir = dir.prev();
     new Face(dir).performBy(self);
-    lastFailed = !new Move(dir).performBy(self);
+    if((timetick++ & 0x1) == 0)
+      lastFailed = !new Move(dir).performBy(self);
   }
 }

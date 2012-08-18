@@ -33,7 +33,7 @@ public class Caffeine implements Runnable {
 
     Caffeine caffeine = new Caffeine();
     World world = caffeine.getWorld();
-    world.addMap(Map.defaultMapString);
+    world.addMap(new Map(Map.defaultMapData));
 
     CaffeinePlayer p1 = new CaffeinePlayer(caffeine);
     caffeine.addPlayer(p1);
@@ -68,9 +68,8 @@ public class Caffeine implements Runnable {
 
   public Set<Map> activeMaps() {
     Set<Map> activeMaps = new LinkedHashSet<Map>();
-    for (Player p : players()) {
+    for (Player p : players())
       activeMaps.add(world.getMap(p.getEntity().getLoc().mapID));
-    }
     return activeMaps;
   }
 
@@ -138,19 +137,15 @@ public class Caffeine implements Runnable {
 
   public void tick() {
     //for (Map map : activeMaps()) {
-    for (Map map : world.world.values()) {
+    for (Map map : world.world.values())
       map.tick();
-    }
   }
 
   public Entity entity(int entityID) {
-    for (Map map : activeMaps()) {
-      for (Entity e : map.entities()) {
-        if (e.getID() == entityID) {
+    for (Map map : activeMaps())
+      for (Entity e : map.entities())
+        if (e.getID() == entityID)
           return e;
-        }
-      }
-    }
     return null;
   }
 }
