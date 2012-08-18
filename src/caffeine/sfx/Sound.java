@@ -9,7 +9,7 @@ public class Sound {
   public static final Sound ENEMY_DIE = new Sound("La_Enemy_Die.wav");
   public static final Sound HURT = new Sound("LA_Enemy_Hit.wav");
   public static final Sound ITEM = new Sound("item.wav");
-  public static final Sound JUMP = new Sound("jump.wav");
+  public static final Sound JUMP = new Sound("LA_Link_Jump.wav");
   public static final Sound SWORD1 = new Sound("LA_Sword_Slash1.wav");
   public static final Sound SWORD2 = new Sound("LA_Sword_Slash2.wav");
   public static final Sound SWORD3 = new Sound("LA_Sword_Slash3.wav");

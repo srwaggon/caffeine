@@ -10,4 +10,12 @@ public class Player extends Mob{
     super(world);
     brain = new PlayerBrain(this);
   }
+
+  public boolean move(int xa, int ya){
+    return super.move(xa, ya);
+  }
+
+  public void tick(){
+    super.tick();
+  }
 }

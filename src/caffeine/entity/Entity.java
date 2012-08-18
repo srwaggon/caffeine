@@ -86,7 +86,7 @@ public class Entity {
   }
 
   public final void render(Screen screen) {
-    screen.render(spriteID, loc.x - Map.tileSize / 2, loc.y - Map.tileSize / 2);
+    screen.render(spriteID, loc.x - Map.tileSize / 2, loc.y - Map.tileSize / 2 - loc.z);
   }
 
   public boolean intersects(int x0, int y0, int x1, int y1) {

@@ -2,16 +2,19 @@ package caffeine.entity.brain;
 
 import caffeine.action.Move;
 import caffeine.entity.Mob;
+import caffeine.entity.Player;
 import caffeine.world.World;
 
 public class PlayerBrain extends InteractiveBrain {
+  protected Player self;
 
-  public PlayerBrain(Mob self) {
+  public PlayerBrain(Player self) {
     super(self);
+    this.self = self;
   }
 
   public static Mob embody(World world) {
-    return new PlayerBrain(new Mob(world)).getSelf();
+    return new PlayerBrain(new Player(world)).getSelf();
   }
 
   public void tick(){
@@ -21,5 +24,6 @@ public class PlayerBrain extends InteractiveBrain {
     if (input.left.isPressed) Move.LEFT.performBy(self);
     if (input.right.isPressed) Move.RIGHT.performBy(self);
     if (input.attack.clicked) self.attack();
+    if (input.jump.clicked) self.jump();
   }
 }

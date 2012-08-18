@@ -9,10 +9,16 @@ import caffeine.world.World;
 
 
 public class Mob extends Entity{
+
+  protected boolean flip = false;
+
   protected boolean isAlive = true;
   protected Brain brain;
+
   protected int health = 10;
   protected int power = 1;
+
+  protected int za = 0;
 
   public Mob(World world){
     super(world);
@@ -21,6 +27,15 @@ public class Mob extends Entity{
 
   public void tick(){
     brain.tick();
+
+    flip = !flip;
+    if (loc.z >= 0 && flip){
+      loc.z += za--;
+      if(loc.z <= 0){
+        loc.z = 0;
+        za = 0;
+      }
+    }
   }
 
   public void attack(){
@@ -42,6 +57,13 @@ public class Mob extends Entity{
     List<Entity> entities = getMap().getEntities(x0, y0, x1, y1);
     for (Entity e : entities)
       if (!e.equals(this)) e.takeDamage(power);
+  }
+
+  public void jump(){
+    if(loc.z == 0){
+      za = 6;
+      Sound.JUMP.play();
+    }
   }
 
   public void takeDamage(int dmg){

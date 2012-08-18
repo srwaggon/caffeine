@@ -39,6 +39,7 @@ MouseListener {
   public Key left = new Key();
   public Key right = new Key();
   public Key attack = new Key();
+  public Key jump = new Key();
   public Key menu = new Key();
 
 
@@ -62,6 +63,7 @@ MouseListener {
     if (keycode == KeyEvent.VK_LEFT) left.toggle(pressed);
     if (keycode == KeyEvent.VK_RIGHT) right.toggle(pressed);
     if (keycode == KeyEvent.VK_X) attack.toggle(pressed);
+    if (keycode == KeyEvent.VK_Z) jump.toggle(pressed);
   }
 
   public void keyPressed(KeyEvent event) {
