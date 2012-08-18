@@ -24,12 +24,12 @@ public class Mob extends Entity{
   }
 
   public void attack(){
-    int range = 20;
+    int range = 16;
     // use this entity's range to hurt the entities within a given proximity
-    if (dir == Dir.UP)  hurt(loc.x - range/2, loc.y - range, loc.x + range/2, loc.y);
-    if (dir == Dir.DOWN) hurt(loc.x - range/2, loc.y, loc.x + range/2, loc.y + range);
-    if (dir == Dir.LEFT) hurt(loc.x - range, loc.y - range/2, loc.x, loc.y + range/2);
-    if (dir == Dir.RIGHT) hurt(loc.x, loc.y - range/2, loc.x + range, loc.y + range/2);
+    if (dir == Dir.UP)  hurt(loc.x - range/2, loc.y - range, loc.x + range/2, loc.y - yr);
+    if (dir == Dir.DOWN) hurt(loc.x - range/2, loc.y + yr, loc.x + range/2, loc.y + range);
+    if (dir == Dir.LEFT) hurt(loc.x - range, loc.y - range/2, loc.x - xr, loc.y + range/2);
+    if (dir == Dir.RIGHT) hurt(loc.x + xr, loc.y - range/2, loc.x + range, loc.y + range/2);
 
     int random = (int)(Math.random() * 4);
     if(random == 0) Sound.SWORD1.play();
@@ -38,11 +38,16 @@ public class Mob extends Entity{
     if(random == 3) Sound.SWORD4.play();
   }
 
+  public void hurt(int x0, int y0, int x1, int y1){
+    List<Entity> entities = getMap().getEntities(x0, y0, x1, y1);
+    for (Entity e : entities)
+      if (!e.equals(this)) e.takeDamage(power);
+  }
+
   public void takeDamage(int dmg){
     health -= dmg;
-    if (health <= 0) die();
     Sound.HURT.play();
-    System.out.println("heatlh remaining: " + health);
+    if (health <= 0) die();
   }
 
   public void takeItem(ItemEntity item){
@@ -50,10 +55,8 @@ public class Mob extends Entity{
     Sound.ITEM.play();
   }
 
-  public void hurt(int x0, int y0, int x1, int y1){
-    List<Entity> entities = getMap().getEntities(x0, y0, x1, y1);
-    for (Entity e : entities)
-      if (!e.equals(this)) e.takeDamage(power);
+  public boolean touchedBy(Entity e){
+    return false;
   }
 
   public boolean isAlive() {

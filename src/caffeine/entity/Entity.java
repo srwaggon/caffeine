@@ -69,7 +69,8 @@ public class Entity {
 
       // If they're going to intersect, inform them.
       if (entity.intersects(nx - xr, ny - yr, nx + xr, ny + yr))
-        entity.touchedBy(this);
+        if(!entity.touchedBy(this))
+          return false;
     }
 
     // Change location.
@@ -96,7 +97,8 @@ public class Entity {
     return !equals(e) && intersects(e.loc.x - e.xr, e.loc.y - e.yr, e.loc.x + e.xr, e.loc.y + e.yr);
   }
 
-  public void touchedBy(Entity entity){
+  public boolean touchedBy(Entity entity){
+    return true;
   }
 
   public void takeDamage(int dmg){

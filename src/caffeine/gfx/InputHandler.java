@@ -18,10 +18,11 @@ MouseListener {
       keys.add(this);
     }
     public void toggle(boolean pressed){
-      if (isPressed != pressed)
+      if (isPressed != pressed) {
         isPressed = pressed;
-      if(pressed)
-        presses++;
+        if(pressed)
+          presses++;
+      }
     }
 
     public void tick(){

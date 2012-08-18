@@ -1,5 +1,6 @@
 package caffeine.entity;
 
+import caffeine.sfx.Sound;
 import caffeine.world.World;
 
 
@@ -10,8 +11,10 @@ public class ItemEntity extends Entity{
   }
 
 
-  public void touchedBy(Entity entity){
+  public boolean touchedBy(Entity entity){
     entity.takeItem(this);
+    Sound.ITEM.play();
+    return true;
   }
 
   public void take(Entity entity){
