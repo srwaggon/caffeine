@@ -24,7 +24,7 @@ public class Mob extends Entity{
   }
 
   public void attack(){
-    int range = 16;
+    int range = 8;
     // use this entity's range to hurt the entities within a given proximity
     if (dir == Dir.UP)  hurt(loc.x - range/2, loc.y - range, loc.x + range/2, loc.y - yr);
     if (dir == Dir.DOWN) hurt(loc.x - range/2, loc.y + yr, loc.x + range/2, loc.y + range);

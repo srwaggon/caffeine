@@ -14,7 +14,7 @@ public class Map implements Iterable<Tile> {
   private static int numMaps = 0;
   protected int id;
   protected int numRows, numCols;
-  public final static int tileSize = 32;
+  public final static int tileSize = 16;
   protected Tile[][] map;
 
   public static String defaultMapString = "40 20 "

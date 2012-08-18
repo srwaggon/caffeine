@@ -11,8 +11,9 @@ import java.awt.image.DataBufferInt;
 public class Screen extends Canvas {
 
   private static final long serialVersionUID = -2226504463501471657L;
-  final int WIDTH = 600;
+  final int WIDTH = 300;
   final int HEIGHT = WIDTH * 10 / 16;
+  final int SCALE = 3;
   protected int xOffset = 0, yOffset = 0;
   final int PUREBLACK = -16777216;
 
@@ -20,11 +21,11 @@ public class Screen extends Canvas {
       BufferedImage.TYPE_INT_RGB);
   private final int[] pixels = ((DataBufferInt) screen.getRaster()
       .getDataBuffer()).getData();
-  protected Spritesheet sheet = new Spritesheet("sprites.png", 32);
+  protected Spritesheet sheet = new Spritesheet("sprites2.png", 16);
 
 
   public final Dimension getPreferredSize() {
-    return new Dimension(WIDTH, HEIGHT);
+    return new Dimension(WIDTH * SCALE, HEIGHT * SCALE);
   }
 
   public void render() {
@@ -34,7 +35,7 @@ public class Screen extends Canvas {
       return;
     }
     Graphics gfx = bs.getDrawGraphics();
-    gfx.drawImage(screen, 0, 0, null);
+    gfx.drawImage(screen, 0, 0, WIDTH*SCALE, HEIGHT*SCALE, null);
     gfx.dispose();
     bs.show();
   }

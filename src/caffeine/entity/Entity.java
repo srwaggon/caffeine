@@ -25,9 +25,9 @@ public class Entity {
   protected int id = Entity.numEntities++;
   protected boolean removed = false;
 
-  protected int xr = 8;
-  protected int yr = 8;
-  public int spriteID = 3;
+  protected int xr = 2;
+  protected int yr = 2;
+  public int spriteID = 67;
   protected int speed = 1;
 
   /* object fields */
