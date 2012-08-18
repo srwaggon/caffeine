@@ -3,6 +3,7 @@ package caffeine.entity;
 import java.util.List;
 
 import caffeine.entity.brain.Brain;
+import caffeine.sfx.Sound;
 import caffeine.world.Dir;
 import caffeine.world.World;
 
@@ -34,11 +35,13 @@ public class Mob extends Entity{
   public void takeDamage(int dmg){
     health -= dmg;
     if (health <= 0) die();
+    Sound.HURT.play();
     System.out.println("heatlh remaining: " + health);
   }
 
   public void takeItem(ItemEntity item){
     item.take(this);
+    Sound.ITEM.play();
   }
 
   public void hurt(int x0, int y0, int x1, int y1){
