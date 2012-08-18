@@ -30,6 +30,12 @@ public class Mob extends Entity{
     if (dir == Dir.DOWN) hurt(loc.x - range/2, loc.y, loc.x + range/2, loc.y + range);
     if (dir == Dir.LEFT) hurt(loc.x - range, loc.y - range/2, loc.x, loc.y + range/2);
     if (dir == Dir.RIGHT) hurt(loc.x, loc.y - range/2, loc.x + range, loc.y + range/2);
+
+    int random = (int)(Math.random() * 4);
+    if(random == 0) Sound.SWORD1.play();
+    if(random == 1) Sound.SWORD2.play();
+    if(random == 2) Sound.SWORD3.play();
+    if(random == 3) Sound.SWORD4.play();
   }
 
   public void takeDamage(int dmg){
@@ -56,6 +62,7 @@ public class Mob extends Entity{
 
   public void die() {
     isAlive = false;
+    Sound.ENEMY_DIE.play();
     remove();
   }
 
