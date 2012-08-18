@@ -1,13 +1,13 @@
 package caffeine.entity.brain;
 
-import caffeine.entity.Entity;
+import caffeine.entity.Mob;
 import caffeine.gfx.InputHandler;
 
 public class InteractiveBrain extends Brain {
   protected InputHandler input = new InputHandler();
 
-  public InteractiveBrain(Entity owner) {
-    super(owner);
+  public InteractiveBrain(Mob self) {
+    super(self);
   }
 
   @Override

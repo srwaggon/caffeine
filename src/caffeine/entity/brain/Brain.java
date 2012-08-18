@@ -1,21 +1,21 @@
 package caffeine.entity.brain;
 
-import caffeine.entity.Entity;
+import caffeine.entity.Mob;
 import caffeine.world.World;
 
 public class Brain {
-  protected Entity self;
+  protected Mob self;
 
-  public Brain(Entity self) {
+  public Brain(Mob self) {
     this.self = self;
     self.setBrain(this);
   }
 
-  public static Entity embody(World world) {
-    return new Brain(new Entity(world)).getEntity();
+  public static Mob embody(World world) {
+    return new Brain(new Mob(world)).getSelf();
   }
 
-  public Entity getEntity() {
+  public Mob getSelf() {
     return self;
   }
 

@@ -18,6 +18,6 @@ public class Move implements Action {
   @Override
   public boolean performBy(Entity actor) {
     actor.setDirection(dir);
-    return actor.move(actor.getSpeed() * dir.dx(), actor.getSpeed() * dir.dy(), true);
+    return actor.move(actor.getSpeed() * dir.dx(), actor.getSpeed() * dir.dy());
   }
 }

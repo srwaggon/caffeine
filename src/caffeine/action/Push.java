@@ -15,6 +15,6 @@ public class Push implements Action {
 
     int xa = 0, ya = 0;
 
-    return pushee.move(xa, ya, true);
+    return pushee.move(xa, ya);
   }
 }

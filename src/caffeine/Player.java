@@ -1,13 +1,13 @@
 package caffeine;
 
-import caffeine.entity.Entity;
+import caffeine.entity.Mob;
 import caffeine.gfx.InputHandler;
 import caffeine.net.ClientWorker;
 
 public class Player {
   protected boolean networkPlayer = false;
   protected ClientWorker client;
-  protected Entity playerEntity;
+  protected Mob playerEntity;
   protected InputHandler input = new InputHandler();
   protected Caffeine game;
 
@@ -21,7 +21,7 @@ public class Player {
     input = client.getInputHandler();
   }
 
-  public Entity getEntity() {
+  public Mob getEntity() {
     return playerEntity;
   }
 

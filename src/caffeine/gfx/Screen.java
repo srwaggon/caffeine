@@ -20,7 +20,7 @@ public class Screen extends Canvas {
       BufferedImage.TYPE_INT_RGB);
   private final int[] pixels = ((DataBufferInt) screen.getRaster()
       .getDataBuffer()).getData();
-  protected Spritesheet sheet = new Spritesheet("sprites.png");
+  protected Spritesheet sheet = new Spritesheet("sprites.png", 32);
 
 
   public final Dimension getPreferredSize() {
@@ -43,27 +43,24 @@ public class Screen extends Canvas {
     x -= xOffset;
     y -= yOffset;
 
-    int spriteX = spriteID % 8;
-    int spriteY = spriteID / 8;
-    int spriteOffset = spriteX * 32 + spriteY * 32 * sheet.width;
+    int spriteX = spriteID % sheet.PER_ROW;
+    int spriteY = spriteID / sheet.PER_ROW;
+    int spriteOffset = spriteX * sheet.TILESIZE + spriteY * sheet.TILESIZE * sheet.width;
 
-    for (int row = 0; row < 32; row++) {
-      if (y + row < 0 || y + row >= HEIGHT) {
+    for (int row = 0; row < sheet.TILESIZE; row++) {
+      if (y + row < 0 || y + row >= HEIGHT)
         continue;
-      }
 
-      for (int col = 0; col < 32; col++) {
-        if (x + col < 0 || x + col >= WIDTH) {
+      for (int col = 0; col < sheet.TILESIZE; col++) {
+        if (x + col < 0 || x + col >= WIDTH)
           continue;
-        }
 
         int sheetIndex = col + row * sheet.width + spriteOffset;
         int canvasIndex = x + col + (y + row) * WIDTH;
 
         int colour = sheet.pixels[sheetIndex];
-        if(colour != PUREBLACK){
+        if(colour != PUREBLACK)
           pixels[canvasIndex] = colour;
-        }
 
       }
     }

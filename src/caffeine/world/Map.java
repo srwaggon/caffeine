@@ -119,9 +119,9 @@ public class Map implements Iterable<Tile> {
       t.tick();
     }
     Iterator<Entity> entityIter = entities.values().iterator();
-    while(entityIter.hasNext()){
+    while (entityIter.hasNext()) {
       Entity e = entityIter.next();
-      if(!e.isAlive())
+      if (e.isRemoved())
         entityIter.remove();
       else e.tick();
     }

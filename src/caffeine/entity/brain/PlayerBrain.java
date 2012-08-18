@@ -1,17 +1,17 @@
 package caffeine.entity.brain;
 
 import caffeine.action.Move;
-import caffeine.entity.Entity;
+import caffeine.entity.Mob;
 import caffeine.world.World;
 
 public class PlayerBrain extends InteractiveBrain {
 
-  public PlayerBrain(Entity self) {
+  public PlayerBrain(Mob self) {
     super(self);
   }
 
-  public static Entity embody(World world) {
-    return new PlayerBrain(new Entity(world)).getEntity();
+  public static Mob embody(World world) {
+    return new PlayerBrain(new Mob(world)).getSelf();
   }
 
   public void tick(){

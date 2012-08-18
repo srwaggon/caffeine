@@ -2,7 +2,7 @@ package caffeine.entity.brain;
 
 import caffeine.action.Face;
 import caffeine.action.Move;
-import caffeine.entity.Entity;
+import caffeine.entity.Mob;
 import caffeine.util.Util;
 import caffeine.world.Dir;
 
@@ -15,17 +15,15 @@ public class RandomBrain extends Brain {
   Dir dir = Dir.pickOneAtRandom();
   private int numSteps = 0;
 
-  public RandomBrain(Entity self) {
+  public RandomBrain(Mob self) {
     super(self);
   }
 
   public void tick() {
     if (numSteps == 0) {
-      if (Util.coinflip()) {
+      if (Util.coinflip())
         dir = dir.next();
-      } else {
-        dir = dir.prev();
-      }
+      else dir = dir.prev();
       numSteps = (int) (Math.random() * 20) + 5;
     }
     numSteps--;

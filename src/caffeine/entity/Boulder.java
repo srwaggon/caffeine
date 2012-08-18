@@ -6,7 +6,7 @@ public class Boulder extends Entity {
   public Boulder(World w) {
     super(w);
     spriteID = 1;
-    xr = 16;
-    yr = 16;
+    xr = 15;
+    yr = 15;
   }
 }

@@ -1,14 +1,14 @@
 package caffeine.entity.brain;
 
 import caffeine.action.Move;
-import caffeine.entity.Entity;
+import caffeine.entity.Mob;
 import caffeine.world.Dir;
 import caffeine.world.World;
 
 public class StraightBrain extends Brain {
   protected Dir forward;
 
-  public StraightBrain(Entity self) {
+  public StraightBrain(Mob self) {
     super(self);
     forward = self.getDirection();
   }
@@ -17,14 +17,13 @@ public class StraightBrain extends Brain {
     forward = dir;
   }
 
-  public static Entity embody(World world) {
-    return new StraightBrain(new Entity(world)).getEntity();
+  public static Mob embody(World world) {
+    return new StraightBrain(new Mob(world)).getSelf();
   }
 
   @Override
   public void tick() {
-    if(!new Move(forward).performBy(self)){
+    if(!new Move(forward).performBy(self))
       forward = forward.opposite();
-    }
   }
 }
