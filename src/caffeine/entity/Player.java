@@ -15,6 +15,10 @@ public class Player extends Mob{
     return super.move(xa, ya);
   }
 
+  public void takeItem(ItemEntity item){
+
+  }
+
   public void tick(){
     super.tick();
   }

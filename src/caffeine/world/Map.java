@@ -192,7 +192,7 @@ public class Map implements Iterable<Tile> {
   }
 
 
-  public void addEntity(Entity e) {
+  public void addEntity(Entity e, int x, int y) {
     entities.put(e.getID(), e);
   }
 

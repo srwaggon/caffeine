@@ -42,7 +42,7 @@ public class Entity {
   public Entity(World world) {
     this.world = world;
     loc = world.getDefaultSpawn();
-    world.getMap(loc.mapID).addEntity(this);
+    world.getMap(loc.mapID).addEntity(this, loc.x, loc.y);
   }
 
   public void tick() {

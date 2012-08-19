@@ -3,6 +3,7 @@ package caffeine.entity;
 import java.util.List;
 
 import caffeine.entity.brain.Brain;
+import caffeine.entity.items.Item;
 import caffeine.sfx.Sound;
 import caffeine.world.Dir;
 import caffeine.world.World;
@@ -88,7 +89,12 @@ public class Mob extends Entity{
   public void die() {
     isAlive = false;
     Sound.ENEMY_DIE.play();
+    //drop(new Heart(5));
     remove();
+  }
+
+  public void drop(Item item){
+
   }
 
   public Brain getBrain() {

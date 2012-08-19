@@ -1,10 +1,13 @@
 package caffeine.entity;
 
+import caffeine.entity.items.Item;
 import caffeine.sfx.Sound;
 import caffeine.world.World;
 
 
 public class ItemEntity extends Entity{
+
+  Item item;
 
   public ItemEntity(World world) {
     super(world);
@@ -13,12 +16,12 @@ public class ItemEntity extends Entity{
 
   public boolean touchedBy(Entity entity){
     entity.takeItem(this);
-    Sound.ITEM.play();
     return true;
   }
 
   public void take(Entity entity){
-    //item.onTake(this);
+    item.onTake(this);
+    Sound.ITEM.play();
     remove();
   }
 }

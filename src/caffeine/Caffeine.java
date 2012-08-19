@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import caffeine.entity.Entity;
+import caffeine.entity.Mob;
 import caffeine.entity.brain.LeftBrain;
 import caffeine.entity.brain.StraightBrain;
 import caffeine.gfx.GUI;
@@ -37,6 +38,8 @@ public class Caffeine implements Runnable {
 
     CaffeinePlayer p1 = new CaffeinePlayer(caffeine);
     caffeine.addPlayer(p1);
+
+    new Mob(world);
 
     LeftBrain.embody(world);
     StraightBrain.embody(world);
