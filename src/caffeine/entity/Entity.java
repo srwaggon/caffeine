@@ -49,28 +49,33 @@ public class Entity {
   }
 
   public boolean move(int xa, int ya) {
-    Map map = world.getMap(loc.mapID);
+    Map map = getMap();
 
     int nx = loc.x + xa; // next x
     int ny = loc.y + ya; // next y
 
     List<Tile> nextTiles = map.getTiles(nx - xr, ny - yr, nx + xr, ny + yr);
-    for (Tile t : nextTiles)
-      if (!isValidTile(t) || !t.canPass())
+    for (Tile t : nextTiles) {
+      if (!isValidTile(t)) {
         return false;
+      }
+    }
 
     // Check collision with each entity.
     Collection<Entity> entities = map.entities();
     for (Entity entity : entities) {
 
       // if they currently intersect, move freely.
-      if (entity.equals(this) || intersects(entity))
+      if (entity.equals(this) || intersects(entity)) {
         continue;
+      }
 
       // If they're going to intersect, inform them.
-      if (entity.intersects(nx - xr, ny - yr, nx + xr, ny + yr))
-        if(!entity.touchedBy(this))
+      if (entity.intersects(nx - xr, ny - yr, nx + xr, ny + yr)) {
+        if (!entity.touchedBy(this)) {
           return false;
+        }
+      }
     }
 
     // Change location.
@@ -86,25 +91,29 @@ public class Entity {
   }
 
   public final void render(Screen screen) {
-    screen.render(spriteID, loc.x - Map.tileSize / 2, loc.y - Map.tileSize / 2 - loc.z);
+    screen.render(spriteID, loc.x - Map.tileSize / 2, loc.y - Map.tileSize / 2
+        - loc.z);
   }
 
   public boolean intersects(int x0, int y0, int x1, int y1) {
-    return !(loc.x + xr < x0 || loc.y + yr < y0 || loc.x - xr > x1 || loc.y - yr > y1);
+    return !(loc.x + xr < x0 || loc.y + yr < y0 || loc.x - xr > x1 || loc.y
+        - yr > y1);
   }
 
   public boolean intersects(Entity e) {
-    return !equals(e) && intersects(e.loc.x - e.xr, e.loc.y - e.yr, e.loc.x + e.xr, e.loc.y + e.yr);
+    return !equals(e)
+        && intersects(e.loc.x - e.xr, e.loc.y - e.yr, e.loc.x + e.xr, e.loc.y
+            + e.yr);
   }
 
-  public boolean touchedBy(Entity entity){
+  public boolean touchedBy(Entity entity) {
     return true;
   }
 
-  public void takeDamage(int dmg){
+  public void takeDamage(int dmg) {
   }
 
-  public void takeItem(ItemEntity item){
+  public void takeItem(ItemEntity item) {
   }
 
   /* ACCESSORS */
@@ -133,9 +142,10 @@ public class Entity {
     this.loc = loc;
   }
 
-  public Map getMap(){
+  public Map getMap() {
     return world.getMap(loc.mapID);
   }
+
   public int getSpeed() {
     return speed;
   }
@@ -148,7 +158,7 @@ public class Entity {
     return tile.canPass();
   }
 
-  public boolean isRemoved(){
+  public boolean isRemoved() {
     return removed;
   }
 
