@@ -25,6 +25,8 @@ public class Mob extends Entity {
   public Mob(World world) {
     super(world);
     brain = new Brain(this);
+    xr = 4;
+    yr = 4;
   }
 
   public void tick() {
