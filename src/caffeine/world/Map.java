@@ -2,10 +2,13 @@ package caffeine.world;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
 import caffeine.entity.Entity;
+import caffeine.entity.ItemEntity;
 import caffeine.gfx.Screen;
 
 public class Map implements Iterable<Tile> {
@@ -15,6 +18,20 @@ public class Map implements Iterable<Tile> {
   protected int numRows, numCols;
   public final static int tileSize = 16;
   protected Tile[][] map;
+
+  public static Comparator<Entity> spriteSorter = new Comparator<Entity>(){
+    @Override
+    public int compare(Entity e1, Entity e2) {
+      if (e1 instanceof ItemEntity) {
+        return -1;
+      } else if (e2 instanceof ItemEntity) {
+        return 1;
+      } else {
+        return  e1.getLoc().y - e2.getLoc().y;
+      }
+    }
+
+  };
 
   public static final int[][] defaultMapData = {
     {7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7},
@@ -157,7 +174,10 @@ public class Map implements Iterable<Tile> {
   }
 
   public void renderSprites(Screen screen){
-    for (Entity e : entities) {
+    List<Entity> sprites = new ArrayList<Entity>();
+    sprites.addAll(entities);
+    Collections.sort(sprites, spriteSorter);
+    for (Entity e : sprites) {
       e.render(screen);
     }
   }
