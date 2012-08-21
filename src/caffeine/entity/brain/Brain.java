@@ -36,6 +36,7 @@ public class Brain {
           dir = dir.next();
         }
       } else {
+        self.jump();
         dir = Dir.pickOneAtRandom();
         waitTimer = 40 + (int) (Math.random() * 6) * 60;
         moveTimer = (int) (Math.random() * 6) * 30;

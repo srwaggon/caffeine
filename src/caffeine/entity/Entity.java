@@ -27,7 +27,7 @@ public class Entity {
 
   protected int xr = 2;
   protected int yr = 2;
-  public int spriteID = 67;
+  public int sprite = 67;
   protected int speed = 1;
 
   /* object fields */
@@ -66,7 +66,12 @@ public class Entity {
     for (Entity entity : entities) {
 
       // if they currently intersect, move freely.
-      if (entity.equals(this) || intersects(entity)) {
+      if (entity.equals(this)) {
+        continue;
+      }
+
+      if (intersects(entity)) {
+        entity.touchedBy(this);
         continue;
       }
 
@@ -85,13 +90,21 @@ public class Entity {
     return true;
   }
 
+  public void moveTo(int x, int y){
+    loc.x = x;
+    loc.y = y;
+  }
+
+  public void heal(int n){
+  }
+
   public boolean push(Entity pushee, int xa, int ya) {
     pushee.actionPlans.clear();
     return pushee.move(xa, ya);
   }
 
   public final void render(Screen screen) {
-    screen.render(spriteID, loc.x - Map.tileSize / 2, loc.y - Map.tileSize / 2
+    screen.render(sprite, loc.x - Map.tileSize / 2, loc.y - Map.tileSize / 2
         - loc.z);
   }
 
@@ -179,5 +192,9 @@ public class Entity {
     } catch (Throwable e) {
       e.printStackTrace();
     }
+  }
+
+  public int getHP() {
+    return 0;
   }
 }

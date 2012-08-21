@@ -16,7 +16,7 @@ public class Player extends Mob{
   }
 
   public void takeItem(ItemEntity item){
-
+    item.take(this);
   }
 
   public void tick(){

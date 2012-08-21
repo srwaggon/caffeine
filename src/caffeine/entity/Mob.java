@@ -3,6 +3,7 @@ package caffeine.entity;
 import java.util.List;
 
 import caffeine.entity.brain.Brain;
+import caffeine.entity.items.Heart;
 import caffeine.entity.items.Item;
 import caffeine.sfx.Sound;
 import caffeine.world.Dir;
@@ -16,7 +17,7 @@ public class Mob extends Entity {
   protected boolean isAlive = true;
   protected Brain brain;
 
-  protected int health = 10;
+  protected int hp = 3;
   protected int power = 1;
 
   protected int za = 0;
@@ -62,6 +63,10 @@ public class Mob extends Entity {
       Sound.SWORD4.play();
   }
 
+  public void heal(int n){
+    hp += n;
+  }
+
   public void hurt(int x0, int y0, int x1, int y1) {
     List<Entity> entities = getMap().getEntities(x0, y0, x1, y1);
     for (Entity e : entities)
@@ -77,9 +82,9 @@ public class Mob extends Entity {
   }
 
   public void takeDamage(int dmg) {
-    health -= dmg;
+    hp -= dmg;
     Sound.HURT.play();
-    if (health <= 0)
+    if (hp <= 0)
       die();
   }
 
@@ -99,16 +104,21 @@ public class Mob extends Entity {
   public void die() {
     isAlive = false;
     Sound.ENEMY_DIE.play();
-    //drop(new Heart(5));
+    drop(new Heart(5));
     remove();
   }
 
   public void drop(Item item){
-
+    ItemEntity drop = new ItemEntity(item, world);
+    drop.moveTo(loc.x, loc.y);
   }
 
   public Brain getBrain() {
     return brain;
+  }
+
+  public int getHP(){
+    return hp;
   }
 
   public boolean isValidTile(Tile tile) {

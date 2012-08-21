@@ -2,7 +2,6 @@ package caffeine.world;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -10,7 +9,7 @@ import caffeine.entity.Entity;
 import caffeine.gfx.Screen;
 
 public class Map implements Iterable<Tile> {
-  protected HashMap<Integer, Entity> entities = new HashMap<Integer, Entity>();
+  protected List<Entity> entities = new ArrayList<Entity>();
   private static int numMaps = 0;
   protected int id;
   protected int numRows, numCols;
@@ -59,14 +58,16 @@ public class Map implements Iterable<Tile> {
   }
 
   public Collection<Entity> entities() {
-    return entities.values();
+    return entities;
   }
 
   public List<Entity> getEntities(int x0, int y0, int x1, int y1){
     List<Entity> result = new ArrayList<Entity>();
-    for (Entity e : entities.values())
-      if (e.intersects(x0, y0, x1, y1))
+    for (Entity e : entities) {
+      if (e.intersects(x0, y0, x1, y1)) {
         result.add(e);
+      }
+    }
     return result;
   }
 
@@ -121,17 +122,18 @@ public class Map implements Iterable<Tile> {
 
   public void tick() {
 
-    Iterator<Tile> tileIterator = iterator();
-    while (tileIterator.hasNext()) {
-      Tile t = tileIterator.next();
-      t.tick();
+    for(int y = 0; y < numRows; y++){
+      for(int x = 0; x < numCols; x++){
+        getTile(x,y).tick();
+      }
     }
-    Iterator<Entity> entityIter = entities.values().iterator();
-    while (entityIter.hasNext()) {
-      Entity e = entityIter.next();
-      if (e.isRemoved())
-        entityIter.remove();
-      else e.tick();
+
+    for (int i = 0; i < entities.size(); i++) {
+      Entity e = entities.get(i);
+      e.tick();
+      if (e.isRemoved()) {
+        entities.remove(i--);
+      }
     }
   }
 
@@ -155,8 +157,9 @@ public class Map implements Iterable<Tile> {
   }
 
   public void renderSprites(Screen screen){
-    for (Entity e : entities())
+    for (Entity e : entities) {
       e.render(screen);
+    }
   }
 
   public int width() {
@@ -193,28 +196,11 @@ public class Map implements Iterable<Tile> {
 
 
   public void addEntity(Entity e, int x, int y) {
-    entities.put(e.getID(), e);
-  }
-
-  public boolean containsEntityByID(int id) {
-    return entities.containsKey(id);
-  }
-
-  public boolean containsEntity(Entity entity) {
-    return entities.containsValue(entity);
-  }
-
-
-  public Entity getEntity(int id) {
-    return containsEntityByID(id) ? entities.get(id) : null;
+    entities.add(e);
   }
 
   public void removeEntity(Entity e) {
     entities.remove(e.getID());
-  }
-
-  public Collection<Entity> occupants() {
-    return entities.values();
   }
 
   public boolean isEmpty() {

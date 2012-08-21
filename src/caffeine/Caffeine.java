@@ -139,7 +139,7 @@ public class Caffeine implements Runnable {
   }
 
   public void tick() {
-    //for (Map map : activeMaps()) {
+
     for (Map map : world.world.values())
       map.tick();
   }

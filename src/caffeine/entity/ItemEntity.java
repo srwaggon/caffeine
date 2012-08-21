@@ -6,21 +6,26 @@ import caffeine.world.World;
 
 
 public class ItemEntity extends Entity{
-
+  long spawnTime = System.currentTimeMillis();
   Item item;
 
-  public ItemEntity(World world) {
+  public ItemEntity(Item item, World world) {
     super(world);
+    this.item = item;
+    sprite = item.getSprite();
   }
 
 
   public boolean touchedBy(Entity entity){
-    entity.takeItem(this);
+    long now = System.currentTimeMillis();
+    if (now - spawnTime > 200){
+      entity.takeItem(this);
+    }
     return true;
   }
 
   public void take(Entity entity){
-    item.onTake(this);
+    item.onTake(entity);
     Sound.ITEM.play();
     remove();
   }

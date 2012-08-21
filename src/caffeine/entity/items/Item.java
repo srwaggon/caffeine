@@ -1,13 +1,19 @@
 package caffeine.entity.items;
 
-import caffeine.entity.ItemEntity;
+import caffeine.entity.Entity;
+
 
 
 public class Item {
 
-  public static
-  public void onTake(ItemEntity itemEntity) {
+  int sprite;
 
+  public void onTake(Entity entity) {
+
+  }
+
+  public int getSprite() {
+    return sprite;
   }
 
 }
