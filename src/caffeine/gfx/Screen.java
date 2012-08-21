@@ -11,7 +11,7 @@ import java.awt.image.DataBufferInt;
 public class Screen extends Canvas {
 
   private static final long serialVersionUID = -2226504463501471657L;
-  final int WIDTH = 300;
+  final int WIDTH = 200;
   final int HEIGHT = WIDTH * 10 / 16;
   final int SCALE = 3;
   protected int xOffset = 0, yOffset = 0;
