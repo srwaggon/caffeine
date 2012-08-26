@@ -17,11 +17,9 @@ public class Mob extends Entity {
   protected boolean isAlive = true;
   protected Brain brain;
 
-  protected int xKnockback, yKnockback;
-  protected int prevXA, prevYA;
+  protected int xKnockback, yKnockback, hurtTime;
   protected int hp = 3;
   protected int power = 1;
-
   protected int za = 0;
 
   public Mob(World world) {
@@ -42,32 +40,30 @@ public class Mob extends Entity {
         za = 0;
       }
     }
+    if (hurtTime > 0) hurtTime--;
 
     if (hp <= 0) die();
   }
 
   public boolean move(int xa, int ya){
     if (xKnockback > 0) {
-      super.move(-1, 0);
       xKnockback--;
+      move2(-1, 0);
     }
     if (xKnockback < 0) {
-      super.move(1, 0);
       xKnockback++;
+      move2(1, 0);
     }
     if (yKnockback > 0) {
-      super.move(0, -1);
       yKnockback--;
+      move2(0, -1);
     }
     if (yKnockback < 0) {
-      super.move(0, 1);
       yKnockback++;
+      move2(0, 1);
     }
-    if (prevXA == 0 && prevYA == 0){
-      setDir(xa, ya);
-    }
-    prevXA = xa;
-    prevYA = ya;
+    if (hurtTime > 0) return true;
+
     return super.move(xa, ya);
   }
 
@@ -121,6 +117,7 @@ public class Mob extends Entity {
     if (dir == Dir.DOWN) yKnockback = 6;
     if (dir == Dir.LEFT) xKnockback = -6;
     if (dir == Dir.RIGHT) xKnockback = 6;
+    hurtTime = 10;
   }
 
   public void takeItem(ItemEntity item) {

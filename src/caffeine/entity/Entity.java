@@ -27,12 +27,11 @@ public class Entity {
 
   protected int xr = 2;
   protected int yr = 2;
-  public int sprite = 64;
+  public int sprite = 128;
   protected int speed = 1;
 
   /* object fields */
   public LinkedList<Action> actionPlans = new LinkedList<Action>();
-
   protected Dir dir = Dir.DOWN;
   protected Loc loc;
   protected String name = "Entity[" + id + "]";
@@ -49,9 +48,9 @@ public class Entity {
   }
 
   public boolean move(int xa, int ya){
-    boolean stopped = false;
-    stopped = move2(xa, 0);
-    return stopped && move2(0, ya);
+    boolean notStopped = true;
+    notStopped = move2(xa, 0);
+    return notStopped && move2(0, ya);
   }
 
   public boolean move2(int xa, int ya) {
@@ -61,7 +60,7 @@ public class Entity {
       return false;
     }
 
-    //setDir(xa, ya);
+    setDir(xa, ya);
 
     int nx = loc.x + xa; // next x
     int ny = loc.y + ya; // next y
@@ -152,15 +151,21 @@ public class Entity {
 
   public void setDir(Dir dir) {
     this.dir = dir;
-    System.out.println(this + " now facing " + dir);
   }
+
   public void setDir(int xa, int ya){
     int absxa = Math.abs(xa);
     int absya = Math.abs(ya);
+
+    if (xa < 0 && absxa > absya) setDir(Dir.LEFT);
+    if (xa > 0 && absxa > absya) setDir(Dir.RIGHT);
     if (ya < 0 && absxa < absya) setDir(Dir.UP);
     if (ya > 0 && absxa < absya) setDir(Dir.DOWN);
-    if (xa < 0 && absxa > absya) setDir(Dir.LEFT);
-    if (xa > 0 && xa > Math.abs(ya)) setDir(Dir.RIGHT);
+
+  }
+
+  public void setSprite(int sprite) {
+    this.sprite = sprite;
   }
 
   public static int getPopulation() {
