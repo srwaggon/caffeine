@@ -19,11 +19,14 @@ public class PlayerBrain extends InteractiveBrain {
 
   public void tick(){
     input.tick();
-    if (input.up.isPressed) Move.UP.performBy(self);
-    if (input.down.isPressed) Move.DOWN.performBy(self);
-    if (input.left.isPressed) Move.LEFT.performBy(self);
-    if (input.right.isPressed) Move.RIGHT.performBy(self);
+    int xa = 0;
+    int ya = 0;
+    if (input.up.isPressed) ya--;
+    if (input.down.isPressed) ya++;
+    if (input.left.isPressed) xa--;
+    if (input.right.isPressed) xa++;
     if (input.attack.clicked) self.attack();
     if (input.jump.clicked) self.jump();
+    new Move(xa, ya).performBy(self);
   }
 }

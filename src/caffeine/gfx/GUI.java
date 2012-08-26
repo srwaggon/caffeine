@@ -12,7 +12,7 @@ public class GUI {
     frame.setTitle(title);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.pack();
-    //frame.setResizable(false);
+    frame.setResizable(false);
     frame.setVisible(true);
     frame.setLocationRelativeTo(null);
     screen.requestFocus();

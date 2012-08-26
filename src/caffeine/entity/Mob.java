@@ -17,6 +17,8 @@ public class Mob extends Entity {
   protected boolean isAlive = true;
   protected Brain brain;
 
+  protected int xKnockback, yKnockback;
+  protected int prevXA, prevYA;
   protected int hp = 3;
   protected int power = 1;
 
@@ -40,6 +42,33 @@ public class Mob extends Entity {
         za = 0;
       }
     }
+
+    if (hp <= 0) die();
+  }
+
+  public boolean move(int xa, int ya){
+    if (xKnockback > 0) {
+      super.move(-1, 0);
+      xKnockback--;
+    }
+    if (xKnockback < 0) {
+      super.move(1, 0);
+      xKnockback++;
+    }
+    if (yKnockback > 0) {
+      super.move(0, -1);
+      yKnockback--;
+    }
+    if (yKnockback < 0) {
+      super.move(0, 1);
+      yKnockback++;
+    }
+    if (prevXA == 0 && prevYA == 0){
+      setDir(xa, ya);
+    }
+    prevXA = xa;
+    prevYA = ya;
+    return super.move(xa, ya);
   }
 
   public void attack() {
@@ -73,7 +102,7 @@ public class Mob extends Entity {
     List<Entity> entities = getMap().getEntities(x0, y0, x1, y1);
     for (Entity e : entities)
       if (!e.equals(this))
-        e.takeDamage(power);
+        e.takeDamage(power, dir);
   }
 
   public void jump() {
@@ -83,11 +112,15 @@ public class Mob extends Entity {
     }
   }
 
-  public void takeDamage(int dmg) {
+
+  public void takeDamage(int dmg, Dir dir) {
     hp -= dmg;
     Sound.HURT.play();
-    if (hp <= 0)
-      die();
+
+    if (dir == Dir.UP) yKnockback = -6;
+    if (dir == Dir.DOWN) yKnockback = 6;
+    if (dir == Dir.LEFT) xKnockback = -6;
+    if (dir == Dir.RIGHT) xKnockback = 6;
   }
 
   public void takeItem(ItemEntity item) {
@@ -108,6 +141,7 @@ public class Mob extends Entity {
     Sound.ENEMY_DIE.play();
     drop(new Heart(5));
     remove();
+    new Mob(world);
   }
 
   public void drop(Item item){

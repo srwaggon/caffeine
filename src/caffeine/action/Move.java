@@ -4,6 +4,7 @@ import caffeine.entity.Entity;
 import caffeine.world.Dir;
 
 public class Move implements Action {
+  int xa, ya;
   Dir dir;
 
   public static final Move UP = new Move(Dir.UP);
@@ -12,12 +13,20 @@ public class Move implements Action {
   public static final Move RIGHT = new Move(Dir.RIGHT);
 
   public Move(Dir dir) {
-    this.dir = dir;
+    xa = dir.dx();
+    ya = dir.dy();
+  }
+
+  public Move(int xa, int ya) {
+    this.xa = xa;
+    this.ya = ya;
   }
 
   @Override
   public boolean performBy(Entity actor) {
-    actor.setDirection(dir);
-    return actor.move(actor.getSpeed() * dir.dx(), actor.getSpeed() * dir.dy());
+    if (dir != null) actor.setDir(dir);
+    int dx = xa * actor.getSpeed();
+    int dy = ya * actor.getSpeed();
+    return actor.move(dx, dy);
   }
 }

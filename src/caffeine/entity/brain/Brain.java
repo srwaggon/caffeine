@@ -38,8 +38,8 @@ public class Brain {
       } else {
         self.jump();
         dir = Dir.pickOneAtRandom();
-        waitTimer = 40 + (int) (Math.random() * 6) * 60;
-        moveTimer = (int) (Math.random() * 6) * 30;
+        waitTimer = 10 + (int) (Math.random() * 6) * 60;
+        moveTimer = 10 + (int) (Math.random() * 3) * 30;
       }
     }
   }

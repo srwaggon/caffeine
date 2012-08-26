@@ -17,7 +17,7 @@ public class Face implements Action {
   @Override
   public boolean performBy(Entity performer) {
     //if(!performer.isMoving()){
-    performer.setDirection(dir);
+    performer.setDir(dir);
     //}
     return true;
   }
