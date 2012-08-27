@@ -1,5 +1,6 @@
 package caffeine.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import caffeine.entity.brain.Brain;
@@ -13,14 +14,19 @@ import caffeine.world.tile.Tile;
 public class Mob extends Entity {
 
   protected boolean flip = false;
-
   protected boolean isAlive = true;
-  protected Brain brain;
-
-  protected int xKnockback, yKnockback, hurtTime;
   protected int hp = 3;
+  protected int hurtTime;
   protected int power = 1;
+  protected int xKnockback, yKnockback; 
   protected int za = 0;
+
+  // Object Fields
+  protected Brain brain;
+  protected Item leftHand;
+  protected Item rightHand;
+  protected List<Item> inventory = new ArrayList<Item>();
+  
 
   public Mob(World world) {
     super(world);
@@ -100,6 +106,10 @@ public class Mob extends Entity {
       if (!e.equals(this))
         e.takeDamage(power, dir);
   }
+  
+  public void interact(Tile tile, Item item) {
+    tile.interact(this, item, this.dir);
+  }
 
   public void jump() {
     if (loc.z == 0) {
@@ -127,6 +137,15 @@ public class Mob extends Entity {
 
   public boolean touchedBy(Entity e) {
     return false;
+  }
+  
+  public boolean use() {
+    List<Tile> tiles = getMap().getTiles(loc.x, loc.y, loc.x + xr, loc.y + yr);
+    for (Tile tile : tiles) {
+      interact(tile, rightHand);
+    }
+    attack();
+    return true;
   }
 
   public boolean isAlive() {
