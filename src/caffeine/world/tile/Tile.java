@@ -1,7 +1,9 @@
-package caffeine.world;
+package caffeine.world.tile;
 
 import caffeine.entity.Entity;
 import caffeine.gfx.Screen;
+import caffeine.items.Item;
+import caffeine.world.Dir;
 
 
 public class Tile {
@@ -59,5 +61,9 @@ public class Tile {
 
   public void onEnter(Entity entity) {
 
+  }
+  
+  public boolean interact(Entity entity, Item item, Dir dir) {
+	  return false;
   }
 }

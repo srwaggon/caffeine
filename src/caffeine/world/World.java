@@ -2,6 +2,8 @@ package caffeine.world;
 
 import java.util.HashMap;
 
+import caffeine.world.tile.Tile;
+
 public class World {
   public HashMap<Integer, Map> world;
   protected Loc defaultSpawnLoc = new Loc(0, 20, 20, 0);

@@ -3,12 +3,12 @@ package caffeine.entity;
 import java.util.List;
 
 import caffeine.entity.brain.Brain;
-import caffeine.entity.items.Heart;
-import caffeine.entity.items.Item;
+import caffeine.items.Heart;
+import caffeine.items.Item;
 import caffeine.sfx.Sound;
 import caffeine.world.Dir;
-import caffeine.world.Tile;
 import caffeine.world.World;
+import caffeine.world.tile.Tile;
 
 public class Mob extends Entity {
 

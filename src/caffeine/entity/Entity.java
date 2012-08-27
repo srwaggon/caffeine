@@ -9,8 +9,8 @@ import caffeine.gfx.Screen;
 import caffeine.world.Dir;
 import caffeine.world.Loc;
 import caffeine.world.Map;
-import caffeine.world.Tile;
 import caffeine.world.World;
+import caffeine.world.tile.Tile;
 
 /**
  * base class representing objects in the world. Entities have a location

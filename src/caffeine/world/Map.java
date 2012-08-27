@@ -10,6 +10,7 @@ import java.util.List;
 import caffeine.entity.Entity;
 import caffeine.entity.ItemEntity;
 import caffeine.gfx.Screen;
+import caffeine.world.tile.Tile;
 
 public class Map implements Iterable<Tile> {
   protected List<Entity> entities = new ArrayList<Entity>();

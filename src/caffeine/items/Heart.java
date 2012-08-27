@@ -1,4 +1,4 @@
-package caffeine.entity.items;
+package caffeine.items;
 
 import caffeine.entity.Entity;
 

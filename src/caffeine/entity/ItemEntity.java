@@ -1,6 +1,6 @@
 package caffeine.entity;
 
-import caffeine.entity.items.Item;
+import caffeine.items.Item;
 import caffeine.sfx.Sound;
 import caffeine.world.World;
 
