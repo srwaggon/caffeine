@@ -72,6 +72,7 @@ public class Mob extends Entity {
     }
     if (yKnockback < 0) {
       yKnockback++;
+      move2(0, -1);
     }
     if (hurtTime > 0) return true;
 
@@ -131,6 +132,11 @@ public class Mob extends Entity {
         itemType == ItemType.weapon) {
       rightHand = item;
     }
+  }
+
+  public void knockback(int x, int y){
+    xKnockback = x;
+    yKnockback = y;
   }
 
   public void takeDamage(int dmg, Dir dir) {

@@ -6,6 +6,8 @@ import java.util.List;
 
 import caffeine.entity.Entity;
 import caffeine.entity.Mob;
+import caffeine.entity.brain.LeftBrain;
+import caffeine.entity.brain.StraightBrain;
 import caffeine.gfx.GUI;
 import caffeine.net.GameServer;
 import caffeine.world.Map;
@@ -38,8 +40,8 @@ public class Caffeine implements Runnable {
 
     new Mob(map);
 
-    //LeftBrain.embody(map);
-    //StraightBrain.embody(map);
+    LeftBrain.embody(map);
+    StraightBrain.embody(map);
 
     caffeine.start();
 

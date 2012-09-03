@@ -88,6 +88,12 @@ public class Entity {
       // If they're going to intersect, inform them.
       if (entity.intersects(nx - xr, ny - yr, nx + xr, ny + yr)) {
         if (!entity.touchedBy(this)) {
+
+          if (dir == Dir.UP) entity.knockback(0, entity.loc.y - loc.y);
+          if (dir == Dir.DOWN) entity.knockback(0, entity.loc.y - loc.y);
+          if (dir == Dir.LEFT) entity.knockback(entity.loc.x - loc.x, 0);
+          if (dir == Dir.RIGHT) entity.knockback(entity.loc.x - loc.x, 0);
+
           return false;
         }
       }
@@ -132,6 +138,8 @@ public class Entity {
         && intersects(e.loc.x - e.xr, e.loc.y - e.yr, e.loc.x + e.xr, e.loc.y
             + e.yr);
   }
+
+  public void knockback(int x, int y){ }
 
   public boolean touchedBy(Entity entity) {
     return true;
