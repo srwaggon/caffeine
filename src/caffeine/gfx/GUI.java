@@ -11,8 +11,8 @@ public class GUI {
     frame.add(screen);
     frame.setTitle(title);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.pack();
     frame.setResizable(false);
+    frame.pack();
     frame.setVisible(true);
     frame.setLocationRelativeTo(null);
     screen.requestFocus();

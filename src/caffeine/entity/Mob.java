@@ -154,7 +154,11 @@ public class Mob extends Entity {
     item.take(this);
   }
 
-  public boolean touchedBy(Entity e) {
+  public boolean touchedBy(Entity entity) {
+    if (dir == Dir.UP) entity.knockback(0, -1);
+    if (dir == Dir.DOWN) entity.knockback(0, 1);
+    if (dir == Dir.LEFT) entity.knockback(-1, 0);
+    if (dir == Dir.RIGHT) entity.knockback(1, 0);
     return false;
   }
 

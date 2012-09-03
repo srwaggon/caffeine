@@ -7,7 +7,7 @@ import caffeine.world.Dir;
 import caffeine.world.tile.Tile;
 
 
-public class Weapon extends Item {
+public abstract class Weapon extends Item {
 
   @Override
   public void onTake(Entity entity) {

@@ -15,7 +15,6 @@ public class Heart extends Item {
 
   public void onTake(Entity entity){
     entity.heal(1);
-    System.out.println(entity.getHP());
   }
 
   @Override

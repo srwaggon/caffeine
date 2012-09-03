@@ -89,10 +89,7 @@ public class Entity {
       if (entity.intersects(nx - xr, ny - yr, nx + xr, ny + yr)) {
         if (!entity.touchedBy(this)) {
 
-          if (dir == Dir.UP) entity.knockback(0, -1);
-          if (dir == Dir.DOWN) entity.knockback(0, 1);
-          if (dir == Dir.LEFT) entity.knockback(-1, 0);
-          if (dir == Dir.RIGHT) entity.knockback(1, 0);
+          
 
           return false;
         }
