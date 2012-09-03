@@ -7,9 +7,9 @@ import caffeine.world.tile.Tile;
 
 
 public class Item {
-
   int sprite;
-
+  ItemType type;
+  
   public void onTake(Entity entity) {
 
   }

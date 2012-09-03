@@ -140,7 +140,9 @@ public class Mob extends Entity {
   }
   
   public boolean use() {
-    List<Tile> tiles = getMap().getTiles(loc.x, loc.y, loc.x + xr, loc.y + yr);
+    int dx = xr * dir.dx();
+    int dy = yr * dir.dy();
+    List<Tile> tiles = getMap().getTiles(loc.x, loc.y, loc.x + dx, loc.y + dy);
     for (Tile tile : tiles) {
       interact(tile, rightHand);
     }

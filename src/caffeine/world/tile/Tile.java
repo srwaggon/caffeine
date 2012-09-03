@@ -8,15 +8,17 @@ import caffeine.world.Dir;
 
 public class Tile {
 
-  protected boolean npcpass = true;
-  protected boolean pcpass = true;
+  protected boolean npcPass = true;
+  protected boolean pcPass = true;
   protected int damage = 0;
-  protected int baseSprite;
-  protected int maskSprite;
+  protected int baseSprite = 34;
+  protected int maskSprite = 0;
 
+  public Tile() { }
+  
   public Tile(int sprite) {
     if (sprite == 32){
-      pcpass = false;
+      pcPass = false;
       maskSprite = sprite;
     } else {
       baseSprite = sprite;
@@ -24,11 +26,11 @@ public class Tile {
   }
 
   public boolean canPass() {
-    return pcpass;
+    return pcPass;
   }
 
   public void setPass(boolean b) {
-    pcpass = b;
+    pcPass = b;
   }
 
   public boolean isSafe() {
@@ -49,6 +51,13 @@ public class Tile {
   }
 
   public void tick() {
+  }
+  
+  public static Tile read(int n) {
+    Tile tile = null;
+    if (n == 32) tile = new StoneTile();
+    if (tile == null) tile = new Tile(n);
+    return tile;
   }
 
   public void render(Screen screen, int x, int y, int mapBackgroundSprite) {
