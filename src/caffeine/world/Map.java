@@ -154,7 +154,7 @@ public class Map implements Iterable<Tile> {
     for(int x = 0; x < numCols; x++)
       for(int y = 0; y < numRows; y++){
         Tile tile = map[x][y];
-        tile.render(screen, x*tileSize, y* tileSize, backgroundSprite);
+        tile.render(screen, this, x*tileSize, y* tileSize);
       }
   }
 

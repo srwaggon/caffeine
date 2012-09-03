@@ -23,6 +23,7 @@ public class Tile {
 
   public void hold(TileObject tileObject){
     this.tileObject = tileObject;
+    type = tileObject.type;
   }
 
   public static Tile read(int x, int y, char data) {
@@ -32,11 +33,29 @@ public class Tile {
     return tile;
   }
 
-  public void render(Screen screen, int x, int y, int mapBackgroundSprite) {
-    screen.render(mapBackgroundSprite, x, y);
-    if (tileObject != null){
-      screen.render(tileObject.getSprite(), x, y);
-    }
+  public void render(Screen screen, Map map, int x, int y) {
+
+    boolean u = map.getTileAt(x, y - 1).type == type;
+    boolean d = map.getTileAt(x, y + 1).type == type;
+    boolean l = map.getTileAt(x - 1, y).type == type;
+    boolean r = map.getTileAt(x + 1, y).type == type;
+
+    int spriteBase = (type.ordinal() + 1) * 32;
+    int spriteOffset = 0;
+
+    if (!u &&  d && !l &&  r) spriteOffset = 1;
+    if (!u &&  d &&  l &&  r) spriteOffset = 2;
+    if (!u &&  d &&  l && !r) spriteOffset = 3;
+    if ( u &&  d && !l &&  r) spriteOffset = 4;
+    if ( u &&  d &&  l && !r) spriteOffset = 5;
+    if ( u && !d && !l &&  r) spriteOffset = 6;
+    if ( u && !d &&  l &&  r) spriteOffset = 7;
+    if ( u && !d &&  l && !r) spriteOffset = 8;
+    if (!u && !d && !l && !r) spriteOffset = 9;
+
+    screen.render(spriteBase + spriteOffset, x, y);
+    screen.render(tileObject.getSprite(), x, y);
+
   }
 
   public void onEnter(Entity entity) { }
@@ -46,7 +65,8 @@ public class Tile {
 
     if (tileObject.isRemoved()){
       if (tileObject.itemDropped())
-        new ItemEntity(item, entity.getMap()).moveTo(x*Map.tileSize, y*Map.tileSize);
+        // TODO: change magic numbers:
+        new ItemEntity(item, entity.getMap()).moveTo(x*Map.tileSize + 8, y*Map.tileSize + 8);
       tileObject = TileObject.Nothing;
     }
     return true;

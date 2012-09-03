@@ -9,7 +9,7 @@ import caffeine.world.Dir;
 public class Bush extends TileObject {
 
   public Bush() {
-    super('m', 128, true, true, true);
+    super(TileType.grass, 'm', 1, true, true, true);
   }
 
   @Override

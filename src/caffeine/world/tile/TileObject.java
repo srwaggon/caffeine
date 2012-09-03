@@ -20,12 +20,13 @@ public abstract class TileObject {
   protected int sprite;
   protected TileType type;
 
-  public TileObject(char symbol, int sprite, boolean blocksPC, boolean blocksNPC, boolean isSafe){
+  public TileObject(TileType type, char symbol, int sprite, boolean blocksPC, boolean blocksNPC, boolean isSafe){
     this.symbol = symbol;
     this.sprite = sprite;
     this.blocksPC = blocksPC;
     this.blocksNPC = blocksNPC;
     this.isSafe = isSafe;
+    this.type = type;
   }
 
   public final boolean isRemoved() { return removed; }

@@ -8,7 +8,7 @@ import caffeine.world.Dir;
 public final class Nothing extends TileObject {
 
   public Nothing() {
-    super(' ', 0, false, false, true);
+    super(TileType.dirt, ' ', 0, false, false, true);
   }
 
   public boolean interact(Entity entity, Item item, Dir dir) {
