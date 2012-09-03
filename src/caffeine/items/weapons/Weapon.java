@@ -1,31 +1,26 @@
-package caffeine.items;
+package caffeine.items.weapons;
 
 import caffeine.entity.Entity;
+import caffeine.items.Item;
+import caffeine.items.ItemType;
 import caffeine.world.Dir;
 import caffeine.world.tile.Tile;
 
 
+public class Weapon extends Item {
 
-public class Heart extends Item {
-  protected int amount = 10;
-
-  public Heart(int amount) {
-    this.amount = amount;
-  }
-
-  public void onTake(Entity entity){
-    entity.heal(1);
-    System.out.println(entity.getHP());
+  @Override
+  public void onTake(Entity entity) {
   }
 
   @Override
   public int getSprite() {
-    return 96;
+    return 0;
   }
 
   @Override
   public ItemType getType() {
-    return ItemType.consumable;
+    return ItemType.weapon;
   }
 
   @Override

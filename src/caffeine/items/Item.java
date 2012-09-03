@@ -6,24 +6,14 @@ import caffeine.world.tile.Tile;
 
 
 
-public class Item {
-  protected int sprite;
-  protected ItemType type;
+public abstract class Item {
 
-  public void onTake(Entity entity) {
+  public abstract void onTake(Entity entity);
 
-  }
+  public abstract int getSprite();
 
-  public int getSprite() {
-    return sprite;
-  }
+  public abstract ItemType getType();
 
-  public ItemType getType() {
-    return type;
-  }
-
-  public boolean interact(Tile tile, Entity user, Dir dir) {
-    return false;
-  }
+  public abstract boolean interact(Tile tile, Entity user, Dir dir);
 
 }

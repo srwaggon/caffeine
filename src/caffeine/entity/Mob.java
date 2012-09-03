@@ -7,6 +7,7 @@ import caffeine.entity.brain.Brain;
 import caffeine.items.Heart;
 import caffeine.items.Item;
 import caffeine.items.ItemType;
+import caffeine.items.weapons.Sword;
 import caffeine.sfx.Sound;
 import caffeine.world.Dir;
 import caffeine.world.World;
@@ -26,7 +27,7 @@ public class Mob extends Entity {
   // Object Fields
   protected Brain brain;
   protected Item leftHand;
-  protected Item rightHand;
+  protected Item rightHand = new Sword();
   protected List<Item> inventory = new ArrayList<Item>();
 
 

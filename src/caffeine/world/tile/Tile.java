@@ -49,9 +49,10 @@ public abstract class Tile {
 
   public static Tile read(Map map, int x, int y, char data) {
     Tile tile = null;
-    if (data == '.')       tile = new  DirtTile(map, x, y);
-    if (data == '#')      tile = new StoneTile(map, x, y);
-    if (data == 'm')      tile = new GrassTile(map, x, y);
+    if (data == '.') tile = new  DirtTile(map, x, y);
+    if (data == '#') tile = new BushTile(map, x, y);
+    if (data == 'D') tile = new StoneTile(map, x, y);
+    if (data == 'm') tile = new GrassTile(map, x, y);
     if (tile == null) tile = new DefaultTile(map, x, y);
     return tile;
   }

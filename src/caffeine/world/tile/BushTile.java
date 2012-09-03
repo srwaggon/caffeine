@@ -6,53 +6,46 @@ import caffeine.items.ItemType;
 import caffeine.world.Dir;
 import caffeine.world.Map;
 
-public class StoneTile extends Tile {
 
-  private int hp = 10;
+public class BushTile extends Tile {
 
-  public StoneTile(Map map, int x, int y) {
+  public BushTile(Map map, int x, int y) {
     super(map, x, y);
-    baseSprite = map.getBackground();
-    maskSprite = 32;
+    baseSprite = 34;
+    maskSprite = 128;
   }
-
-
-  public boolean interact(Entity entity, Item item, Dir dir) {
-    if (item.getType() == ItemType.tool) {
-      hp--;
-    }
-    if (hp <= 0) {
-      map.setTile(x, y, new DefaultTile(map, x, y));
-    }
-    return true;
-  }
-
 
   @Override
   public boolean blocksPC() {
     return true;
   }
 
-
   @Override
   public boolean blocksNPC() {
     return true;
   }
-
 
   @Override
   public boolean isSafe() {
     return true;
   }
 
-
   @Override
   public char getSymbol() {
-    return 'D';
+    return '#';
   }
 
   @Override
   public void onEnter(Entity entity) {
 
   }
+
+  @Override
+  public boolean interact(Entity entity, Item item, Dir dir) {
+    if (item.getType() == ItemType.weapon){
+      map.setTile(x, y, new GrassTile(map, x, y));
+    }
+    return false;
+  }
+
 }
