@@ -1,6 +1,5 @@
 package caffeine.entity.brain;
 
-import caffeine.action.Move;
 import caffeine.entity.Player;
 import caffeine.gfx.InputHandler;
 
@@ -14,14 +13,13 @@ public class PlayerBrain extends InteractiveBrain {
 
   public void tick(){
     input.tick();
-    int xa = 0;
-    int ya = 0;
-    if (input.up.isPressed) ya--;
-    if (input.down.isPressed) ya++;
-    if (input.left.isPressed) xa--;
-    if (input.right.isPressed) xa++;
+    self.xa = 0;
+    self.ya = 0;
+    if (input.up.isPressed) self.ya--;
+    if (input.down.isPressed) self.ya++;
+    if (input.left.isPressed) self.xa--;
+    if (input.right.isPressed) self.xa++;
     if (input.use.clicked) self.useRightHand();
     if (input.jump.clicked) self.jump();
-    new Move(xa, ya).performBy(self);
   }
 }

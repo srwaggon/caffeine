@@ -3,6 +3,7 @@ package caffeine.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import caffeine.action.Move;
 import caffeine.entity.brain.Brain;
 import caffeine.items.Heart;
 import caffeine.items.Item;
@@ -17,12 +18,12 @@ public class Mob extends Entity {
 
   protected boolean flip = false;
   protected boolean isAlive = true;
-  protected int hp = 3;
+  protected int hp = 300;
   protected int hurtTime;
-  protected int power = 1;
+  protected int power = 10;
   protected int range = 8;
   protected int xKnockback, yKnockback;
-  protected int za = 0;
+  public int xa, ya, za = 0;
 
   // Object Fields
   protected Brain brain;
@@ -49,6 +50,8 @@ public class Mob extends Entity {
         za = 0;
       }
     }
+    new Move(xa, ya).performBy(this);
+
     if (hurtTime > 0) hurtTime--;
 
     if (hp <= 0) die();
@@ -57,19 +60,18 @@ public class Mob extends Entity {
   public boolean move(int xa, int ya){
     if (xKnockback > 0) {
       xKnockback--;
-      move2(-1, 0);
+      move2(1, 0);
     }
     if (xKnockback < 0) {
       xKnockback++;
-      move2(1, 0);
+      move2(-1, 0);
     }
     if (yKnockback > 0) {
       yKnockback--;
-      move2(0, -1);
+      move2(0, 1);
     }
     if (yKnockback < 0) {
       yKnockback++;
-      move2(0, 1);
     }
     if (hurtTime > 0) return true;
 
@@ -135,10 +137,10 @@ public class Mob extends Entity {
     hp -= dmg;
     Sound.HURT.play();
 
-    if (dir == Dir.UP) yKnockback = -6;
-    if (dir == Dir.DOWN) yKnockback = 6;
-    if (dir == Dir.LEFT) xKnockback = -6;
-    if (dir == Dir.RIGHT) xKnockback = 6;
+    if (dir == Dir.UP) yKnockback = -power;
+    if (dir == Dir.DOWN) yKnockback = power;
+    if (dir == Dir.LEFT) xKnockback = -power;
+    if (dir == Dir.RIGHT) xKnockback = power;
     hurtTime = 10;
   }
 

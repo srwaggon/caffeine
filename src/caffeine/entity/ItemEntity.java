@@ -17,7 +17,7 @@ public class ItemEntity extends Entity{
 
   public boolean touchedBy(Entity entity){
     long now = System.currentTimeMillis();
-    if (now - spawnTime > 200){
+    if (now - spawnTime > 100){
       entity.takeItem(this);
     }
     return true;
