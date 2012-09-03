@@ -39,8 +39,8 @@ public class Map implements Iterable<Tile> {
     "DDDDDDDDDDDDD",
     "D...........D",
     "D.mmm###mmm.D",
-    "D.mmm###mmm.D",
-    "D.mmm###mmm.D",
+    "D.m~~###mmm.D",
+    "D.m~~###mmm.D",
     "D.mmm###mmm.D",
     "D...........D",
     "DDDDDDDDDDDDD"
@@ -88,6 +88,14 @@ public class Map implements Iterable<Tile> {
 
   public Tile getTileAt(int x, int y) {
     return getTile(x / Map.tileSize, y / Map.tileSize);
+  }
+
+  public Tile getTileSafe(int x, int y){
+    if (x < 0) x = 0;
+    if (y < 0) y = 0;
+    if (x >= numCols) x = numCols - 1;
+    if (y >= numRows) y = numRows - 1;
+    return map[x][y];
   }
 
   public Tile getTileAt(Loc l) {

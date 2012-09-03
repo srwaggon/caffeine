@@ -2,22 +2,17 @@ package caffeine.world.tile;
 
 import caffeine.entity.Entity;
 import caffeine.items.Item;
-import caffeine.items.ItemType;
 import caffeine.world.Dir;
 
 
-public class Bush extends TileObject {
+public class Water extends TileObject {
 
-  public Bush() {
-    super(TileType.grass, 'm', 2, true, true, true);
+  public Water() {
+    super(TileType.water, '~', 64, false, false, false);
   }
 
   @Override
   public boolean interact(Entity entity, Item item, Dir dir) {
-    if (item.getType() == ItemType.tool ||
-        item.getType() == ItemType.weapon){
-      remove();
-    }
     return false;
   }
 

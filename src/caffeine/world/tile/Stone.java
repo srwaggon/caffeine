@@ -10,7 +10,7 @@ public class Stone extends TileObject {
   private int hp = 10;
 
   public Stone() {
-    super(TileType.dirt, 'D', 3, true, true, true);
+    super(TileType.dirt, 'D', 4, true, true, true);
   }
 
   public boolean interact(Entity entity, Item item, Dir dir) {
