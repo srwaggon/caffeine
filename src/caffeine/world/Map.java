@@ -37,12 +37,12 @@ public class Map implements Iterable<Tile> {
 
   public static final String[] defaultMapData = {
     "DDDDDDDDDDDDD",
-    "D...........D",
-    "D.mmm###mmm.D",
-    "D.m~~###mmm.D",
-    "D.m~~###mmm.D",
-    "D.mmm###mmm.D",
-    "D...........D",
+    "D......m..mmD",
+    "D.mmm###mmmmD",
+    "D.m~~#.#mmm.D",
+    "D.m~~#.#mmm.D",
+    "D~mmm###m.m.D",
+    "D~~..mm....mD",
     "DDDDDDDDDDDDD"
   };
 
