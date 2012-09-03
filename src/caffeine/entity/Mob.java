@@ -6,6 +6,7 @@ import java.util.List;
 import caffeine.entity.brain.Brain;
 import caffeine.items.Heart;
 import caffeine.items.Item;
+import caffeine.items.ItemType;
 import caffeine.sfx.Sound;
 import caffeine.world.Dir;
 import caffeine.world.World;
@@ -18,7 +19,8 @@ public class Mob extends Entity {
   protected int hp = 3;
   protected int hurtTime;
   protected int power = 1;
-  protected int xKnockback, yKnockback; 
+  protected int range = 8;
+  protected int xKnockback, yKnockback;
   protected int za = 0;
 
   // Object Fields
@@ -26,7 +28,7 @@ public class Mob extends Entity {
   protected Item leftHand;
   protected Item rightHand;
   protected List<Item> inventory = new ArrayList<Item>();
-  
+
 
   public Mob(World world) {
     super(world);
@@ -74,7 +76,6 @@ public class Mob extends Entity {
   }
 
   public void attack() {
-    int range = 8;
     // use this entity's range to hurt the entities within a given proximity
     if (dir == Dir.UP)
       hurt(loc.x - range / 2, loc.y - range, loc.x + range / 2, loc.y - yr);
@@ -102,13 +103,16 @@ public class Mob extends Entity {
 
   public void hurt(int x0, int y0, int x1, int y1) {
     List<Entity> entities = getMap().getEntities(x0, y0, x1, y1);
-    for (Entity e : entities)
-      if (!e.equals(this))
-        e.takeDamage(power, dir);
+    for (Entity entity : entities)
+      if (!entity.equals(this))
+        entity.takeDamage(power, dir);
   }
-  
-  public void interact(Tile tile, Item item) {
-    tile.interact(this, item, this.dir);
+
+  public void interact(int x0, int y0, int x1, int y1, Item item) {
+    List<Tile> tiles = getMap().getTiles(x0, y0, x1, y1);
+    for(Tile tile : tiles) {
+      tile.interact(this, item, dir);
+    }
   }
 
   public void jump() {
@@ -138,15 +142,27 @@ public class Mob extends Entity {
   public boolean touchedBy(Entity e) {
     return false;
   }
-  
-  public boolean use() {
-    int dx = xr * dir.dx();
-    int dy = yr * dir.dy();
-    List<Tile> tiles = getMap().getTiles(loc.x, loc.y, loc.x + dx, loc.y + dy);
-    for (Tile tile : tiles) {
-      interact(tile, rightHand);
+
+  public boolean useLeftHand() {
+    return true;
+  }
+
+  public boolean useRightHand() {
+    if (rightHand != null) {
+      if (dir == Dir.UP)
+        interact(loc.x - range / 2, loc.y - range, loc.x + range / 2, loc.y - yr, rightHand);
+      if (dir == Dir.DOWN)
+        interact(loc.x - range / 2, loc.y + yr, loc.x + range / 2, loc.y + range, rightHand);
+      if (dir == Dir.LEFT)
+        interact(loc.x - range, loc.y - range / 2, loc.x - xr, loc.y + range / 2, rightHand);
+      if (dir == Dir.RIGHT)
+        interact(loc.x + xr, loc.y - range / 2, loc.x + range, loc.y + range / 2, rightHand);
+
+      if (rightHand.getType() == ItemType.weapon) {
+        attack();
+      }
     }
-    attack();
+
     return true;
   }
 
@@ -176,7 +192,7 @@ public class Mob extends Entity {
   }
 
   public boolean isValidTile(Tile tile) {
-    return tile.canPass() || loc.z > 0;
+    return !tile.blocksNPC() || loc.z > 0;
   }
 
   public void setBrain(Brain b) {

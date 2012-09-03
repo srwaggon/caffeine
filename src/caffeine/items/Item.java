@@ -7,9 +7,9 @@ import caffeine.world.tile.Tile;
 
 
 public class Item {
-  int sprite;
-  ItemType type;
-  
+  protected int sprite;
+  protected ItemType type;
+
   public void onTake(Entity entity) {
 
   }
@@ -17,9 +17,13 @@ public class Item {
   public int getSprite() {
     return sprite;
   }
-  
+
+  public ItemType getType() {
+    return type;
+  }
+
   public boolean interact(Tile tile, Entity user, Dir dir) {
-	  return false;
+    return false;
   }
 
 }

@@ -197,7 +197,7 @@ public class Entity {
   }
 
   public boolean isValidTile(Tile tile) {
-    return tile.canPass();
+    return !tile.blocksNPC();
   }
 
   public boolean isRemoved() {

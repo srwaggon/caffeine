@@ -25,7 +25,7 @@ public class PlayerBrain extends InteractiveBrain {
     if (input.down.isPressed) ya++;
     if (input.left.isPressed) xa--;
     if (input.right.isPressed) xa++;
-    if (input.use.clicked) self.use();
+    if (input.use.clicked) self.useRightHand();
     if (input.jump.clicked) self.jump();
     new Move(xa, ya).performBy(self);
   }

@@ -35,40 +35,23 @@ public class Map implements Iterable<Tile> {
 
   };
 
-  public static final int[][] defaultMapData = {
-    {32,32,32,32,32,32,32,32,32,32,32,32},
-    {32,1,2,2,2,2,2,2,2,2,3,32},
-    {32,33,34,34,34,34,34,34,34,34,35,32},
-    {32,33,34,34,34,34,34,34,34,34,35,32},
-    {32,33,34,34,34,34,34,34,34,34,35,32},
-    {32,33,34,34,34,34,34,34,34,34,35,32},
-    {32,65,66,66,66,66,66,66,66,66,67,32},
-    {32,32,32,32,32,32,32,32,32,32,32,32},
+  public static final String[] defaultMapData = {
+    "#############",
+    "#...........#"
   };
 
-  public Map(int[][] data){
+  public Map(String[] data){
     id = Map.numMaps++;
 
     numRows = data.length;
-    numCols = data[0].length;
+    numCols = data[0].length();
     map = new Tile[numCols][numRows];
 
     for (int y = 0; y < data.length; y++)
-      for (int x = 0; x < data[y].length; x++){
-        Tile t = Tile.read(data[y][x]);
+      for (int x = 0; x < data[y].length(); x++){
+        Tile t = Tile.read(this, x, y, data[y].charAt(x));
         map[x][y] = t;
       }
-  }
-
-  public Map(int cols, int rows) {
-    id = Map.numMaps++;
-    numRows = rows;
-    numCols = cols;
-    map = new Tile[cols][rows];
-
-    for (int y = 0; y < numRows; y++)
-      for (int x = 0; x < numCols; x++)
-        map[x][y] = new Tile(33);
   }
 
   public Collection<Entity> entities() {
@@ -221,6 +204,14 @@ public class Map implements Iterable<Tile> {
 
   public boolean isEmpty() {
     return entities.isEmpty();
+  }
+
+  public void setTile(int x, int y, Tile tile) {
+    map[x][y] = tile;
+  }
+
+  public int getBackground() {
+    return backgroundSprite;
   }
 
 }

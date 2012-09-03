@@ -4,38 +4,29 @@ import caffeine.entity.Entity;
 import caffeine.gfx.Screen;
 import caffeine.items.Item;
 import caffeine.world.Dir;
+import caffeine.world.Map;
 
 
-public class Tile {
+public abstract class Tile {
 
-  protected boolean npcPass = true;
-  protected boolean pcPass = true;
-  protected int damage = 0;
-  protected int baseSprite = 34;
-  protected int maskSprite = 0;
+  protected int baseSprite;
+  protected int maskSprite;
+  protected int x, y;
 
-  public Tile() { }
-  
-  public Tile(int sprite) {
-    if (sprite == 32){
-      pcPass = false;
-      maskSprite = sprite;
-    } else {
-      baseSprite = sprite;
-    }
+  protected Map map;
+
+
+  public Tile(Map map, int x, int y) {
+    this.map = map;
+    this.x = x;
+    this.y = y;
   }
 
-  public boolean canPass() {
-    return pcPass;
-  }
+  public abstract boolean blocksPC();
 
-  public void setPass(boolean b) {
-    pcPass = b;
-  }
+  public abstract boolean blocksNPC();
 
-  public boolean isSafe() {
-    return damage <= 0;
-  }
+  public abstract boolean isSafe();
 
   public int getSprite() {
     return baseSprite;
@@ -45,18 +36,23 @@ public class Tile {
     baseSprite = id;
   }
 
+  public abstract char getSymbol();
+
   @Override
   public String toString() {
-    return ".";
+    return "" + getSymbol();
   }
 
-  public void tick() {
+  public void tick(){
+
   }
-  
-  public static Tile read(int n) {
+
+  public static Tile read(Map map, int x, int y, char data) {
     Tile tile = null;
-    if (n == 32) tile = new StoneTile();
-    if (tile == null) tile = new Tile(n);
+    if (data == '.')       tile = new  DirtTile(map, x, y);
+    if (data == '#')      tile = new StoneTile(map, x, y);
+    if (data == 'm')      tile = new GrassTile(map, x, y);
+    if (tile == null) tile = new DefaultTile(map, x, y);
     return tile;
   }
 
@@ -68,11 +64,7 @@ public class Tile {
     screen.render(maskSprite, x, y);
   }
 
-  public void onEnter(Entity entity) {
+  public abstract void onEnter(Entity entity);
 
-  }
-  
-  public boolean interact(Entity entity, Item item, Dir dir) {
-	  return false;
-  }
+  public abstract boolean interact(Entity entity, Item item, Dir dir);
 }

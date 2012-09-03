@@ -1,5 +1,5 @@
 package caffeine.items;
 
 public enum ItemType {
-  consumable, weapon;
+  consumable, currency, tool, weapon;
 }
