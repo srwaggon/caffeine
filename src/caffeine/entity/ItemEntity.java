@@ -1,7 +1,6 @@
 package caffeine.entity;
 
 import caffeine.items.Item;
-import caffeine.sfx.Sound;
 import caffeine.world.World;
 
 
@@ -26,7 +25,7 @@ public class ItemEntity extends Entity{
 
   public void take(Entity entity){
     item.onTake(entity);
-    Sound.ITEM.play();
+    item.playSound();
     remove();
   }
 }

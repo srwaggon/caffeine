@@ -11,6 +11,7 @@ public class Weapon extends Item {
 
   @Override
   public void onTake(Entity entity) {
+    entity.addItem(this);
   }
 
   @Override

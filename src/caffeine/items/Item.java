@@ -1,6 +1,7 @@
 package caffeine.items;
 
 import caffeine.entity.Entity;
+import caffeine.sfx.Sound;
 import caffeine.world.Dir;
 import caffeine.world.tile.Tile;
 
@@ -15,5 +16,9 @@ public abstract class Item {
   public abstract ItemType getType();
 
   public abstract boolean interact(Tile tile, Entity user, Dir dir);
+
+  public void playSound() {
+    Sound.ITEM.play();
+  }
 
 }

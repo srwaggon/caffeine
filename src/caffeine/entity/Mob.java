@@ -123,6 +123,21 @@ public class Mob extends Entity {
     }
   }
 
+  public void addItem(Item item){
+    if (item.getType() == ItemType.weapon){
+      rightHand = item;
+    } else {
+      inventory.add(item);
+    }
+  }
+
+  public void equipItem(Item item) {
+    ItemType itemType = item.getType();
+    if (itemType == ItemType.tool ||
+        itemType == ItemType.weapon) {
+      rightHand = item;
+    }
+  }
 
   public void takeDamage(int dmg, Dir dir) {
     hp -= dmg;
@@ -137,7 +152,6 @@ public class Mob extends Entity {
 
   public void takeItem(ItemEntity item) {
     item.take(this);
-    Sound.ITEM.play();
   }
 
   public boolean touchedBy(Entity e) {

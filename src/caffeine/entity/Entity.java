@@ -6,6 +6,7 @@ import java.util.List;
 
 import caffeine.action.Action;
 import caffeine.gfx.Screen;
+import caffeine.items.Item;
 import caffeine.world.Dir;
 import caffeine.world.Loc;
 import caffeine.world.Map;
@@ -225,5 +226,8 @@ public class Entity {
 
   public int getHP() {
     return 0;
+  }
+
+  public void addItem(Item item) {
   }
 }

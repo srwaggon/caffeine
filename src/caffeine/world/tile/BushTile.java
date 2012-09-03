@@ -42,7 +42,8 @@ public class BushTile extends Tile {
 
   @Override
   public boolean interact(Entity entity, Item item, Dir dir) {
-    if (item.getType() == ItemType.weapon){
+    if (item.getType() == ItemType.tool ||
+        item.getType() == ItemType.weapon){
       map.setTile(x, y, new GrassTile(map, x, y));
     }
     return false;
