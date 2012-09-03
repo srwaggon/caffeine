@@ -51,7 +51,8 @@ public class ClientWorker extends Thread {
         // TODO: too fucking filthy.
         result = game.getWorld().getMap(Integer.parseInt(param[2])).toString();
       else if (qtype.equals("entity"))
-        result = game.entity(Integer.parseInt(param[2])).toString();
+        //result = game.entity(Integer.parseInt(param[2])).toString();
+        ;
 
     } catch (Exception e) {
       result = "bad query";

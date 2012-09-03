@@ -1,6 +1,5 @@
 package caffeine;
 
-import caffeine.entity.brain.PlayerBrain;
 import caffeine.net.ClientWorker;
 
 public class CaffeinePlayer extends Player {
@@ -10,8 +9,8 @@ public class CaffeinePlayer extends Player {
   public CaffeinePlayer(Caffeine game) {
     super(game);
     this.game = game;
-    playerEntity = PlayerBrain.embody(game.getWorld());
-    input = ((PlayerBrain) playerEntity.getBrain()).getInputHandler();
+    caffeine.entity.Player playerEntity = new caffeine.entity.Player(input, game.getWorld().getMap(0));
+    entity = playerEntity;
   }
 
   public CaffeinePlayer(ClientWorker cw) {

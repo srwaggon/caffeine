@@ -1,14 +1,15 @@
 package caffeine.entity;
 
 import caffeine.entity.brain.PlayerBrain;
-import caffeine.world.World;
+import caffeine.gfx.InputHandler;
+import caffeine.world.Map;
 
 
 public class Player extends Mob{
 
-  public Player(World world){
-    super(world);
-    brain = new PlayerBrain(this);
+  public Player(InputHandler input, Map map){
+    super(map);
+    brain = new PlayerBrain(input, this);
   }
 
   public boolean move(int xa, int ya){

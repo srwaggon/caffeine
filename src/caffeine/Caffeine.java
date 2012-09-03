@@ -1,10 +1,8 @@
 package caffeine;
 
 import java.util.Collection;
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 import caffeine.entity.Entity;
 import caffeine.entity.Mob;
@@ -25,7 +23,6 @@ import caffeine.world.World;
 public class Caffeine implements Runnable {
   /* Engine Fields */
   private final World world = new World(); // Space
-  protected Map currentMap;
   private final List<Player> players = new LinkedList<Player>(); // Life
   private final GUI gui = new GUI("Caffeine Server"); // Light
 
@@ -34,15 +31,17 @@ public class Caffeine implements Runnable {
 
     Caffeine caffeine = new Caffeine();
     World world = caffeine.getWorld();
-    world.addMap(new Map(Map.defaultMapData));
 
-    CaffeinePlayer p1 = new CaffeinePlayer(caffeine);
+    Map map = new Map(Map.defaultMapData);
+    world.addMap(map);
+
+    Player p1 = new CaffeinePlayer(caffeine);
     caffeine.addPlayer(p1);
 
-    new Mob(world);
+    new Mob(map);
 
-    LeftBrain.embody(world);
-    StraightBrain.embody(world);
+    LeftBrain.embody(map);
+    StraightBrain.embody(map);
 
     caffeine.start();
 
@@ -67,13 +66,6 @@ public class Caffeine implements Runnable {
 
   public World getWorld() {
     return world;
-  }
-
-  public Set<Map> activeMaps() {
-    Set<Map> activeMaps = new LinkedHashSet<Map>();
-    for (Player p : players())
-      activeMaps.add(world.getMap(p.getEntity().getLoc().mapID));
-    return activeMaps;
   }
 
   /* MUTATORS */
@@ -134,21 +126,10 @@ public class Caffeine implements Runnable {
     }
   }
 
-  public List<Player> players() {
-    return players;
-  }
 
   public void tick() {
 
     for (Map map : world.world.values())
       map.tick();
-  }
-
-  public Entity entity(int entityID) {
-    for (Map map : activeMaps())
-      for (Entity e : map.entities())
-        if (e.getID() == entityID)
-          return e;
-    return null;
   }
 }

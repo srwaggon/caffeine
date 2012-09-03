@@ -4,7 +4,7 @@ import caffeine.action.Face;
 import caffeine.action.Move;
 import caffeine.entity.Mob;
 import caffeine.world.Dir;
-import caffeine.world.World;
+import caffeine.world.Map;
 
 public class RightBrain extends Brain {
   Dir dir = Dir.RIGHT;
@@ -13,8 +13,8 @@ public class RightBrain extends Brain {
     super(self);
   }
 
-  public static Mob embody(World world) {
-    return new RightBrain(new Mob(world)).getSelf();
+  public static Mob embody(Map map) {
+    return new RightBrain(new Mob(map)).getSelf();
   }
 
   @Override

@@ -3,7 +3,7 @@ package caffeine.entity.brain;
 import caffeine.action.Move;
 import caffeine.entity.Mob;
 import caffeine.world.Dir;
-import caffeine.world.World;
+import caffeine.world.Map;
 
 public class StraightBrain extends Brain {
   protected Dir forward;
@@ -17,8 +17,8 @@ public class StraightBrain extends Brain {
     forward = dir;
   }
 
-  public static Mob embody(World world) {
-    return new StraightBrain(new Mob(world)).getSelf();
+  public static Mob embody(Map map) {
+    return new StraightBrain(new Mob(map)).getSelf();
   }
 
   @Override

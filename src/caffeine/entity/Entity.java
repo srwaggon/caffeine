@@ -10,7 +10,6 @@ import caffeine.items.Item;
 import caffeine.world.Dir;
 import caffeine.world.Loc;
 import caffeine.world.Map;
-import caffeine.world.World;
 import caffeine.world.tile.Tile;
 
 /**
@@ -36,13 +35,13 @@ public class Entity {
   protected Dir dir = Dir.DOWN;
   protected Loc loc;
   protected String name = "Entity[" + id + "]";
-  protected World world;
+  protected Map map;
 
   /* CONSTRUCTORS */
-  public Entity(World world) {
-    this.world = world;
-    loc = world.getDefaultSpawn();
-    world.getMap(loc.mapID).addEntity(this, loc.x, loc.y);
+  public Entity(Map map) {
+    this.map = map;
+    loc = new Loc(map.getID(), 32, 32, 0);
+    map.addEntity(this, loc.x, loc.y);
   }
 
   public void tick() {
@@ -186,15 +185,11 @@ public class Entity {
   }
 
   public Map getMap() {
-    return world.getMap(loc.mapID);
+    return map;
   }
 
   public int getSpeed() {
     return speed;
-  }
-
-  public World getWorld() {
-    return world;
   }
 
   public boolean isValidTile(Tile tile) {

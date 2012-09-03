@@ -3,7 +3,7 @@ package caffeine.entity.brain;
 import caffeine.action.Move;
 import caffeine.entity.Mob;
 import caffeine.world.Dir;
-import caffeine.world.World;
+import caffeine.world.Map;
 
 public class Brain {
   protected Mob self;
@@ -18,8 +18,8 @@ public class Brain {
 
   }
 
-  public static Mob embody(World world) {
-    return new Brain(new Mob(world)).getSelf();
+  public static Mob embody(Map map) {
+    return new Brain(new Mob(map)).getSelf();
   }
 
   public Mob getSelf() {

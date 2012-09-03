@@ -1,71 +1,74 @@
 package caffeine.world.tile;
 
 import caffeine.entity.Entity;
+import caffeine.entity.ItemEntity;
 import caffeine.gfx.Screen;
 import caffeine.items.Item;
 import caffeine.world.Dir;
-import caffeine.world.Map;
 
 
-public abstract class Tile {
+public class Tile {
 
-  protected int baseSprite;
-  protected int maskSprite;
   protected int x, y;
 
-  protected Map map;
+  protected TileType type = TileType.dirt;
+  protected TileObject tileObject = new Bush();
 
 
-  public Tile(Map map, int x, int y) {
-    this.map = map;
+  public Tile(int x, int y) {
     this.x = x;
     this.y = y;
   }
 
-  public abstract boolean blocksPC();
+  public void hold(TileObject tileObject){
+    this.tileObject = tileObject;
+  }
 
-  public abstract boolean blocksNPC();
+  public static Tile read(int x, int y, char data) {
+    Tile tile = new Tile(x, y);
+    if (data == '#') tile.hold(new Bush());
+    if (data == 'D') tile.hold(new Stone());
+    return tile;
+  }
 
-  public abstract boolean isSafe();
+  public void render(Screen screen, int x, int y, int mapBackgroundSprite) {
+    screen.render(mapBackgroundSprite, x, y);
+    if (tileObject != null){
+      screen.render(tileObject.getSprite(), x, y);
+    }
+  }
+
+  public void onEnter(Entity entity) { }
+
+  public boolean interact(Entity entity, Item item, Dir dir) {
+    tileObject.interact(entity, item, dir);
+
+    if (tileObject.isRemoved()){
+      if (tileObject.itemDropped())
+        new ItemEntity(item, entity.getMap()).moveTo(x, y);
+      tileObject = TileObject.Nothing;
+    }
+    return true;
+  }
+
+  public boolean blocksNPC() {
+    return tileObject.blocksNPC();
+  }
+
+  public boolean blocksPC(){
+    return tileObject.blocksPC();
+  }
 
   public int getSprite() {
-    return baseSprite;
+    return tileObject.getSprite();
   }
 
-  public void setSprite(int id) {
-    baseSprite = id;
+  public char getSymbol() {
+    return tileObject.getSymbol();
   }
-
-  public abstract char getSymbol();
 
   @Override
   public String toString() {
     return "" + getSymbol();
   }
-
-  public void tick(){
-
-  }
-
-  public static Tile read(Map map, int x, int y, char data) {
-    Tile tile = null;
-    if (data == '.') tile = new  DirtTile(map, x, y);
-    if (data == '#') tile = new BushTile(map, x, y);
-    if (data == 'D') tile = new StoneTile(map, x, y);
-    if (data == 'm') tile = new GrassTile(map, x, y);
-    if (tile == null) tile = new DefaultTile(map, x, y);
-    return tile;
-  }
-
-  public void render(Screen screen, int x, int y, int mapBackgroundSprite) {
-    if (baseSprite == 0){
-      baseSprite = mapBackgroundSprite;
-    }
-    screen.render(baseSprite, x, y);
-    screen.render(maskSprite, x, y);
-  }
-
-  public abstract void onEnter(Entity entity);
-
-  public abstract boolean interact(Entity entity, Item item, Dir dir);
 }

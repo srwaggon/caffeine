@@ -55,7 +55,7 @@ public class Map implements Iterable<Tile> {
 
     for (int y = 0; y < data.length; y++)
       for (int x = 0; x < data[y].length(); x++){
-        Tile t = Tile.read(this, x, y, data[y].charAt(x));
+        Tile t = Tile.read(x, y, data[y].charAt(x));
         map[x][y] = t;
       }
   }
@@ -127,7 +127,7 @@ public class Map implements Iterable<Tile> {
 
     for(int y = 0; y < numRows; y++){
       for(int x = 0; x < numCols; x++){
-        getTile(x,y).tick();
+        //getTile(x,y).tick();
       }
     }
 

@@ -1,10 +1,11 @@
 package caffeine.entity;
 
-import caffeine.world.World;
+import caffeine.world.Map;
+
 
 public class Boulder extends Mob {
-  public Boulder(World w) {
-    super(w);
+  public Boulder(Map map) {
+    super(map);
     sprite = 7;
     xr = 7;
     yr = 7;

@@ -1,15 +1,15 @@
 package caffeine.entity;
 
 import caffeine.items.Item;
-import caffeine.world.World;
+import caffeine.world.Map;
 
 
 public class ItemEntity extends Entity{
   long spawnTime = System.currentTimeMillis();
   Item item;
 
-  public ItemEntity(Item item, World world) {
-    super(world);
+  public ItemEntity(Item item, Map map) {
+    super(map);
     this.item = item;
     sprite = item.getSprite();
   }

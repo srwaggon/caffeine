@@ -4,10 +4,11 @@ import caffeine.entity.Mob;
 import caffeine.gfx.InputHandler;
 
 public class InteractiveBrain extends Brain {
-  protected InputHandler input = new InputHandler();
+  protected InputHandler input;
 
-  public InteractiveBrain(Mob self) {
+  public InteractiveBrain(InputHandler input, Mob self) {
     super(self);
+    this.input = input;
   }
 
   @Override
