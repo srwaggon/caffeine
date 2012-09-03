@@ -47,7 +47,7 @@ public abstract class TileObject {
   public abstract void dropItem();
 
   public boolean itemDropped() {
-    return false;
+    return true;
   }
 
 }

@@ -25,7 +25,7 @@ public class ItemEntity extends Entity{
 
   public void take(Entity entity){
     item.onTake(entity);
-    item.playSound();
+    item.playPickupSound();
     remove();
   }
 }

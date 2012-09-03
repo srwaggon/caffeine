@@ -17,8 +17,12 @@ public abstract class Item {
 
   public abstract boolean interact(Tile tile, Entity user, Dir dir);
 
-  public void playSound() {
+  public void playPickupSound() {
     Sound.ITEM.play();
+  }
+
+  public void playUseSound() {
+    Sound.POWERUP.play();
   }
 
 }

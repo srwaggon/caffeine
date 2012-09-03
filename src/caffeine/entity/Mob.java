@@ -87,15 +87,7 @@ public class Mob extends Entity {
     if (dir == Dir.RIGHT)
       hurt(loc.x + xr, loc.y - range / 2, loc.x + range, loc.y + range / 2);
 
-    int random = (int) (Math.random() * 4);
-    if (random == 0)
-      Sound.SWORD1.play();
-    if (random == 1)
-      Sound.SWORD2.play();
-    if (random == 2)
-      Sound.SWORD3.play();
-    if (random == 3)
-      Sound.SWORD4.play();
+    rightHand.playUseSound();
   }
 
   public void heal(int n){

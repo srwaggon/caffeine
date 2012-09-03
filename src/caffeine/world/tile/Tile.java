@@ -5,6 +5,7 @@ import caffeine.entity.ItemEntity;
 import caffeine.gfx.Screen;
 import caffeine.items.Item;
 import caffeine.world.Dir;
+import caffeine.world.Map;
 
 
 public class Tile {
@@ -12,7 +13,7 @@ public class Tile {
   protected int x, y;
 
   protected TileType type = TileType.dirt;
-  protected TileObject tileObject = new Bush();
+  protected TileObject tileObject = TileObject.Nothing;
 
 
   public Tile(int x, int y) {
@@ -45,7 +46,7 @@ public class Tile {
 
     if (tileObject.isRemoved()){
       if (tileObject.itemDropped())
-        new ItemEntity(item, entity.getMap()).moveTo(x, y);
+        new ItemEntity(item, entity.getMap()).moveTo(x*Map.tileSize, y*Map.tileSize);
       tileObject = TileObject.Nothing;
     }
     return true;
