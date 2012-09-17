@@ -18,7 +18,7 @@ public class Mob extends Entity {
 
   protected boolean flip = false;
   protected boolean isAlive = true;
-  protected int hp = 300;
+  protected int hp = 3;
   protected int hurtTime;
   protected int power = 10;
   protected int range = 8;
@@ -155,10 +155,10 @@ public class Mob extends Entity {
   }
 
   public boolean touchedBy(Entity entity) {
-    if (dir == Dir.UP) entity.knockback(0, -1);
-    if (dir == Dir.DOWN) entity.knockback(0, 1);
-    if (dir == Dir.LEFT) entity.knockback(-1, 0);
-    if (dir == Dir.RIGHT) entity.knockback(1, 0);
+    if (entity.dir == Dir.UP) knockback(0, -6);
+    if (entity.dir == Dir.DOWN) knockback(0, 6);
+    if (entity.dir == Dir.LEFT) knockback(-6, 0);
+    if (entity.dir == Dir.RIGHT) knockback(6, 0);
     return false;
   }
 
