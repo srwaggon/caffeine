@@ -112,8 +112,9 @@ public class Caffeine implements Runnable {
       if (shouldRender) {
         frames++;
 
-        world.getMap(0).renderBackground(gui.screen);
-        world.getMap(0).renderSprites(gui.screen);
+        Map map = getDefaultMap();
+        map.renderBackground(gui.screen);
+        map.renderSprites(gui.screen);
         gui.screen.render();
       }
 
@@ -131,5 +132,9 @@ public class Caffeine implements Runnable {
 
     for (Map map : world.world.values())
       map.tick();
+  }
+
+  public Map getDefaultMap() {
+    return world.getMap(0);
   }
 }

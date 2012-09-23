@@ -13,7 +13,7 @@ public class Tile {
   protected int x, y;
 
   protected TileType type = TileType.dirt;
-  protected TileObject tileObject = TileObject.Nothing;
+  protected TileObject tileObject = null;
 
 
   public Tile(int x, int y) {
@@ -63,38 +63,52 @@ public class Tile {
     }
 
     screen.render(sprite, x, y);
-    screen.render(tileObject.getSprite(), x, y);
+    if (tileObject != null) screen.render(tileObject.getSprite(), x, y);
 
   }
 
   public void onEnter(Entity entity) { }
 
   public boolean interact(Entity entity, Item item, Dir dir) {
-    tileObject.interact(entity, item, dir);
+    if (tileObject != null) {
+      tileObject.interact(entity, item, dir);
 
-    if (tileObject.isRemoved()){
-      if (tileObject.itemDropped())
-        // TODO: change magic numbers:
-        new ItemEntity(item, entity.getMap()).moveTo(x*Map.tileSize + 8, y*Map.tileSize + 8);
-      tileObject = TileObject.Nothing;
+      if (tileObject.isRemoved()){
+        if (tileObject.itemDropped())
+          // TODO: change magic numbers:
+          new ItemEntity(item, entity.getMap()).moveTo(x*Map.tileSize + 8, y*Map.tileSize + 8);
+        tileObject = null;
+      }
     }
     return true;
   }
 
   public boolean blocksNPC() {
-    return tileObject.blocksNPC();
+    if (tileObject != null) {
+      return tileObject.blocksNPC();
+    }
+    return false;
   }
 
   public boolean blocksPC(){
-    return tileObject.blocksPC();
+    if (tileObject != null) {
+      return tileObject.blocksPC();
+    }
+    return false;
   }
 
   public int getSprite() {
-    return tileObject.getSprite();
+    if (tileObject != null) {
+      return tileObject.getSprite();
+    }
+    return type.getSprite();
   }
 
   public char getSymbol() {
-    return tileObject.getSymbol();
+    if (tileObject != null) {
+      return tileObject.getSymbol();
+    }
+    return type.getChar();
   }
 
   @Override

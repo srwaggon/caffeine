@@ -8,7 +8,6 @@ import caffeine.world.Dir;
 
 public abstract class TileObject {
 
-  public static final TileObject Nothing = new Nothing();
 
   public static final TileObject Bush = new Bush();
 

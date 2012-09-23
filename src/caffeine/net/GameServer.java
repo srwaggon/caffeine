@@ -25,23 +25,29 @@ public class GameServer extends Thread {
     }
   }
 
+
   public void run() {
-    try {
-      while (true) {
+    while (true) {
+      try {
         addClientWorker(socket.accept());
-        Thread.sleep(1000);
+      } catch (IOException e) {
+        System.out.println("Accept failed: " + port);
+        e.printStackTrace();
+        System.exit(-1);
       }
-    } catch (IOException e) {
-      System.out.println("Accept failed: " + port);
-      System.exit(-1);
-    } catch (InterruptedException e) { e.printStackTrace(); }
+      try {
+        Thread.sleep(1000);
+      } catch (InterruptedException e) { e.printStackTrace(); }
+    }
   }
-  
+
+
   public synchronized void handle(String msg, byte id) {
     //System.out.println(msg + " received from " + id);
     broadcast(id + ": " + msg);
   }
-  
+
+
   public void broadcast(String msg){
     for(int i = 0; i < clients.size(); i++){
       System.out.println("Broadcasting to " + clients.size());
@@ -49,10 +55,11 @@ public class GameServer extends Thread {
     }
   }
 
+
   public void addClientWorker(Socket client){
     System.out.println("" + client.getInetAddress().toString() + ":"
         + client.getPort() + " connecting");
-    
+
     ClientWorker worker = new ClientWorker(this, client);
     clients.add(worker);
     Thread t = new Thread(worker);
@@ -78,6 +85,11 @@ public class GameServer extends Thread {
 
   public synchronized void remove(ClientWorker client) {
     clients.remove(client);
+  }
+
+
+  public Caffeine getGame() {
+    return game;
   }
 
 }

@@ -12,22 +12,22 @@ public class ClientWorker extends Thread {
     id = numWorkers++;
     server = _server;
     client = new Connection(_client);
-    client.send(id + " at your service");
+    client.send(server.getGame().getDefaultMap().toString());
   }
 
 
   @Override
   public void run() {
-    try {
-      while (client.isConnected()) {
-        server.handle(client.read(), id);
-        Thread.sleep(10); 
-      }
-      server.remove(this);
-      client.disconnect();
-    } catch (InterruptedException e) { e.printStackTrace(); }
+    while (client.isConnected()) {
+      server.handle(client.read(), id);
+      try {
+        Thread.sleep(10);
+      } catch (InterruptedException e) { e.printStackTrace(); }
+    }
+    server.remove(this);
+    client.disconnect();
   }
-  
+
   public void send(String msg){
     client.send(msg);
   }

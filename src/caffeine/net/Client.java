@@ -30,18 +30,18 @@ public class Client {
       try {
         Thread.sleep(10);
       } catch (InterruptedException e) {
-        
+        e.printStackTrace();
       }
-      host.disconnect();
     }
+    host.disconnect();
   }
-  
+
 
   public void handle(String msg) {
-    //System.out.println(msg);
-    host.send("Hey.");
+    System.out.println(msg);
+    //host.send("Hey.");
   }
-  
+
   public void finalize(){
     host.disconnect();
   }
