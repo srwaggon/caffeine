@@ -119,7 +119,7 @@ public class Caffeine implements Runnable {
 
       if (System.currentTimeMillis() - lastTimer1 > 1000) {
         lastTimer1 += 1000;
-        System.out.println(ticks + " ticks, " + frames + " fps");
+        //System.out.println(ticks + " ticks, " + frames + " fps");
         frames = 0;
         ticks = 0;
       }

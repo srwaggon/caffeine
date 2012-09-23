@@ -6,39 +6,34 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 public class Connection {
   protected Socket socket;
   protected BufferedReader in = null;
   protected PrintWriter out = null;
 
-  public Connection(String host, int port) {
+  public Connection(String host, int port){
     try {
-      System.out.println("Connecting to " + host);
       socket = new Socket(host, port);
-      out = new PrintWriter(socket.getOutputStream(), true);
       in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-    } catch (UnknownHostException e) {
-      System.out.println("Unknown host: " + host);
-      System.exit(1);
-    } catch (IOException e) {
-      System.out.println("No I/O");
-      System.exit(1);
-    }
-    System.out.println("Connection established.");
-  }
-
-  public Connection(Socket connection) {
-    socket = connection;
-    try {
-      in = new BufferedReader(
-          new InputStreamReader(connection.getInputStream()));
-      out = new PrintWriter(connection.getOutputStream(), true);
+      out = new PrintWriter(socket.getOutputStream(), true);
     } catch (IOException e) {
       System.out.println("No I/O.");
       System.exit(-1);
     }
+    System.out.println("Connection established.");
+  }
+
+  public Connection(Socket _socket) {
+    socket = _socket;
+    try {
+      in = new BufferedReader(new InputStreamReader(_socket.getInputStream()));
+      out = new PrintWriter(_socket.getOutputStream(), true);
+    } catch (IOException e) {
+      System.out.println("No I/O.");
+      System.exit(-1);
+    }
+    System.out.println("Connection established.");
   }
 
   @Override
@@ -73,9 +68,9 @@ public class Connection {
   public void disconnect() {
     try {
       System.out.println("Disconnecting from " + this + ".");
-      in.close();
-      out.close();
-      socket.close();
+      if (in  != null) in.close();
+      if (out != null) out.close();
+      if (socket != null) socket.close();
     } catch (IOException e) {
       e.printStackTrace();
       System.exit(-1);
@@ -83,7 +78,7 @@ public class Connection {
   }
 
   public boolean isConnected() {
-    return socket.isConnected() && !socket.isClosed();
+    return  !socket.isClosed() && socket.isConnected();
   }
 
   @Override

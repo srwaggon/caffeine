@@ -1,11 +1,9 @@
 package caffeine.net;
 
 import java.util.HashMap;
-import java.util.Scanner;
 
 import caffeine.entity.Entity;
 import caffeine.gfx.GUI;
-import caffeine.world.World;
 
 public class Client {
   protected HashMap<Integer, Entity> entities = new HashMap<Integer, Entity>();
@@ -27,36 +25,23 @@ public class Client {
 
   public void run() {
     try {
-      String query = "get map 0";
-
-      String response = "";
-      Scanner scan = new Scanner(System.in);
       while (host.isConnected()) {
-        host.send(query);
-        processServerResponse(response);
-        response = host.read();
+        handle(host.read());
         Thread.sleep(10);
       }
-
+      host.disconnect();
     } catch (InterruptedException e) {
 
     }
   }
+  
 
-  public void processServerResponse(String response) {
-    Scanner lineParser = new Scanner(response);
-    System.out.println(response);
-    while (lineParser.hasNext()) {
-      String strmap = lineParser.next();
-      String mapID = lineParser.next();
-
-      String mapData = lineParser.nextLine();
-      System.out.println(mapData);
-      World world = new World();
-      //world.addMap(mapData);
-      //Map map = world.getMap(0);
-      //System.out.println(map);
-
-    }
+  public void handle(String msg) {
+    //System.out.println(msg);
+    host.send("Hey.");
+  }
+  
+  public void finalize(){
+    host.disconnect();
   }
 }

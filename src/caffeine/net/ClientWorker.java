@@ -2,67 +2,34 @@ package caffeine.net;
 
 import java.net.Socket;
 
-import caffeine.Caffeine;
-import caffeine.gfx.InputHandler;
-import caffeine.net.msg.Query;
-
 public class ClientWorker extends Thread {
+  protected static byte numWorkers = 0;
+  protected byte id;
+  protected final GameServer server;
   protected final Connection client;
-  protected Caffeine game;
-  protected InputHandler input = new InputHandler();
 
-  public ClientWorker(Caffeine g, Socket client) {
-    game = g;
-    this.client = new Connection(client);
-    System.out.println("" + client.getInetAddress().toString() + ":"
-        + client.getPort() + " connecting");
+  public ClientWorker(GameServer _server, Socket _client) {
+    id = numWorkers++;
+    server = _server;
+    client = new Connection(_client);
+    client.send(id + " at your service");
   }
 
-  public Caffeine game() {
-    return game;
-  }
 
   @Override
   public void run() {
     try {
-      String query = "";
-      String reply = "";
       while (client.isConnected()) {
-        query = client.read();
-        reply = processQuery(query);
-        client.send(reply);
-        Thread.sleep(10);
+        server.handle(client.read(), id);
+        Thread.sleep(10); 
       }
-    } catch (InterruptedException e) {
-
-    }
+      server.remove(this);
+      client.disconnect();
+    } catch (InterruptedException e) { e.printStackTrace(); }
+  }
+  
+  public void send(String msg){
+    client.send(msg);
   }
 
-  public String processQuery(String strquery) {
-    String result = "";
-    // System.err.println("Processing query: " + strquery);
-    try {
-
-      Query query = new Query(strquery);
-      String[] param = query.param();
-      String qtype = param[1];
-
-      if (qtype.equals("map"))
-        // TODO: too fucking filthy.
-        result = game.getWorld().getMap(Integer.parseInt(param[2])).toString();
-      else if (qtype.equals("entity"))
-        //result = game.entity(Integer.parseInt(param[2])).toString();
-        ;
-
-    } catch (Exception e) {
-      result = "bad query";
-    }
-
-    // System.err.println("Sending result: " + result);
-    return result;
-  }
-
-  public InputHandler getInputHandler() {
-    return input;
-  }
 }
