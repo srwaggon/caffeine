@@ -24,14 +24,15 @@ public class Client {
   }
 
   public void run() {
-    try {
-      while (host.isConnected()) {
-        handle(host.read());
+
+    while (host.isConnected()) {
+      handle(host.read());
+      try {
         Thread.sleep(10);
+      } catch (InterruptedException e) {
+        
       }
       host.disconnect();
-    } catch (InterruptedException e) {
-
     }
   }
   

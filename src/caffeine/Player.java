@@ -16,9 +16,7 @@ public class Player {
   }
 
   public Player(ClientWorker cw) {
-    this(cw.game());
     client = cw;
-    input = client.getInputHandler();
   }
 
   public Entity getEntity() {

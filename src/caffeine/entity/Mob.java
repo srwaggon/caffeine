@@ -20,7 +20,7 @@ public class Mob extends Entity {
   protected boolean isAlive = true;
   protected int hp = 3;
   protected int hurtTime;
-  protected int power = 10;
+  protected int power = 1;
   protected int range = 8;
   protected int xKnockback, yKnockback;
   public int xa, ya, za = 0;
