@@ -34,14 +34,19 @@ public class Entity {
   public LinkedList<Action> actionPlans = new LinkedList<Action>();
   protected Dir dir = Dir.DOWN;
   protected Loc loc;
-  protected String name = "Entity[" + id + "]";
   protected Map map;
 
   /* CONSTRUCTORS */
   public Entity(Map map) {
     this.map = map;
     loc = new Loc(map.getID(), 32, 32, 0);
-    map.addEntity(this, loc.x, loc.y);
+    map.addEntity(this);
+  }
+
+  public Entity(int id, Map map, int x, int y){
+    this.id = id;
+    this.map = map;
+    loc = new Loc(map.getID(), x, y, 0);
   }
 
   public void tick() {
@@ -89,7 +94,7 @@ public class Entity {
       if (entity.intersects(nx - xr, ny - yr, nx + xr, ny + yr)) {
         if (!entity.touchedBy(this)) {
 
-          
+
 
           return false;
         }
@@ -211,7 +216,7 @@ public class Entity {
 
   @Override
   public String toString() {
-    return name + " @ " + loc.toString();
+    return "entity " + id + loc.toString();
   }
 
   @Override

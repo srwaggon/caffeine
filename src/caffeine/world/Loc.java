@@ -34,7 +34,7 @@ public class Loc {
 
   @Override
   public String toString() {
-    return "{" + mapID + ":(" + x + "," + y + ")}";
+    return mapID + " " + x + " " + y + " " + z;
   }
 
   public Loc copy() {

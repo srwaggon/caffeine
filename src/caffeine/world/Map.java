@@ -18,7 +18,7 @@ public class Map implements Iterable<Tile> {
   protected int backgroundSprite = 4;
   protected int id;
   protected int numRows, numCols;
-  public final static int tileSize = 16;
+  public static int tileSize = 16;
   protected Tile[][] map;
 
   public static Comparator<Entity> spriteSorter = new Comparator<Entity>(){
@@ -58,6 +58,20 @@ public class Map implements Iterable<Tile> {
         Tile t = Tile.read(x, y, data[y].charAt(x));
         map[x][y] = t;
       }
+  }
+
+  public Map(int w, int h, int ts, String data){
+    numCols = w;
+    numRows = h;
+    tileSize = ts;
+    map = new Tile[numCols][numRows];
+
+    for (int i = 0; i < data.length(); i++){
+      int x = i % numCols;
+      int y = i / numCols;
+      Tile t = Tile.read(x, y, data.charAt(i));
+      map[x][y] = t;
+    }
   }
 
   public Collection<Entity> entities() {
@@ -208,7 +222,7 @@ public class Map implements Iterable<Tile> {
   }
 
 
-  public void addEntity(Entity e, int x, int y) {
+  public void addEntity(Entity e){
     entities.add(e);
   }
 

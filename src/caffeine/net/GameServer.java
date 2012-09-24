@@ -43,14 +43,12 @@ public class GameServer extends Thread {
 
 
   public synchronized void handle(String msg, byte id) {
-    //System.out.println(msg + " received from " + id);
-    broadcast(id + ": " + msg);
+    //broadcast(id + ": " + msg);
   }
 
 
   public void broadcast(String msg){
     for(int i = 0; i < clients.size(); i++){
-      System.out.println("Broadcasting to " + clients.size());
       clients.get(i).send(msg);
     }
   }
