@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -13,7 +14,7 @@ import caffeine.gfx.Screen;
 import caffeine.world.tile.Tile;
 
 public class Map implements Iterable<Tile> {
-  protected List<Entity> entities = new ArrayList<Entity>();
+  protected HashMap<Integer, Entity> entities = new HashMap<Integer,Entity>();
   private static int numMaps = 0;
   protected int backgroundSprite = 4;
   protected int id;
@@ -75,12 +76,12 @@ public class Map implements Iterable<Tile> {
   }
 
   public Collection<Entity> entities() {
-    return entities;
+    return entities.values();
   }
 
   public List<Entity> getEntities(int x0, int y0, int x1, int y1){
     List<Entity> result = new ArrayList<Entity>();
-    for (Entity e : entities) {
+    for (Entity e : entities()) {
       if (e.intersects(x0, y0, x1, y1)) {
         result.add(e);
       }
@@ -165,10 +166,15 @@ public class Map implements Iterable<Tile> {
   @Override
   public String toString() {
     String s = "map " + numCols + " " + numRows + " " + Map.tileSize + " ";
-    for (int y = 0; y < numRows; y++)
-      for (int x = 0; x < numCols; x++)
+    for (int y = 0; y < numRows; y++){
+      for (int x = 0; x < numCols; x++){
         s += map[x][y];
+      }
+    }
     s += "\n";
+    for(Entity e : entities()){
+      s += e.toString();
+    }
     return s;
   }
 
@@ -182,7 +188,7 @@ public class Map implements Iterable<Tile> {
 
   public void renderSprites(Screen screen){
     List<Entity> sprites = new ArrayList<Entity>();
-    sprites.addAll(entities);
+    sprites.addAll(entities());
     Collections.sort(sprites, spriteSorter);
     for (Entity e : sprites) {
       e.render(screen);
@@ -223,7 +229,7 @@ public class Map implements Iterable<Tile> {
 
 
   public void addEntity(Entity e){
-    entities.add(e);
+    entities.put(e.getID(), e);
   }
 
   public void removeEntity(Entity e) {

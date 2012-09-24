@@ -31,6 +31,7 @@ public class Client {
     while (host.isConnected()) {
       handle(host.read());
       map.renderBackground(gui.screen);
+      map.renderSprites(gui.screen);
       gui.screen.render();
       try {
         Thread.sleep(10);
@@ -58,11 +59,15 @@ public class Client {
 
       if (word.equals("entity")){
         int id = scanner.nextInt();
+        int sprite = scanner.nextInt();
         int mapid = scanner.nextInt();
         int x = scanner.nextInt();
         int y = scanner.nextInt();
         int z = scanner.nextInt();
-        //map.addEntity(new Entity(id, map, x, y));
+
+        Entity e = new Entity(id, map, x, y);
+        e.setSprite(sprite);
+        map.addEntity(e);
       }
     }
     //host.send("Thanks for the map.");

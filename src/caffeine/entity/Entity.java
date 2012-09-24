@@ -216,7 +216,7 @@ public class Entity {
 
   @Override
   public String toString() {
-    return "entity " + id + loc.toString();
+    return "entity " + id + " " + sprite + " " + loc.toString() + "\n";
   }
 
   @Override
