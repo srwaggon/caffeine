@@ -43,7 +43,7 @@ public class GameServer extends Thread {
 
 
   public synchronized void handle(String msg, byte id) {
-    //broadcast(id + ": " + msg);
+    broadcast(id + ": " + msg);
   }
 
 

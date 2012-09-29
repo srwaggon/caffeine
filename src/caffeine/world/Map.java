@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import caffeine.entity.Entity;
@@ -13,7 +12,7 @@ import caffeine.entity.ItemEntity;
 import caffeine.gfx.Screen;
 import caffeine.world.tile.Tile;
 
-public class Map implements Iterable<Tile> {
+public class Map {
   protected HashMap<Integer, Entity> entities = new HashMap<Integer,Entity>();
   private static int numMaps = 0;
   protected int backgroundSprite = 4;
@@ -199,41 +198,24 @@ public class Map implements Iterable<Tile> {
     return numCols * Map.tileSize;
   }
 
-  @Override
-  public Iterator<Tile> iterator() {
-    return new Iterator<Tile>() {
-      int x = 0;
-      int y = 0;
-
-      @Override
-      public boolean hasNext() {
-        return x < numCols && y < numRows;
-      }
-
-      @Override
-      public Tile next() {
-        Tile t = getTile(x, y);
-        if (++x == numCols) {
-          x = 0;
-          y++;
-        }
-        return t;
-      }
-
-      @Override
-      public void remove() {
-        // :V Yeah, no.
-      }
-    };
-  }
-
-
   public void addEntity(Entity e){
     entities.put(e.getID(), e);
   }
 
-  public void removeEntity(Entity e) {
-    entities.remove(e.getID());
+  public boolean removeEntity(int id) {
+    if (entities.containsKey(id)) {
+      entities.remove(id);
+      return true;
+    }
+    return false;
+  }
+  
+  public boolean containsEntity(int id) {
+    return entities.containsKey(id);
+  }
+
+  public Entity getEntity(int id) {
+    return entities.get(id);
   }
 
   public boolean isEmpty() {
@@ -247,5 +229,7 @@ public class Map implements Iterable<Tile> {
   public int getBackground() {
     return backgroundSprite;
   }
+
+  
 
 }

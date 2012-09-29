@@ -12,11 +12,11 @@ public class NetworkInputHandler extends InputHandler {
   }
   
   public void keyPressed(KeyEvent ke) {
-    connex.send(ke.toString());
+    connex.send("pressed " + ke.getKeyCode());
   }
   
   public void keyReleased(KeyEvent ke) {
-    connex.send(ke.toString());
+    connex.send("released " + ke.getKeyCode());
   }
   
   public void keyTyped(KeyEvent ke) {

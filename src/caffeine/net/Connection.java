@@ -48,10 +48,11 @@ public class Connection {
 
   public void send(String msg) {
     out.println(msg);
+    out.flush();
   }
 
   public String read() {
-    String input = "";
+    String input = null;
     try {
       input = in.readLine();
       if (input == null) {
