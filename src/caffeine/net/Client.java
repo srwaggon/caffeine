@@ -1,18 +1,19 @@
 package caffeine.net;
 
 import java.util.HashMap;
-import java.util.Scanner;
 
+import caffeine.Game;
 import caffeine.entity.Entity;
 import caffeine.gfx.GUI;
-import caffeine.world.Map;
+import caffeine.gfx.InputHandler;
+import caffeine.net.msg.MsgHandler;
 
 public class Client {
   protected HashMap<Integer, Entity> entities = new HashMap<Integer, Entity>();
-  protected Map map;
+  protected Game game;
   protected GUI gui;
   protected Connection host;
-  protected NetworkInputHandler input;
+  protected InputHandler input;
 
   public static void main(String[] args) {
     new Client("127.0.0.1", 4444).run();
@@ -21,7 +22,7 @@ public class Client {
   /* Constructor */
   public Client(String ip, int port) {
     host = new Connection(ip, port);
-    input = new NetworkInputHandler(host);
+    input = new InputHandler();
     gui = new GUI("Caffeine Client");
     gui.addInputListener(input);
   }
@@ -32,8 +33,12 @@ public class Client {
 
       handle(host.read());
 
-      map.renderBackground(gui.screen);
-      map.renderSprites(gui.screen);
+      input.tick();
+
+      host.send("M E");
+
+      game.getDefaultMap().renderBackground(gui.screen);
+      game.getDefaultMap().renderSprites(gui.screen);
       gui.screen.render();
 
       try {
@@ -47,37 +52,7 @@ public class Client {
 
   public void handle(String msg) {
     System.out.println(msg);
-    Scanner scanner = new Scanner(msg);
-    String word;
-    while(scanner.hasNext()) {
-      word = scanner.next();
-
-      if (word.equals("map")){
-        int w = scanner.nextInt();
-        int h = scanner.nextInt();
-        int ts = scanner.nextInt();
-        String mapData = scanner.next();
-        map = new Map(w, h, ts, mapData);
-      } else if (word.equals("entity")){
-        int id = scanner.nextInt();
-        int sprite = scanner.nextInt();
-        int mapid = scanner.nextInt();
-        int x = scanner.nextInt();
-        int y = scanner.nextInt();
-        int z = scanner.nextInt();
-
-        Entity e = map.getEntityByID(id);
-        if (e != null) {
-          e = map.getEntity(id);
-        } else {
-          e = new Entity(id);
-          e.init(map);
-        }
-        e.setSprite(sprite);
-        map.addEntity(e);
-      }
-    }
-    //host.send("Thanks for the map.");
+    MsgHandler.handle(msg, game);
   }
 
   public void finalize(){

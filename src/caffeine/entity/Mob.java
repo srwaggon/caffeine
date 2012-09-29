@@ -77,13 +77,13 @@ public class Mob extends Entity {
 
   public void attack() {
     // use this entity's range to hurt the entities within a given proximity
-    if (dir == Dir.UP)
+    if (dir == Dir.N)
       hurt(loc.x - range / 2, loc.y - range, loc.x + range / 2, loc.y - yr);
-    if (dir == Dir.DOWN)
+    if (dir == Dir.S)
       hurt(loc.x - range / 2, loc.y + yr, loc.x + range / 2, loc.y + range);
-    if (dir == Dir.LEFT)
+    if (dir == Dir.W)
       hurt(loc.x - range, loc.y - range / 2, loc.x - xr, loc.y + range / 2);
-    if (dir == Dir.RIGHT)
+    if (dir == Dir.E)
       hurt(loc.x + xr, loc.y - range / 2, loc.x + range, loc.y + range / 2);
 
     rightHand.playUseSound();
@@ -139,10 +139,10 @@ public class Mob extends Entity {
     hp -= dmg;
     Sound.HURT.play();
 
-    if (dir == Dir.UP) yKnockback = -power;
-    if (dir == Dir.DOWN) yKnockback = power;
-    if (dir == Dir.LEFT) xKnockback = -power;
-    if (dir == Dir.RIGHT) xKnockback = power;
+    if (dir == Dir.N) yKnockback = -power;
+    if (dir == Dir.S) yKnockback = power;
+    if (dir == Dir.W) xKnockback = -power;
+    if (dir == Dir.E) xKnockback = power;
     hurtTime = 10;
   }
 
@@ -151,10 +151,10 @@ public class Mob extends Entity {
   }
 
   public boolean touchedBy(Entity entity) {
-    if (entity.dir == Dir.UP) knockback(0, -6);
-    if (entity.dir == Dir.DOWN) knockback(0, 6);
-    if (entity.dir == Dir.LEFT) knockback(-6, 0);
-    if (entity.dir == Dir.RIGHT) knockback(6, 0);
+    if (entity.dir == Dir.N) knockback(0, -6);
+    if (entity.dir == Dir.S) knockback(0, 6);
+    if (entity.dir == Dir.W) knockback(-6, 0);
+    if (entity.dir == Dir.E) knockback(6, 0);
     return false;
   }
 
@@ -164,13 +164,13 @@ public class Mob extends Entity {
 
   public boolean useRightHand() {
     if (rightHand != null) {
-      if (dir == Dir.UP)
+      if (dir == Dir.N)
         interact(loc.x - range / 2, loc.y - range, loc.x + range / 2, loc.y - yr, rightHand);
-      if (dir == Dir.DOWN)
+      if (dir == Dir.S)
         interact(loc.x - range / 2, loc.y + yr, loc.x + range / 2, loc.y + range, rightHand);
-      if (dir == Dir.LEFT)
+      if (dir == Dir.W)
         interact(loc.x - range, loc.y - range / 2, loc.x - xr, loc.y + range / 2, rightHand);
-      if (dir == Dir.RIGHT)
+      if (dir == Dir.E)
         interact(loc.x + xr, loc.y - range / 2, loc.x + range, loc.y + range / 2, rightHand);
 
       if (rightHand.getType() == ItemType.weapon) {
@@ -190,12 +190,12 @@ public class Mob extends Entity {
     Sound.ENEMY_DIE.play();
     drop(new Heart(5));
     remove();
-    new Mob().init(map);
+    new Mob().setMap(map);
   }
 
   public void drop(Item item){
     ItemEntity ie = new ItemEntity(item);
-    ie.init(map);
+    ie.setMap(map);
     ie.moveTo(loc.x, loc.y);
   }
 

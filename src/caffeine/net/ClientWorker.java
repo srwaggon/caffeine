@@ -2,15 +2,11 @@ package caffeine.net;
 
 import java.net.Socket;
 
-import caffeine.entity.Entity;
-import caffeine.entity.Player;
-
 public class ClientWorker extends Thread {
   protected static byte numWorkers = 0;
   protected byte id;
   protected final Connection client;
   protected final GameServer server;
-  protected final Player entity;
 
 
 
@@ -18,18 +14,11 @@ public class ClientWorker extends Thread {
     id = numWorkers++;
     server = _server;
     client = new Connection(_client);
-    client.send(server.getGame().getDefaultMap().toString());
-    entity = new Player();
-    entity.init(server.getGame().getDefaultMap());
-    server.getGame().getWorld().addEntity(entity);
-  }
-
-  public Entity getEntity(){
-    return entity;
+    server.handle("H", id);
   }
 
   public void disconnect(){
-    entity.remove();
+    server.handle("x", id);
     server.remove(this);
     client.disconnect();
   }

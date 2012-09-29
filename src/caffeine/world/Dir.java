@@ -3,19 +3,19 @@ package caffeine.world;
 import java.util.Random;
 
 public enum Dir {
-  UP, RIGHT, DOWN, LEFT;
+  N, E, S, W;
 
   public int dx(){
     int dx = 0;
-    dx = this == RIGHT ?  1 : dx;
-    dx = this == LEFT ? -1 : dx;
+    dx = this == E ?  1 : dx;
+    dx = this == W ? -1 : dx;
     return dx;
   }
 
   public int dy(){
     int dy = 0;
-    dy = this == UP ? -1 : dy;
-    dy = this == DOWN ?  1 : dy;
+    dy = this == N ? -1 : dy;
+    dy = this == S ?  1 : dy;
     return dy;
   }
 

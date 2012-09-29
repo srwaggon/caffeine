@@ -6,17 +6,19 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-import caffeine.Caffeine;
+import caffeine.Game;
+import caffeine.net.msg.MsgHandler;
 
 public class GameServer extends Thread {
-  private final Caffeine game;
-  private ServerSocket socket = null;
-  private final int port;
-  private final List<ClientWorker> clients = new ArrayList<ClientWorker>();
+  protected final int port;
+  protected Game game;
+  protected ServerSocket socket = null;
+  protected final List<ClientWorker> clients = new ArrayList<ClientWorker>();
 
-  public GameServer(Caffeine _game, int port) {
+  public GameServer(Game _game, int _port) {
+    port = _port;
     game = _game;
-    this.port = port;
+
     try {
       socket = new ServerSocket(port);
     } catch (IOException e) {
@@ -43,7 +45,10 @@ public class GameServer extends Thread {
 
 
   public synchronized void handle(String msg, byte id) {
-    broadcast(id + ": " + msg);
+    MsgHandler.handle(id + " " + msg, game);
+    String reply = game.getDefaultMap().toString();
+    System.out.println(reply);
+    broadcast(reply);
   }
 
 
@@ -83,11 +88,6 @@ public class GameServer extends Thread {
 
   public synchronized void remove(ClientWorker client) {
     clients.remove(client);
-  }
-
-
-  public Caffeine getGame() {
-    return game;
   }
 
 }

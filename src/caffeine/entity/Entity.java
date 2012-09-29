@@ -29,8 +29,8 @@ public class Entity {
   protected int speed = 1;
 
   /* object fields */
-  protected Dir dir = Dir.DOWN;
-  protected Loc loc;
+  protected Dir dir = Dir.S;
+  protected Loc loc = new Loc();
   protected Map map;
 
   /* CONSTRUCTORS */
@@ -41,10 +41,9 @@ public class Entity {
     this.id = id;
   }
 
-  public void init(Map map){
+  public void setMap(Map map){
     this.map = map;
     loc = new Loc(map.getID(), 32, 32, 0);
-    map.addEntity(this);
   }
 
   public void tick() {
@@ -165,10 +164,10 @@ public class Entity {
     int absxa = Math.abs(xa);
     int absya = Math.abs(ya);
 
-    if (xa < 0 && absxa > absya) setDir(Dir.LEFT);
-    if (xa > 0 && absxa > absya) setDir(Dir.RIGHT);
-    if (ya < 0 && absxa < absya) setDir(Dir.UP);
-    if (ya > 0 && absxa < absya) setDir(Dir.DOWN);
+    if (xa < 0 && absxa > absya) setDir(Dir.W);
+    if (xa > 0 && absxa > absya) setDir(Dir.E);
+    if (ya < 0 && absxa < absya) setDir(Dir.N);
+    if (ya > 0 && absxa < absya) setDir(Dir.S);
 
   }
 
@@ -214,7 +213,7 @@ public class Entity {
 
   @Override
   public String toString() {
-    return "entity " + id + " " + sprite + " " + loc.toString() + "\n";
+    return "# " + id + "  " + loc.toString() + "\n";
   }
 
   @Override

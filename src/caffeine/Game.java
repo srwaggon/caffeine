@@ -1,6 +1,7 @@
 package caffeine;
 
 import java.util.Collection;
+import java.util.HashMap;
 
 import caffeine.entity.Entity;
 import caffeine.entity.Mob;
@@ -16,31 +17,32 @@ import caffeine.world.World;
  * 
  * @author srwaggon
  */
-public class Caffeine implements Runnable {
+public class Game implements Runnable {
   /* Engine Fields */
-  private final World world = new World(); // Space
-  private final GUI gui = new GUI("Caffeine Server"); // Light
+  private static final World world = new World(); // Space
+  private static HashMap<Integer, Entity> entities = new HashMap<Integer, Entity>();
+  private static final GUI gui = new GUI("Caffeine Server"); // Light
 
   /* Main method */
   public static void main(String args[]) {
 
-    Caffeine caffeine = new Caffeine();
-    World world = caffeine.getWorld();
+    Game game = new Game();
+    World world = game.getWorld();
 
     Map map = new Map(Map.defaultMapData);
     world.addMap(map);
 
-    new Mob().init(map);
+    game.addEntity(new Mob());
 
-    caffeine.start();
+    game.start();
 
-    GameServer gs = new GameServer(caffeine, 4444);
+    GameServer gs = new GameServer(game, 4444);
     gs.run();
 
   }
 
   /* CONSTRUCTOR */
-  Caffeine() {
+  Game() {
 
   }
 
@@ -112,13 +114,26 @@ public class Caffeine implements Runnable {
   }
 
 
-  public void tick() {
-
-    for (Map map : world.world.values())
+  private void tick() {
+    for (Map map : world.world.values()){
       map.tick();
+    }
+  }
+
+  public void addEntity(Entity e){
+    entities.put(e.getID(), e);
+    getDefaultMap().addEntity(e);
   }
 
   public Map getDefaultMap() {
     return world.getMap(0);
+  }
+
+  public Entity getEntity(int id) {
+    return entities.get(id);
+  }
+
+  public void addMap(Map map) {
+    world.addMap(map);
   }
 }

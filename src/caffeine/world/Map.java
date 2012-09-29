@@ -156,13 +156,16 @@ public class Map {
       if (e.isRemoved()) {
         entities.remove(i--);
       }
-      
+
     }
   }
 
   @Override
   public String toString() {
-    String s = "map " + numCols + " " + numRows + " " + Map.tileSize + " ";
+    String s = "map ";
+    s += "W " + numCols + " ";
+    s += "H " + numRows + " ";
+    s += "S " + Map.tileSize + " ";
     for (int y = 0; y < numRows; y++){
       for (int x = 0; x < numCols; x++){
         s += map[x][y];
@@ -198,8 +201,9 @@ public class Map {
 
   public void addEntity(Entity e){
     entities.add(e);
+    e.setMap(this);
   }
-  
+
   public Entity getEntityByID(int id){
     for(int i = 0; i < entities.size(); i++){
       Entity e = entities.get(i);
@@ -235,6 +239,6 @@ public class Map {
     return backgroundSprite;
   }
 
-  
+
 
 }
