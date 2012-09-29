@@ -18,55 +18,74 @@ import caffeine.world.World;
  * @author srwaggon
  */
 public class Game implements Runnable {
-  /* Engine Fields */
-  private static final World world = new World(); // Space
-  private static HashMap<Integer, Entity> entities = new HashMap<Integer, Entity>();
-  private static final GUI gui = new GUI("Caffeine Server"); // Light
 
-  /* Main method */
+
+  /* FIELDS */
+  protected int port = 4444;
+  protected static final World world = new World(); // Space
+  protected static final HashMap<Integer, Entity> entities = new HashMap<Integer, Entity>();
+  protected static final GUI gui = new GUI("Caffeine Server"); // Light
+  protected Map currentMap;
+
+
+
+  /* MAIN METHOD */
+
+
   public static void main(String args[]) {
-
     Game game = new Game();
-    World world = game.getWorld();
-
-    Map map = new Map(Map.defaultMapData);
-    world.addMap(map);
-
-    game.addEntity(new Mob());
-
+    game.addMap(new Map(Map.defaultMapData));
+    game.addEntity(new Mob(), game.getCurrentMap());
     game.start();
-
-    GameServer gs = new GameServer(game, 4444);
-    gs.run();
-
   }
 
-  /* CONSTRUCTOR */
-  Game() {
 
-  }
+
+
 
   /* ACCESSORS */
-  public Collection<Entity> entities(int mapID) {
+
+
+  public Map getCurrentMap() {
+    return world.getMap(0);
+  }
+
+  public Entity getEntity(int id) {
+    return entities.get(id);
+  }
+
+  public Collection<Entity> getEntities(int mapID) {
     return world.getMap(mapID).entities();
   }
 
-  public GUI gui() {
-    return gui;
-  }
 
-  public World getWorld() {
-    return world;
-  }
 
   /* MUTATORS */
 
-  public int numRoundsPlayed() {
-    return 0;
+
+  public void addEntity(Entity e, int mapID){
+    addEntity(e, world.getMap(mapID));
   }
+
+  public void addEntity(Entity e, Map map){
+    entities.put(e.getID(), e);
+    map.addEntity(e);
+  }
+
+  public void addMap(Map map) {
+    world.addMap(map);
+  }
+
+
+
+
+  /* UTILITY */
+
 
   public void start() {
     new Thread(this).start();
+    GameServer gs = new GameServer(this, port);
+    gs.run();
   }
 
   public void run() {
@@ -98,7 +117,7 @@ public class Game implements Runnable {
       if (shouldRender) {
         frames++;
 
-        Map map = getDefaultMap();
+        Map map = getCurrentMap();
         map.renderBackground(gui.screen);
         map.renderSprites(gui.screen);
         gui.screen.render();
@@ -118,22 +137,5 @@ public class Game implements Runnable {
     for (Map map : world.world.values()){
       map.tick();
     }
-  }
-
-  public void addEntity(Entity e){
-    entities.put(e.getID(), e);
-    getDefaultMap().addEntity(e);
-  }
-
-  public Map getDefaultMap() {
-    return world.getMap(0);
-  }
-
-  public Entity getEntity(int id) {
-    return entities.get(id);
-  }
-
-  public void addMap(Map map) {
-    world.addMap(map);
   }
 }

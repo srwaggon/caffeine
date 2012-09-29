@@ -38,7 +38,7 @@ public class MsgHandler {
     }
 
     if (c == 'H'){
-      game.addEntity(new Player(id));
+      game.addEntity(new Player(id), 0); // TODO: magic #
     }
 
     if (c == 'x'){
