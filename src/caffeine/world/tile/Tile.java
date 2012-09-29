@@ -76,7 +76,7 @@ public class Tile {
       if (tileObject.isRemoved()){
         if (tileObject.itemDropped())
           // TODO: change magic numbers:
-          new ItemEntity(item, entity.getMap()).moveTo(x*Map.tileSize + 8, y*Map.tileSize + 8);
+          new ItemEntity(item).moveTo(x*Map.tileSize + 8, y*Map.tileSize + 8);
         tileObject = null;
       }
     }

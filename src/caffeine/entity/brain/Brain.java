@@ -2,7 +2,6 @@ package caffeine.entity.brain;
 
 import caffeine.entity.Mob;
 import caffeine.world.Dir;
-import caffeine.world.Map;
 
 public class Brain {
   protected Mob self;
@@ -15,10 +14,6 @@ public class Brain {
     this.self = self;
     self.setBrain(this);
 
-  }
-
-  public static Mob embody(Map map) {
-    return new Brain(new Mob(map)).getSelf();
   }
 
   public Mob getSelf() {

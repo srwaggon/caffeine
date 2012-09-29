@@ -10,7 +10,6 @@ import caffeine.items.ItemType;
 import caffeine.items.weapons.Sword;
 import caffeine.sfx.Sound;
 import caffeine.world.Dir;
-import caffeine.world.Map;
 import caffeine.world.tile.Tile;
 
 public class Mob extends Entity {
@@ -30,8 +29,7 @@ public class Mob extends Entity {
   protected List<Item> inventory = new ArrayList<Item>();
 
 
-  public Mob(Map map) {
-    super(map);
+  public Mob() {
     brain = new Brain(this);
     xr = 4;
     yr = 4;
@@ -192,11 +190,13 @@ public class Mob extends Entity {
     Sound.ENEMY_DIE.play();
     drop(new Heart(5));
     remove();
-    new Mob(map);
+    new Mob().init(map);
   }
 
   public void drop(Item item){
-    new ItemEntity(item, map).moveTo(loc.x, loc.y);
+    ItemEntity ie = new ItemEntity(item);
+    ie.init(map);
+    ie.moveTo(loc.x, loc.y);
   }
 
   public Brain getBrain() {

@@ -34,21 +34,22 @@ public class Entity {
   protected Map map;
 
   /* CONSTRUCTORS */
-  public Entity(Map map) {
+  public Entity() {
+  }
+
+  public Entity(int id){
+    this.id = id;
+  }
+
+  public void init(Map map){
     this.map = map;
     loc = new Loc(map.getID(), 32, 32, 0);
     map.addEntity(this);
   }
 
-  public Entity(int id, Map map, int x, int y){
-    this.id = id;
-    this.map = map;
-    loc = new Loc(map.getID(), x, y, 0);
-  }
-
   public void tick() {
   }
-  
+
   public boolean move(Dir dir){
     boolean notStopped = move2(dir.dx() * speed, 0);
     return notStopped && move2(0, dir.dy() * speed);

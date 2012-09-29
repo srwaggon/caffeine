@@ -2,7 +2,6 @@ package caffeine.entity.brain;
 
 import caffeine.entity.Mob;
 import caffeine.world.Dir;
-import caffeine.world.Map;
 
 public class LeftBrain extends Brain {
   protected Dir dir = Dir.DOWN;
@@ -12,10 +11,6 @@ public class LeftBrain extends Brain {
 
   public LeftBrain(Mob self) {
     super(self);
-  }
-
-  public static Mob embody(Map map) {
-    return new LeftBrain(new Mob(map)).getSelf();
   }
 
   @Override

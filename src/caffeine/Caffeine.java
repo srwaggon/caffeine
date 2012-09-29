@@ -1,13 +1,9 @@
 package caffeine;
 
 import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
 
 import caffeine.entity.Entity;
 import caffeine.entity.Mob;
-import caffeine.entity.brain.LeftBrain;
-import caffeine.entity.brain.StraightBrain;
 import caffeine.gfx.GUI;
 import caffeine.net.GameServer;
 import caffeine.world.Map;
@@ -23,7 +19,6 @@ import caffeine.world.World;
 public class Caffeine implements Runnable {
   /* Engine Fields */
   private final World world = new World(); // Space
-  private final List<Player> players = new LinkedList<Player>(); // Life
   private final GUI gui = new GUI("Caffeine Server"); // Light
 
   /* Main method */
@@ -35,13 +30,7 @@ public class Caffeine implements Runnable {
     Map map = new Map(Map.defaultMapData);
     world.addMap(map);
 
-    Player p1 = new CaffeinePlayer(caffeine);
-    caffeine.addPlayer(p1);
-
-    new Mob(map);
-
-    LeftBrain.embody(map);
-    StraightBrain.embody(map);
+    new Mob().init(map);
 
     caffeine.start();
 
@@ -69,11 +58,6 @@ public class Caffeine implements Runnable {
   }
 
   /* MUTATORS */
-
-  public void addPlayer(Player player) {
-    players.add(player);
-    gui.addInputListener(player.getInputHandler());
-  }
 
   public int numRoundsPlayed() {
     return 0;

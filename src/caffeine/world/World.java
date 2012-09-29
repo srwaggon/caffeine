@@ -2,6 +2,7 @@ package caffeine.world;
 
 import java.util.HashMap;
 
+import caffeine.entity.Entity;
 import caffeine.world.tile.Tile;
 
 public class World {
@@ -53,5 +54,9 @@ public class World {
     for (int k : world.keySet())
       s += " " + k;
     return s + " }";
+  }
+
+  public void addEntity(Entity entity) {
+    world.get(defaultSpawnLoc.mapID).addEntity(entity);
   }
 }

@@ -29,13 +29,13 @@ public class Client {
   public void run() {
 
     while (host.isConnected()) {
-      
+
       handle(host.read());
-      
+
       map.renderBackground(gui.screen);
       map.renderSprites(gui.screen);
       gui.screen.render();
-      
+
       try {
         Thread.sleep(10);
       } catch (InterruptedException e) {
@@ -65,12 +65,13 @@ public class Client {
         int x = scanner.nextInt();
         int y = scanner.nextInt();
         int z = scanner.nextInt();
-        
+
         Entity e = map.getEntityByID(id);
         if (e != null) {
           e = map.getEntity(id);
         } else {
-          e = new Entity(id, map, x, y);
+          e = new Entity(id);
+          e.init(map);
         }
         e.setSprite(sprite);
         map.addEntity(e);
