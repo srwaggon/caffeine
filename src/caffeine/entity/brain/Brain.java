@@ -1,6 +1,5 @@
 package caffeine.entity.brain;
 
-import caffeine.action.Move;
 import caffeine.entity.Mob;
 import caffeine.world.Dir;
 import caffeine.world.Map;
@@ -32,7 +31,7 @@ public class Brain {
       if (waitTimer-- > 0){
         ;
       } else if (moveTimer-- > 0) {
-        if (!new Move(dir).performBy(self)) {
+        if (!self.move(dir)) {
           dir = dir.next();
         }
       } else {

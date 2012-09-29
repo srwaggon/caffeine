@@ -1,10 +1,8 @@
 package caffeine.entity;
 
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 
-import caffeine.action.Action;
 import caffeine.gfx.Screen;
 import caffeine.items.Item;
 import caffeine.world.Dir;
@@ -31,7 +29,6 @@ public class Entity {
   protected int speed = 1;
 
   /* object fields */
-  public LinkedList<Action> actionPlans = new LinkedList<Action>();
   protected Dir dir = Dir.DOWN;
   protected Loc loc;
   protected Map map;
@@ -51,10 +48,14 @@ public class Entity {
 
   public void tick() {
   }
+  
+  public boolean move(Dir dir){
+    boolean notStopped = move2(dir.dx() * speed, 0);
+    return notStopped && move2(0, dir.dy() * speed);
+  }
 
   public boolean move(int xa, int ya){
-    boolean notStopped = true;
-    notStopped = move2(xa, 0);
+    boolean notStopped = move2(xa, 0);
     return notStopped && move2(0, ya);
   }
 
@@ -93,9 +94,6 @@ public class Entity {
       // If they're going to intersect, inform them.
       if (entity.intersects(nx - xr, ny - yr, nx + xr, ny + yr)) {
         if (!entity.touchedBy(this)) {
-
-
-
           return false;
         }
       }
@@ -121,7 +119,6 @@ public class Entity {
   }
 
   public boolean push(Entity pushee, int xa, int ya) {
-    pushee.actionPlans.clear();
     return pushee.move(xa, ya);
   }
 

@@ -1,7 +1,5 @@
 package caffeine.entity.brain;
 
-import caffeine.action.Face;
-import caffeine.action.Move;
 import caffeine.entity.Mob;
 import caffeine.world.Dir;
 import caffeine.world.Map;
@@ -24,8 +22,8 @@ public class LeftBrain extends Brain {
   public void tick() {
     if (turnThresh < Math.random() || lastFailed)
       dir = dir.prev();
-    new Face(dir).performBy(self);
+    self.setDir(dir);
     if((timetick++ & 0x1) == 0)
-      lastFailed = !new Move(dir).performBy(self);
+      lastFailed = !self.move(dir);
   }
 }

@@ -3,7 +3,6 @@ package caffeine.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import caffeine.action.Move;
 import caffeine.entity.brain.Brain;
 import caffeine.items.Heart;
 import caffeine.items.Item;
@@ -15,7 +14,6 @@ import caffeine.world.Map;
 import caffeine.world.tile.Tile;
 
 public class Mob extends Entity {
-
   protected boolean flip = false;
   protected boolean isAlive = true;
   protected int hp = 3;
@@ -50,7 +48,7 @@ public class Mob extends Entity {
         za = 0;
       }
     }
-    new Move(xa, ya).performBy(this);
+    move(xa, ya);
 
     if (hurtTime > 0) hurtTime--;
 

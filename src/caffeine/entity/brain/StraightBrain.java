@@ -1,6 +1,5 @@
 package caffeine.entity.brain;
 
-import caffeine.action.Move;
 import caffeine.entity.Mob;
 import caffeine.world.Dir;
 import caffeine.world.Map;
@@ -25,7 +24,7 @@ public class StraightBrain extends Brain {
   public void tick() {
 
     if((timetick++ & 0x3) == 0)
-      if(!new Move(forward).performBy(self))
+      if(!self.move(forward))
         forward = forward.opposite();
   }
 }

@@ -1,7 +1,5 @@
 package caffeine.entity.brain;
 
-import caffeine.action.Face;
-import caffeine.action.Move;
 import caffeine.entity.Mob;
 import caffeine.world.Dir;
 import caffeine.world.Map;
@@ -19,7 +17,7 @@ public class RightBrain extends Brain {
 
   @Override
   public void tick() {
-    new Face(dir).performBy(self);
-    new Move(dir).performBy(self);
+    self.setDir(dir);
+    self.move(dir);
   }
 }

@@ -1,7 +1,5 @@
 package caffeine.entity.brain;
 
-import caffeine.action.Face;
-import caffeine.action.Move;
 import caffeine.entity.Mob;
 import caffeine.util.Util;
 import caffeine.world.Dir;
@@ -27,8 +25,8 @@ public class RandomBrain extends Brain {
       numSteps = (int) (Math.random() * 20) + 5;
     }
     numSteps--;
-    new Face(dir).performBy(self);
-    new Move(dir).performBy(self);
+    self.setDir(dir);
+    self.move(dir);
 
   }
 }

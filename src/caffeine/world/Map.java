@@ -1,10 +1,8 @@
 package caffeine.world;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 
 import caffeine.entity.Entity;
@@ -13,7 +11,7 @@ import caffeine.gfx.Screen;
 import caffeine.world.tile.Tile;
 
 public class Map {
-  protected HashMap<Integer, Entity> entities = new HashMap<Integer,Entity>();
+  protected List<Entity> entities = new ArrayList<Entity>();
   private static int numMaps = 0;
   protected int backgroundSprite = 4;
   protected int id;
@@ -74,8 +72,8 @@ public class Map {
     }
   }
 
-  public Collection<Entity> entities() {
-    return entities.values();
+  public List<Entity> entities() {
+    return entities;
   }
 
   public List<Entity> getEntities(int x0, int y0, int x1, int y1){
@@ -152,13 +150,13 @@ public class Map {
         //getTile(x,y).tick();
       }
     }
-
-    for (int i = 0; i < entities.size(); i++) {
+    for(int i = 0; i < entities.size(); i++){
       Entity e = entities.get(i);
       e.tick();
       if (e.isRemoved()) {
         entities.remove(i--);
       }
+      
     }
   }
 
@@ -199,19 +197,26 @@ public class Map {
   }
 
   public void addEntity(Entity e){
-    entities.put(e.getID(), e);
+    entities.add(e);
+  }
+  
+  public Entity getEntityByID(int id){
+    for(int i = 0; i < entities.size(); i++){
+      Entity e = entities.get(i);
+      if (e.getID() == id){
+        return e;
+      }
+    }
+    return null;
   }
 
   public boolean removeEntity(int id) {
-    if (entities.containsKey(id)) {
-      entities.remove(id);
+    Entity e = getEntityByID(id);
+    if(e != null){
+      e.remove();
       return true;
     }
     return false;
-  }
-  
-  public boolean containsEntity(int id) {
-    return entities.containsKey(id);
   }
 
   public Entity getEntity(int id) {

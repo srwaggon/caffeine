@@ -66,8 +66,8 @@ public class Client {
         int y = scanner.nextInt();
         int z = scanner.nextInt();
         
-        Entity e;
-        if (map.containsEntity(id)) {
+        Entity e = map.getEntityByID(id);
+        if (e != null) {
           e = map.getEntity(id);
         } else {
           e = new Entity(id, map, x, y);
