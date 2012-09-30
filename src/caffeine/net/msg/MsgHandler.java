@@ -47,4 +47,13 @@ public class MsgHandler {
 
     return true;
   }
+  
+  public static Entity parseEntity(Scanner scanner){
+    int id = scanner.nextInt();
+    Entity e = new Entity(id);
+    e.setX(scanner.nextInt());
+    e.setY(scanner.nextInt());
+    e.setZ(scanner.nextInt());
+    return e;
+  }
 }

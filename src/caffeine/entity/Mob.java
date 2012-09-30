@@ -39,10 +39,10 @@ public class Mob extends Entity {
     brain.tick();
 
     flip = !flip;
-    if (loc.z >= 0 && flip) {
-      loc.z += za--;
-      if (loc.z <= 0) {
-        loc.z = 0;
+    if (z >= 0 && flip) {
+      z += za--;
+      if (z <= 0) {
+        z = 0;
         za = 0;
       }
     }
@@ -78,13 +78,13 @@ public class Mob extends Entity {
   public void attack() {
     // use this entity's range to hurt the entities within a given proximity
     if (dir == Dir.N)
-      hurt(loc.x - range / 2, loc.y - range, loc.x + range / 2, loc.y - yr);
+      hurt(x - range / 2, y - range, x + range / 2, y - yr);
     if (dir == Dir.S)
-      hurt(loc.x - range / 2, loc.y + yr, loc.x + range / 2, loc.y + range);
+      hurt(x - range / 2, y + yr, x + range / 2, y + range);
     if (dir == Dir.W)
-      hurt(loc.x - range, loc.y - range / 2, loc.x - xr, loc.y + range / 2);
+      hurt(x - range, y - range / 2, x - xr, y + range / 2);
     if (dir == Dir.E)
-      hurt(loc.x + xr, loc.y - range / 2, loc.x + range, loc.y + range / 2);
+      hurt(x + xr, y - range / 2, x + range, y + range / 2);
 
     rightHand.playUseSound();
   }
@@ -108,7 +108,7 @@ public class Mob extends Entity {
   }
 
   public void jump() {
-    if (loc.z == 0) {
+    if (z == 0) {
       za = 6;
       Sound.JUMP.play();
     }
@@ -165,13 +165,13 @@ public class Mob extends Entity {
   public boolean useRightHand() {
     if (rightHand != null) {
       if (dir == Dir.N)
-        interact(loc.x - range / 2, loc.y - range, loc.x + range / 2, loc.y - yr, rightHand);
+        interact(x - range / 2, y - range, x + range / 2, y - yr, rightHand);
       if (dir == Dir.S)
-        interact(loc.x - range / 2, loc.y + yr, loc.x + range / 2, loc.y + range, rightHand);
+        interact(x - range / 2, y + yr, x + range / 2, y + range, rightHand);
       if (dir == Dir.W)
-        interact(loc.x - range, loc.y - range / 2, loc.x - xr, loc.y + range / 2, rightHand);
+        interact(x - range, y - range / 2, x - xr, y + range / 2, rightHand);
       if (dir == Dir.E)
-        interact(loc.x + xr, loc.y - range / 2, loc.x + range, loc.y + range / 2, rightHand);
+        interact(x + xr, y - range / 2, x + range, y + range / 2, rightHand);
 
       if (rightHand.getType() == ItemType.weapon) {
         attack();
@@ -196,7 +196,7 @@ public class Mob extends Entity {
   public void drop(Item item){
     ItemEntity ie = new ItemEntity(item);
     ie.setMap(map);
-    ie.moveTo(loc.x, loc.y);
+    ie.moveTo(x, y);
   }
 
   public Brain getBrain() {
@@ -208,7 +208,7 @@ public class Mob extends Entity {
   }
 
   public boolean isValidTile(Tile tile) {
-    return !tile.blocksNPC() || loc.z > 0;
+    return !tile.blocksNPC() || z > 0;
   }
 
   public void setBrain(Brain b) {

@@ -27,7 +27,7 @@ public class Map {
       } else if (e2 instanceof ItemEntity) {
         return 1;
       } else {
-        return  e1.getLoc().y - e2.getLoc().y;
+        return  e1.getY() - e2.getY();
       }
     }
 
@@ -110,13 +110,6 @@ public class Map {
     return map[x][y];
   }
 
-  public Tile getTileAt(Loc l) {
-    if (l.mapID != id) {
-      // throw new MismatchingMapIDException();
-    }
-    return getTileAt(l.x, l.y);
-  }
-
   public List<Tile> getTiles(int x0, int y0, int x1, int y1) {
     List<Tile> result = new ArrayList<Tile>();
     for (int j = y0 / tileSize * tileSize; j <= y1; j += tileSize)
@@ -132,10 +125,6 @@ public class Map {
 
   public int tileSize() {
     return Map.tileSize;
-  }
-
-  public boolean isValidLoc(Loc loc) {
-    return isValidLoc(loc.x, loc.y);
   }
 
   public boolean isValidLoc(int x, int y){

@@ -6,7 +6,6 @@ import java.util.List;
 import caffeine.gfx.Screen;
 import caffeine.items.Item;
 import caffeine.world.Dir;
-import caffeine.world.Loc;
 import caffeine.world.Map;
 import caffeine.world.tile.Tile;
 
@@ -23,6 +22,7 @@ public class Entity {
   protected int id = Entity.numEntities++;
   protected boolean removed = false;
 
+  protected int x = 32, y = 32, z;
   protected int xr = 2;
   protected int yr = 2;
   public int sprite = 128;
@@ -30,7 +30,6 @@ public class Entity {
 
   /* object fields */
   protected Dir dir = Dir.S;
-  protected Loc loc = new Loc();
   protected Map map;
 
   /* CONSTRUCTORS */
@@ -39,11 +38,6 @@ public class Entity {
 
   public Entity(int id){
     this.id = id;
-  }
-
-  public void setMap(Map map){
-    this.map = map;
-    loc = new Loc(map.getID(), 32, 32, 0);
   }
 
   public void tick() {
@@ -66,10 +60,10 @@ public class Entity {
       return false;
     }
 
-    setDir(xa, ya);
+    setDir(Dir.whichDir(xa, ya));
 
-    int nx = loc.x + xa; // next x
-    int ny = loc.y + ya; // next y
+    int nx = x + xa; // next x
+    int ny = y + ya; // next y
 
     List<Tile> nextTiles = map.getTiles(nx - xr, ny - yr, nx + xr, ny + yr);
     for (Tile t : nextTiles) {
@@ -100,8 +94,8 @@ public class Entity {
     }
 
     // Change location.
-    loc.x += xa;
-    loc.y += ya;
+    x += xa;
+    y += ya;
 
     for (Tile t : nextTiles){
       t.onEnter(this);
@@ -111,8 +105,8 @@ public class Entity {
   }
 
   public void moveTo(int x, int y){
-    loc.x = x;
-    loc.y = y;
+    x = x;
+    y = y;
   }
 
   public void heal(int n){
@@ -123,18 +117,18 @@ public class Entity {
   }
 
   public final void render(Screen screen) {
-    screen.render(sprite, loc.x - Map.tileSize / 2, loc.y - Map.tileSize / 2
-        - loc.z);
+    screen.render(sprite, x - Map.tileSize / 2, y - Map.tileSize / 2
+        - z);
   }
 
   public boolean intersects(int x0, int y0, int x1, int y1) {
-    return !(loc.x + xr < x0 || loc.y + yr < y0 || loc.x - xr > x1 || loc.y
+    return !(x + xr < x0 || y + yr < y0 || x - xr > x1 || y
         - yr > y1);
   }
 
   public boolean intersects(Entity e) {
     return !equals(e)
-        && intersects(e.loc.x - e.xr, e.loc.y - e.yr, e.loc.x + e.xr, e.loc.y
+        && intersects(e.getX() - e.xr, e.getY() - e.yr, e.getX() + e.xr, e.getY()
             + e.yr);
   }
 
@@ -150,70 +144,66 @@ public class Entity {
 
   public void takeItem(ItemEntity item) { }
 
-  /* ACCESSORS */
-
-  public Dir getDirection() {
-    return dir;
-  }
-
-  public void setDir(Dir dir) {
-    this.dir = dir;
-  }
-
-  public void setDir(int xa, int ya){
-    int absxa = Math.abs(xa);
-    int absya = Math.abs(ya);
-
-    if (xa < 0 && absxa > absya) setDir(Dir.W);
-    if (xa > 0 && absxa > absya) setDir(Dir.E);
-    if (ya < 0 && absxa < absya) setDir(Dir.N);
-    if (ya > 0 && absxa < absya) setDir(Dir.S);
-
-  }
-
-  public void setSprite(int sprite) {
-    this.sprite = sprite;
-  }
-
   public static int getPopulation() {
     return Entity.numEntities;
   }
 
-  public int getID() {
-    return id;
-  }
-
-  public Loc getLoc() {
-    return loc;
-  }
-
-  public void setLoc(Loc loc) {
-    this.loc = loc;
-  }
-
-  public Map getMap() {
-    return map;
-  }
-
-  public int getSpeed() {
-    return speed;
-  }
-
+  
   public boolean isValidTile(Tile tile) {
     return !tile.blocksNPC();
   }
 
-  public boolean isRemoved() {
-    return removed;
-  }
+  
+  /* ACCESSORS */
+  
+  public Dir getDirection() { return dir; }
+  
+  public int getHP() { return 0; }
+  
+  public int getID() { return id; }
+  
+  public Map getMap() { return map; }
+  
+  public int getSpeed() { return speed; }
+  
+  public int getX() { return x; }
+  
+  public int getY() { return y; }
+  
+  public int getZ() { return z; }
+  
+  public boolean isRemoved() { return removed; }
 
-  public void remove() {
-    removed = true;
-  }
+  
+  /* MUTATORS */
+  
+  public void setDir(Dir dir) { this.dir = dir; }
+  
+  public void setMap(Map map) { this.map = map; }
+  
+  public void setSprite(int sprite) { this.sprite = sprite; }
+  
+  public void setX(int _x) { x = _x; }
+  
+  public void setY(int _y) { y = _y; }
+  
+  public void setZ(int _z) { z = _z; }
 
+  public void remove() { removed = true; }
+
+  
+  
+  
+  /* UTILITIES */
+  
+  
   @Override
   public String toString() {
-    return "# " + id + "  " + loc.toString() + "\n";
+    return "# " + id +
+        " M " + map.getID() +
+        " X " + x + 
+        " Y " + y + 
+        " Z " + z;
   }
 
   @Override
@@ -224,10 +214,6 @@ public class Entity {
     } catch (Throwable e) {
       e.printStackTrace();
     }
-  }
-
-  public int getHP() {
-    return 0;
   }
 
   public void addItem(Item item) {

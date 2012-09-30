@@ -72,9 +72,7 @@ public class Game implements Runnable {
     map.addEntity(e);
   }
 
-  public void addMap(Map map) {
-    world.addMap(map);
-  }
+  public void addMap(Map map) { world.addMap(map); }
 
 
 

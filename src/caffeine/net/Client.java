@@ -6,6 +6,7 @@ import caffeine.Game;
 import caffeine.entity.Entity;
 import caffeine.gfx.GUI;
 import caffeine.gfx.InputHandler;
+import caffeine.net.msg.MsgHandler;
 
 public class Client {
   protected HashMap<Integer, Entity> entities = new HashMap<Integer, Entity>();
@@ -51,7 +52,7 @@ public class Client {
 
   public void handle(String msg) {
     System.out.println(msg);
-    //MsgHandler.handle(msg, game);
+    MsgHandler.handle(msg, game);
   }
 
   public void finalize(){
