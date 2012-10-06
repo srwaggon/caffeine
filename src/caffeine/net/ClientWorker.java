@@ -8,8 +8,6 @@ public class ClientWorker extends Thread {
   protected final Connection client;
   protected final GameServer server;
 
-
-
   public ClientWorker(GameServer _server, Socket _client) {
     server = _server;
     client = new Connection(_client);
@@ -25,7 +23,9 @@ public class ClientWorker extends Thread {
   public void run() {
     Scanner in = client.getScanner();
     while (client.isConnected()) {
-      server.handle(in);
+      if (in.hasNextLine()){
+        server.handle(in.nextLine());
+      }
       try {
         Thread.sleep(10);
       } catch (InterruptedException e) { e.printStackTrace(); }

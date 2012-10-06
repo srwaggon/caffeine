@@ -24,14 +24,14 @@ public class Client implements Runnable {
 
   /* Constructor */
   public Client(String ip, int port) {
-    id = (int) (Math.random()*100);
+    id = (int) (Math.random()*99) + 1;
     game = new Game();
-    host = new Connection(ip, port);
     input = new InputHandler();
+    host = new Connection(ip, port);
     gui = new GUI("Caffeine Client");
     gui.addInputListener(input);
   }
-  
+
   public void start(){
     host.send(new Player(id).toString());
     new Thread(this).run();
@@ -42,12 +42,12 @@ public class Client implements Runnable {
     while (host.isConnected()) {
       input.tick();
       processInput();
-      
-      MsgHandler.handle(in, game);
-      game.getMap(0).renderBackground(gui.screen);
+      if (in.hasNextLine()) {
+        MsgHandler.handle(in.nextLine(), game);
+      }
+      //game.getMap(0).renderBackground(gui.screen);
       game.getMap(0).renderSprites(gui.screen);
       gui.screen.render();
-
       try {
         Thread.sleep(10);
       } catch (InterruptedException e) {
@@ -56,15 +56,23 @@ public class Client implements Runnable {
     }
     System.out.println("Host disconnected.");
   }
-  
+
   public void processInput(){
-    if (input.up.isPressed) host.send("# "+id+" M N");
-    if (input.left.isPressed) host.send("# "+id+" M E");
-    if (input.down.isPressed) host.send("# "+id+" M S");
-    if (input.right.isPressed) host.send("# "+id+" M W");
+    if (input.up.isPressed) {
+      host.send("# "+id+" M N");
+    }
+    if (input.left.isPressed) {
+      host.send("# "+id+" M E");
+    }
+    if (input.down.isPressed) {
+      host.send("# "+id+" M S");
+    }
+    if (input.right.isPressed) {
+      host.send("# "+id+" M W");
+    }
     host.send("\n");
   }
-  
+
   public void finalize(){
     host.disconnect();
   }

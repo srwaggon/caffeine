@@ -5,16 +5,26 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import caffeine.Game;
+import caffeine.entity.Mob;
 import caffeine.net.msg.MsgHandler;
+import caffeine.world.Map;
 
 public class GameServer extends Thread {
   protected final int port;
   protected Game game;
   protected ServerSocket socket = null;
   protected final List<ClientWorker> clients = new ArrayList<ClientWorker>();
+
+  public static void main(String args[]) {
+    Game game = new Game();
+    game.addMap(new Map(Map.defaultMapData));
+    game.addEntity(new Mob(), game.getMap(0));
+    game.start();
+    GameServer gs = new GameServer(game, 4444);
+    gs.run();
+  }
 
   public GameServer(Game _game, int _port) {
     port = _port;
@@ -46,8 +56,8 @@ public class GameServer extends Thread {
   }
 
 
-  public synchronized void handle(Scanner scanner) {
-    MsgHandler.handle(scanner, game);
+  public synchronized void handle(String msg) {
+    MsgHandler.handle(msg, game);
     String reply = game.getMap(0).toString();
     broadcast(reply);
   }

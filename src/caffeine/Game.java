@@ -4,9 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import caffeine.entity.Entity;
-import caffeine.entity.Mob;
 import caffeine.gfx.GUI;
-import caffeine.net.GameServer;
 import caffeine.world.Map;
 import caffeine.world.World;
 
@@ -21,22 +19,13 @@ public class Game implements Runnable {
 
 
   /* FIELDS */
-  protected int port = 4444;
   protected static final World world = new World(); // Space
   protected static final HashMap<Integer, Entity> entities = new HashMap<Integer, Entity>();
-  protected static GUI gui; 
+  protected static GUI gui;
 
 
 
   /* MAIN METHOD */
-
-
-  public static void main(String args[]) {
-    Game game = new Game();
-    game.addMap(new Map(Map.defaultMapData));
-    game.addEntity(new Mob(), game.getMap(0));
-    game.start();
-  }
 
 
   public Game() { }
@@ -46,15 +35,15 @@ public class Game implements Runnable {
 
 
   public Map getMap(int id) {
-    return world.getMap(id);
+    return Game.world.getMap(id);
   }
 
   public Entity getEntity(int id) {
-    return entities.get(id);
+    return Game.entities.get(id);
   }
 
   public Collection<Entity> getEntities(int mapID) {
-    return world.getMap(mapID).entities();
+    return Game.world.getMap(mapID).entities();
   }
 
 
@@ -63,15 +52,15 @@ public class Game implements Runnable {
 
 
   public void addEntity(Entity e, int mapID){
-    addEntity(e, world.getMap(mapID));
+    addEntity(e, Game.world.getMap(mapID));
   }
 
   public void addEntity(Entity e, Map map){
-    entities.put(e.getID(), e);
+    Game.entities.put(e.getID(), e);
     map.addEntity(e);
   }
 
-  public void addMap(Map map) { world.addMap(map); }
+  public void addMap(Map map) { Game.world.addMap(map); }
 
 
 
@@ -80,12 +69,10 @@ public class Game implements Runnable {
 
 
   public void start() {
-    gui = new GUI("Caffeine Server"); // Light
+    Game.gui = new GUI("Caffeine Server"); // Light
     new Thread(this).start();
-    GameServer gs = new GameServer(this, port);
-    gs.run();
   }
-  
+
   public void stop(){
     System.exit(-1);
   }
@@ -120,9 +107,9 @@ public class Game implements Runnable {
         frames++;
 
         Map map = getMap(0);
-        map.renderBackground(gui.screen);
-        map.renderSprites(gui.screen);
-        gui.screen.render();
+        map.renderBackground(Game.gui.screen);
+        map.renderSprites(Game.gui.screen);
+        Game.gui.screen.render();
       }
 
       if (System.currentTimeMillis() - lastTimer1 > 1000) {
@@ -136,7 +123,7 @@ public class Game implements Runnable {
 
 
   private void tick() {
-    for (Map map : world.world.values()){
+    for (Map map : Game.world.world.values()){
       map.tick();
     }
   }
