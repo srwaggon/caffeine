@@ -59,6 +59,7 @@ public class Client extends Thread {
     if (input.down.isPressed)  server.send("# "+id+" M S");
     if (input.left.isPressed)  server.send("# "+id+" M W");
     if (input.jump.clicked)    server.send("# "+id+" J");
+    if (input.use.clicked)     server.send("# "+id+" U");
   }
 
   public void finalize(){

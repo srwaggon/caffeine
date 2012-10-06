@@ -29,10 +29,11 @@ public class Mob extends Entity {
   protected List<Item> inventory = new ArrayList<Item>();
 
 
-  public Mob() {
-    brain = new Brain(this);
+  public Mob(int id) {
+    super(id);
     xr = 4;
     yr = 4;
+    brain = new Brain(this);
   }
 
   public void tick() {
@@ -190,7 +191,7 @@ public class Mob extends Entity {
     Sound.ENEMY_DIE.play();
     drop(new Heart(5));
     remove();
-    new Mob().setMap(map);
+    new Mob(id).setMap(map);
   }
 
   public void drop(Item item){

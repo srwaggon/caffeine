@@ -35,24 +35,24 @@ public class Map {
 
   public static final String defaultMapData =
       "M 0 W 13 H 8 " +
-      "DDDDDDDDDDDDD" +
-      "D......m..mmD" +
-      "D.mmm####mmmD" +
-      "D.m~~~~##.m.D" +
-      "D.m~~#.##mm.D" +
-      "D~mmm###m.m.D" +
-      "D~~..mm....mD" +
-      "DDDDDDDDDDDDD";
+          "DDDDDDDDDDDDD" +
+          "D......m..mmD" +
+          "D.mmm####mmmD" +
+          "D.m~~~~##.m.D" +
+          "D.m~~#.##mm.D" +
+          "D~mmm###m.m.D" +
+          "D~~..mm....mD" +
+          "DDDDDDDDDDDDD";
 
   public Map(String data){
     Scanner scan = new Scanner(data);
-    
+
     scan.next(); // M - map id
     id = scan.nextInt();
-    
+
     scan.next(); // W - width
     numCols = scan.nextInt();
-    
+
     scan.next(); // H - height
     numRows = scan.nextInt();
 
@@ -71,7 +71,7 @@ public class Map {
     this.id = id;
     numCols = w;
     numRows = h;
-    
+
     map = new Tile[numCols][numRows];
 
     for (int i = 0; i < data.length(); i++){
@@ -161,8 +161,8 @@ public class Map {
 
   @Override
   public String toString() {
-    String s = "M " + id + " " + 
-        "W " + numCols + " " + 
+    String s = "M " + id + " " +
+        "W " + numCols + " " +
         "H " + numRows + " ";
     for (int y = 0; y < numRows; y++){
       for (int x = 0; x < numCols; x++){
@@ -171,7 +171,7 @@ public class Map {
     }
     s += "\n";
     for(Entity e : entities()){
-      s += e.toString();
+      s += e.toString() + "\n";
     }
     return s;
   }
@@ -201,7 +201,7 @@ public class Map {
     entities.add(e);
     e.setMap(this);
   }
-  
+
   public boolean removeEntity(int id) {
     Entity e = getEntityByID(id);
     if(e != null){
@@ -210,7 +210,7 @@ public class Map {
     }
     return false;
   }
-  
+
   public Entity getEntityByID(int id){
     for(int i = 0; i < entities.size(); i++){
       Entity e = entities.get(i);
@@ -238,6 +238,26 @@ public class Map {
     return backgroundSprite;
   }
 
+  public void read(String data){
+    Scanner scan = new Scanner(data);
 
+    scan.next(); // M - map id
+    id = scan.nextInt();
+
+    scan.next(); // W - width
+    numCols = scan.nextInt();
+
+    scan.next(); // H - height
+    numRows = scan.nextInt();
+
+    data = scan.next();
+
+    for (int i = 0; i < data.length(); i++) {
+      int x = i % numCols;
+      int y = i / numCols;
+      Tile t = Tile.read(x, y, data.charAt(i));
+      map[x][y] = t;
+    }
+  }
 
 }

@@ -23,11 +23,11 @@ public class Entity {
   protected boolean removed = false;
 
   protected int mapID = 0;
-  protected int x = 32;
-  protected int y = 32;
-  protected int z;
-  protected int xr = 2;
-  protected int yr = 2;
+  protected int x  = 32;
+  protected int y  = 32;
+  protected int z  =  0;
+  protected int xr =  2;
+  protected int yr =  2;
   protected int sprite = 128;
   protected int speed = 1;
 
@@ -210,7 +210,8 @@ public class Entity {
   public String toString() {
     return "# " + id +
         " X " + x +
-        " Y " + y + "\n";
+        " Y " + y +
+        " Z " + z;
   }
 
   @Override
