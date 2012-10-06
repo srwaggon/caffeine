@@ -11,6 +11,7 @@ import caffeine.world.Map;
 public class MsgHandler {
 
   public static boolean handle(String line, Game game){
+
     System.out.println(line);
     Scanner lineScanner = new Scanner(line);
 
@@ -38,6 +39,8 @@ public class MsgHandler {
         } else if (c == 'M') {
           Dir dir = Dir.valueOf(lineScanner.next());
           e.move(dir);
+        } else if (c == 'J') {
+          e.jump();
         }
         break;
       }
@@ -48,6 +51,7 @@ public class MsgHandler {
         break;
       }
     }
+
     return true;
   }
 }

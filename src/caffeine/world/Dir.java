@@ -68,7 +68,7 @@ public enum Dir {
   public String toString(){
     return name().substring(0,1);
   }
-  
+
   public static Dir whichDir(int xa, int ya){
     int absxa = Math.abs(xa);
     int absya = Math.abs(ya);
@@ -76,7 +76,6 @@ public enum Dir {
     if (ya < 0 && absxa < absya) return N;
     if (xa > 0 && absxa > absya) return E;
     if (ya > 0 && absxa < absya) return S;
-    //if (xa < 0 && absxa > absya) 
-      return W;
+    return W;
   }
 }

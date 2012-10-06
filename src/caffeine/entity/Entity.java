@@ -151,63 +151,65 @@ public class Entity {
     return Entity.numEntities;
   }
 
-  
+
   public boolean isValidTile(Tile tile) {
     return !tile.blocksNPC();
   }
 
-  
+
   /* ACCESSORS */
-  
+
   public Dir getDirection() { return dir; }
-  
+
   public int getHP() { return 0; }
-  
+
   public int getID() { return id; }
-  
+
   public Map getMap() { return map; }
-  
+
   public int getMapID() { return mapID; }
-  
+
   public int getSpeed() { return speed; }
-  
+
   public int getX() { return x; }
-  
+
   public int getY() { return y; }
-  
+
   public int getZ() { return z; }
-  
+
   public boolean isRemoved() { return removed; }
 
-  
+
   /* MUTATORS */
-  
+
+  public void jump() { };
+
   public void setDir(Dir dir) { this.dir = dir; }
-  
+
   public void setMap(Map map) { this.map = map; mapID = map.getID(); }
-  
+
   public void setMapID(int mapID) { this.mapID = mapID; }
-  
+
   public void setSprite(int sprite) { this.sprite = sprite; }
-  
+
   public void setX(int x) { this.x = x; }
-  
+
   public void setY(int y) { this.y = y; }
-  
+
   public void setZ(int z) { this.z = z; }
 
   public void remove() { removed = true; }
 
-  
-  
-  
+
+
+
   /* UTILITIES */
-  
-  
+
+
   @Override
   public String toString() {
     return "# " + id +
-        " X " + x + 
+        " X " + x +
         " Y " + y + "\n";
   }
 

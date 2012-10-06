@@ -1,21 +1,19 @@
 package caffeine.net;
 
 import java.util.HashMap;
-import java.util.Scanner;
 
 import caffeine.Game;
 import caffeine.entity.Entity;
 import caffeine.entity.Player;
 import caffeine.gfx.GUI;
 import caffeine.gfx.InputHandler;
-import caffeine.net.msg.MsgHandler;
 
-public class Client implements Runnable {
+public class Client extends Thread {
   protected int id;
   protected HashMap<Integer, Entity> entities = new HashMap<Integer, Entity>();
   protected Game game;
   protected GUI gui;
-  protected Connection host;
+  protected Connection server;
   protected InputHandler input;
 
   public static void main(String[] args) {
@@ -27,27 +25,25 @@ public class Client implements Runnable {
     id = (int) (Math.random()*99) + 1;
     game = new Game();
     input = new InputHandler();
-    host = new Connection(ip, port);
+    server = new Connection(ip, port);
     gui = new GUI("Caffeine Client");
     gui.addInputListener(input);
   }
 
-  public void start(){
-    host.send(new Player(id).toString());
-    new Thread(this).run();
-  }
-
   public void run() {
-    Scanner in = host.getScanner();
-    while (host.isConnected()) {
+
+    new ClientWorker(server, game).start();
+    server.send(new Player(id).toString());
+
+    while (server.isConnected()) {
+
       input.tick();
       processInput();
-      if (in.hasNextLine()) {
-        MsgHandler.handle(in.nextLine(), game);
-      }
-      //game.getMap(0).renderBackground(gui.screen);
+
+      game.getMap(0).renderBackground(gui.screen);
       game.getMap(0).renderSprites(gui.screen);
       gui.screen.render();
+
       try {
         Thread.sleep(10);
       } catch (InterruptedException e) {
@@ -58,22 +54,14 @@ public class Client implements Runnable {
   }
 
   public void processInput(){
-    if (input.up.isPressed) {
-      host.send("# "+id+" M N");
-    }
-    if (input.left.isPressed) {
-      host.send("# "+id+" M E");
-    }
-    if (input.down.isPressed) {
-      host.send("# "+id+" M S");
-    }
-    if (input.right.isPressed) {
-      host.send("# "+id+" M W");
-    }
-    host.send("\n");
+    if (input.up.isPressed)    server.send("# "+id+" M N");
+    if (input.right.isPressed) server.send("# "+id+" M E");
+    if (input.down.isPressed)  server.send("# "+id+" M S");
+    if (input.left.isPressed)  server.send("# "+id+" M W");
+    if (input.jump.clicked)    server.send("# "+id+" J");
   }
 
   public void finalize(){
-    host.disconnect();
+    server.disconnect();
   }
 }

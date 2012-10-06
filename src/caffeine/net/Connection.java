@@ -19,7 +19,6 @@ public class Connection {
       System.out.println("No I/O.");
       System.exit(-1);
     }
-    System.out.println("Connection established to " + socket);
   }
 
   public Connection(Socket _socket) {
@@ -31,7 +30,6 @@ public class Connection {
       System.out.println("No I/O.");
       System.exit(-1);
     }
-    System.out.println("Connection established to " + socket);
   }
 
   @Override
@@ -49,8 +47,12 @@ public class Connection {
     out.flush();
   }
 
-  public Scanner getScanner(){
-    return in;
+  public boolean hasNextLine(){
+    return in.hasNextLine();
+  }
+
+  public String nextLine(){
+    return in.nextLine();
   }
 
   public void disconnect() {

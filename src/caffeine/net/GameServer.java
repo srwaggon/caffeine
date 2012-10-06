@@ -7,20 +7,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import caffeine.Game;
-import caffeine.entity.Mob;
 import caffeine.net.msg.MsgHandler;
-import caffeine.world.Map;
 
 public class GameServer extends Thread {
   protected final int port;
   protected Game game;
   protected ServerSocket socket = null;
-  protected final List<ClientWorker> clients = new ArrayList<ClientWorker>();
+  protected final List<GameServerWorker> clients = new ArrayList<GameServerWorker>();
 
   public static void main(String args[]) {
     Game game = new Game();
-    game.addMap(new Map(Map.defaultMapData));
-    game.addEntity(new Mob(), game.getMap(0));
     game.start();
     GameServer gs = new GameServer(game, 4444);
     gs.run();
@@ -34,7 +30,6 @@ public class GameServer extends Thread {
       socket = new ServerSocket(port);
     } catch (IOException e) {
       System.out.println("Could not listen on port " + port);
-      game.stop();
       System.exit(-1);
     }
   }
@@ -43,17 +38,26 @@ public class GameServer extends Thread {
   public void run() {
     while (true) {
       try {
+        System.out.print("Awaiting connection...");
         addClientWorker(socket.accept());
       } catch (IOException e) {
         System.out.println("Accept failed: " + port);
-        e.printStackTrace();
-        System.exit(-1);
       }
-      try {
-        Thread.sleep(1000);
-      } catch (InterruptedException e) { e.printStackTrace(); }
     }
   }
+
+
+  public void addClientWorker(Socket client){
+    System.out.println("" + client.getInetAddress().toString() + ":"
+        + client.getPort() + " connecting.");
+
+    GameServerWorker worker = new GameServerWorker(this, client);
+    clients.add(worker);
+    worker.start();
+
+    broadcast(game.getMap(0).toString());
+  }
+
 
 
   public synchronized void handle(String msg) {
@@ -70,18 +74,7 @@ public class GameServer extends Thread {
   }
 
 
-  public void addClientWorker(Socket client){
-    System.out.println("" + client.getInetAddress().toString() + ":"
-        + client.getPort() + " connecting");
-
-    ClientWorker worker = new ClientWorker(this, client);
-    clients.add(worker);
-    Thread t = new Thread(worker);
-    t.start();
-    broadcast(game.getMap(0).toString());
-  }
-
-  public List<ClientWorker> clients() {
+  public List<GameServerWorker> clients() {
     return clients;
   }
 
@@ -98,7 +91,7 @@ public class GameServer extends Thread {
     }
   }
 
-  public synchronized void remove(ClientWorker client) {
+  public synchronized void remove(GameServerWorker client) {
     clients.remove(client);
   }
 

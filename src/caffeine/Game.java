@@ -23,12 +23,11 @@ public class Game implements Runnable {
   protected static final HashMap<Integer, Entity> entities = new HashMap<Integer, Entity>();
   protected static GUI gui;
 
-
-
-  /* MAIN METHOD */
-
-
-  public Game() { }
+  public Game() {
+    Map map = new Map(Map.defaultMapData);
+    //addEntity(new Mob(), map);
+    addMap(map);
+  }
 
 
   /* ACCESSORS */
@@ -66,16 +65,11 @@ public class Game implements Runnable {
 
 
   /* UTILITY */
-
-
   public void start() {
     Game.gui = new GUI("Caffeine Server"); // Light
     new Thread(this).start();
   }
 
-  public void stop(){
-    System.exit(-1);
-  }
 
   public void run() {
     long lastTime = System.nanoTime();
