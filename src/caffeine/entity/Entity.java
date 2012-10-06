@@ -22,10 +22,13 @@ public class Entity {
   protected int id = Entity.numEntities++;
   protected boolean removed = false;
 
-  protected int x = 32, y = 32, z;
+  protected int mapID = 0;
+  protected int x = 32;
+  protected int y = 32;
+  protected int z;
   protected int xr = 2;
   protected int yr = 2;
-  public int sprite = 128;
+  protected int sprite = 128;
   protected int speed = 1;
 
   /* object fields */
@@ -105,8 +108,8 @@ public class Entity {
   }
 
   public void moveTo(int x, int y){
-    x = x;
-    y = y;
+    this.x = x;
+    this.y = y;
   }
 
   public void heal(int n){
@@ -164,6 +167,8 @@ public class Entity {
   
   public Map getMap() { return map; }
   
+  public int getMapID() { return mapID; }
+  
   public int getSpeed() { return speed; }
   
   public int getX() { return x; }
@@ -179,15 +184,17 @@ public class Entity {
   
   public void setDir(Dir dir) { this.dir = dir; }
   
-  public void setMap(Map map) { this.map = map; }
+  public void setMap(Map map) { this.map = map; mapID = map.getID(); }
+  
+  public void setMapID(int mapID) { this.mapID = mapID; }
   
   public void setSprite(int sprite) { this.sprite = sprite; }
   
-  public void setX(int _x) { x = _x; }
+  public void setX(int x) { this.x = x; }
   
-  public void setY(int _y) { y = _y; }
+  public void setY(int y) { this.y = y; }
   
-  public void setZ(int _z) { z = _z; }
+  public void setZ(int z) { this.z = z; }
 
   public void remove() { removed = true; }
 
@@ -200,10 +207,8 @@ public class Entity {
   @Override
   public String toString() {
     return "# " + id +
-        " M " + map.getID() +
         " X " + x + 
-        " Y " + y + 
-        " Z " + z;
+        " Y " + y + "\n";
   }
 
   @Override

@@ -5,6 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import caffeine.Game;
 import caffeine.net.msg.MsgHandler;
@@ -23,6 +24,7 @@ public class GameServer extends Thread {
       socket = new ServerSocket(port);
     } catch (IOException e) {
       System.out.println("Could not listen on port " + port);
+      game.stop();
       System.exit(-1);
     }
   }
@@ -44,10 +46,9 @@ public class GameServer extends Thread {
   }
 
 
-  public synchronized void handle(String msg, byte id) {
-    MsgHandler.handle(id + " " + msg, game);
-    String reply = game.getCurrentMap().toString();
-    System.out.println(reply);
+  public synchronized void handle(Scanner scanner) {
+    MsgHandler.handle(scanner, game);
+    String reply = game.getMap(0).toString();
     broadcast(reply);
   }
 
@@ -67,6 +68,7 @@ public class GameServer extends Thread {
     clients.add(worker);
     Thread t = new Thread(worker);
     t.start();
+    broadcast(game.getMap(0).toString());
   }
 
   public List<ClientWorker> clients() {

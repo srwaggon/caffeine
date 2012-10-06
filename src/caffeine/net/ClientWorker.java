@@ -1,24 +1,21 @@
 package caffeine.net;
 
 import java.net.Socket;
+import java.util.Scanner;
 
 public class ClientWorker extends Thread {
-  protected static byte numWorkers = 0;
-  protected byte id;
+  protected static byte numWorkers = 1;
   protected final Connection client;
   protected final GameServer server;
 
 
 
   public ClientWorker(GameServer _server, Socket _client) {
-    id = numWorkers++;
     server = _server;
     client = new Connection(_client);
-    server.handle("H", id);
   }
 
   public void disconnect(){
-    server.handle("x", id);
     server.remove(this);
     client.disconnect();
   }
@@ -26,8 +23,9 @@ public class ClientWorker extends Thread {
 
   @Override
   public void run() {
+    Scanner in = client.getScanner();
     while (client.isConnected()) {
-      server.handle(client.read(), id);
+      server.handle(in);
       try {
         Thread.sleep(10);
       } catch (InterruptedException e) { e.printStackTrace(); }

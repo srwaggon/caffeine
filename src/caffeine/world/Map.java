@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Scanner;
 
 import caffeine.entity.Entity;
 import caffeine.entity.ItemEntity;
@@ -12,11 +13,10 @@ import caffeine.world.tile.Tile;
 
 public class Map {
   protected List<Entity> entities = new ArrayList<Entity>();
-  private static int numMaps = 0;
   protected int backgroundSprite = 4;
   protected int id;
   protected int numRows, numCols;
-  public static int tileSize = 16;
+  public final static int tileSize = 16;
   protected Tile[][] map;
 
   public static Comparator<Entity> spriteSorter = new Comparator<Entity>(){
@@ -33,35 +33,45 @@ public class Map {
 
   };
 
-  public static final String[] defaultMapData = {
-    "DDDDDDDDDDDDD",
-    "D......m..mmD",
-    "D.mmm####mmmD",
-    "D.m~~~~##.m.D",
-    "D.m~~#.##mm.D",
-    "D~mmm###m.m.D",
-    "D~~..mm....mD",
-    "DDDDDDDDDDDDD"
-  };
+  public static final String defaultMapData =
+      "M 0 W 13 H 8 " +
+      "DDDDDDDDDDDDD" +
+      "D......m..mmD" +
+      "D.mmm####mmmD" +
+      "D.m~~~~##.m.D" +
+      "D.m~~#.##mm.D" +
+      "D~mmm###m.m.D" +
+      "D~~..mm....mD" +
+      "DDDDDDDDDDDDD";
 
-  public Map(String[] data){
-    id = Map.numMaps++;
+  public Map(String data){
+    Scanner scan = new Scanner(data);
+    
+    scan.next(); // M - map id
+    id = scan.nextInt();
+    
+    scan.next(); // W - width
+    numCols = scan.nextInt();
+    
+    scan.next(); // H - height
+    numRows = scan.nextInt();
 
-    numRows = data.length;
-    numCols = data[0].length();
+    data = scan.next();
     map = new Tile[numCols][numRows];
 
-    for (int y = 0; y < data.length; y++)
-      for (int x = 0; x < data[y].length(); x++){
-        Tile t = Tile.read(x, y, data[y].charAt(x));
-        map[x][y] = t;
-      }
+    for (int i = 0; i < data.length(); i++) {
+      int x = i % numCols;
+      int y = i / numCols;
+      Tile t = Tile.read(x, y, data.charAt(i));
+      map[x][y] = t;
+    }
   }
 
-  public Map(int w, int h, int ts, String data){
+  public Map(int id, int w, int h, String data){
+    this.id = id;
     numCols = w;
     numRows = h;
-    tileSize = ts;
+    
     map = new Tile[numCols][numRows];
 
     for (int i = 0; i < data.length(); i++){
@@ -151,10 +161,9 @@ public class Map {
 
   @Override
   public String toString() {
-    String s = "map ";
-    s += "W " + numCols + " ";
-    s += "H " + numRows + " ";
-    s += "S " + Map.tileSize + " ";
+    String s = "M " + id + " " + 
+        "W " + numCols + " " + 
+        "H " + numRows + " ";
     for (int y = 0; y < numRows; y++){
       for (int x = 0; x < numCols; x++){
         s += map[x][y];
@@ -192,7 +201,16 @@ public class Map {
     entities.add(e);
     e.setMap(this);
   }
-
+  
+  public boolean removeEntity(int id) {
+    Entity e = getEntityByID(id);
+    if(e != null){
+      e.remove();
+      return true;
+    }
+    return false;
+  }
+  
   public Entity getEntityByID(int id){
     for(int i = 0; i < entities.size(); i++){
       Entity e = entities.get(i);
@@ -203,14 +221,6 @@ public class Map {
     return null;
   }
 
-  public boolean removeEntity(int id) {
-    Entity e = getEntityByID(id);
-    if(e != null){
-      e.remove();
-      return true;
-    }
-    return false;
-  }
 
   public Entity getEntity(int id) {
     return entities.get(id);

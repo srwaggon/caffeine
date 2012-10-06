@@ -4,56 +4,56 @@ import java.util.Scanner;
 
 import caffeine.Game;
 import caffeine.entity.Entity;
-import caffeine.entity.Player;
 import caffeine.world.Dir;
 import caffeine.world.Map;
 
 
 public class MsgHandler {
 
-  public static boolean handle(String msg, Game game){
-    Scanner scanner = new Scanner(msg);
+  public static boolean handle(Scanner scanner, Game game){
 
-    int id = scanner.nextInt();
-    Entity entity = game.getEntity(id);
-
-    String word = scanner.next();
-    char c = word.charAt(0);
-
-    if (word.equals("map")){
-      scanner.next();
-      int w = scanner.nextInt();
-      int h = scanner.nextInt();
-      int ts = scanner.nextInt();
-      String mapData = scanner.next();
-      game.addMap(new Map(w, h, ts, mapData));
+    while (scanner.hasNextLine()) {
+      
+      String line = scanner.nextLine();
+      System.out.println(line);
+      
+      Scanner lineScanner = new Scanner(line);
+      
+      while(lineScanner.hasNext()) {
+        String word = lineScanner.next();
+        char c = line.charAt(0);
+      
+        // Entity 
+        if (c == '#'){
+          int id = lineScanner.nextInt();
+          
+          Entity e;
+          if ((e = game.getEntity(id)) == null){
+            e = new Entity(id);
+            game.addEntity( e, e.getMapID());
+          }
+          
+          word = lineScanner.next();
+          c = word.charAt(0);
+          if (c == 'X') {
+            e.setX(lineScanner.nextInt());
+            
+            lineScanner.next(); // Y
+            e.setY(lineScanner.nextInt());
+          } else if (c == 'M') {
+            Dir dir = Dir.valueOf(lineScanner.next());
+            e.move(dir);
+          }
+          break;
+        }
+        
+        // Map
+        if (word.equals("M")){
+          game.addMap(new Map(line));
+          break;
+        }
+      }
     }
-
-    if (c == 'M'){
-      word = scanner.next();
-      c = word.charAt(0);
-
-      Dir dir = Dir.valueOf("" + c);
-      System.out.println(dir);
-    }
-
-    if (c == 'H'){
-      game.addEntity(new Player(id), 0); // TODO: magic #
-    }
-
-    if (c == 'x'){
-      entity.remove();
-    }
-
     return true;
-  }
-  
-  public static Entity parseEntity(Scanner scanner){
-    int id = scanner.nextInt();
-    Entity e = new Entity(id);
-    e.setX(scanner.nextInt());
-    e.setY(scanner.nextInt());
-    e.setZ(scanner.nextInt());
-    return e;
   }
 }

@@ -24,8 +24,7 @@ public class Game implements Runnable {
   protected int port = 4444;
   protected static final World world = new World(); // Space
   protected static final HashMap<Integer, Entity> entities = new HashMap<Integer, Entity>();
-  protected static final GUI gui = new GUI("Caffeine Server"); // Light
-  protected Map currentMap;
+  protected static GUI gui; 
 
 
 
@@ -35,19 +34,19 @@ public class Game implements Runnable {
   public static void main(String args[]) {
     Game game = new Game();
     game.addMap(new Map(Map.defaultMapData));
-    game.addEntity(new Mob(), game.getCurrentMap());
+    game.addEntity(new Mob(), game.getMap(0));
     game.start();
   }
 
 
-
+  public Game() { }
 
 
   /* ACCESSORS */
 
 
-  public Map getCurrentMap() {
-    return world.getMap(0);
+  public Map getMap(int id) {
+    return world.getMap(id);
   }
 
   public Entity getEntity(int id) {
@@ -81,9 +80,14 @@ public class Game implements Runnable {
 
 
   public void start() {
+    gui = new GUI("Caffeine Server"); // Light
     new Thread(this).start();
     GameServer gs = new GameServer(this, port);
     gs.run();
+  }
+  
+  public void stop(){
+    System.exit(-1);
   }
 
   public void run() {
@@ -115,7 +119,7 @@ public class Game implements Runnable {
       if (shouldRender) {
         frames++;
 
-        Map map = getCurrentMap();
+        Map map = getMap(0);
         map.renderBackground(gui.screen);
         map.renderSprites(gui.screen);
         gui.screen.render();
