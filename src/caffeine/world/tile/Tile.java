@@ -73,10 +73,13 @@ public class Tile {
     if (tileObject != null) {
       tileObject.interact(entity, item, dir);
 
-      if (tileObject.isRemoved()){
-        if (tileObject.itemDropped())
+      if (tileObject.isRemoved()) {
+        if (tileObject.itemDropped()) {
           // TODO: change magic numbers:
-          new ItemEntity(item).moveTo(x*Map.tileSize + 8, y*Map.tileSize + 8);
+          Entity ie = new ItemEntity(item);
+          entity.getMap().addEntity(ie);
+          ie.moveTo(x*Map.tileSize + 8, y*Map.tileSize + 8);
+        }
         tileObject = null;
       }
     }

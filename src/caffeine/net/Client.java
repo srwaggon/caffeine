@@ -36,7 +36,7 @@ public class Client extends Thread {
     server.send(new Player(id).toString());
 
     while (server.isConnected()) {
-
+      game.tick();
       input.tick();
       processInput();
 

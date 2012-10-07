@@ -120,8 +120,7 @@ public class Entity {
   }
 
   public final void render(Screen screen) {
-    screen.render(sprite, x - Map.tileSize / 2, y - Map.tileSize / 2
-        - z);
+    screen.render(sprite, x - Map.tileSize / 2, y - Map.tileSize / 2 - z);
   }
 
   public boolean intersects(int x0, int y0, int x1, int y1) {

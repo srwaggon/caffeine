@@ -116,7 +116,7 @@ public class Game implements Runnable {
   }
 
 
-  private void tick() {
+  public void tick() {
     for (Map map : Game.world.world.values()){
       map.tick();
     }

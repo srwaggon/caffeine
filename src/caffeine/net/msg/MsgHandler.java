@@ -12,7 +12,7 @@ public class MsgHandler {
 
   public static boolean handle(String line, Game game){
 
-    System.out.println(line);
+    //System.out.println(line);
     Scanner lineScanner = new Scanner(line);
 
     while(lineScanner.hasNext()) {
@@ -59,7 +59,7 @@ public class MsgHandler {
           map = new Map(line);
           game.addMap(map);
         } else {
-          map.read(line);
+          //map.read(line);
         }
         break;
       }

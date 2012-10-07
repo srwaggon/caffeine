@@ -31,8 +31,8 @@ public class Mob extends Entity {
 
   public Mob(int id) {
     super(id);
-    xr = 4;
-    yr = 4;
+    xr = 3;
+    yr = 3;
     brain = new Brain(this);
   }
 
@@ -86,8 +86,6 @@ public class Mob extends Entity {
       hurt(x - range, y - range / 2, x - xr, y + range / 2);
     if (dir == Dir.E)
       hurt(x + xr, y - range / 2, x + range, y + range / 2);
-
-    rightHand.playUseSound();
   }
 
   public void heal(int n){
@@ -160,6 +158,9 @@ public class Mob extends Entity {
   }
 
   public boolean useLeftHand() {
+    if (leftHand != null) {
+      leftHand.playUseSound();
+    }
     return true;
   }
 
@@ -177,6 +178,7 @@ public class Mob extends Entity {
       if (rightHand.getType() == ItemType.weapon) {
         attack();
       }
+      rightHand.playUseSound();
     }
 
     return true;
