@@ -35,17 +35,29 @@ public class Client extends Thread {
     new ClientWorker(server, game).start();
     server.send(new Player(id).toString());
 
+    final double nsPerTick = 1000000000.0 / 60;
+    long now, lastTime = System.nanoTime();
+    double unprocessed = 0;
+
+
     while (server.isConnected()) {
-      game.tick();
-      input.tick();
-      processInput();
+      now = System.nanoTime();
+      unprocessed += (now - lastTime) / nsPerTick;
+      lastTime = now;
+
+      while (unprocessed >= 1) {
+        game.tick();
+        input.tick();
+        processInput();
+        unprocessed -= 1;
+      }
 
       game.getMap(0).renderBackground(gui.screen);
       game.getMap(0).renderSprites(gui.screen);
       gui.screen.render();
 
       try {
-        Thread.sleep(10);
+        Thread.sleep(2);
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
@@ -54,12 +66,24 @@ public class Client extends Thread {
   }
 
   public void processInput(){
-    if (input.up.isPressed)    server.send("# "+id+" M N");
-    if (input.right.isPressed) server.send("# "+id+" M E");
-    if (input.down.isPressed)  server.send("# "+id+" M S");
-    if (input.left.isPressed)  server.send("# "+id+" M W");
-    if (input.jump.clicked)    server.send("# "+id+" J");
-    if (input.use.clicked)     server.send("# "+id+" U");
+    if (input.up.isPressed) {
+      server.send("# "+id+" M N");
+    }
+    if (input.right.isPressed) {
+      server.send("# "+id+" M E");
+    }
+    if (input.down.isPressed) {
+      server.send("# "+id+" M S");
+    }
+    if (input.left.isPressed) {
+      server.send("# "+id+" M W");
+    }
+    if (input.jump.clicked) {
+      server.send("# "+id+" J");
+    }
+    if (input.use.clicked) {
+      server.send("# "+id+" U");
+    }
   }
 
   public void finalize(){

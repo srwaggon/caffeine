@@ -72,45 +72,29 @@ public class Game implements Runnable {
 
 
   public void run() {
-    long lastTime = System.nanoTime();
+    final double nsPerTick = 1000000000.0 / 60;
+    long now, lastTime = System.nanoTime();
     double unprocessed = 0;
-    double nsPerTick = 1000000000.0 / 60;
-    int frames = 0;
-    int ticks = 0;
-    long lastTimer1 = System.currentTimeMillis();
 
     while (true) {
-      long now = System.nanoTime();
+      now = System.nanoTime();
       unprocessed += (now - lastTime) / nsPerTick;
       lastTime = now;
-      boolean shouldRender = true;
+
       while (unprocessed >= 1) {
-        ticks++;
         tick();
         unprocessed -= 1;
-        shouldRender = true;
       }
+
+      Map map = getMap(0);
+      map.renderBackground(Game.gui.screen);
+      map.renderSprites(Game.gui.screen);
+      Game.gui.screen.render();
 
       try {
         Thread.sleep(2);
       } catch (InterruptedException e) {
         e.printStackTrace();
-      }
-
-      if (shouldRender) {
-        frames++;
-
-        Map map = getMap(0);
-        map.renderBackground(Game.gui.screen);
-        map.renderSprites(Game.gui.screen);
-        Game.gui.screen.render();
-      }
-
-      if (System.currentTimeMillis() - lastTimer1 > 1000) {
-        lastTimer1 += 1000;
-        //System.out.println(ticks + " ticks, " + frames + " fps");
-        frames = 0;
-        ticks = 0;
       }
     }
   }
