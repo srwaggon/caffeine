@@ -8,15 +8,12 @@ import caffeine.world.Dir;
 
 public abstract class TileObject {
 
-
-  public static final TileObject Bush = new Bush();
-
   protected boolean blocksPC;
   protected boolean blocksNPC;
   protected boolean isSafe;
   protected boolean removed;
   protected char symbol;
-  protected int sprite;
+  public int sprite;
   protected TileType type;
 
   public TileObject(TileType type, char symbol, int sprite, boolean blocksPC, boolean blocksNPC, boolean isSafe){
@@ -47,7 +44,7 @@ public abstract class TileObject {
   public abstract void dropItem();
 
   public boolean itemDropped() {
-    return true;
+    return false;
   }
 
 }

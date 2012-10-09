@@ -26,8 +26,8 @@ public class Entity {
   protected int x  = 32;
   protected int y  = 32;
   protected int z  =  0;
-  protected int xr =  2;
-  protected int yr =  2;
+  protected int xr =  3;
+  protected int yr =  3;
   protected int sprite = 128;
   protected int speed = 1;
 
@@ -47,8 +47,8 @@ public class Entity {
   }
 
   public boolean move(Dir dir){
-    boolean notStopped = move2(dir.dx() * speed, 0);
-    return notStopped && move2(0, dir.dy() * speed);
+    boolean notStopped = move2(dir.dx * speed, 0);
+    return notStopped && move2(0, dir.dy * speed);
   }
 
   public boolean move(int xa, int ya){
@@ -120,7 +120,7 @@ public class Entity {
   }
 
   public final void render(Screen screen) {
-    screen.render(sprite, x - Map.tileSize / 2, y - Map.tileSize / 2 - z);
+    screen.render(sprite, x - Map.tileSize/2, y - Map.tileSize/2 - z);
   }
 
   public boolean intersects(int x0, int y0, int x1, int y1) {
@@ -158,7 +158,7 @@ public class Entity {
 
   /* ACCESSORS */
 
-  public Dir getDirection() { return dir; }
+  public Dir getDir() { return dir; }
 
   public int getHP() { return 0; }
 

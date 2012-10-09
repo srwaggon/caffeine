@@ -18,7 +18,6 @@ public class Mob extends Entity {
   protected int hp = 3;
   protected int hurtTime;
   protected int power = 1;
-  protected int range = 8;
   protected int xKnockback, yKnockback;
   public int xa, ya, za = 0;
 
@@ -76,16 +75,43 @@ public class Mob extends Entity {
     return super.move(xa, ya);
   }
 
+  public void interact(int x0, int y0, int x1, int y1, Item item) {
+    List<Tile> tiles = getMap().getTiles(x0, y0, x1, y1);
+    for(Tile tile : tiles) {
+      tile.interact(this, item, dir);
+    }
+  }
+
+  public boolean useLeftHand() {
+    if (leftHand != null) {
+      leftHand.playUseSound();
+    }
+    return true;
+  }
+
+  public boolean useRightHand() {
+    if (rightHand != null) {
+      if (dir == Dir.N) interact(x, y-(2*yr), x, y, rightHand);
+      if (dir == Dir.E) interact(x, y, x+(2*xr), y, rightHand);
+      if (dir == Dir.S) interact(x, y, x, y+(2*yr), rightHand);
+      if (dir == Dir.W) interact(x-(2*xr), y, x, y, rightHand);
+
+
+      if (rightHand.getType() == ItemType.weapon) {
+        attack();
+      }
+      rightHand.playUseSound();
+    }
+
+    return true;
+  }
+
   public void attack() {
     // use this entity's range to hurt the entities within a given proximity
-    if (dir == Dir.N)
-      hurt(x - range / 2, y - range, x + range / 2, y - yr);
-    if (dir == Dir.S)
-      hurt(x - range / 2, y + yr, x + range / 2, y + range);
-    if (dir == Dir.W)
-      hurt(x - range, y - range / 2, x - xr, y + range / 2);
-    if (dir == Dir.E)
-      hurt(x + xr, y - range / 2, x + range, y + range / 2);
+    if (dir == Dir.N) hurt(x, y-(2*yr), x, y);
+    if (dir == Dir.E) hurt(x, y, x+(2*xr), y);
+    if (dir == Dir.S) hurt(x, y, x, y+(2*yr));
+    if (dir == Dir.W) hurt(x-(2*xr), y, x, y);
   }
 
   public void heal(int n){
@@ -97,13 +123,6 @@ public class Mob extends Entity {
     for (Entity entity : entities)
       if (!entity.equals(this))
         entity.takeDamage(power, dir);
-  }
-
-  public void interact(int x0, int y0, int x1, int y1, Item item) {
-    List<Tile> tiles = getMap().getTiles(x0, y0, x1, y1);
-    for(Tile tile : tiles) {
-      tile.interact(this, item, dir);
-    }
   }
 
   public void jump() {
@@ -157,32 +176,6 @@ public class Mob extends Entity {
     return false;
   }
 
-  public boolean useLeftHand() {
-    if (leftHand != null) {
-      leftHand.playUseSound();
-    }
-    return true;
-  }
-
-  public boolean useRightHand() {
-    if (rightHand != null) {
-      if (dir == Dir.N)
-        interact(x - range / 2, y - range, x + range / 2, y - yr, rightHand);
-      if (dir == Dir.S)
-        interact(x - range / 2, y + yr, x + range / 2, y + range, rightHand);
-      if (dir == Dir.W)
-        interact(x - range, y - range / 2, x - xr, y + range / 2, rightHand);
-      if (dir == Dir.E)
-        interact(x + xr, y - range / 2, x + range, y + range / 2, rightHand);
-
-      if (rightHand.getType() == ItemType.weapon) {
-        attack();
-      }
-      rightHand.playUseSound();
-    }
-
-    return true;
-  }
 
   public boolean isAlive() {
     return isAlive;

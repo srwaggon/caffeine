@@ -8,7 +8,7 @@ public class StraightBrain extends Brain {
   private int timetick = 0;
   public StraightBrain(Mob self) {
     super(self);
-    forward = self.getDirection();
+    forward = self.getDir();
   }
 
   public void setForward(Dir dir) {

@@ -67,9 +67,11 @@ public class Tile {
 
   }
 
-  public void onEnter(Entity entity) { }
+  public void onEnter(Entity entity) {
+  }
 
   public boolean interact(Entity entity, Item item, Dir dir) {
+    //type = TileType.nil;
     if (tileObject != null) {
       tileObject.interact(entity, item, dir);
 
