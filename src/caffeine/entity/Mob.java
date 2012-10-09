@@ -13,6 +13,8 @@ import caffeine.world.Dir;
 import caffeine.world.tile.Tile;
 
 public class Mob extends Entity {
+
+  // primitive Fields
   protected boolean flip = false;
   protected boolean isAlive = true;
   protected int hp = 3;
@@ -22,10 +24,10 @@ public class Mob extends Entity {
   public int xa, ya, za = 0;
 
   // Object Fields
-  protected Brain brain;
-  protected Item leftHand;
-  protected Item rightHand = new Sword();
-  protected List<Item> inventory = new ArrayList<Item>();
+  protected transient Brain brain;
+  protected transient Item leftHand;
+  protected transient Item rightHand = new Sword();
+  protected transient List<Item> inventory = new ArrayList<Item>();
 
 
   public Mob(int id) {

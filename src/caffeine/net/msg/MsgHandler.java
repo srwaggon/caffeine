@@ -3,7 +3,7 @@ package caffeine.net.msg;
 import java.util.Scanner;
 
 import caffeine.Game;
-import caffeine.entity.Player;
+import caffeine.entity.PlayerEntity;
 import caffeine.world.Dir;
 import caffeine.world.Map;
 
@@ -23,9 +23,9 @@ public class MsgHandler {
       if (c == '#'){
         int id = lineScanner.nextInt();
 
-        Player playerEntity;
-        if ((playerEntity = ((Player) game.getEntity(id))) == null){
-          playerEntity = new Player(id);
+        PlayerEntity playerEntity;
+        if ((playerEntity = ((PlayerEntity) game.getEntity(id))) == null){
+          playerEntity = new PlayerEntity(id);
           game.addEntity( playerEntity, playerEntity.getMapID());
         }
 

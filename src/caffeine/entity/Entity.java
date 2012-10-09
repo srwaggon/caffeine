@@ -1,5 +1,6 @@
 package caffeine.entity;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
@@ -15,25 +16,24 @@ import caffeine.world.tile.Tile;
  * @author srwaggon
  * 
  */
-public class Entity {
+public class Entity implements Serializable {
   /* static fields */
   protected static int numEntities = 0;
   /* primitive fields */
-  protected int id = Entity.numEntities++;
   protected boolean removed = false;
-
+  protected int id = Entity.numEntities++;
   protected int mapID = 0;
+  protected int speed = 1;
+  protected int sprite = 128;
   protected int x  = 32;
   protected int y  = 32;
   protected int z  =  0;
   protected int xr =  3;
   protected int yr =  3;
-  protected int sprite = 128;
-  protected int speed = 1;
 
-  /* object fields */
+  /* Object fields */
   protected Dir dir = Dir.S;
-  protected Map map;
+  protected transient Map map;
 
   /* CONSTRUCTORS */
   public Entity() {

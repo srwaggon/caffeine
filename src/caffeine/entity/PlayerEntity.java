@@ -2,9 +2,9 @@ package caffeine.entity;
 
 
 
-public class Player extends Mob{
+public class PlayerEntity extends Mob{
 
-  public Player(int id){
+  public PlayerEntity(int id){
     super(id);
   }
 

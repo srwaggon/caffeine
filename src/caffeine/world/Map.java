@@ -1,5 +1,6 @@
 package caffeine.world;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -11,13 +12,17 @@ import caffeine.entity.ItemEntity;
 import caffeine.gfx.Screen;
 import caffeine.world.tile.Tile;
 
-public class Map {
-  protected List<Entity> entities = new ArrayList<Entity>();
+public class Map implements Serializable {
+
+  // primitive Fields
   protected int backgroundSprite = 4;
   protected int id;
   protected int numRows, numCols;
   public final static int tileSize = 16;
   protected Tile[][] map;
+
+  // Object Fields
+  protected transient List<Entity> entities = new ArrayList<Entity>();
 
   public static Comparator<Entity> spriteSorter = new Comparator<Entity>(){
     @Override
@@ -44,6 +49,8 @@ public class Map {
           "D~~..mm....mD" +
           "DDDDDDDDDDDDD";
 
+
+  /* CONSTRUCTORS */
   public Map(String data){
     Scanner scan = new Scanner(data);
 
@@ -122,8 +129,8 @@ public class Map {
 
   public List<Tile> getTiles(int x0, int y0, int x1, int y1) {
     List<Tile> result = new ArrayList<Tile>();
-    for (int j = y0 / tileSize * tileSize; j <= y1; j += tileSize)
-      for (int i = x0 / tileSize * tileSize; i <= x1; i += tileSize)
+    for (int j = y0 / Map.tileSize * Map.tileSize; j <= y1; j += Map.tileSize)
+      for (int i = x0 / Map.tileSize * Map.tileSize; i <= x1; i += Map.tileSize)
         if (isValidLoc(i, j))
           result.add(getTileAt(i, j));
     return result;
@@ -180,14 +187,14 @@ public class Map {
     for(int x = 0; x < numCols; x++)
       for(int y = 0; y < numRows; y++){
         Tile tile = map[x][y];
-        tile.render(screen, this, x*tileSize, y* tileSize);
+        tile.render(screen, this, x*Map.tileSize, y* Map.tileSize);
       }
   }
 
   public void renderSprites(Screen screen){
     List<Entity> sprites = new ArrayList<Entity>();
     sprites.addAll(entities());
-    Collections.sort(sprites, spriteSorter);
+    Collections.sort(sprites, Map.spriteSorter);
     for (Entity e : sprites) {
       e.render(screen);
     }

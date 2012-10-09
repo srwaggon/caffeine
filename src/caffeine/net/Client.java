@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 import caffeine.Game;
 import caffeine.entity.Entity;
-import caffeine.entity.Player;
 import caffeine.gfx.GUI;
 import caffeine.gfx.InputHandler;
 
@@ -33,7 +32,7 @@ public class Client extends Thread {
   public void run() {
 
     new ClientWorker(server, game).start();
-    server.send(new Player(id).toString());
+    server.send("fnar");
 
     final double nsPerTick = 1000000000.0 / 60;
     long now, lastTime = System.nanoTime();
