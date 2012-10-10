@@ -55,7 +55,7 @@ public class Game implements Runnable {
   }
 
   public void addEntity(Entity e, Map map){
-    Game.entities.put(e.getID(), e);
+    Game.entities.put(e.ID, e);
     map.addEntity(e);
   }
 

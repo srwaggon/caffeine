@@ -7,7 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import caffeine.Game;
+import caffeine.Player;
+import caffeine.entity.PlayerEntity;
 import caffeine.net.msg.MsgHandler;
+import caffeine.world.Map;
 
 public class GameServer extends Thread {
   protected final int port;
@@ -47,22 +50,32 @@ public class GameServer extends Thread {
   }
 
 
-  public void addClientWorker(Socket client){
-    System.out.println("" + client.getInetAddress().toString() + ":"
-        + client.getPort() + " connecting.");
+  public void addClientWorker(Socket socket) {
+    System.out.println(socket.getInetAddress().toString() + " connecting.");
+    Connection client = new Connection(socket);
 
-    GameServerWorker worker = new GameServerWorker(this, client);
-    clients.add(worker);
+    // Load the connecting player's account.
+    String account = client.read();
+    Player player = Player.loadPlayer(account);
+    client.send("" + player.ID);
+
+    // Add his piece to the game.
+    PlayerEntity entity = player.getEntity();
+    game.addEntity(entity, entity.getMapID());
+
+
+    Map map = game.getMap(entity.getMapID());
+    client.send(map.toString());
+
+    // Create a liason.
+    GameServerWorker worker = new GameServerWorker(this, client, player);
+    clients.add( worker );
     worker.start();
-
-    broadcast(game.getMap(0).toString());
   }
-
 
 
   public synchronized void handle(String msg) {
     MsgHandler.handle(msg, game);
-    broadcast(msg);
   }
 
 

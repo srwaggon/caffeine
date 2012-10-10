@@ -14,10 +14,10 @@ public class ClientWorker extends Thread {
 
   public void run() {
     while (server.isConnected()) {
-
-      if (server.hasNextLine()) {
-        MsgHandler.handle(server.nextLine(), game);
+      if (server.hasLine()) {
+        MsgHandler.handle(server.readLine(), game);
       }
+
       try {
         Thread.sleep(2);
       } catch (InterruptedException e) {

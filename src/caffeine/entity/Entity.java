@@ -21,7 +21,7 @@ public class Entity implements Serializable {
   protected static int numEntities = 0;
   /* primitive fields */
   protected boolean removed = false;
-  protected int id = Entity.numEntities++;
+  public final int ID;
   protected int mapID = 0;
   protected int speed = 1;
   protected int sprite = 128;
@@ -37,10 +37,12 @@ public class Entity implements Serializable {
 
   /* CONSTRUCTORS */
   public Entity() {
+    ID = Entity.numEntities++;
   }
 
   public Entity(int id){
-    this.id = id;
+    ID = id;
+    Entity.numEntities++;
   }
 
   public void tick() {
@@ -162,8 +164,6 @@ public class Entity implements Serializable {
 
   public int getHP() { return 0; }
 
-  public int getID() { return id; }
-
   public Map getMap() { return map; }
 
   public int getMapID() { return mapID; }
@@ -207,7 +207,7 @@ public class Entity implements Serializable {
 
   @Override
   public String toString() {
-    return "# " + id +
+    return "# " + ID +
         " X " + x +
         " Y " + y +
         " Z " + z;

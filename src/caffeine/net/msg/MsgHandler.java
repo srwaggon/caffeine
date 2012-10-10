@@ -11,10 +11,9 @@ import caffeine.world.Map;
 public class MsgHandler {
 
   public static boolean handle(String line, Game game){
-
-    //System.out.println(line);
     Scanner lineScanner = new Scanner(line);
 
+    PlayerEntity playerEntity;
     while(lineScanner.hasNext()) {
       String word = lineScanner.next();
       char c = line.charAt(0);
@@ -23,7 +22,6 @@ public class MsgHandler {
       if (c == '#'){
         int id = lineScanner.nextInt();
 
-        PlayerEntity playerEntity;
         if ((playerEntity = ((PlayerEntity) game.getEntity(id))) == null){
           playerEntity = new PlayerEntity(id);
           game.addEntity( playerEntity, playerEntity.getMapID());

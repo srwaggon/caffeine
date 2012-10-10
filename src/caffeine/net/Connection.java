@@ -47,11 +47,19 @@ public class Connection {
     out.flush();
   }
 
-  public boolean hasNextLine(){
+  public boolean hasNext(){
+    return in.hasNext();
+  }
+
+  public boolean hasLine(){
     return in.hasNextLine();
   }
 
-  public String nextLine(){
+  public String read() {
+    return in.next();
+  }
+
+  public String readLine(){
     return in.nextLine();
   }
 
@@ -68,7 +76,7 @@ public class Connection {
   }
 
   public boolean isConnected() {
-    return  !socket.isClosed() && socket.isConnected();
+    return socket.isConnected() && !socket.isClosed();
   }
 
   @Override

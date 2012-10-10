@@ -176,9 +176,8 @@ public class Map implements Serializable {
         s += map[x][y];
       }
     }
-    s += "\n";
     for(Entity e : entities()){
-      s += e.toString() + "\n";
+      s += "\n" + e.toString();
     }
     return s;
   }
@@ -221,7 +220,7 @@ public class Map implements Serializable {
   public Entity getEntityByID(int id){
     for(int i = 0; i < entities.size(); i++){
       Entity e = entities.get(i);
-      if (e.getID() == id){
+      if (e.ID == id){
         return e;
       }
     }

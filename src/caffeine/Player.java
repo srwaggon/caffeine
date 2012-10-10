@@ -8,17 +8,20 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 import caffeine.entity.PlayerEntity;
+import caffeine.entity.brain.Brain;
 
 public class Player implements Serializable {
 
   private static final long serialVersionUID = 3331067126219468538L;
+  public final int ID;
   protected static final String FILE_EXT = ".caf";
   protected String name;
-  protected PlayerEntity pe;
+  protected PlayerEntity entity;
 
   public Player(String name, PlayerEntity pe) {
+    ID = pe.ID;
     this.name = name;
-    this.pe = pe;
+    entity = pe;
   }
 
   public static void main(String[] args) {
@@ -29,11 +32,11 @@ public class Player implements Serializable {
     }
 
     PlayerEntity e = new PlayerEntity(((int) Math.random()*99) + 1);
-    Player p = new Player("fnar", e);
+    Player p = new Player(args[0], e);
     Player.savePlayer(p);
 
-    Player j = Player.loadPlayer("fnar");
-    System.out.println( j.toString() );
+    Player j = Player.loadPlayer(args[0]);
+    System.out.println( j.toString() + " created");
   }
 
   public static boolean savePlayer(Player p) {
@@ -59,6 +62,9 @@ public class Player implements Serializable {
           new FileInputStream(name + Player.FILE_EXT);
       ObjectInputStream in = new ObjectInputStream(fileIn);
       player = (Player) in.readObject();
+
+      player.entity.setBrain(new Brain(player.entity));
+
       in.close();
       fileIn.close();
     } catch(IOException i) {
@@ -68,6 +74,10 @@ public class Player implements Serializable {
       c.printStackTrace();
     }
     return player;
+  }
+
+  public PlayerEntity getEntity(){
+    return entity;
   }
 
   public String toString() {

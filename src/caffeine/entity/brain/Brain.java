@@ -7,8 +7,6 @@ public class Brain {
 
   public Brain(Mob self) {
     this.self = self;
-    self.setBrain(this);
-
   }
 
   public Mob getSelf() {
@@ -16,7 +14,6 @@ public class Brain {
   }
 
   public void tick() {
-
   }
 
 }

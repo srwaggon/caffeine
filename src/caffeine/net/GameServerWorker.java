@@ -1,15 +1,18 @@
 package caffeine.net;
 
-import java.net.Socket;
+import caffeine.Player;
+
 
 public class GameServerWorker extends Thread {
   protected static byte numWorkers = 1;
   protected final Connection client;
   protected final GameServer server;
+  protected final Player player;
 
-  public GameServerWorker(GameServer _server, Socket _client) {
-    server = _server;
-    client = new Connection(_client);
+  public GameServerWorker(GameServer server, Connection client, Player player) {
+    this.server = server;
+    this.client = client;
+    this.player = player;
   }
 
   public void disconnect(){
@@ -21,9 +24,10 @@ public class GameServerWorker extends Thread {
   @Override
   public void run() {
     while (client.isConnected()) {
-      if (client.hasNextLine()){
-        server.handle(client.nextLine());
+      if (client.hasLine()){
+        server.handle(client.readLine());
       }
+
       try {
         Thread.sleep(2);
       } catch (InterruptedException e) {

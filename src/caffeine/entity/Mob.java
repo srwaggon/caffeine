@@ -188,7 +188,7 @@ public class Mob extends Entity {
     Sound.ENEMY_DIE.play();
     drop(new Heart(5));
     remove();
-    new Mob(id).setMap(map);
+    new Mob(ID).setMap(map);
   }
 
   public void drop(Item item){
