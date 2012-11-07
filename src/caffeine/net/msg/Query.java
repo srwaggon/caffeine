@@ -1,9 +1,10 @@
 package caffeine.net.msg;
 
-public class Query implements Msg {
-  private String[] param;
+public class Query extends Msg {
+  private final String[] param;
 
   public Query(String request) {
+    super(request);
     param = request.split(" ");
   }
 

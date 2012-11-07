@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import caffeine.Game;
@@ -16,7 +17,7 @@ public class GameServer extends Thread {
   protected final int port;
   protected Game game;
   protected ServerSocket socket = null;
-  protected final List<GameServerWorker> clients = new ArrayList<GameServerWorker>();
+  protected HashMap<Map, ArrayList<GameServerWorker>> clients = new HashMap<Map, ArrayList<GameServerWorker>>();
 
   public static void main(String args[]) {
     Game game = new Game();
@@ -43,8 +44,12 @@ public class GameServer extends Thread {
       try {
         System.out.print("Awaiting connection...");
         addClientWorker(socket.accept());
-      } catch (IOException e) {
+        Thread.sleep(100);
+      } catch (IOException ioe) {
         System.out.println("Accept failed: " + port);
+        ioe.printStackTrace();
+      } catch (InterruptedException ie) {
+        ie.printStackTrace();
       }
     }
   }
@@ -63,31 +68,41 @@ public class GameServer extends Thread {
     PlayerEntity entity = player.getEntity();
     game.addEntity(entity, entity.getMapID());
 
-
     Map map = game.getMap(entity.getMapID());
     client.send(map.toString());
 
     // Create a liason.
     GameServerWorker worker = new GameServerWorker(this, client, player);
-    clients.add( worker );
+    subscribe(map, worker);
     worker.start();
   }
 
+
+  public void subscribe(Map map, GameServerWorker worker) {
+    // If there is no list of workers for this map yet, create one
+    if (!clients.containsKey(map)) {
+      clients.put(map, new ArrayList<GameServerWorker>());
+    }
+
+    // subscribe this worker to this map.
+    clients.get(map).add(worker);
+  }
+
+  public void unsubscribe(Map map, GameServerWorker worker) {
+    clients.get(map).remove(worker);
+  }
 
   public synchronized void handle(String msg) {
     MsgHandler.handle(msg, game);
   }
 
 
-  public void broadcast(String msg){
-    for(int i = 0; i < clients.size(); i++){
-      clients.get(i).send(msg);
+  public void broadcastToMap(Map map, String msg){
+    // tell all subscribers on that map
+    List<GameServerWorker> gswList = clients.get(map);
+    for(int i = 0; i < gswList.size(); i++){
+      gswList.get(i).send(msg);
     }
-  }
-
-
-  public List<GameServerWorker> clients() {
-    return clients;
   }
 
   protected void finalize() {

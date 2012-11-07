@@ -29,9 +29,6 @@ public class Client extends Thread {
     //server.readLine();
 
     new ClientWorker(server, game).start();
-
-
-
   }
 
   public void run() {

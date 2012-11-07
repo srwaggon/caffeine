@@ -45,8 +45,8 @@ public class Map implements Serializable {
           "D.mmm####mmmD" +
           "D.m~~~~##.m.D" +
           "D.m~~#.##mm.D" +
-          "D~mmm###m.m.D" +
-          "D~~..mm....mD" +
+          "D~~mm###m.m.D" +
+          "D~~..mm...mmD" +
           "DDDDDDDDDDDDD";
 
 
