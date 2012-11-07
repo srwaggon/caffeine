@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import caffeine.Game;
 import caffeine.entity.PlayerEntity;
+import caffeine.net.msg.cmd.MoveCmd;
 import caffeine.world.Dir;
 import caffeine.world.Map;
 
@@ -18,6 +19,7 @@ public class MsgHandler {
       String word = lineScanner.next();
       char c = line.charAt(0);
 
+      MoveCmd.execute(line, game);
       // Entity
       if (c == '#'){
         int id = lineScanner.nextInt();

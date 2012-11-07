@@ -1,6 +1,8 @@
 package caffeine.net.msg;
 
-public class Query extends Msg {
+import caffeine.Game;
+
+public class Query extends CMD {
   private final String[] param;
 
   public Query(String request) {
@@ -28,5 +30,11 @@ public class Query extends Msg {
       result += element + " ";
     }
     return result;
+  }
+
+  @Override
+  public boolean execute(String xpr, Game game) {
+    // TODO Auto-generated method stub
+    return false;
   }
 }

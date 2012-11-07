@@ -94,6 +94,7 @@ public class GameServer extends Thread {
 
   public synchronized void handle(String msg) {
     MsgHandler.handle(msg, game);
+    broadcastToMap(game.getMap(0), msg);
   }
 
 
