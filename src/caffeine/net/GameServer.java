@@ -8,8 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import caffeine.Game;
-import caffeine.Player;
 import caffeine.entity.PlayerEntity;
+import caffeine.net.accounts.PlayerAccount;
 import caffeine.net.msg.MsgHandler;
 import caffeine.world.Map;
 
@@ -38,7 +38,6 @@ public class GameServer extends Thread {
     }
   }
 
-
   public void run() {
     while (true) {
       try {
@@ -54,14 +53,20 @@ public class GameServer extends Thread {
     }
   }
 
-
   public void addClientWorker(Socket socket) {
     System.out.println(socket.getInetAddress().toString() + " connecting.");
     Connection client = new Connection(socket);
 
     // Load the connecting player's account.
     String account = client.read();
-    Player player = Player.loadPlayer(account);
+    String password = client.read();
+    PlayerAccount player = PlayerAccount.loadPlayer(account);
+
+    if (!player.authenticate(password)) {
+      client.send("authorization failed.");
+      client.disconnect();
+    }
+
     client.send("" + player.ID);
 
     // Add his piece to the game.
@@ -76,7 +81,6 @@ public class GameServer extends Thread {
     subscribe(map, worker);
     worker.start();
   }
-
 
   public void subscribe(Map map, GameServerWorker worker) {
     // If there is no list of workers for this map yet, create one
@@ -97,11 +101,10 @@ public class GameServer extends Thread {
     broadcastToMap(game.getMap(0), msg);
   }
 
-
-  public void broadcastToMap(Map map, String msg){
+  public void broadcastToMap(Map map, String msg) {
     // tell all subscribers on that map
     List<GameServerWorker> gswList = clients.get(map);
-    for(int i = 0; i < gswList.size(); i++){
+    for (int i = 0; i < gswList.size(); i++) {
       gswList.get(i).send(msg);
     }
   }

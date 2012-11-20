@@ -17,6 +17,7 @@ import caffeine.world.tile.Tile;
  * 
  */
 public class Entity implements Serializable {
+  private static final long serialVersionUID = 159464396047740407L;
   /* static fields */
   protected static int numEntities = 0;
   /* primitive fields */
@@ -25,11 +26,11 @@ public class Entity implements Serializable {
   protected int mapID = 0;
   protected int speed = 1;
   protected int sprite = 128;
-  protected int x  = 32;
-  protected int y  = 32;
-  protected int z  =  0;
-  protected int xr =  3;
-  protected int yr =  3;
+  protected int x = 32;
+  protected int y = 32;
+  protected int z = 0;
+  protected int xr = 3;
+  protected int yr = 3;
 
   /* Object fields */
   protected Dir dir = Dir.S;
@@ -40,7 +41,7 @@ public class Entity implements Serializable {
     ID = Entity.numEntities++;
   }
 
-  public Entity(int id){
+  public Entity(int id) {
     ID = id;
     Entity.numEntities++;
   }
@@ -48,12 +49,12 @@ public class Entity implements Serializable {
   public void tick() {
   }
 
-  public boolean move(Dir dir){
+  public boolean move(Dir dir) {
     boolean notStopped = move2(dir.dx * speed, 0);
     return notStopped && move2(0, dir.dy * speed);
   }
 
-  public boolean move(int xa, int ya){
+  public boolean move(int xa, int ya) {
     boolean notStopped = move2(xa, 0);
     return notStopped && move2(0, ya);
   }
@@ -61,7 +62,7 @@ public class Entity implements Serializable {
   public boolean move2(int xa, int ya) {
     Map map = getMap();
 
-    if (xa != 0 && ya != 0){
+    if (xa != 0 && ya != 0) {
       return false;
     }
 
@@ -102,19 +103,19 @@ public class Entity implements Serializable {
     x += xa;
     y += ya;
 
-    for (Tile t : nextTiles){
+    for (Tile t : nextTiles) {
       t.onEnter(this);
     }
 
     return true;
   }
 
-  public void moveTo(int x, int y){
+  public void moveTo(int x, int y) {
     this.x = x;
     this.y = y;
   }
 
-  public void heal(int n){
+  public void heal(int n) {
   }
 
   public boolean push(Entity pushee, int xa, int ya) {
@@ -122,95 +123,124 @@ public class Entity implements Serializable {
   }
 
   public final void render(Screen screen) {
-    screen.render(sprite, x - Map.tileSize/2, y - Map.tileSize/2 - z);
+    screen.render(sprite, x - Map.tileSize / 2, y - Map.tileSize / 2 - z);
   }
 
   public boolean intersects(int x0, int y0, int x1, int y1) {
-    return !(x + xr < x0 || y + yr < y0 || x - xr > x1 || y
-        - yr > y1);
+    return !(x + xr < x0 || y + yr < y0 || x - xr > x1 || y - yr > y1);
   }
 
   public boolean intersects(Entity e) {
     return !equals(e)
-        && intersects(e.getX() - e.xr, e.getY() - e.yr, e.getX() + e.xr, e.getY()
-            + e.yr);
+        && intersects(e.getX() - e.xr, e.getY() - e.yr, e.getX() + e.xr,
+            e.getY() + e.yr);
   }
 
-  public void knockback(int x, int y){ }
+  public void knockback(int x, int y) {
+  }
 
   public boolean touchedBy(Entity entity) {
     return true;
   }
 
-  public void takeDamage(int dmg) { }
+  public void takeDamage(int dmg) {
+  }
 
-  public void takeDamage(int dmg, Dir dir){ }
+  public void takeDamage(int dmg, Dir dir) {
+  }
 
-  public void takeItem(ItemEntity item) { }
+  public void takeItem(ItemEntity item) {
+  }
 
   public static int getPopulation() {
     return Entity.numEntities;
   }
 
-
   public boolean isValidTile(Tile tile) {
     return !tile.blocksNPC();
   }
 
-
   /* ACCESSORS */
 
-  public Dir getDir() { return dir; }
+  public Dir getDir() {
+    return dir;
+  }
 
-  public int getHP() { return 0; }
+  public int getHP() {
+    return 0;
+  }
 
-  public Map getMap() { return map; }
+  public Map getMap() {
+    return map;
+  }
 
-  public int getMapID() { return mapID; }
+  public int getMapID() {
+    return mapID;
+  }
 
-  public int getSpeed() { return speed; }
+  public int getSpeed() {
+    return speed;
+  }
 
-  public int getX() { return x; }
+  public int getX() {
+    return x;
+  }
 
-  public int getY() { return y; }
+  public int getY() {
+    return y;
+  }
 
-  public int getZ() { return z; }
+  public int getZ() {
+    return z;
+  }
 
-  public boolean isRemoved() { return removed; }
-
+  public boolean isRemoved() {
+    return removed;
+  }
 
   /* MUTATORS */
 
-  public void jump() { };
+  public void jump() {
+  };
 
-  public void setDir(Dir dir) { this.dir = dir; }
+  public void setDir(Dir dir) {
+    this.dir = dir;
+  }
 
-  public void setMap(Map map) { this.map = map; mapID = map.getID(); }
+  public void setMap(Map map) {
+    this.map = map;
+    mapID = map.getID();
+  }
 
-  public void setMapID(int mapID) { this.mapID = mapID; }
+  public void setMapID(int mapID) {
+    this.mapID = mapID;
+  }
 
-  public void setSprite(int sprite) { this.sprite = sprite; }
+  public void setSprite(int sprite) {
+    this.sprite = sprite;
+  }
 
-  public void setX(int x) { this.x = x; }
+  public void setX(int x) {
+    this.x = x;
+  }
 
-  public void setY(int y) { this.y = y; }
+  public void setY(int y) {
+    this.y = y;
+  }
 
-  public void setZ(int z) { this.z = z; }
+  public void setZ(int z) {
+    this.z = z;
+  }
 
-  public void remove() { removed = true; }
-
-
-
+  public void remove() {
+    removed = true;
+  }
 
   /* UTILITIES */
 
-
   @Override
   public String toString() {
-    return "# " + ID +
-        " X " + x +
-        " Y " + y +
-        " Z " + z;
+    return "# " + ID + " X " + x + " Y " + y + " Z " + z;
   }
 
   @Override

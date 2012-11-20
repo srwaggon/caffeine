@@ -1,15 +1,15 @@
 package caffeine.net;
 
-import caffeine.Player;
+import caffeine.net.accounts.PlayerAccount;
 
 
 public class GameServerWorker extends Thread {
   protected static byte numWorkers = 1;
   protected final Connection client;
   protected final GameServer server;
-  protected final Player player;
+  protected final PlayerAccount player;
 
-  public GameServerWorker(GameServer server, Connection client, Player player) {
+  public GameServerWorker(GameServer server, Connection client, PlayerAccount player) {
     this.server = server;
     this.client = client;
     this.player = player;

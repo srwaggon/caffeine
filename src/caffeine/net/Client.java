@@ -25,8 +25,9 @@ public class Client extends Thread {
     gui.addInputListener(input);
 
     server.send("fnar");
+    server.send("mucus");
     ID = server.readLine();
-    //server.readLine();
+    // server.readLine();
 
     new ClientWorker(server, game).start();
   }
@@ -36,7 +37,6 @@ public class Client extends Thread {
     final double nsPerTick = 1000000000.0 / 60;
     long now, lastTime = System.nanoTime();
     double unprocessed = 0;
-
 
     while (server.isConnected()) {
       now = System.nanoTime();
@@ -64,16 +64,22 @@ public class Client extends Thread {
     System.exit(0);
   }
 
-  public void processInput(){
-    if (input.up.isPressed)    server.send("# "+ID+" M N");
-    if (input.right.isPressed) server.send("# "+ID+" M E");
-    if (input.down.isPressed)  server.send("# "+ID+" M S");
-    if (input.left.isPressed)  server.send("# "+ID+" M W");
-    if (input.jump.clicked)    server.send( "# "+ID+" J" );
-    if (input.use.clicked)     server.send( "# "+ID+" U" );
+  public void processInput() {
+    if (input.up.isPressed)
+      server.send("# " + ID + " M N");
+    if (input.right.isPressed)
+      server.send("# " + ID + " M E");
+    if (input.down.isPressed)
+      server.send("# " + ID + " M S");
+    if (input.left.isPressed)
+      server.send("# " + ID + " M W");
+    if (input.jump.clicked)
+      server.send("# " + ID + " J");
+    if (input.use.clicked)
+      server.send("# " + ID + " U");
   }
 
-  public void finalize(){
+  public void finalize() {
     server.disconnect();
   }
 }
