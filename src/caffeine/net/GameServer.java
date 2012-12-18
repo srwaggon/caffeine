@@ -96,8 +96,8 @@ public class GameServer extends Thread {
     clients.get(map).remove(worker);
   }
 
-  public synchronized void handle(String msg) {
-    MsgHandler.handle(msg, game);
+  public synchronized void handle(Packet packet) {
+
     broadcastToMap(game.getMap(0), msg);
   }
 

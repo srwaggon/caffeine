@@ -25,9 +25,9 @@ public class Mob extends Entity {
 
   // Object Fields
   protected Brain brain;
-  protected transient Item leftHand;
-  protected transient Item rightHand = new Sword();
-  protected transient List<Item> inventory = new ArrayList<Item>();
+  protected Item leftHand;
+  protected Item rightHand = new Sword();
+  protected List<Item> inventory = new ArrayList<Item>();
 
   public Mob(int id) {
     super(id);
