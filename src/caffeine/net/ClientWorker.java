@@ -1,6 +1,6 @@
 package caffeine.net;
 import caffeine.Game;
-import caffeine.net.msg.MsgHandler;
+import caffeine.net.packet.Packet;
 
 public class ClientWorker extends Thread {
 
@@ -14,9 +14,10 @@ public class ClientWorker extends Thread {
 
   public void run() {
     while (server.isConnected()) {
-      if (server.hasLine()) {
-        MsgHandler.handle(server.readLine(), game);
-      }
+      //if (server.hasPacket()) {
+      server.readPacket();
+      //handle(server.readPacket(), game);
+      //}
 
       try {
         Thread.sleep(2);
@@ -24,6 +25,10 @@ public class ClientWorker extends Thread {
         e.printStackTrace();
       }
     }
+  }
+
+  public void handle(Packet packet, Game game) {
+    ;
   }
 
 }

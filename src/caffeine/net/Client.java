@@ -6,9 +6,10 @@ import caffeine.Game;
 import caffeine.entity.Entity;
 import caffeine.gfx.GUI;
 import caffeine.gfx.InputHandler;
+import caffeine.net.packet.LoginPacket;
 
 public class Client extends Thread {
-  public final String ID;
+  public final String ID = "0";
   protected HashMap<Integer, Entity> entities = new HashMap<Integer, Entity>();
   protected Game game = new Game();
   protected GUI gui = new GUI("Caffeine Client");
@@ -23,12 +24,7 @@ public class Client extends Thread {
   public Client(String ip, int port) {
     server = new Connection(ip, port);
     gui.addInputListener(input);
-
-    server.send("fnar");
-    server.send("mucus");
-    ID = server.readLine();
-    // server.readLine();
-
+    server.send(new LoginPacket("fnar", "musucs"));
     new ClientWorker(server, game).start();
   }
 

@@ -1,6 +1,7 @@
 package caffeine.net;
 
 import caffeine.net.accounts.PlayerAccount;
+import caffeine.net.packet.Packet;
 
 
 public class GameServerWorker extends Thread {
@@ -24,9 +25,9 @@ public class GameServerWorker extends Thread {
   @Override
   public void run() {
     while (client.isConnected()) {
-      if (client.hasLine()){
-        server.handle(client.readLine());
-      }
+      //if (client.hasLine()){
+      server.handle(client.readPacket());
+      //}
 
       try {
         Thread.sleep(2);
@@ -37,8 +38,8 @@ public class GameServerWorker extends Thread {
     disconnect();
   }
 
-  public void send(String msg){
-    client.send(msg);
+  public void send(Packet packet){
+    client.send(packet);
   }
 
 }

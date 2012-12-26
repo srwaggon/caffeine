@@ -1,33 +1,43 @@
 package caffeine.net;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
+
+import caffeine.net.packet.Packet;
 
 public class Connection {
   protected Socket socket;
   protected Scanner in = null;
   protected PrintWriter out = null;
+  protected ObjectInputStream ois;
+  protected ObjectOutputStream oos;
 
-  public Connection(String host, int port){
+  public Connection(String ip, int port){
     try {
-      socket = new Socket(host, port);
+      socket = new Socket(ip, port);
       in = new Scanner(socket.getInputStream());
       out = new PrintWriter(socket.getOutputStream(), true);
-    } catch (IOException e) {
-      System.out.println("No I/O.");
+      ois = new ObjectInputStream(socket.getInputStream());
+      oos = new ObjectOutputStream(socket.getOutputStream());
+    } catch (IOException ioe) {
+      ioe.printStackTrace();
       System.exit(-1);
     }
   }
 
-  public Connection(Socket _socket) {
-    socket = _socket;
+  public Connection(Socket socket){
     try {
-      in = new Scanner(_socket.getInputStream());
-      out = new PrintWriter(_socket.getOutputStream(), true);
-    } catch (IOException e) {
-      System.out.println("No I/O.");
+      this.socket = socket;
+      in = new Scanner(socket.getInputStream());
+      out = new PrintWriter(socket.getOutputStream(), true);
+      oos = new ObjectOutputStream(socket.getOutputStream());
+      ois = new ObjectInputStream(socket.getInputStream());
+    } catch (IOException ioe) {
+      ioe.printStackTrace();
       System.exit(-1);
     }
   }
@@ -47,6 +57,19 @@ public class Connection {
     out.flush();
   }
 
+  public void send(Packet pack) {
+    try {
+      oos.writeObject(pack);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    try {
+      oos.flush();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
   public boolean hasNext(){
     return in.hasNext();
   }
@@ -55,12 +78,32 @@ public class Connection {
     return in.hasNextLine();
   }
 
+  public boolean hasPacket() {
+    try {
+      return ois.available() > 0;
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return false;
+  }
+
   public String read() {
     return in.next();
   }
 
   public String readLine(){
     return in.nextLine();
+  }
+
+  public Packet readPacket() {
+    try {
+      return (Packet) (ois.readObject());
+    } catch (ClassNotFoundException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return null;
   }
 
   public void disconnect() {

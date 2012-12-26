@@ -10,7 +10,8 @@ import java.util.List;
 import caffeine.Game;
 import caffeine.entity.PlayerEntity;
 import caffeine.net.accounts.PlayerAccount;
-import caffeine.net.msg.MsgHandler;
+import caffeine.net.packet.LoginPacket;
+import caffeine.net.packet.Packet;
 import caffeine.world.Map;
 
 public class GameServer extends Thread {
@@ -26,9 +27,9 @@ public class GameServer extends Thread {
     gs.run();
   }
 
-  public GameServer(Game _game, int _port) {
-    port = _port;
-    game = _game;
+  public GameServer(Game game, int port) {
+    this.port = port;
+    this.game = game;
 
     try {
       socket = new ServerSocket(port);
@@ -58,23 +59,22 @@ public class GameServer extends Thread {
     Connection client = new Connection(socket);
 
     // Load the connecting player's account.
-    String account = client.read();
-    String password = client.read();
-    PlayerAccount player = PlayerAccount.loadPlayer(account);
+    LoginPacket login = (LoginPacket) client.readPacket();
+    PlayerAccount player = PlayerAccount.loadPlayer(login.USERNAME);
 
-    if (!player.authenticate(password)) {
+    if (!player.authenticate(login.PASSWORD)) {
       client.send("authorization failed.");
       client.disconnect();
     }
 
-    client.send("" + player.ID);
+    //client.send("" + player.ID);
 
     // Add his piece to the game.
     PlayerEntity entity = player.getEntity();
     game.addEntity(entity, entity.getMapID());
 
     Map map = game.getMap(entity.getMapID());
-    client.send(map.toString());
+    //client.send(map.toString());
 
     // Create a liason.
     GameServerWorker worker = new GameServerWorker(this, client, player);
@@ -97,15 +97,14 @@ public class GameServer extends Thread {
   }
 
   public synchronized void handle(Packet packet) {
-
-    broadcastToMap(game.getMap(0), msg);
+    //broadcastToMap(game.getMap(0), packet);
   }
 
-  public void broadcastToMap(Map map, String msg) {
+  public void broadcastToMap(Map map, Packet packet) {
     // tell all subscribers on that map
     List<GameServerWorker> gswList = clients.get(map);
     for (int i = 0; i < gswList.size(); i++) {
-      gswList.get(i).send(msg);
+      gswList.get(i).send(packet);
     }
   }
 
