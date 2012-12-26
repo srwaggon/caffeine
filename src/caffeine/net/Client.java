@@ -24,7 +24,7 @@ public class Client extends Thread {
   public Client(String ip, int port) {
     server = new Connection(ip, port);
     gui.addInputListener(input);
-    server.send(new LoginPacket("fnar", "musucs"));
+    server.send(new LoginPacket("fnar", "mucus"));
     new ClientWorker(server, game).start();
   }
 
