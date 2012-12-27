@@ -10,6 +10,7 @@ import java.util.Scanner;
 import caffeine.net.packet.Packet;
 
 public class Connection {
+  protected boolean connected = false;
   protected Socket socket;
   protected Scanner in = null;
   protected PrintWriter out = null;
@@ -27,6 +28,7 @@ public class Connection {
       ioe.printStackTrace();
       System.exit(-1);
     }
+    connected = true;
   }
 
   public Connection(Socket socket){
@@ -40,6 +42,7 @@ public class Connection {
       ioe.printStackTrace();
       System.exit(-1);
     }
+    connected = true;
   }
 
   @Override
@@ -95,12 +98,12 @@ public class Connection {
     return in.nextLine();
   }
 
-  public Packet readPacket() {
+  public Packet readPacket() throws IOException {
+
     try {
       return (Packet) (ois.readObject());
     } catch (ClassNotFoundException e) {
-      e.printStackTrace();
-    } catch (IOException e) {
+      // TODO Auto-generated catch block
       e.printStackTrace();
     }
     return null;
@@ -109,6 +112,7 @@ public class Connection {
   public void disconnect() {
     try {
       System.out.println("Disconnecting from " + this + ".");
+      connected = false;
       if (in  != null) in.close();
       if (out != null) out.close();
       if (socket != null) socket.close();
@@ -119,7 +123,7 @@ public class Connection {
   }
 
   public boolean isConnected() {
-    return socket.isConnected() && !socket.isClosed();
+    return connected;//socket.isConnected() && !socket.isClosed();
   }
 
   @Override

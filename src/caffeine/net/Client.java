@@ -6,12 +6,15 @@ import caffeine.Game;
 import caffeine.entity.Entity;
 import caffeine.gfx.GUI;
 import caffeine.gfx.InputHandler;
+import caffeine.net.packet.Event;
+import caffeine.net.packet.EventPacket;
 import caffeine.net.packet.LoginPacket;
+import caffeine.world.Dir;
 
 public class Client extends Thread {
   public final String ID = "0";
   protected HashMap<Integer, Entity> entities = new HashMap<Integer, Entity>();
-  protected Game game = new Game();
+  protected Game game = Game.getInstance();
   protected GUI gui = new GUI("Caffeine Client");
   protected Connection server;
   protected InputHandler input = new InputHandler();
@@ -60,19 +63,28 @@ public class Client extends Thread {
     System.exit(0);
   }
 
+  static Event moveEntityUp = new Event() {
+    public void apply() {
+      Game game = Game.getInstance();
+      Entity entity = game.getEntity(3147513);
+      entity.move(Dir.N);
+    }
+  };
+
   public void processInput() {
     if (input.up.isPressed)
-      server.send("# " + ID + " M N");
-    if (input.right.isPressed)
-      server.send("# " + ID + " M E");
+      server.send(new EventPacket(moveEntityUp));
+    /*if (input.right.isPressed)
+      server.send(new ActionPacket(Dir.E));
     if (input.down.isPressed)
-      server.send("# " + ID + " M S");
+      server.send(new ActionPacket(Dir.S));
     if (input.left.isPressed)
-      server.send("# " + ID + " M W");
+      server.send(new ActionPacket(Dir.W));
     if (input.jump.clicked)
       server.send("# " + ID + " J");
     if (input.use.clicked)
       server.send("# " + ID + " U");
+     */
   }
 
   public void finalize() {

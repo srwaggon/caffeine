@@ -1,4 +1,6 @@
 package caffeine.net;
+import java.io.IOException;
+
 import caffeine.Game;
 import caffeine.net.packet.Packet;
 
@@ -14,13 +16,13 @@ public class ClientWorker extends Thread {
 
   public void run() {
     while (server.isConnected()) {
-      //if (server.hasPacket()) {
-      server.readPacket();
-      //handle(server.readPacket(), game);
-      //}
 
       try {
+        handle(server.readPacket(), game);
         Thread.sleep(2);
+      } catch (IOException ioe) {
+        server.disconnect();
+        ioe.printStackTrace();
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
