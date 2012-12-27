@@ -1,7 +1,8 @@
 package caffeine;
 
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import caffeine.entity.Entity;
 import caffeine.gfx.GUI;
@@ -17,39 +18,46 @@ import caffeine.world.World;
  */
 public class Game implements Runnable {
 
-  public static final Game GAME = new Game();
+  public static Game instance;
 
   /* FIELDS */
   protected final World world = new World(); // Space
-  protected final HashMap<Integer, Entity> entities = new HashMap<Integer, Entity>();
+  protected final ConcurrentHashMap<String, Entity> entities = new ConcurrentHashMap<String, Entity>();
   protected GUI gui;
 
 
 
-  private Game() {
+  public Game() {
     Map map = new Map(Map.defaultMapData);
-    //addEntity(new Mob(), map);
+    //addEntity(new Mob(0), map);
     addMap(map);
+    if (instance == null) {
+      instance = this;
+    }
   }
 
 
   /* ACCESSORS */
 
 
-  public Map getMap(int id) {
-    return world.getMap(id);
+  public Entity getEntity(String username) {
+    return entities.get(username);
   }
 
-  public Entity getEntity(int id) {
-    return entities.get(id);
-  }
 
   public Collection<Entity> getEntities(int mapID) {
-    return world.getMap(mapID).entities();
+    return world.getMap(mapID).getEntities();
   }
 
   public static Game getInstance() {
-    return GAME;
+    if (instance == null) {
+      instance = new Game();
+    }
+    return instance;
+  }
+
+  public Map getMap(int id) {
+    return world.getMap(id);
   }
 
 
@@ -58,6 +66,7 @@ public class Game implements Runnable {
 
 
   public void addEntity(Entity e, int mapID){
+    entities.put(e.ID, e);
     addEntity(e, world.getMap(mapID));
   }
 
@@ -66,14 +75,21 @@ public class Game implements Runnable {
     map.addEntity(e);
   }
 
-  public void addMap(Map map) { world.addMap(map); }
+  public void addMap(Map map) {
+    world.addMap(map);
+    List<Entity> ents = map.getEntities();
+    for(int i = 0; i < ents.size(); i++) {
+      Entity ent = ents.get(i);
+      entities.put(ent.ID, ent);
+    }
+  }
 
 
 
 
   /* UTILITY */
   public void start() {
-    gui = new GUI("Caffeine Server"); // Light
+    gui = new GUI("Caffeine Server");
     new Thread(this).start();
   }
 

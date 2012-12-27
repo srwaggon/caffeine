@@ -7,7 +7,7 @@ public class LoginPacket extends Packet {
   public final String PASSWORD;
 
   public LoginPacket(String username, String password) {
-    super(Packets.Login);
+    super(Packet.Code.LOGIN);
     USERNAME = username;
     PASSWORD = password;
   }

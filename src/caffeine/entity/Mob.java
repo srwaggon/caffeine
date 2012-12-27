@@ -29,7 +29,7 @@ public class Mob extends Entity {
   protected Item rightHand = new Sword();
   protected List<Item> inventory = new ArrayList<Item>();
 
-  public Mob(int id) {
+  public Mob(String id) {
     super(id);
     xr = 3;
     yr = 3;

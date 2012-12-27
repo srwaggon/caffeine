@@ -22,7 +22,7 @@ public class Entity implements Serializable {
   protected static int numEntities = 0;
   /* primitive fields */
   protected boolean removed = false;
-  public final int ID;
+  public final String ID;
   protected int mapID = 0;
   protected int speed = 1;
   protected int sprite = 128;
@@ -34,14 +34,14 @@ public class Entity implements Serializable {
 
   /* Object fields */
   protected Dir dir = Dir.S;
-  protected transient Map map;
+  protected Map map;
 
   /* CONSTRUCTORS */
   public Entity() {
-    ID = Entity.numEntities++;
+    ID = "" + Entity.numEntities++;
   }
 
-  public Entity(int id) {
+  public Entity(String id) {
     ID = id;
     Entity.numEntities++;
   }
@@ -79,7 +79,7 @@ public class Entity implements Serializable {
     }
 
     // Check collision with each entity.
-    Collection<Entity> entities = map.entities();
+    Collection<Entity> entities = map.getEntities();
     for (Entity entity : entities) {
 
       // if they currently intersect, move freely.

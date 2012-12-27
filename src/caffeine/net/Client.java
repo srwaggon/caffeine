@@ -6,28 +6,28 @@ import caffeine.Game;
 import caffeine.entity.Entity;
 import caffeine.gfx.GUI;
 import caffeine.gfx.InputHandler;
-import caffeine.net.packet.Event;
-import caffeine.net.packet.EventPacket;
 import caffeine.net.packet.LoginPacket;
+import caffeine.net.packet.MovePacket;
 import caffeine.world.Dir;
 
 public class Client extends Thread {
-  public final String ID = "0";
+  protected final String USERNAME;
   protected HashMap<Integer, Entity> entities = new HashMap<Integer, Entity>();
-  protected Game game = Game.getInstance();
+  protected Game game = new Game();
   protected GUI gui = new GUI("Caffeine Client");
   protected Connection server;
   protected InputHandler input = new InputHandler();
 
   public static void main(String[] args) {
-    new Client("127.0.0.1", 4444).start();
+    new Client("fnar", "mucus", "127.0.0.1", 4444).start();
   }
 
   /* Constructor */
-  public Client(String ip, int port) {
+  public Client(String username, String password, String ip, int port) {
+    USERNAME = username;
     server = new Connection(ip, port);
     gui.addInputListener(input);
-    server.send(new LoginPacket("fnar", "mucus"));
+    server.send(new LoginPacket(username, password));
     new ClientWorker(server, game).start();
   }
 
@@ -54,32 +54,25 @@ public class Client extends Thread {
       gui.screen.render();
 
       try {
-        Thread.sleep(2);
+        Thread.sleep(10);
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
     }
-    System.out.println("Host disconnected.");
     System.exit(0);
   }
 
-  static Event moveEntityUp = new Event() {
-    public void apply() {
-      Game game = Game.getInstance();
-      Entity entity = game.getEntity(3147513);
-      entity.move(Dir.N);
-    }
-  };
-
   public void processInput() {
-    if (input.up.isPressed)
-      server.send(new EventPacket(moveEntityUp));
-    /*if (input.right.isPressed)
-      server.send(new ActionPacket(Dir.E));
-    if (input.down.isPressed)
-      server.send(new ActionPacket(Dir.S));
-    if (input.left.isPressed)
-      server.send(new ActionPacket(Dir.W));
+    if (input.up.isPressed && !input.down.isPressed)
+      server.send(new MovePacket(USERNAME, Dir.N));
+    if (input.right.isPressed && !input.left.isPressed)
+      server.send(new MovePacket(USERNAME, Dir.E));
+    if (input.down.isPressed && !input.up.isPressed)
+      server.send(new MovePacket(USERNAME, Dir.S));
+    if (input.left.isPressed && !input.right.isPressed)
+      server.send(new MovePacket(USERNAME, Dir.W));
+
+    /*
     if (input.jump.clicked)
       server.send("# " + ID + " J");
     if (input.use.clicked)

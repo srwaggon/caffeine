@@ -6,21 +6,22 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import caffeine.Game;
+import caffeine.entity.Entity;
 import caffeine.entity.PlayerEntity;
 import caffeine.net.accounts.PlayerAccount;
 import caffeine.net.packet.EventPacket;
+import caffeine.net.packet.MapPacket;
 import caffeine.net.packet.Packet;
-import caffeine.net.packet.Packets;
+import caffeine.world.tile.Tile;
 
-public class GameServer extends Thread {
+public class GameServer extends Thread implements MapListener{
   protected final int port;
   protected Game game;
   protected ServerSocket socket = null;
   protected ArrayList<GameServerWorker> workers = new ArrayList<GameServerWorker>();
 
   public static void main(String args[]) {
-    //Game game = new Game();
-    Game game = Game.getInstance();
+    Game game = new Game();
     game.start();
     GameServer gs = new GameServer(game, 4444);
     gs.run();
@@ -36,6 +37,7 @@ public class GameServer extends Thread {
       System.out.println("Could not listen on port " + port);
       System.exit(-1);
     }
+    game.getMap(0).addMapListener(this);
   }
 
   public void run() {
@@ -68,7 +70,9 @@ public class GameServer extends Thread {
   }
 
   public synchronized void handle(PlayerAccount player, Packet packet) {
-    if (packet.getType() == Packets.Event) {
+    if (packet.getCode() == Packet.Code.EVENT) {
+      System.out.println(game.getEntities(0));
+      System.out.println(packet);
       EventPacket event = (EventPacket) packet;
       event.getEvent().apply();
     }
@@ -78,7 +82,9 @@ public class GameServer extends Thread {
   }
 
   public void broadcast(Packet packet) {
-
+    for (GameServerWorker worker : workers) {
+      worker.send(packet);
+    }
   }
 
   protected void finalize() {
@@ -102,8 +108,8 @@ public class GameServer extends Thread {
     PlayerEntity entity = player.getEntity();
     System.out.println(entity.ID);
     game.addEntity(entity, entity.getMapID());
-
     workers.add(worker);
+    worker.client.send(new MapPacket(entity.getMap()));
   }
 
   public synchronized void removeWorker(GameServerWorker worker) {
@@ -111,6 +117,18 @@ public class GameServer extends Thread {
     PlayerAccount.savePlayer(player);
     player.getEntity().remove();
     workers.remove(worker);
+  }
+
+  public void onAddEntity(Entity entity) {
+    broadcast(new MapPacket(entity.getMap()));
+  }
+
+  public void onRemoveEntity(Entity entity) {
+    broadcast(new MapPacket(entity.getMap()));
+  }
+
+  public void onTileChange(Tile tile) {
+    ;
   }
 
 

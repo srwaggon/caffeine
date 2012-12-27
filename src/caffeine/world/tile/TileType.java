@@ -1,6 +1,5 @@
 package caffeine.world.tile;
 
-
 public enum TileType {
   dirt('.'), grass('m'), water('~'), sand('s'), nil(' ');
 

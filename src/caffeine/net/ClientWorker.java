@@ -2,6 +2,8 @@ package caffeine.net;
 import java.io.IOException;
 
 import caffeine.Game;
+import caffeine.net.packet.EventPacket;
+import caffeine.net.packet.MapPacket;
 import caffeine.net.packet.Packet;
 
 public class ClientWorker extends Thread {
@@ -30,7 +32,15 @@ public class ClientWorker extends Thread {
   }
 
   public void handle(Packet packet, Game game) {
-    ;
+    if (packet.getCode() == Packet.Code.MAP) {
+      MapPacket mp = (MapPacket) packet;
+      game.addMap(mp.MAP);
+    }
+
+    if (packet.getCode() == Packet.Code.EVENT) {
+      EventPacket event = (EventPacket) packet;
+      event.getEvent().apply();
+    }
   }
 
 }

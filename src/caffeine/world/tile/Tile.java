@@ -1,5 +1,7 @@
 package caffeine.world.tile;
 
+import java.io.Serializable;
+
 import caffeine.entity.Entity;
 import caffeine.entity.ItemEntity;
 import caffeine.gfx.Screen;
@@ -8,7 +10,8 @@ import caffeine.world.Dir;
 import caffeine.world.Map;
 
 
-public class Tile {
+public class Tile implements Serializable {
+  private static final long serialVersionUID = -4410353113874468565L;
 
   protected int x, y;
 

@@ -1,16 +1,18 @@
 package caffeine.gfx;
 
-import javax.swing.JFrame;
+import java.awt.Frame;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 
-public class GUI {
-  protected JFrame frame = new JFrame();
-  public Screen screen = new Screen();
+public class GUI implements WindowListener {
+  protected final Frame frame = new Frame();
+  public final Screen screen = new Screen();
 
   public GUI(String title) {
     frame.add(screen);
     frame.setTitle(title);
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frame.addWindowListener(this);
     frame.setResizable(false);
     frame.pack();
     frame.setVisible(true);
@@ -22,5 +24,31 @@ public class GUI {
     screen.addKeyListener(input);
     screen.addMouseListener(input);
     screen.addMouseMotionListener(input);
+  }
+
+
+  public void windowActivated(WindowEvent e) {
+  }
+
+  public void windowClosed(WindowEvent e) {
+  }
+
+  public void windowClosing(WindowEvent e) {
+    System.exit(0);
+  }
+
+  public void windowDeactivated(WindowEvent e) {
+  }
+
+  @Override
+  public void windowDeiconified(WindowEvent e) {
+  }
+
+  @Override
+  public void windowIconified(WindowEvent e) {
+  }
+
+  @Override
+  public void windowOpened(WindowEvent e) {
   }
 }

@@ -23,7 +23,7 @@ public class PlayerAccount implements Serializable {
     ID = name.hashCode();
     this.name = name;
     this.password = password;
-    entity = new PlayerEntity(ID);
+    entity = new PlayerEntity(name);
   }
 
   public static void main(String[] args) {

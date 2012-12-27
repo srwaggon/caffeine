@@ -6,7 +6,7 @@ public class PlayerEntity extends Mob implements Serializable {
 
   private static final long serialVersionUID = -1716762609995433563L;
 
-  public PlayerEntity(int id) {
+  public PlayerEntity(String id) {
     super(id);
   }
 

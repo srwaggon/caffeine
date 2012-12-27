@@ -7,7 +7,7 @@ public class EventPacket extends Packet {
   public final Event EVENT;
 
   public EventPacket(Event event) {
-    super(Packets.Event);
+    super(Packet.Code.EVENT);
     EVENT = event;
   }
 

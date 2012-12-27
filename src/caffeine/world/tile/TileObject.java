@@ -1,12 +1,14 @@
 package caffeine.world.tile;
 
+import java.io.Serializable;
+
 import caffeine.entity.Entity;
 import caffeine.items.Item;
 import caffeine.world.Dir;
 
+public abstract class TileObject implements Serializable {
 
-
-public abstract class TileObject {
+  private static final long serialVersionUID = 1674197575118814994L;
 
   protected boolean blocksPC;
   protected boolean blocksNPC;

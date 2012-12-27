@@ -10,19 +10,24 @@ import java.io.Serializable;
  * Abstract class so that there are no generic packets -- every packet will have a purpose.
  */
 public class Packet implements Serializable {
+
+  public enum Code {
+    LOGIN, LOGIN_FAILURE, EVENT, ACTION, MAP;
+  }
+
   private static final long serialVersionUID = 2347350252515231743L;
-  public static final Packet LoginFailure = new Packet(Packets.LoginFailure);
-  public final Packets type;
+  public static final Packet LoginFailure = new Packet(Code.LOGIN_FAILURE);
+  public final Code code;
 
   /* Require the use of this constructor;
    * Require that every packet has a type
    */
-  public Packet(Packets type) {
-    this.type = type;
+  public Packet(Code code) {
+    this.code = code;
   }
 
-  public Packets getType(){
-    return type;
+  public Code getCode(){
+    return code;
   }
 
 
