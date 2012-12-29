@@ -26,7 +26,7 @@ public class GameServer extends Thread implements MapListener{
     Game game = new Game();
     game.start();
     GameServer gs = new GameServer(game, 4444);
-    gs.run();
+    gs.start();
   }
 
   public GameServer(Game game, int port) {

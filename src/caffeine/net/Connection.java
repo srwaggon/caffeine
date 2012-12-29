@@ -60,9 +60,9 @@ public class Connection {
     out.flush();
   }
 
-  public void send(Packet pack) {
+  public void send(Packet packet) {
     try {
-      oos.writeObject(pack);
+      oos.writeObject(packet);
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -101,7 +101,8 @@ public class Connection {
   public Packet readPacket() throws IOException {
 
     try {
-      return (Packet) (ois.readObject());
+      Packet packet = (Packet) (ois.readObject());
+      return packet;
     } catch (ClassNotFoundException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
