@@ -83,7 +83,7 @@ public class Tile implements Serializable {
           // TODO: change magic numbers:
           Entity ie = new ItemEntity(item);
           entity.getMap().addEntity(ie);
-          ie.moveTo(x*Map.tileSize + 8, y*Map.tileSize + 8);
+          ie.setLoc(x*Map.tileSize + 8, y*Map.tileSize + 8);
         }
         tileObject = null;
       }

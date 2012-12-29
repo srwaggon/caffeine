@@ -17,10 +17,6 @@ import caffeine.world.World;
  * @author srwaggon
  */
 public class Game implements Runnable {
-
-  public static Game instance;
-
-  /* FIELDS */
   protected final World world = new World(); // Space
   protected final ConcurrentHashMap<String, Entity> entities = new ConcurrentHashMap<String, Entity>();
   protected GUI gui;
@@ -31,38 +27,7 @@ public class Game implements Runnable {
     Map map = new Map(Map.defaultMapData);
     //addEntity(new Mob(0), map);
     addMap(map);
-    if (instance == null) {
-      instance = this;
-    }
   }
-
-
-  /* ACCESSORS */
-
-
-  public Entity getEntity(String username) {
-    return entities.get(username);
-  }
-
-
-  public Collection<Entity> getEntities(int mapID) {
-    return world.getMap(mapID).getEntities();
-  }
-
-  public static Game getInstance() {
-    if (instance == null) {
-      instance = new Game();
-    }
-    return instance;
-  }
-
-  public Map getMap(int id) {
-    return world.getMap(id);
-  }
-
-
-
-  /* MUTATORS */
 
 
   public void addEntity(Entity e, int mapID){
@@ -86,12 +51,22 @@ public class Game implements Runnable {
 
 
 
+  /* MUTATORS */
 
-  /* UTILITY */
-  public void start() {
-    gui = new GUI("Caffeine Server");
-    new Thread(this).start();
+
+  public Collection<Entity> getEntities(int mapID) {
+    return world.getMap(mapID).getEntities();
   }
+
+  public Entity getEntity(String username) {
+    return entities.get(username);
+  }
+
+  public Map getMap(int id) {
+    return world.getMap(id);
+  }
+
+
 
 
   public void run() {
@@ -120,6 +95,13 @@ public class Game implements Runnable {
         e.printStackTrace();
       }
     }
+  }
+
+
+  /* UTILITY */
+  public void start() {
+    gui = new GUI("Caffeine Server");
+    new Thread(this).start();
   }
 
 

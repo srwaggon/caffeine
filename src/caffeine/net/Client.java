@@ -6,8 +6,10 @@ import caffeine.Game;
 import caffeine.entity.Entity;
 import caffeine.gfx.GUI;
 import caffeine.gfx.InputHandler;
+import caffeine.net.packet.ActionPacket;
 import caffeine.net.packet.LoginPacket;
 import caffeine.net.packet.MovePacket;
+import caffeine.net.packet.Packet;
 import caffeine.world.Dir;
 
 public class Client extends Thread {
@@ -72,12 +74,11 @@ public class Client extends Thread {
     if (input.left.isPressed && !input.right.isPressed)
       server.send(new MovePacket(USERNAME, Dir.W));
 
-    /*
+
     if (input.jump.clicked)
-      server.send("# " + ID + " J");
+      server.send(new ActionPacket(Packet.Code.JUMP, USERNAME));
     if (input.use.clicked)
-      server.send("# " + ID + " U");
-     */
+      server.send(new ActionPacket(Packet.Code.USERIGHT, USERNAME));
   }
 
   public void finalize() {

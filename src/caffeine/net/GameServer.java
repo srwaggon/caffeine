@@ -7,10 +7,12 @@ import java.util.ArrayList;
 
 import caffeine.Game;
 import caffeine.entity.Entity;
+import caffeine.entity.Mob;
 import caffeine.entity.PlayerEntity;
 import caffeine.net.accounts.PlayerAccount;
-import caffeine.net.packet.EventPacket;
+import caffeine.net.packet.ActionPacket;
 import caffeine.net.packet.MapPacket;
+import caffeine.net.packet.MovePacket;
 import caffeine.net.packet.Packet;
 import caffeine.world.tile.Tile;
 
@@ -70,14 +72,23 @@ public class GameServer extends Thread implements MapListener{
   }
 
   public synchronized void handle(PlayerAccount player, Packet packet) {
-    if (packet.getCode() == Packet.Code.EVENT) {
-      System.out.println(game.getEntities(0));
-      System.out.println(packet);
-      EventPacket event = (EventPacket) packet;
-      event.getEvent().apply();
+    switch (packet.getCode()) {
+      case MOVE:
+        MovePacket move = (MovePacket) packet;
+        game.getEntity(move.USERNAME).move(move.DIR);
+        break;
+      case JUMP:
+        ActionPacket jump = (ActionPacket) packet;
+        game.getEntity(jump.USERNAME).jump();
+        break;
+      case USERIGHT:
+        ActionPacket use = (ActionPacket) packet;
+        Mob m = ((Mob) game.getEntity(use.USERNAME));
+        m.useRightHand();
+      default:
+        break;
     }
 
-    //System.out.println("Packet received: " + packet);
     broadcast(packet);
   }
 

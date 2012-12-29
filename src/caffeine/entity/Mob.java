@@ -36,24 +36,91 @@ public class Mob extends Entity {
     brain = new Brain(this);
   }
 
-  public void tick() {
-    brain.tick();
-
-    flip = !flip;
-    if (z >= 0 && flip) {
-      z += za--;
-      if (z <= 0) {
-        z = 0;
-        za = 0;
-      }
+  public void addItem(Item item) {
+    if (item.getType() == ItemType.weapon) {
+      rightHand = item;
+    } else {
+      inventory.add(item);
     }
-    move(xa, ya);
+  }
 
-    if (hurtTime > 0)
-      hurtTime--;
+  public void attack() {
+    // use this entity's range to hurt the entities within a given proximity
+    if (dir == Dir.N)
+      hurt(x, y - (2 * yr), x, y);
+    if (dir == Dir.E)
+      hurt(x, y, x + (2 * xr), y);
+    if (dir == Dir.S)
+      hurt(x, y, x, y + (2 * yr));
+    if (dir == Dir.W)
+      hurt(x - (2 * xr), y, x, y);
+  }
 
-    if (hp <= 0)
-      die();
+  public void die() {
+    isAlive = false;
+    Sound.ENEMY_DIE.play();
+    drop(new Heart(5));
+    remove();
+    new Mob(ID).setMap(map);
+  }
+
+  public void drop(Item item) {
+    ItemEntity ie = new ItemEntity(item);
+    ie.setMap(map);
+    ie.setLoc(x, y);
+  }
+
+  public void equipItem(Item item) {
+    ItemType itemType = item.getType();
+    if (itemType == ItemType.tool || itemType == ItemType.weapon) {
+      rightHand = item;
+    }
+  }
+
+  public Brain getBrain() {
+    return brain;
+  }
+
+  public int getHP() {
+    return hp;
+  }
+
+  public void heal(int n) {
+    hp += n;
+  }
+
+  public void hurt(int x0, int y0, int x1, int y1) {
+    List<Entity> entities = getMap().getEntities(x0, y0, x1, y1);
+    for (Entity entity : entities)
+      if (!entity.equals(this))
+        entity.takeDamage(power, dir);
+  }
+
+  public void interact(int x0, int y0, int x1, int y1, Item item) {
+    List<Tile> tiles = getMap().getTiles(x0, y0, x1, y1);
+    for (Tile tile : tiles) {
+      tile.interact(this, item, dir);
+    }
+  }
+
+  public boolean isAlive() {
+    return isAlive;
+  }
+
+  public boolean isValidTile(Tile tile) {
+    return !tile.blocksNPC() || z > 0;
+  }
+
+  public void jump() {
+    if (z == 0) {
+      za = 6;
+      Sound.JUMP.play();
+    }
+  }
+
+  public void knockback(int x, int y) {
+    xKnockback = x;
+    yKnockback = y;
   }
 
   public boolean move(int xa, int ya) {
@@ -79,11 +146,59 @@ public class Mob extends Entity {
     return super.move(xa, ya);
   }
 
-  public void interact(int x0, int y0, int x1, int y1, Item item) {
-    List<Tile> tiles = getMap().getTiles(x0, y0, x1, y1);
-    for (Tile tile : tiles) {
-      tile.interact(this, item, dir);
+  public void setBrain(Brain b) {
+    brain = b;
+  }
+
+  public void takeDamage(int dmg, Dir dir) {
+    hp -= dmg;
+    Sound.HURT.play();
+
+    if (dir == Dir.N)
+      yKnockback = -power;
+    if (dir == Dir.S)
+      yKnockback = power;
+    if (dir == Dir.W)
+      xKnockback = -power;
+    if (dir == Dir.E)
+      xKnockback = power;
+    hurtTime = 10;
+  }
+
+  public void takeItem(ItemEntity item) {
+    item.take(this);
+  }
+
+  public void tick() {
+    brain.tick();
+
+    flip = !flip;
+    if (z >= 0 && flip) {
+      z += za--;
+      if (z <= 0) {
+        z = 0;
+        za = 0;
+      }
     }
+    move(xa, ya);
+
+    if (hurtTime > 0)
+      hurtTime--;
+
+    if (hp <= 0)
+      die();
+  }
+
+  public boolean touchedBy(Entity entity) {
+    if (entity.dir == Dir.N)
+      knockback(0, -6);
+    if (entity.dir == Dir.S)
+      knockback(0, 6);
+    if (entity.dir == Dir.W)
+      knockback(-6, 0);
+    if (entity.dir == Dir.E)
+      knockback(6, 0);
+    return false;
   }
 
   public boolean useLeftHand() {
@@ -111,121 +226,6 @@ public class Mob extends Entity {
     }
 
     return true;
-  }
-
-  public void attack() {
-    // use this entity's range to hurt the entities within a given proximity
-    if (dir == Dir.N)
-      hurt(x, y - (2 * yr), x, y);
-    if (dir == Dir.E)
-      hurt(x, y, x + (2 * xr), y);
-    if (dir == Dir.S)
-      hurt(x, y, x, y + (2 * yr));
-    if (dir == Dir.W)
-      hurt(x - (2 * xr), y, x, y);
-  }
-
-  public void heal(int n) {
-    hp += n;
-  }
-
-  public void hurt(int x0, int y0, int x1, int y1) {
-    List<Entity> entities = getMap().getEntities(x0, y0, x1, y1);
-    for (Entity entity : entities)
-      if (!entity.equals(this))
-        entity.takeDamage(power, dir);
-  }
-
-  public void jump() {
-    if (z == 0) {
-      za = 6;
-      Sound.JUMP.play();
-    }
-  }
-
-  public void addItem(Item item) {
-    if (item.getType() == ItemType.weapon) {
-      rightHand = item;
-    } else {
-      inventory.add(item);
-    }
-  }
-
-  public void equipItem(Item item) {
-    ItemType itemType = item.getType();
-    if (itemType == ItemType.tool || itemType == ItemType.weapon) {
-      rightHand = item;
-    }
-  }
-
-  public void knockback(int x, int y) {
-    xKnockback = x;
-    yKnockback = y;
-  }
-
-  public void takeDamage(int dmg, Dir dir) {
-    hp -= dmg;
-    Sound.HURT.play();
-
-    if (dir == Dir.N)
-      yKnockback = -power;
-    if (dir == Dir.S)
-      yKnockback = power;
-    if (dir == Dir.W)
-      xKnockback = -power;
-    if (dir == Dir.E)
-      xKnockback = power;
-    hurtTime = 10;
-  }
-
-  public void takeItem(ItemEntity item) {
-    item.take(this);
-  }
-
-  public boolean touchedBy(Entity entity) {
-    if (entity.dir == Dir.N)
-      knockback(0, -6);
-    if (entity.dir == Dir.S)
-      knockback(0, 6);
-    if (entity.dir == Dir.W)
-      knockback(-6, 0);
-    if (entity.dir == Dir.E)
-      knockback(6, 0);
-    return false;
-  }
-
-  public boolean isAlive() {
-    return isAlive;
-  }
-
-  public void die() {
-    isAlive = false;
-    Sound.ENEMY_DIE.play();
-    drop(new Heart(5));
-    remove();
-    new Mob(ID).setMap(map);
-  }
-
-  public void drop(Item item) {
-    ItemEntity ie = new ItemEntity(item);
-    ie.setMap(map);
-    ie.moveTo(x, y);
-  }
-
-  public Brain getBrain() {
-    return brain;
-  }
-
-  public int getHP() {
-    return hp;
-  }
-
-  public boolean isValidTile(Tile tile) {
-    return !tile.blocksNPC() || z > 0;
-  }
-
-  public void setBrain(Brain b) {
-    brain = b;
   }
 
 }

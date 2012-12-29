@@ -20,6 +20,9 @@ public class Entity implements Serializable {
   private static final long serialVersionUID = 159464396047740407L;
   /* static fields */
   protected static int numEntities = 0;
+  public static int getPopulation() {
+    return Entity.numEntities;
+  }
   /* primitive fields */
   protected boolean removed = false;
   public final String ID;
@@ -30,10 +33,11 @@ public class Entity implements Serializable {
   protected int y = 32;
   protected int z = 0;
   protected int xr = 3;
-  protected int yr = 3;
 
+  protected int yr = 3;
   /* Object fields */
   protected Dir dir = Dir.S;
+
   protected Map map;
 
   /* CONSTRUCTORS */
@@ -46,7 +50,76 @@ public class Entity implements Serializable {
     Entity.numEntities++;
   }
 
-  public void tick() {
+  public void addItem(Item item) {
+  }
+
+  @Override
+  public void finalize() {
+    try {
+      Entity.numEntities--;
+      super.finalize();
+    } catch (Throwable e) {
+      e.printStackTrace();
+    }
+  }
+
+  public Dir getDir() {
+    return dir;
+  }
+
+  public int getHP() {
+    return 0;
+  }
+
+  public Map getMap() {
+    return map;
+  }
+
+  public int getMapID() {
+    return mapID;
+  }
+
+  public int getSpeed() {
+    return speed;
+  }
+
+  public int getX() {
+    return x;
+  }
+
+  public int getY() {
+    return y;
+  }
+
+  public int getZ() {
+    return z;
+  }
+
+  public void heal(int n) {
+  }
+
+  public boolean intersects(Entity e) {
+    return !equals(e)
+        && intersects(e.getX() - e.xr, e.getY() - e.yr, e.getX() + e.xr,
+            e.getY() + e.yr);
+  }
+
+  public boolean intersects(int x0, int y0, int x1, int y1) {
+    return !(x + xr < x0 || y + yr < y0 || x - xr > x1 || y - yr > y1);
+  }
+
+  public boolean isRemoved() {
+    return removed;
+  }
+
+  public boolean isValidTile(Tile tile) {
+    return !tile.blocksNPC();
+  }
+
+  public void jump() {
+  }
+
+  public void knockback(int x, int y) {
   }
 
   public boolean move(Dir dir) {
@@ -82,11 +155,12 @@ public class Entity implements Serializable {
     Collection<Entity> entities = map.getEntities();
     for (Entity entity : entities) {
 
-      // if they currently intersect, move freely.
+      // Ignore collisions with self.
       if (entity.equals(this)) {
         continue;
       }
 
+      // if they currently intersect, move freely.
       if (intersects(entity)) {
         continue;
       }
@@ -110,107 +184,31 @@ public class Entity implements Serializable {
     return true;
   }
 
-  public void moveTo(int x, int y) {
-    this.x = x;
-    this.y = y;
-  }
-
-  public void heal(int n) {
-  }
-
   public boolean push(Entity pushee, int xa, int ya) {
     return pushee.move(xa, ya);
+  }
+
+  public void remove() {
+    removed = true;
   }
 
   public final void render(Screen screen) {
     screen.render(sprite, x - Map.tileSize / 2, y - Map.tileSize / 2 - z);
   }
 
-  public boolean intersects(int x0, int y0, int x1, int y1) {
-    return !(x + xr < x0 || y + yr < y0 || x - xr > x1 || y - yr > y1);
-  }
-
-  public boolean intersects(Entity e) {
-    return !equals(e)
-        && intersects(e.getX() - e.xr, e.getY() - e.yr, e.getX() + e.xr,
-            e.getY() + e.yr);
-  }
-
-  public void knockback(int x, int y) {
-  }
-
-  public boolean touchedBy(Entity entity) {
-    return true;
-  }
-
-  public void takeDamage(int dmg) {
-  }
-
-  public void takeDamage(int dmg, Dir dir) {
-  }
-
-  public void takeItem(ItemEntity item) {
-  }
-
-  public static int getPopulation() {
-    return Entity.numEntities;
-  }
-
-  public boolean isValidTile(Tile tile) {
-    return !tile.blocksNPC();
-  }
-
-  /* ACCESSORS */
-
-  public Dir getDir() {
-    return dir;
-  }
-
-  public int getHP() {
-    return 0;
-  }
-
-  public Map getMap() {
-    return map;
-  }
-
-  public int getMapID() {
-    return mapID;
-  }
-
-  public int getSpeed() {
-    return speed;
-  }
-
-  public int getX() {
-    return x;
-  }
-
-  public int getY() {
-    return y;
-  }
-
-  public int getZ() {
-    return z;
-  }
-
-  public boolean isRemoved() {
-    return removed;
-  }
-
-  /* MUTATORS */
-
-  public void jump() {
-  };
-
   public void setDir(Dir dir) {
     this.dir = dir;
+  }
+
+  public void setLoc(int x, int y) {
+    this.x = x;
+    this.y = y;
   }
 
   public void setMap(Map map) {
     this.map = map;
     mapID = map.getID();
-  }
+  };
 
   public void setMapID(int mapID) {
     this.mapID = mapID;
@@ -232,27 +230,23 @@ public class Entity implements Serializable {
     this.z = z;
   }
 
-  public void remove() {
-    removed = true;
+  public void takeDamage(int dmg) {
   }
 
-  /* UTILITIES */
+  public void takeDamage(int dmg, Dir dir) {
+  }
 
-  @Override
+  public void takeItem(ItemEntity item) {
+  }
+
+  public void tick() {
+  }
+
   public String toString() {
     return "# " + ID + " X " + x + " Y " + y + " Z " + z;
   }
 
-  @Override
-  public void finalize() {
-    try {
-      Entity.numEntities--;
-      super.finalize();
-    } catch (Throwable e) {
-      e.printStackTrace();
-    }
-  }
-
-  public void addItem(Item item) {
+  public boolean touchedBy(Entity entity) {
+    return true;
   }
 }
