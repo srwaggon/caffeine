@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import caffeine.entity.brain.Brain;
+import caffeine.entity.brain.RandomBrain;
+import caffeine.gfx.Screen;
 import caffeine.items.Heart;
 import caffeine.items.Item;
 import caffeine.items.ItemType;
 import caffeine.items.weapons.Sword;
 import caffeine.sfx.Sound;
 import caffeine.world.Dir;
+import caffeine.world.Map;
 import caffeine.world.tile.Tile;
 
 public class Mob extends Entity {
@@ -22,12 +25,19 @@ public class Mob extends Entity {
   protected int power = 1;
   protected int xKnockback, yKnockback;
   public int xa, ya, za = 0;
+  protected int walkDist = 0;
 
   // Object Fields
   protected Brain brain;
   protected Item leftHand;
   protected Item rightHand = new Sword();
   protected List<Item> inventory = new ArrayList<Item>();
+
+  public Mob() {
+    xr = 3;
+    yr = 3;
+    brain = new RandomBrain(this);
+  }
 
   public Mob(String id) {
     super(id);
@@ -66,8 +76,8 @@ public class Mob extends Entity {
 
   public void drop(Item item) {
     ItemEntity ie = new ItemEntity(item);
-    ie.setMap(map);
     ie.setLoc(x, y);
+    map.addEntity(ie);
   }
 
   public void equipItem(Item item) {
@@ -143,7 +153,21 @@ public class Mob extends Entity {
     if (hurtTime > 0)
       return true;
 
+    if (xa != 0 || ya != 0) {
+      walkDist++;
+
+      if (ya < 0) dir = Dir.N;
+      if (xa > 0) dir = Dir.E;
+      if (ya > 0) dir = Dir.S;
+      if (xa < 0) dir = Dir.W;
+    }
+
     return super.move(xa, ya);
+  }
+
+  public void render(Screen screen) {
+    int sprite = this.sprite + dir.ordinal();
+    screen.render(sprite, x - Map.tileSize / 2, y - Map.tileSize / 2 - z);
   }
 
   public void setBrain(Brain b) {
@@ -170,7 +194,9 @@ public class Mob extends Entity {
   }
 
   public void tick() {
-    brain.tick();
+    if (brain != null) {
+      brain.tick();
+    }
 
     flip = !flip;
     if (z >= 0 && flip) {

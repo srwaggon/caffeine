@@ -11,7 +11,7 @@ import java.util.List;
 public class InputHandler implements MouseMotionListener, KeyListener,
 MouseListener {
   public class Key {
-    public boolean isPressed, clicked;
+    public boolean isClicked, isPressed;
     public int presses, absorbs;
 
     public Key(){
@@ -28,8 +28,9 @@ MouseListener {
     public void tick(){
       if (absorbs < presses) {
         absorbs++;
-        clicked = true;
-      } else clicked = false;
+        isClicked = true;
+      } else
+        isClicked = false;
     }
   }
 

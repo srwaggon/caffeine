@@ -79,11 +79,11 @@ public class Tile implements Serializable {
       tileObject.interact(entity, item, dir);
 
       if (tileObject.isRemoved()) {
-        if (tileObject.itemDropped()) {
-          // TODO: change magic numbers:
+        if (tileObject.dropsItem()) {
           Entity ie = new ItemEntity(item);
+          int ts = Map.tileSize;
+          ie.setLoc(x*ts + ts/2, y*ts + ts/2);
           entity.getMap().addEntity(ie);
-          ie.setLoc(x*Map.tileSize + 8, y*Map.tileSize + 8);
         }
         tileObject = null;
       }

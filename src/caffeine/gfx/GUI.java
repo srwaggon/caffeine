@@ -7,7 +7,8 @@ import java.awt.event.WindowListener;
 
 public class GUI implements WindowListener {
   protected final Frame frame = new Frame();
-  public final Screen screen = new Screen();
+  protected final Screen screen = new Screen();
+  protected final InputHandler input = new InputHandler();
 
   public GUI(String title) {
     frame.add(screen);
@@ -17,13 +18,22 @@ public class GUI implements WindowListener {
     frame.pack();
     frame.setVisible(true);
     frame.setLocationRelativeTo(null);
+    addInputHandler(input);
     screen.requestFocus();
   }
 
-  public void addInputListener(InputHandler input) {
+  public void addInputHandler(InputHandler input) {
     screen.addKeyListener(input);
     screen.addMouseListener(input);
     screen.addMouseMotionListener(input);
+  }
+
+  public Screen getScreen() {
+    return screen;
+  }
+
+  public void render() {
+    screen.render();
   }
 
 
@@ -50,5 +60,9 @@ public class GUI implements WindowListener {
 
   @Override
   public void windowOpened(WindowEvent e) {
+  }
+
+  public InputHandler getInputHandler() {
+    return input;
   }
 }

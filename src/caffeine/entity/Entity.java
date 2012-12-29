@@ -123,8 +123,7 @@ public class Entity implements Serializable {
   }
 
   public boolean move(Dir dir) {
-    boolean notStopped = move2(dir.dx * speed, 0);
-    return notStopped && move2(0, dir.dy * speed);
+    return move(dir.dx * speed, dir.dy * speed);
   }
 
   public boolean move(int xa, int ya) {
@@ -138,8 +137,6 @@ public class Entity implements Serializable {
     if (xa != 0 && ya != 0) {
       return false;
     }
-
-    setDir(Dir.whichDir(xa, ya));
 
     int nx = x + xa; // next x
     int ny = y + ya; // next y
@@ -192,7 +189,7 @@ public class Entity implements Serializable {
     removed = true;
   }
 
-  public final void render(Screen screen) {
+  public void render(Screen screen) {
     screen.render(sprite, x - Map.tileSize / 2, y - Map.tileSize / 2 - z);
   }
 

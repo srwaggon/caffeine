@@ -28,7 +28,6 @@ public class Client extends Thread {
   public Client(String username, String password, String ip, int port) {
     USERNAME = username;
     server = new Connection(ip, port);
-    gui.addInputListener(input);
     server.send(new LoginPacket(username, password));
     new ClientWorker(server, game).start();
   }
@@ -51,9 +50,9 @@ public class Client extends Thread {
         unprocessed -= 1;
       }
 
-      game.getMap(0).renderBackground(gui.screen);
-      game.getMap(0).renderSprites(gui.screen);
-      gui.screen.render();
+      game.getMap(0).renderBackground(gui.getScreen());
+      game.getMap(0).renderSprites(gui.getScreen());
+      gui.getScreen().render();
 
       try {
         Thread.sleep(10);
@@ -75,9 +74,9 @@ public class Client extends Thread {
       server.send(new MovePacket(USERNAME, Dir.W));
 
 
-    if (input.jump.clicked)
+    if (input.jump.isClicked)
       server.send(new ActionPacket(Packet.Code.JUMP, USERNAME));
-    if (input.use.clicked)
+    if (input.use.isClicked)
       server.send(new ActionPacket(Packet.Code.USERIGHT, USERNAME));
   }
 

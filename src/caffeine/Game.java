@@ -1,8 +1,8 @@
 package caffeine;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
 import caffeine.entity.Entity;
 import caffeine.gfx.GUI;
@@ -16,22 +16,21 @@ import caffeine.world.World;
  * 
  * @author srwaggon
  */
-public class Game implements Runnable {
+public class Game extends Thread {
   protected final World world = new World(); // Space
-  protected final ConcurrentHashMap<String, Entity> entities = new ConcurrentHashMap<String, Entity>();
-  protected GUI gui;
-
-
+  protected final HashMap<String, Entity> entities = new HashMap<String, Entity>();
+  protected final GUI gui = new GUI("Caffeine Server");
 
   public Game() {
     Map map = new Map(Map.defaultMapData);
-    //addEntity(new Mob(0), map);
     addMap(map);
   }
 
+  public void addEntity(Entity e) {
+    addEntity(e, 0);
+  }
 
   public void addEntity(Entity e, int mapID){
-    entities.put(e.ID, e);
     addEntity(e, world.getMap(mapID));
   }
 
@@ -49,11 +48,6 @@ public class Game implements Runnable {
     }
   }
 
-
-
-  /* MUTATORS */
-
-
   public Collection<Entity> getEntities(int mapID) {
     return world.getMap(mapID).getEntities();
   }
@@ -65,9 +59,6 @@ public class Game implements Runnable {
   public Map getMap(int id) {
     return world.getMap(id);
   }
-
-
-
 
   public void run() {
     final double nsPerTick = 1000000000.0 / 60;
@@ -85,9 +76,9 @@ public class Game implements Runnable {
       }
 
       Map map = getMap(0);
-      map.renderBackground(gui.screen);
-      map.renderSprites(gui.screen);
-      gui.screen.render();
+      map.renderBackground(gui.getScreen());
+      map.renderSprites(gui.getScreen());
+      gui.render();
 
       try {
         Thread.sleep(2);
@@ -97,13 +88,9 @@ public class Game implements Runnable {
     }
   }
 
-
-  /* UTILITY */
   public void start() {
-    gui = new GUI("Caffeine Server");
     new Thread(this).start();
   }
-
 
   public void tick() {
     for (Map map : world.world.values()){

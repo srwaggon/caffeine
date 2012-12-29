@@ -23,6 +23,7 @@ public class Bush extends TileObject {
 
   @Override
   public void dropItem() {
+
   }
 
 }
