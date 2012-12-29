@@ -3,6 +3,7 @@ package caffeine.world.tile;
 import caffeine.entity.Entity;
 import caffeine.items.Item;
 import caffeine.items.ItemType;
+import caffeine.items.weapons.Sword;
 import caffeine.world.Dir;
 
 
@@ -24,6 +25,10 @@ public class Bush extends TileObject {
   @Override
   public void dropItem() {
 
+  }
+
+  public Item itemDropped() {
+    return new Sword();
   }
 
 }

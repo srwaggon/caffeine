@@ -20,11 +20,12 @@ public class Mob extends Entity {
   // primitive Fields
   protected boolean flip = false;
   protected boolean isAlive = true;
-  protected int hp = 3;
+  protected int hp = 200;
   protected int hurtTime;
-  protected int power = 1;
+  protected int power = 10;
   protected int xKnockback, yKnockback;
-  public int xa, ya, za = 0;
+  protected int xa, ya, za = 0;
+  protected int ticktime = 0;
   protected int walkDist = 0;
 
   // Object Fields
@@ -41,8 +42,8 @@ public class Mob extends Entity {
 
   public Mob(String id) {
     super(id);
-    xr = 3;
-    yr = 3;
+    xr = 6;
+    yr = 6;
     brain = new Brain(this);
   }
 
@@ -136,32 +137,30 @@ public class Mob extends Entity {
   public boolean move(int xa, int ya) {
     if (xKnockback > 0) {
       xKnockback--;
-      move2(1, 0);
+      super.move2(1, 0);
     }
     if (xKnockback < 0) {
       xKnockback++;
-      move2(-1, 0);
+      super.move2(-1, 0);
     }
     if (yKnockback > 0) {
       yKnockback--;
-      move2(0, 1);
+      super.move2(0, 1);
     }
     if (yKnockback < 0) {
       yKnockback++;
-      move2(0, -1);
+      super.move2(0, -1);
     }
     if (hurtTime > 0)
       return true;
 
     if (xa != 0 || ya != 0) {
       walkDist++;
-
       if (ya < 0) dir = Dir.N;
       if (xa > 0) dir = Dir.E;
       if (ya > 0) dir = Dir.S;
       if (xa < 0) dir = Dir.W;
     }
-
     return super.move(xa, ya);
   }
 
@@ -186,7 +185,7 @@ public class Mob extends Entity {
       xKnockback = -power;
     if (dir == Dir.E)
       xKnockback = power;
-    hurtTime = 10;
+    hurtTime = power;
   }
 
   public void takeItem(ItemEntity item) {
@@ -194,19 +193,24 @@ public class Mob extends Entity {
   }
 
   public void tick() {
+    ticktime++;
     if (brain != null) {
       brain.tick();
     }
 
-    flip = !flip;
-    if (z >= 0 && flip) {
-      z += za--;
-      if (z <= 0) {
-        z = 0;
-        za = 0;
+
+    if ((ticktime & 1) == 0) {
+      if (z >= 0 ) {
+        z += za--;
+        if (z <= 0) {
+          z = 0;
+          za = 0;
+        }
       }
     }
     move(xa, ya);
+    xa = 0;
+    ya = 0;
 
     if (hurtTime > 0)
       hurtTime--;
@@ -252,6 +256,11 @@ public class Mob extends Entity {
     }
 
     return true;
+  }
+
+  public void setAccel(int dx, int dy) {
+    xa = dx;
+    ya = dy;
   }
 
 }

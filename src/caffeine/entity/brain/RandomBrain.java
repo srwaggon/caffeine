@@ -27,7 +27,6 @@ public class RandomBrain extends Brain {
       numSteps = (int) (Math.random() * 20) + 5;
     }
     numSteps--;
-    self.setDir(dir);
-    self.move(dir);
+    self.setAccel(dir.dx, dir.dy);
   }
 }

@@ -79,8 +79,9 @@ public class Tile implements Serializable {
       tileObject.interact(entity, item, dir);
 
       if (tileObject.isRemoved()) {
-        if (tileObject.dropsItem()) {
-          Entity ie = new ItemEntity(item);
+        Item dropped = tileObject.itemDropped();
+        if (dropped != null) {
+          Entity ie = new ItemEntity(dropped);
           int ts = Map.tileSize;
           ie.setLoc(x*ts + ts/2, y*ts + ts/2);
           entity.getMap().addEntity(ie);

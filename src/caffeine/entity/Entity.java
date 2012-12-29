@@ -18,12 +18,13 @@ import caffeine.world.tile.Tile;
  */
 public class Entity implements Serializable {
   private static final long serialVersionUID = 159464396047740407L;
-  /* static fields */
+
   protected static int numEntities = 0;
+
   public static int getPopulation() {
     return Entity.numEntities;
   }
-  /* primitive fields */
+
   protected boolean removed = false;
   public final String ID;
   protected int mapID = 0;
@@ -32,10 +33,8 @@ public class Entity implements Serializable {
   protected int x = 32;
   protected int y = 32;
   protected int z = 0;
-  protected int xr = 3;
-
-  protected int yr = 3;
-  /* Object fields */
+  protected int xr = 3; // width/2
+  protected int yr = 3; // height/2
   protected Dir dir = Dir.S;
 
   protected Map map;
@@ -104,6 +103,7 @@ public class Entity implements Serializable {
             e.getY() + e.yr);
   }
 
+  // top left corner and bottom right corner
   public boolean intersects(int x0, int y0, int x1, int y1) {
     return !(x + xr < x0 || y + yr < y0 || x - xr > x1 || y - yr > y1);
   }
@@ -132,12 +132,6 @@ public class Entity implements Serializable {
   }
 
   public boolean move2(int xa, int ya) {
-    Map map = getMap();
-
-    if (xa != 0 && ya != 0) {
-      return false;
-    }
-
     int nx = x + xa; // next x
     int ny = y + ya; // next y
 
@@ -158,12 +152,13 @@ public class Entity implements Serializable {
       }
 
       // if they currently intersect, move freely.
-      if (intersects(entity)) {
+      if (intersects(entity) && (z > 0 == entity.z > 0)) {
         continue;
+        //entity.touchedBy(this);
       }
 
-      // If they're going to intersect, inform them.
-      if (entity.intersects(nx - xr, ny - yr, nx + xr, ny + yr)) {
+      if (entity.intersects(nx - xr, ny - yr, nx + xr, ny + yr) && (z > 0 == entity.z > 0)) {
+        // If they're going to intersect, inform them.
         if (!entity.touchedBy(this)) {
           return false;
         }
@@ -173,6 +168,7 @@ public class Entity implements Serializable {
     // Change location.
     x += xa;
     y += ya;
+
 
     for (Tile t : nextTiles) {
       t.onEnter(this);

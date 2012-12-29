@@ -45,8 +45,8 @@ public abstract class TileObject implements Serializable {
 
   public abstract void dropItem();
 
-  public boolean dropsItem() {
-    return true;
+  public Item itemDropped() {
+    return null;
   }
 
 }
