@@ -35,15 +35,15 @@ public class Mob extends Entity {
   protected List<Item> inventory = new ArrayList<Item>();
 
   public Mob() {
-    xr = 3;
-    yr = 3;
+    xr = 5;
+    yr = 5;
     brain = new RandomBrain(this);
   }
 
   public Mob(String id) {
     super(id);
-    xr = 6;
-    yr = 6;
+    xr = 5;
+    yr = 5;
     brain = new Brain(this);
   }
 

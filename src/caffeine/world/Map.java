@@ -240,7 +240,7 @@ public class Map implements Serializable {
 
     for (int y = 0; y < numRows; y++) {
       for (int x = 0; x < numCols; x++) {
-        // getTile(x,y).tick();
+        getTile(x,y).tick();
       }
     }
     for (int i = 0; i < entities.size(); i++) {

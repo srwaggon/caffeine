@@ -12,30 +12,90 @@ import caffeine.world.Map;
 
 public class Tile implements Serializable {
   private static final long serialVersionUID = -4410353113874468565L;
+  private long time = System.currentTimeMillis();
+
+  public static Tile read(int x, int y, char data) {
+    Tile tile = new Tile(x, y);
+    if (data == 'm') tile.type = TileType.GRASS;
+    if (data == '#') {
+      TileObject bush = new Bush();
+      tile.type = bush.type;
+      tile.hold(bush);
+    }
+    if (data == 'D') {
+      TileObject stone = new Stone();
+      tile.type = stone.type;
+      tile.hold(stone);
+    }
+    if (data == '~') tile.type = TileType.WATER;
+    return tile;
+  }
 
   protected int x, y;
-
-  protected TileType type = TileType.dirt;
+  protected TileType type = TileType.DIRT;
   protected TileObject tileObject = null;
-
 
   public Tile(int x, int y) {
     this.x = x;
     this.y = y;
   }
 
-  public void hold(TileObject tileObject){
-    this.tileObject = tileObject;
-    type = tileObject.type;
+  public boolean blocksNPC() {
+    if (tileObject != null) {
+      return tileObject.blocksNPC();
+    }
+    return false;
   }
 
-  public static Tile read(int x, int y, char data) {
-    Tile tile = new Tile(x, y);
-    if (data == 'm') tile.type = TileType.grass;
-    if (data == '#') tile.hold(new Bush());
-    if (data == 'D') tile.hold(new Stone());
-    if (data == '~') tile.type = TileType.water;
-    return tile;
+  public boolean blocksPC(){
+    if (tileObject != null) {
+      return tileObject.blocksPC();
+    }
+    return false;
+  }
+
+  public long getAge() {
+    return System.currentTimeMillis() - time;
+  }
+
+  public int getSprite() {
+    if (tileObject != null) {
+      return tileObject.getSprite();
+    }
+    return type.getSprite();
+  }
+
+  public char getSymbol() {
+    if (tileObject != null) {
+      return tileObject.getSymbol();
+    }
+    return type.getChar();
+  }
+
+  public void hold(TileObject tileObject){
+    this.tileObject = tileObject;
+  }
+
+  public boolean interact(Entity entity, Item item, Dir dir) {
+    if (tileObject != null) {
+      tileObject.interact(entity, item, dir);
+
+      if (tileObject.isRemoved()) {
+        Item dropped = tileObject.itemDropped();
+        if (dropped != null) {
+          Entity ie = new ItemEntity(dropped);
+          int ts = Map.tileSize;
+          ie.setLoc(x*ts + ts/2, y*ts + ts/2);
+          entity.getMap().addEntity(ie);
+        }
+        time = System.currentTimeMillis();
+        tileObject = null;
+      }
+    }
+    return true;
+  }
+
+  public void onEnter(Entity entity) {
   }
 
   public void render(Screen screen, Map map, int x, int y) {
@@ -66,61 +126,23 @@ public class Tile implements Serializable {
     }
 
     screen.render(sprite, x, y);
-    if (tileObject != null) screen.render(tileObject.getSprite(), x, y);
-
-  }
-
-  public void onEnter(Entity entity) {
-  }
-
-  public boolean interact(Entity entity, Item item, Dir dir) {
-    //type = TileType.nil;
     if (tileObject != null) {
-      tileObject.interact(entity, item, dir);
-
-      if (tileObject.isRemoved()) {
-        Item dropped = tileObject.itemDropped();
-        if (dropped != null) {
-          Entity ie = new ItemEntity(dropped);
-          int ts = Map.tileSize;
-          ie.setLoc(x*ts + ts/2, y*ts + ts/2);
-          entity.getMap().addEntity(ie);
-        }
-        tileObject = null;
-      }
+      tileObject.render(screen, this, x, y);
     }
-    return true;
   }
 
-  public boolean blocksNPC() {
+
+  public void resetTime() {
+    time = System.currentTimeMillis();
+  }
+
+  public void tick() {
+    TileType.tick(this);
     if (tileObject != null) {
-      return tileObject.blocksNPC();
+      tileObject.tick();
     }
-    return false;
   }
 
-  public boolean blocksPC(){
-    if (tileObject != null) {
-      return tileObject.blocksPC();
-    }
-    return false;
-  }
-
-  public int getSprite() {
-    if (tileObject != null) {
-      return tileObject.getSprite();
-    }
-    return type.getSprite();
-  }
-
-  public char getSymbol() {
-    if (tileObject != null) {
-      return tileObject.getSymbol();
-    }
-    return type.getChar();
-  }
-
-  @Override
   public String toString() {
     return "" + getSymbol();
   }

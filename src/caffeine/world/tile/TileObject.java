@@ -3,6 +3,7 @@ package caffeine.world.tile;
 import java.io.Serializable;
 
 import caffeine.entity.Entity;
+import caffeine.gfx.Screen;
 import caffeine.items.Item;
 import caffeine.world.Dir;
 
@@ -10,13 +11,16 @@ public abstract class TileObject implements Serializable {
 
   private static final long serialVersionUID = 1674197575118814994L;
 
-  protected boolean blocksPC;
-  protected boolean blocksNPC;
-  protected boolean isSafe;
-  protected boolean removed;
-  protected char symbol;
-  public int sprite;
+  protected boolean blocksPC = false;
+  protected boolean blocksNPC = false;
+  protected boolean isSafe = true;
+  protected boolean removed = false;
+  protected char symbol = ' ';
+  public int sprite = 0;
   protected TileType type;
+
+  public TileObject() {
+  }
 
   public TileObject(TileType type, char symbol, int sprite, boolean blocksPC, boolean blocksNPC, boolean isSafe){
     this.symbol = symbol;
@@ -41,12 +45,16 @@ public abstract class TileObject implements Serializable {
 
   public final void remove() { removed = true; }
 
+  public void render(Screen screen, Tile t, int x, int y) {
+    screen.render(sprite, x, y);
+  }
+
   public abstract boolean interact(Entity entity, Item item, Dir dir);
 
   public abstract void dropItem();
 
-  public Item itemDropped() {
-    return null;
-  }
+  public Item itemDropped() { return null; }
+
+  public void tick() {}
 
 }

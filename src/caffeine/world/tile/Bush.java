@@ -1,19 +1,31 @@
 package caffeine.world.tile;
 
 import caffeine.entity.Entity;
+import caffeine.gfx.Screen;
+import caffeine.items.Heart;
 import caffeine.items.Item;
 import caffeine.items.ItemType;
-import caffeine.items.weapons.Sword;
 import caffeine.world.Dir;
 
 
 public class Bush extends TileObject {
 
-  public Bush() {
-    super(TileType.grass, '#', 2, true, true, true);
+  long time = System.currentTimeMillis();
+  Stage stage;
+
+  enum Stage {
+    SEEDS(6), SAPLING(7), LOW(8), HIGH(9);
+    public final int SPRITE;
+    private Stage(int sprite) {
+      SPRITE = sprite;
+    }
   }
 
-  @Override
+  public Bush() {
+    super(TileType.GRASS, '#', 0, true, true, true);
+    stage = Stage.values()[((int)Math.random()*4)];
+  }
+
   public boolean interact(Entity entity, Item item, Dir dir) {
     if (item.getType() == ItemType.tool ||
         item.getType() == ItemType.weapon){
@@ -22,13 +34,25 @@ public class Bush extends TileObject {
     return false;
   }
 
-  @Override
   public void dropItem() {
-
   }
 
   public Item itemDropped() {
-    return new Sword();
+    return new Heart(0);
+  }
+
+  public void render(Screen screen, Tile tile, int x, int y) {
+    screen.render(stage.SPRITE, x, y);
+  }
+
+  public void tick() {
+    if (stage != Stage.HIGH) {
+      long now = System.currentTimeMillis();
+      if (now - time > 30*1000) {
+        time = now;
+        stage = Stage.values()[stage.ordinal()+1];
+      }
+    }
   }
 
 }
