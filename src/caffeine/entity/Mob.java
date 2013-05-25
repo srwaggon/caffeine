@@ -3,9 +3,9 @@ package caffeine.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import pixl.Screen;
 import caffeine.entity.brain.Brain;
 import caffeine.entity.brain.RandomBrain;
-import caffeine.gfx.Screen;
 import caffeine.items.Heart;
 import caffeine.items.Item;
 import caffeine.items.ItemType;
@@ -27,26 +27,27 @@ public class Mob extends Entity {
   protected int xa, ya, za = 0;
   protected int ticktime = 0;
   protected int walkDist = 0;
-
+  
   // Object Fields
   protected Brain brain;
   protected Item leftHand;
   protected Item rightHand = new Sword();
   protected List<Item> inventory = new ArrayList<Item>();
-
+  
   public Mob() {
     xr = 5;
     yr = 5;
     brain = new RandomBrain(this);
   }
-
+  
   public Mob(String id) {
     super(id);
     xr = 5;
     yr = 5;
     brain = new Brain(this);
   }
-
+  
+  @Override
   public void addItem(Item item) {
     if (item.getType() == ItemType.weapon) {
       rightHand = item;
@@ -54,7 +55,7 @@ public class Mob extends Entity {
       inventory.add(item);
     }
   }
-
+  
   public void attack() {
     // use this entity's range to hurt the entities within a given proximity
     if (dir == Dir.N)
@@ -66,7 +67,7 @@ public class Mob extends Entity {
     if (dir == Dir.W)
       hurt(x - (2 * xr), y, x, y);
   }
-
+  
   public void die() {
     isAlive = false;
     Sound.ENEMY_DIE.play();
@@ -74,66 +75,72 @@ public class Mob extends Entity {
     remove();
     new Mob(ID).setMap(map);
   }
-
+  
   public void drop(Item item) {
     ItemEntity ie = new ItemEntity(item);
     ie.setLoc(x, y);
     map.addEntity(ie);
   }
-
+  
   public void equipItem(Item item) {
     ItemType itemType = item.getType();
     if (itemType == ItemType.tool || itemType == ItemType.weapon) {
       rightHand = item;
     }
   }
-
+  
   public Brain getBrain() {
     return brain;
   }
-
+  
+  @Override
   public int getHP() {
     return hp;
   }
-
+  
+  @Override
   public void heal(int n) {
     hp += n;
   }
-
+  
   public void hurt(int x0, int y0, int x1, int y1) {
     List<Entity> entities = getMap().getEntities(x0, y0, x1, y1);
     for (Entity entity : entities)
       if (!entity.equals(this))
         entity.takeDamage(power, dir);
   }
-
+  
   public void interact(int x0, int y0, int x1, int y1, Item item) {
     List<Tile> tiles = getMap().getTiles(x0, y0, x1, y1);
     for (Tile tile : tiles) {
       tile.interact(this, item, dir);
     }
   }
-
+  
   public boolean isAlive() {
     return isAlive;
   }
-
+  
+  @Override
   public boolean isValidTile(Tile tile) {
     return !tile.blocksNPC() || z > 0;
   }
-
+  
+  @Override
   public void jump() {
     if (z == 0) {
       za = 6;
       Sound.JUMP.play();
     }
   }
-
+  
+  @Override
   public void knockback(int x, int y) {
     xKnockback = x;
     yKnockback = y;
   }
-
+  
+  @Override
   public boolean move(int xa, int ya) {
     if (xKnockback > 0) {
       xKnockback--;
@@ -153,30 +160,35 @@ public class Mob extends Entity {
     }
     if (hurtTime > 0)
       return true;
-
+    
     if (xa != 0 || ya != 0) {
       walkDist++;
-      if (ya < 0) dir = Dir.N;
-      if (xa > 0) dir = Dir.E;
-      if (ya > 0) dir = Dir.S;
-      if (xa < 0) dir = Dir.W;
+      if (ya < 0)
+        dir = Dir.N;
+      if (xa > 0)
+        dir = Dir.E;
+      if (ya > 0)
+        dir = Dir.S;
+      if (xa < 0)
+        dir = Dir.W;
     }
     return super.move(xa, ya);
   }
-
+  
   public void render(Screen screen) {
     int sprite = this.sprite + dir.ordinal();
     screen.render(sprite, x - Map.tileSize / 2, y - Map.tileSize / 2 - z);
   }
-
+  
   public void setBrain(Brain b) {
     brain = b;
   }
-
+  
+  @Override
   public void takeDamage(int dmg, Dir dir) {
     hp -= dmg;
     Sound.HURT.play();
-
+    
     if (dir == Dir.N)
       yKnockback = -power;
     if (dir == Dir.S)
@@ -187,20 +199,21 @@ public class Mob extends Entity {
       xKnockback = power;
     hurtTime = power;
   }
-
+  
+  @Override
   public void takeItem(ItemEntity item) {
     item.take(this);
   }
-
+  
+  @Override
   public void tick() {
     ticktime++;
     if (brain != null) {
       brain.tick();
     }
-
-
+    
     if ((ticktime & 1) == 0) {
-      if (z >= 0 ) {
+      if (z >= 0) {
         z += za--;
         if (z <= 0) {
           z = 0;
@@ -211,14 +224,15 @@ public class Mob extends Entity {
     move(xa, ya);
     xa = 0;
     ya = 0;
-
+    
     if (hurtTime > 0)
       hurtTime--;
-
+    
     if (hp <= 0)
       die();
   }
-
+  
+  @Override
   public boolean touchedBy(Entity entity) {
     if (entity.dir == Dir.N)
       knockback(0, -6);
@@ -230,14 +244,14 @@ public class Mob extends Entity {
       knockback(6, 0);
     return false;
   }
-
+  
   public boolean useLeftHand() {
     if (leftHand != null) {
       leftHand.playUseSound();
     }
     return true;
   }
-
+  
   public boolean useRightHand() {
     if (rightHand != null) {
       if (dir == Dir.N)
@@ -248,19 +262,19 @@ public class Mob extends Entity {
         interact(x, y, x, y + (2 * yr), rightHand);
       if (dir == Dir.W)
         interact(x - (2 * xr), y, x, y, rightHand);
-
+      
       if (rightHand.getType() == ItemType.weapon) {
         attack();
       }
       rightHand.playUseSound();
     }
-
+    
     return true;
   }
-
+  
   public void setAccel(int dx, int dy) {
     xa = dx;
     ya = dy;
   }
-
+  
 }

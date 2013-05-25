@@ -4,21 +4,19 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
-import pixl.Renderable;
-import pixl.Screen;
 import caffeine.entity.Entity;
 import caffeine.world.Map;
-import caffeine.world.World;
 
 /**
  * A game is the mover and shaker of the engine and represents a single play.
  * Games handle everything, from graphics to the heart beat, as well as the
  * mechanisms, but are broken down into smaller components.
  * 
- * @author srwaggon
+ * @author Samuel Waggoner
+ * @email samuel.waggoner@gmail.com
  */
-public class Game extends Thread implements Renderable {
-  protected final World world = new World(); // Space
+public class Game extends Thread {
+  private final HashMap<Integer, Map> world = new HashMap<Integer, Map>();
   protected final HashMap<String, Entity> entities = new HashMap<String, Entity>();
   
   public Game() {
@@ -31,7 +29,7 @@ public class Game extends Thread implements Renderable {
   }
   
   public void addEntity(Entity e, int mapID) {
-    addEntity(e, world.getMap(mapID));
+    addEntity(e, world.get(mapID));
   }
   
   public void addEntity(Entity e, Map map) {
@@ -40,7 +38,7 @@ public class Game extends Thread implements Renderable {
   }
   
   public void addMap(Map map) {
-    world.addMap(map);
+    world.put(map.getID(), map);
     List<Entity> ents = map.getEntities();
     for (int i = 0; i < ents.size(); i++) {
       Entity ent = ents.get(i);
@@ -49,15 +47,19 @@ public class Game extends Thread implements Renderable {
   }
   
   public Collection<Entity> getEntities(int mapID) {
-    return world.getMap(mapID).getEntities();
+    return world.get(mapID).getEntities();
   }
   
   public Entity getEntity(String username) {
     return entities.get(username);
   }
   
-  public Map getMap(int id) {
-    return world.getMap(id);
+  public int getMapCount() {
+    return world.size();
+  }
+  
+  public Map getMap(int mapID) {
+    return world.get(mapID);
   }
   
   @Override
@@ -70,6 +72,8 @@ public class Game extends Thread implements Renderable {
       now = System.nanoTime();
       unprocessed += (now - lastTime) / nsPerTick;
       lastTime = now;
+      
+      // System.out.println(unprocessed);
       
       while (unprocessed >= 1) {
         tick();
@@ -90,15 +94,8 @@ public class Game extends Thread implements Renderable {
   }
   
   public void tick() {
-    for (Map map : world.world.values()) {
-      map.tick();
+    for (Map m : world.values()) {
+      m.tick();
     }
-  }
-  
-  @Override
-  public void render(Screen screen) {
-    Map map = getMap(0);
-    map.renderBackground(screen);
-    map.renderSprites(screen);
   }
 }

@@ -8,15 +8,16 @@ import caffeine.entity.brain.InteractiveBrain;
 public class Main {
   
   public static void main(String[] args) {
-    Game g = new Game();
-    g.addEntity(new Mob());
-    g.addEntity(new Mob());
+    Caffeine caffeine = new Caffeine();
+    caffeine.addEntity(new Mob());
+    caffeine.addEntity(new Mob());
     PlayerEntity player = new PlayerEntity("Fnar");
-    g.addEntity(player);
+    caffeine.addEntity(player);
     Frame gui = new Frame("Caf");
-    gui.addRenderable(g);
+    gui.addRenderable(caffeine);
     player.setBrain(new InteractiveBrain(gui.getInputHandler(), player));
-    g.start();
     
+    caffeine.start();
+    gui.start();
   }
 }

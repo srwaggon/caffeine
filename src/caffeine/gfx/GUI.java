@@ -1,43 +1,32 @@
 package caffeine.gfx;
 
-import java.awt.Frame;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.util.ArrayList;
-import java.util.List;
 
+import pixl.Frame;
 import pixl.Renderable;
 
 public class GUI implements WindowListener {
-  protected final Frame frame = new Frame();
-  protected final List<Renderable> renderables = new ArrayList<Renderable>();
-  protected final Screen screen = new Screen();
-  protected final InputHandler input = new InputHandler();
+  private final Frame frame;
+  private final InputHandler input = new InputHandler();
+  private final SpriteSheet spritesheet;
   
   public GUI(String title) {
-    frame.add(screen);
+    frame = new Frame(title);
     frame.setTitle(title);
     frame.addWindowListener(this);
-    frame.setResizable(false);
-    frame.pack();
-    frame.setVisible(true);
-    frame.setLocationRelativeTo(null);
     addInputHandler(input);
-    screen.requestFocus();
   }
   
   public void addInputHandler(InputHandler input) {
-    screen.addKeyListener(input);
-    screen.addMouseListener(input);
-    screen.addMouseMotionListener(input);
+    frame.addKeyListener(input);
+    frame.addMouseListener(input);
+    frame.addMouseMotionListener(input);
   }
   
-  public Screen getScreen() {
-    return screen;
-  }
-  
+  @Override
   public void addRenderable(Renderable renderable) {
-    renderables.add(renderable);
+    frame.addRenderable(renderable);
   }
   
   @Override
@@ -69,6 +58,7 @@ public class GUI implements WindowListener {
   public void windowOpened(WindowEvent e) {
   }
   
+  @Override
   public InputHandler getInputHandler() {
     return input;
   }
