@@ -163,7 +163,6 @@ public class GameServer extends Thread implements MapListener {
     
     // track worker by account
     clients.put(account.getUsername(), worker);
-    
   }
   
   public synchronized void removeAccount(PlayerAccount account) {

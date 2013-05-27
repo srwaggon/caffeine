@@ -36,8 +36,7 @@ public class GameServerWorker extends Thread {
         server.handle(account, client.readPacket());
         Thread.sleep(2);
       } catch (IOException e) {
-        client.disconnect();
-        e.printStackTrace();
+        disconnect();
       } catch (InterruptedException e) {
         e.printStackTrace();
       }

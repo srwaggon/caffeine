@@ -12,11 +12,12 @@ import caffeine.net.packet.MovePacket;
 import caffeine.net.packet.Packet;
 import caffeine.world.Dir;
 
-public class Client extends Thread {
+public class Client implements Runnable {
   protected final String USERNAME;
   protected HashMap<Integer, Entity> entities = new HashMap<Integer, Entity>();
   protected Caffeine game = new Caffeine();
   protected Connection server;
+  private final ClientWorker clientWorker;
   private final Frame frame = new Frame("Caffeine Client");
   protected InputHandler input = new InputHandler();
   
@@ -30,9 +31,14 @@ public class Client extends Thread {
     USERNAME = username;
     server = new Connection(ip, port);
     server.send(new LoginPacket(username, password));
-    new ClientWorker(server, game).start();
+    clientWorker = new ClientWorker(server, game);
     frame.addRenderable(game);
+  }
+  
+  public void start() {
     frame.start();
+    clientWorker.start();
+    new Thread(this).start();
   }
   
   @Override
