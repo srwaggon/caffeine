@@ -1,10 +1,10 @@
 package caffeine.net;
 
 import java.io.IOException;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 
+import link.Server;
 import caffeine.Game;
 import caffeine.entity.Entity;
 import caffeine.entity.Mob;
@@ -18,10 +18,8 @@ import caffeine.net.packet.MovePacket;
 import caffeine.net.packet.Packet;
 import caffeine.world.tile.Tile;
 
-public class GameServer extends Thread implements MapListener {
-  private final int port;
+public class GameServer extends Server implements MapListener {
   private final Game game;
-  private ServerSocket socket = null;
   private final HashMap<String, GameServerWorker> clients = new HashMap<String, GameServerWorker>();
   
   public static void main(String args[]) {
@@ -32,32 +30,9 @@ public class GameServer extends Thread implements MapListener {
   }
   
   public GameServer(Game game, int port) {
-    this.port = port;
+    super(port);
     this.game = game;
-    
-    try {
-      socket = new ServerSocket(port);
-    } catch (IOException e) {
-      System.out.println("Could not listen on port " + port);
-      System.exit(-1);
-    }
     game.getMap(0).addMapListener(this);
-  }
-  
-  @Override
-  public void run() {
-    while (true) {
-      try {
-        System.out.print("Awaiting connection...");
-        acceptConnection(socket.accept());
-        Thread.sleep(100);
-      } catch (IOException ioe) {
-        System.out.println("Accept failed: " + port);
-        ioe.printStackTrace();
-      } catch (InterruptedException ie) {
-        ie.printStackTrace();
-      }
-    }
   }
   
   /**
@@ -68,6 +43,7 @@ public class GameServer extends Thread implements MapListener {
    * 
    * @param socket
    */
+  @Override
   public void acceptConnection(Socket socket) {
     System.out.println(socket.getInetAddress().toString() + " connecting.");
     Connection client = new Connection(socket);
@@ -130,20 +106,6 @@ public class GameServer extends Thread implements MapListener {
   public void broadcast(Packet packet) {
     for (GameServerWorker client : clients.values()) {
       client.send(packet);
-    }
-  }
-  
-  @Override
-  protected void finalize() {
-    try {
-      socket.close();
-      super.finalize();
-    } catch (IOException e) {
-      System.out.println("Could not close.");
-      System.exit(-1);
-    } catch (Throwable e) {
-      e.printStackTrace();
-      System.exit(-1);
     }
   }
   
