@@ -16,8 +16,8 @@ public class Connection {
   protected PrintWriter out = null;
   protected ObjectInputStream ois;
   protected ObjectOutputStream oos;
-
-  public Connection(String ip, int port){
+  
+  public Connection(String ip, int port) {
     try {
       socket = new Socket(ip, port);
       in = new Scanner(socket.getInputStream());
@@ -30,8 +30,8 @@ public class Connection {
     }
     connected = true;
   }
-
-  public Connection(Socket socket){
+  
+  public Connection(Socket socket) {
     try {
       this.socket = socket;
       in = new Scanner(socket.getInputStream());
@@ -44,7 +44,7 @@ public class Connection {
     }
     connected = true;
   }
-
+  
   @Override
   public void finalize() {
     try {
@@ -54,12 +54,12 @@ public class Connection {
       e.printStackTrace();
     }
   }
-
+  
   public void send(String msg) {
     out.println(msg);
     out.flush();
   }
-
+  
   public void send(Packet packet) {
     try {
       oos.writeObject(packet);
@@ -72,15 +72,15 @@ public class Connection {
       e.printStackTrace();
     }
   }
-
-  public boolean hasNext(){
+  
+  public boolean hasNext() {
     return in.hasNext();
   }
-
-  public boolean hasLine(){
+  
+  public boolean hasLine() {
     return in.hasNextLine();
   }
-
+  
   public boolean hasPacket() {
     try {
       return ois.available() > 0;
@@ -89,44 +89,46 @@ public class Connection {
     }
     return false;
   }
-
+  
   public String read() {
     return in.next();
   }
-
-  public String readLine(){
+  
+  public String readLine() {
     return in.nextLine();
   }
-
+  
   public Packet readPacket() throws IOException {
-
+    
     try {
       Packet packet = (Packet) (ois.readObject());
       return packet;
     } catch (ClassNotFoundException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
     return null;
   }
-
+  
   public void disconnect() {
     try {
       System.out.println("Disconnecting from " + this + ".");
       connected = false;
-      if (in  != null) in.close();
-      if (out != null) out.close();
-      if (socket != null) socket.close();
+      if (in != null)
+        in.close();
+      if (out != null)
+        out.close();
+      if (socket != null)
+        socket.close();
     } catch (IOException e) {
       e.printStackTrace();
       System.exit(-1);
     }
   }
-
+  
   public boolean isConnected() {
-    return connected;//socket.isConnected() && !socket.isClosed();
+    return connected;// socket.isConnected() && !socket.isClosed();
   }
-
+  
   @Override
   public String toString() {
     return socket.getInetAddress().toString();

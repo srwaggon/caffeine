@@ -9,7 +9,6 @@ public class Caffeine extends Game implements Renderable {
   
   @Override
   public void render(Screen screen) {
-    System.out.println("rendering.");
     Map map = getMap(currentMap);
     map.renderBackground(screen);
     map.renderSprites(screen);

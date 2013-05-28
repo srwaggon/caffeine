@@ -3,7 +3,7 @@ package caffeine.net;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import caffeine.Game;
 import caffeine.entity.Entity;
@@ -11,28 +11,30 @@ import caffeine.entity.Mob;
 import caffeine.entity.PlayerEntity;
 import caffeine.net.accounts.PlayerAccount;
 import caffeine.net.packet.ActionPacket;
+import caffeine.net.packet.ErrorPacket;
+import caffeine.net.packet.LoginPacket;
 import caffeine.net.packet.MapPacket;
 import caffeine.net.packet.MovePacket;
 import caffeine.net.packet.Packet;
 import caffeine.world.tile.Tile;
 
-public class GameServer extends Thread implements MapListener{
-  protected final int port;
-  protected Game game;
-  protected ServerSocket socket = null;
-  protected ArrayList<GameServerWorker> workers = new ArrayList<GameServerWorker>();
-
+public class GameServer extends Thread implements MapListener {
+  private final int port;
+  private final Game game;
+  private ServerSocket socket = null;
+  private final HashMap<PlayerAccount, GameServerWorker> clients = new HashMap<PlayerAccount, GameServerWorker>();
+  
   public static void main(String args[]) {
     Game game = new Game();
-    game.start();
     GameServer gs = new GameServer(game, 4444);
+    game.start();
     gs.start();
   }
-
+  
   public GameServer(Game game, int port) {
     this.port = port;
     this.game = game;
-
+    
     try {
       socket = new ServerSocket(port);
     } catch (IOException e) {
@@ -41,7 +43,8 @@ public class GameServer extends Thread implements MapListener{
     }
     game.getMap(0).addMapListener(this);
   }
-
+  
+  @Override
   public void run() {
     while (true) {
       try {
@@ -56,21 +59,50 @@ public class GameServer extends Thread implements MapListener{
       }
     }
   }
-
+  
+  /**
+   * Receives a socket representing a client connection and wraps it in a
+   * connection before attempting to authenticate it as a valid login packet. If
+   * the login is successful, a GameServerWorker is requested and assigned to
+   * handle incoming data from the client.
+   * 
+   * @param socket
+   */
   public void acceptConnection(Socket socket) {
     System.out.println(socket.getInetAddress().toString() + " connecting.");
     Connection client = new Connection(socket);
-    GameServerWorker worker;
+    
+    Packet packet = null;
     try {
-      worker = new GameServerWorker(this, client);
-      worker.start();
-    } catch (IOException e) {
-      client.send(Packet.LoginFailure);
-      e.printStackTrace();
+      packet = client.readPacket();
+    } catch (IOException ioe) {
+      ioe.printStackTrace();
     }
-
+    
+    // authenticate first packet as login
+    if (packet.getCode() != Packet.Code.LOGIN) {
+      client.send(new ErrorPacket("Bad login."));
+    }
+    
+    // check player username / password
+    LoginPacket loginPacket = (LoginPacket) packet;
+    PlayerAccount account = PlayerAccount.loadPlayer(loginPacket.USERNAME);
+    if (!account.authenticate(loginPacket.PASSWORD)) {
+      client.send(new ErrorPacket("Bad username/password."));
+    }
+    
+    // check if not online
+    if (clients.containsKey(account)) {
+      client.send(new ErrorPacket("Account already connected."));
+    }
+    
+    // accept connection
+    GameServerWorker worker = requestWorker();
+    worker.handleConnection(client, account);
+    assignClient(worker, account);
+    worker.start();
   }
-
+  
   public synchronized void handle(PlayerAccount player, Packet packet) {
     switch (packet.getCode()) {
       case MOVE:
@@ -88,16 +120,16 @@ public class GameServer extends Thread implements MapListener{
       default:
         break;
     }
-
     broadcast(packet);
   }
-
+  
   public void broadcast(Packet packet) {
-    for (GameServerWorker worker : workers) {
-      worker.send(packet);
+    for (GameServerWorker client : clients.values()) {
+      client.send(packet);
     }
   }
-
+  
+  @Override
   protected void finalize() {
     try {
       socket.close();
@@ -110,38 +142,44 @@ public class GameServer extends Thread implements MapListener{
       System.exit(-1);
     }
   }
-
-  public synchronized void addWorker(GameServerWorker worker) {
-    // Handle the newly connected player.
-    PlayerAccount player = worker.getPlayer();
-
-    // : Add his piece to the game.
-    PlayerEntity entity = player.getEntity();
-    System.out.println(entity.ID);
+  
+  public GameServerWorker requestWorker() {
+    GameServerWorker worker = new GameServerWorker(this);
+    return worker;
+  }
+  
+  public synchronized void assignClient(GameServerWorker worker,
+      PlayerAccount account) {
+    
+    // Add account's avatar to the game.
+    PlayerEntity entity = account.getEntity();
+    System.out.println(entity.ID + " added to game.");
     game.addEntity(entity, entity.getMapID());
-    workers.add(worker);
     worker.client.send(new MapPacket(entity.getMap()));
+    
+    // track worker by account
+    clients.put(account, worker);
+    
   }
-
-  public synchronized void removeWorker(GameServerWorker worker) {
-    PlayerAccount player  = worker.getPlayer();
-    PlayerAccount.savePlayer(player);
-    player.getEntity().remove();
-    workers.remove(worker);
+  
+  public synchronized void removeAccount(PlayerAccount account) {
+    PlayerAccount.savePlayer(account);
+    account.getEntity().remove();
+    clients.remove(account);
   }
-
+  
+  @Override
   public void onAddEntity(Entity entity) {
     broadcast(new MapPacket(entity.getMap()));
   }
-
+  
+  @Override
   public void onRemoveEntity(Entity entity) {
     broadcast(new MapPacket(entity.getMap()));
   }
-
+  
+  @Override
   public void onTileChange(Tile tile) {
     ;
   }
-
-
-
 }

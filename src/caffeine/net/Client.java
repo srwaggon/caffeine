@@ -60,7 +60,7 @@ public class Client extends Thread {
         e.printStackTrace();
       }
     }
-    System.exit(0);
+    
   }
   
   public void processInput() {

@@ -16,12 +16,26 @@ import caffeine.world.Map;
  * @email samuel.waggoner@gmail.com
  */
 public class Game extends Thread {
+  
+  private final HashMap<String, Entity> entities = new HashMap<String, Entity>();
+  private final HashMap<String, Player> players = new HashMap<String, Player>();
   private final HashMap<Integer, Map> world = new HashMap<Integer, Map>();
-  protected final HashMap<String, Entity> entities = new HashMap<String, Entity>();
   
   public Game() {
     Map map = new Map(Map.defaultMapData);
     addMap(map);
+  }
+  
+  public void addPlayer(Player player) {
+    players.put(player.getUsername(), player);
+  }
+  
+  public boolean hasPlayer(String username) {
+    return players.containsKey(username);
+  }
+  
+  public Player removePlayer(String username) {
+    return players.remove(username);
   }
   
   public void addEntity(Entity e) {
