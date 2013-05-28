@@ -22,7 +22,7 @@ public class GameServer extends Thread implements MapListener {
   private final int port;
   private final Game game;
   private ServerSocket socket = null;
-  private final HashMap<PlayerAccount, GameServerWorker> clients = new HashMap<PlayerAccount, GameServerWorker>();
+  private final HashMap<String, GameServerWorker> clients = new HashMap<String, GameServerWorker>();
   
   public static void main(String args[]) {
     Game game = new Game();
@@ -77,23 +77,27 @@ public class GameServer extends Thread implements MapListener {
       packet = client.readPacket();
     } catch (IOException ioe) {
       ioe.printStackTrace();
+      return;
     }
     
-    // authenticate first packet as login
+    // authenticate primary packet is login or new account.
     if (packet.getCode() != Packet.Code.LOGIN) {
       client.send(new ErrorPacket("Bad login."));
+      return;
     }
     
-    // check player username / password
+    // check player username / password authenticity.
     LoginPacket loginPacket = (LoginPacket) packet;
     PlayerAccount account = PlayerAccount.loadPlayer(loginPacket.USERNAME);
     if (!account.authenticate(loginPacket.PASSWORD)) {
       client.send(new ErrorPacket("Bad username/password."));
+      return;
     }
     
-    // check if not online
-    if (clients.containsKey(account)) {
+    // check if not already online.
+    if (clients.get(account.getUsername()) != null) {
       client.send(new ErrorPacket("Account already connected."));
+      return;
     }
     
     // accept connection
@@ -158,14 +162,14 @@ public class GameServer extends Thread implements MapListener {
     worker.client.send(new MapPacket(entity.getMap()));
     
     // track worker by account
-    clients.put(account, worker);
+    clients.put(account.getUsername(), worker);
     
   }
   
   public synchronized void removeAccount(PlayerAccount account) {
     PlayerAccount.savePlayer(account);
     account.getEntity().remove();
-    clients.remove(account);
+    clients.remove(account.getUsername());
   }
   
   @Override

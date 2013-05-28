@@ -11,6 +11,10 @@ public class ErrorPacket extends Packet {
     this.errorMessage = errorMessage;
   }
   
+  public String getMessage() {
+    return errorMessage;
+  }
+  
   @Override
   public String toString() {
     return String.format("ErrorPacket{%s}", errorMessage);

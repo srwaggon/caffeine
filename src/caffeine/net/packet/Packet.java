@@ -11,7 +11,7 @@ import java.io.Serializable;
 public class Packet implements Serializable {
   
   public enum Code {
-    LOGIN, LOGIN_FAILURE, ERROR, MAP, EVENT, MOVE, JUMP, USERIGHT;
+    LOGIN, LOGIN_FAILURE, ERROR, FATAL_ERROR, MAP, EVENT, MOVE, JUMP, USERIGHT;
   }
   
   private static final long serialVersionUID = 2347350252515231743L;
