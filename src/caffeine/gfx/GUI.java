@@ -24,7 +24,6 @@ public class GUI implements WindowListener {
     frame.addMouseMotionListener(input);
   }
   
-  @Override
   public void addRenderable(Renderable renderable) {
     frame.addRenderable(renderable);
   }

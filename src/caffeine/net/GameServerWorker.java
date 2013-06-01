@@ -2,8 +2,8 @@ package caffeine.net;
 
 import java.io.IOException;
 
+import link.packet.Packet;
 import caffeine.net.accounts.PlayerAccount;
-import caffeine.net.packet.Packet;
 
 public class GameServerWorker extends Thread {
   protected static int numWorkers = 1;

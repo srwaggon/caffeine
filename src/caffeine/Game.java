@@ -23,7 +23,7 @@ public class Game extends Thread {
   
   public Game() {
     Map map = new Map(Map.defaultMapData);
-    addMap(map);
+    putMap(map);
   }
   
   public void addPlayer(Player player) {
@@ -51,7 +51,7 @@ public class Game extends Thread {
     map.addEntity(e);
   }
   
-  public void addMap(Map map) {
+  public void putMap(Map map) {
     world.put(map.getID(), map);
     List<Entity> ents = map.getEntities();
     for (int i = 0; i < ents.size(); i++) {

@@ -5,31 +5,30 @@ import java.net.Socket;
 import java.util.HashMap;
 
 import link.Server;
-import caffeine.Game;
+import link.packet.Packet;
+import caffeine.Caffeine;
 import caffeine.entity.Entity;
-import caffeine.entity.Mob;
 import caffeine.entity.PlayerEntity;
 import caffeine.net.accounts.PlayerAccount;
-import caffeine.net.packet.ActionPacket;
+import caffeine.net.packet.CaffeineCode;
+import caffeine.net.packet.CaffeinePacket;
 import caffeine.net.packet.ErrorPacket;
 import caffeine.net.packet.LoginPacket;
 import caffeine.net.packet.MapPacket;
-import caffeine.net.packet.MovePacket;
-import caffeine.net.packet.Packet;
 import caffeine.world.tile.Tile;
 
 public class GameServer extends Server implements MapListener {
-  private final Game game;
+  private final Caffeine game;
   private final HashMap<String, GameServerWorker> clients = new HashMap<String, GameServerWorker>();
   
   public static void main(String args[]) {
-    Game game = new Game();
+    Caffeine game = new Caffeine();
     GameServer gs = new GameServer(game, 4444);
     game.start();
     gs.start();
   }
   
-  public GameServer(Game game, int port) {
+  public GameServer(Caffeine game, int port) {
     super(port);
     this.game = game;
     game.getMap(0).addMapListener(this);
@@ -57,7 +56,7 @@ public class GameServer extends Server implements MapListener {
     }
     
     // authenticate primary packet is login or new account.
-    if (packet.getCode() != Packet.Code.LOGIN) {
+    if (packet.getCode() != CaffeineCode.LOGIN.ordinal()) {
       client.send(new ErrorPacket("Bad login."));
       return;
     }
@@ -84,22 +83,27 @@ public class GameServer extends Server implements MapListener {
   }
   
   public synchronized void handle(PlayerAccount player, Packet packet) {
-    switch (packet.getCode()) {
-      case MOVE:
-        MovePacket move = (MovePacket) packet;
-        game.getEntity(move.USERNAME).move(move.DIR);
-        break;
-      case JUMP:
-        ActionPacket jump = (ActionPacket) packet;
-        game.getEntity(jump.USERNAME).jump();
-        break;
-      case USERIGHT:
-        ActionPacket use = (ActionPacket) packet;
-        Mob m = ((Mob) game.getEntity(use.USERNAME));
-        m.useRightHand();
-      default:
-        break;
-    }
+    int packetCode = packet.getCode();
+    Class packetClass = CaffeineCode.get(packetCode).getClass();
+    ((CaffeinePacket) packetClass.cast(packet)).apply(game);
+    System.out.println("Received" + packet);
+    
+    // switch (packet.getCode()) {
+    // case MOVE:
+    // MovePacket move = (MovePacket) packet;
+    // game.getEntity(move.USERNAME).move(move.DIR);
+    // break;
+    // case JUMP:
+    // ActionPacket jump = (ActionPacket) packet;
+    // game.getEntity(jump.USERNAME).jump();
+    // break;
+    // case USERIGHT:
+    // ActionPacket use = (ActionPacket) packet;
+    // Mob m = ((Mob) game.getEntity(use.USERNAME));
+    // m.useRightHand();
+    // default:
+    // break;
+    // }
     broadcast(packet);
   }
   

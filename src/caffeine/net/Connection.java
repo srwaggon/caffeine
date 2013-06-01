@@ -7,7 +7,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
-import caffeine.net.packet.Packet;
+import link.packet.Packet;
 
 public class Connection {
   protected boolean connected = false;
@@ -113,12 +113,15 @@ public class Connection {
     try {
       System.out.println("Disconnecting from " + this + ".");
       connected = false;
-      if (in != null)
+      if (in != null) {
         in.close();
-      if (out != null)
+      }
+      if (out != null) {
         out.close();
-      if (socket != null)
+      }
+      if (socket != null) {
         socket.close();
+      }
     } catch (IOException e) {
       e.printStackTrace();
       // System.exit(-1);

@@ -1,7 +1,26 @@
 package caffeine.net.packet;
 
-import link.packet.PacketCode;
-
-public class CaffeineCode extends PacketCode {
-  LOGIN, LOGIN_FAILURE, ERROR, FATAL_ERROR, MAP, EVENT, MOVE, JUMP, USERIGHT;
+public enum CaffeineCode {
+  LOGIN(LoginPacket.class),
+  ERROR(ErrorPacket.class),
+  FATAL_ERROR(FatalErrorPacket.class),
+  MAP(MapPacket.class),
+  EVENT(EventPacket.class),
+  MOVE(MovePacket.class),
+  JUMP(ActionPacket.class),
+  USERIGHT(ActionPacket.class);
+  
+  private Class packetClass;
+  
+  CaffeineCode(Class packetClass) {
+    this.packetClass = packetClass;
+  }
+  
+  public Class getPacketClass() {
+    return this.packetClass;
+  }
+  
+  public static CaffeineCode get(int code) {
+    return values()[code];
+  }
 }

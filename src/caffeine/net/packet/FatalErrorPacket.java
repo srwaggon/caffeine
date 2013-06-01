@@ -1,12 +1,14 @@
 package caffeine.net.packet;
 
-public class FatalErrorPacket extends Packet {
+import caffeine.Caffeine;
+
+public class FatalErrorPacket extends CaffeinePacket {
   
   private final String errorMessage;
   private final int errorCode;
   
   public FatalErrorPacket(String errorMessage, int errorCode) {
-    super(Code.FATAL_ERROR);
+    super(CaffeineCode.FATAL_ERROR);
     this.errorMessage = errorMessage;
     this.errorCode = errorCode;
   }
@@ -22,6 +24,10 @@ public class FatalErrorPacket extends Packet {
   @Override
   public String toString() {
     return String.format("FatalErrorPacket{%s}", errorMessage);
+  }
+  
+  @Override
+  public void apply(Caffeine caffeine) {
   }
   
 }
