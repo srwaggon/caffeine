@@ -84,26 +84,9 @@ public class GameServer extends Server implements MapListener {
   
   public synchronized void handle(PlayerAccount player, Packet packet) {
     int packetCode = packet.getCode();
-    Class packetClass = CaffeineCode.get(packetCode).getClass();
+    Class packetClass = CaffeineCode.get(packetCode).getPacketClass();
     ((CaffeinePacket) packetClass.cast(packet)).apply(game);
     System.out.println("Received" + packet);
-    
-    // switch (packet.getCode()) {
-    // case MOVE:
-    // MovePacket move = (MovePacket) packet;
-    // game.getEntity(move.USERNAME).move(move.DIR);
-    // break;
-    // case JUMP:
-    // ActionPacket jump = (ActionPacket) packet;
-    // game.getEntity(jump.USERNAME).jump();
-    // break;
-    // case USERIGHT:
-    // ActionPacket use = (ActionPacket) packet;
-    // Mob m = ((Mob) game.getEntity(use.USERNAME));
-    // m.useRightHand();
-    // default:
-    // break;
-    // }
     broadcast(packet);
   }
   

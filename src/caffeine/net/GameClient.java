@@ -93,21 +93,7 @@ public class GameClient extends link.Client {
   @Override
   public void handlePacket(Packet packet) {
     int packetCode = packet.getCode();
-    Class packetClass = CaffeineCode.get(packetCode).getClass();
+    Class packetClass = CaffeineCode.get(packetCode).getPacketClass();
     ((CaffeinePacket) packetClass.cast(packet)).apply(game);
-    //
-    // switch (packet.getCode()) {
-    // case ERROR:
-    // ErrorPacket ep = (ErrorPacket) packet;
-    // System.out.println(ep.toString());
-    // break;
-    // case FATAL_ERROR:
-    // FatalErrorPacket fep = (FatalErrorPacket) packet;
-    // System.out.println(fep.getMessage());
-    // System.exit(fep.getErrorCode());
-    // break;
-    // default:
-    // break;
-    // }
   }
 }

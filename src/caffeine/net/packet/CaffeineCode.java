@@ -1,14 +1,9 @@
 package caffeine.net.packet;
 
 public enum CaffeineCode {
-  LOGIN(LoginPacket.class),
-  ERROR(ErrorPacket.class),
-  FATAL_ERROR(FatalErrorPacket.class),
-  MAP(MapPacket.class),
-  EVENT(EventPacket.class),
-  MOVE(MovePacket.class),
-  JUMP(ActionPacket.class),
-  USERIGHT(ActionPacket.class);
+  LOGIN(LoginPacket.class), ERROR(ErrorPacket.class), FATAL_ERROR(
+      FatalErrorPacket.class), MAP(MapPacket.class), EVENT(EventPacket.class), MOVE(
+      MovePacket.class), JUMP(JumpPacket.class), USERIGHT(UseRightPacket.class);
   
   private Class packetClass;
   
