@@ -4,8 +4,8 @@ import java.util.HashMap;
 
 import link.packet.Packet;
 import pixl.Frame;
-import pixl.InputHandler;
 import caffeine.Caffeine;
+import caffeine.InputHandler;
 import caffeine.entity.Entity;
 import caffeine.net.packet.CaffeineCode;
 import caffeine.net.packet.CaffeinePacket;
