@@ -21,54 +21,54 @@ public class GameClient extends link.Client {
   protected Caffeine game = new Caffeine();
   private final Frame frame = new Frame("Caffeine Client");
   protected InputHandler input = new InputHandler();
-  
+
   public static void main(String[] args) {
     new GameClient("fnar", "mucus", "127.0.0.1", 4444).start();
   }
-  
+
   /* Constructor */
   public GameClient(String username, String password, String ip, int port) {
     super(ip, port);
-    frame.addInputHandler(input);
+    frame.setInputListener(input);
     USERNAME = username;
     packetListener.send(new LoginPacket(username, password));
     frame.addRenderable(game);
   }
-  
+
   @Override
   public void start() {
     frame.start();
     super.start();
   }
-  
+
   @Override
   public void run() {
-    
+
     final double nsPerTick = 1000000000.0 / 60;
     long now, lastTime = System.nanoTime();
     double unprocessed = 0;
-    
+
     while (true) {
       now = System.nanoTime();
       unprocessed += (now - lastTime) / nsPerTick;
       lastTime = now;
-      
+
       while (unprocessed >= 1) {
         game.tick();
         input.tick();
         processInput();
         unprocessed -= 1;
       }
-      
+
       try {
         Thread.sleep(10);
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
     }
-    
+
   }
-  
+
   public void processInput() {
     if (input.up.isPressed && !input.down.isPressed) {
       packetListener.send(new MovePacket(USERNAME, Dir.N));
@@ -89,7 +89,7 @@ public class GameClient extends link.Client {
       packetListener.send(new UseRightPacket(USERNAME));
     }
   }
-  
+
   @Override
   public void handlePacket(Packet packet) {
     int packetCode = packet.getCode();

@@ -4,13 +4,14 @@ import caffeine.InputHandler;
 import caffeine.entity.Mob;
 
 public class InteractiveBrain extends Brain {
+  private static final long serialVersionUID = -4836711233666644626L;
   protected InputHandler input;
-  
-  public InteractiveBrain(InputHandler input, Mob self) {
+
+  public InteractiveBrain(InputHandler inputHandler, Mob self) {
     super(self);
-    this.input = input;
+    this.input = inputHandler;
   }
-  
+
   @Override
   public void tick() {
     input.tick();
@@ -33,11 +34,11 @@ public class InteractiveBrain extends Brain {
       self.useRightHand();
     }
   }
-  
+
   public InputHandler getInputHandler() {
     return input;
   }
-  
+
   public void setInputHandler(InputHandler input) {
     this.input = input;
   }
