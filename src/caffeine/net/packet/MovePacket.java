@@ -20,7 +20,7 @@ public class MovePacket extends CaffeinePacket {
   
   @Override
   public void apply(Caffeine caffeine) {
-    caffeine.getEntity(USERNAME).move(DIR);
+    caffeine.getMob(USERNAME).move(DIR);
   }
   
 }

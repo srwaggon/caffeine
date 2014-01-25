@@ -24,7 +24,10 @@ public class Mob extends Entity {
   protected int hurtTime;
   protected int power = 10;
   protected int xKnockback, yKnockback;
-  protected int xa, ya, za = 0;
+  protected double speed = 0.7;
+  protected double xa = 0;
+  protected double ya = 0;
+  protected double za = 0;
   protected int ticktime = 0;
   protected int walkDist = 0;
   
@@ -140,8 +143,12 @@ public class Mob extends Entity {
     yKnockback = y;
   }
   
+  public boolean move(Dir dir) {
+    return move(dir.dx * speed, dir.dy * speed);
+  }
+
   @Override
-  public boolean move(int xa, int ya) {
+  public boolean move(double xa, double ya) {
     if (xKnockback > 0) {
       xKnockback--;
       super.move2(1, 0);
@@ -274,8 +281,8 @@ public class Mob extends Entity {
   }
   
   public void setAccel(int dx, int dy) {
-    xa = dx;
-    ya = dy;
+    xa = speed * dx;
+    ya = speed * dy;
   }
   
 }

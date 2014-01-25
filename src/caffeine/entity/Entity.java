@@ -28,7 +28,6 @@ public class Entity implements Serializable {
   protected boolean removed = false;
   public final String ID;
   protected int mapID = 0;
-  protected int speed = 1;
   protected int sprite = 128;
   protected double x = 32;
   protected double y = 32;
@@ -118,18 +117,14 @@ public class Entity implements Serializable {
   public void knockback(int x, int y) {
   }
   
-  public boolean move(Dir dir) {
-    return move(dir.dx * speed, dir.dy * speed);
-  }
-  
-  public boolean move(int xa, int ya) {
+  public boolean move(double xa, double ya) {
     boolean notStopped = move2(xa, 0);
     return notStopped && move2(0, ya);
   }
   
-  public boolean move2(int xa, int ya) {
-    int nx = (int) (x + xa); // next x
-    int ny = (int) (y + ya); // next y
+  public boolean move2(double xa, double ya) {
+    double nx = x + xa; // next x
+    double ny = y + ya; // next y
     
     List<Tile> nextTiles = map.getTiles(nx - width, ny - length, nx + width, ny
         + length);

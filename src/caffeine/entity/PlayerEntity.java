@@ -8,6 +8,7 @@ public class PlayerEntity extends Mob implements Serializable {
 
   public PlayerEntity(String id) {
     super(id);
+    speed = 1.2;
   }
 
   public void takeItem(ItemEntity item) {
