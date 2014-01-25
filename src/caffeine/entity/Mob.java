@@ -103,15 +103,15 @@ public class Mob extends Entity {
     hp += n;
   }
   
-  public void hurt(int x0, int y0, int x1, int y1) {
-    List<Entity> entities = getMap().getEntities(x0, y0, x1, y1);
+  public void hurt(double left, double top, double right, double bottom) {
+    List<Entity> entities = getMap().getEntities(left, top, right, bottom);
     for (Entity entity : entities)
       if (!entity.equals(this))
         entity.takeDamage(power, dir);
   }
   
-  public void interact(int x0, int y0, int x1, int y1, Item item) {
-    List<Tile> tiles = getMap().getTiles(x0, y0, x1, y1);
+  public void interact(double left, double top, double right, double bottom, Item item) {
+    List<Tile> tiles = getMap().getTiles(left, top, right, bottom);
     for (Tile tile : tiles) {
       tile.interact(this, item, dir);
     }
@@ -177,7 +177,8 @@ public class Mob extends Entity {
   
   public void render(Screen screen) {
     int sprite = this.sprite + dir.ordinal();
-    screen.render(sprite, x - Map.tileSize / 2, y - Map.tileSize / 2 - z);
+    screen.render(sprite, (int) (x - Map.tileSize / 2), (int) (y - Map.tileSize
+        / 2 - z));
   }
   
   public void setBrain(Brain b) {

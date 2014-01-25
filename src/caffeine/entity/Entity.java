@@ -30,9 +30,9 @@ public class Entity implements Serializable {
   protected int mapID = 0;
   protected int speed = 1;
   protected int sprite = 128;
-  protected int x = 32;
-  protected int y = 32;
-  protected int z = 0;
+  protected double x = 32;
+  protected double y = 32;
+  protected double z = 0;
   protected int xr = 3; // width/2
   protected int yr = 3; // height/2
   protected Dir dir = Dir.S;
@@ -82,15 +82,15 @@ public class Entity implements Serializable {
     return speed;
   }
   
-  public int getX() {
+  public double getX() {
     return x;
   }
   
-  public int getY() {
+  public double getY() {
     return y;
   }
   
-  public int getZ() {
+  public double getZ() {
     return z;
   }
   
@@ -104,7 +104,7 @@ public class Entity implements Serializable {
   }
   
   // top left corner and bottom right corner
-  public boolean intersects(int x0, int y0, int x1, int y1) {
+  public boolean intersects(double x0, double y0, double x1, double y1) {
     return !(x + xr < x0 || y + yr < y0 || x - xr > x1 || y - yr > y1);
   }
   
@@ -132,8 +132,8 @@ public class Entity implements Serializable {
   }
   
   public boolean move2(int xa, int ya) {
-    int nx = x + xa; // next x
-    int ny = y + ya; // next y
+    int nx = (int) (x + xa); // next x
+    int ny = (int) (y + ya); // next y
     
     List<Tile> nextTiles = map.getTiles(nx - xr, ny - yr, nx + xr, ny + yr);
     for (Tile t : nextTiles) {
@@ -186,14 +186,15 @@ public class Entity implements Serializable {
   }
   
   public void render(Screen screen) {
-    screen.render(sprite, x - Map.tileSize / 2, y - Map.tileSize / 2 - z);
+    screen.render(sprite, ((int) x) - Map.tileSize / 2, ((int) y)
+        - Map.tileSize / 2 - ((int) z));
   }
   
   public void setDir(Dir dir) {
     this.dir = dir;
   }
   
-  public void setLoc(int x, int y) {
+  public void setLoc(double x, double y) {
     this.x = x;
     this.y = y;
   }

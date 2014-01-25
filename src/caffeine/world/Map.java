@@ -34,7 +34,7 @@ public class Map implements Serializable {
       } else if (e2 instanceof ItemEntity) {
         return 1;
       } else {
-        return e1.getY() - e2.getY();
+        return (int) (e1.getY() - e2.getY());
       }
     }
     
@@ -103,10 +103,10 @@ public class Map implements Serializable {
     return backgroundSprite;
   }
   
-  public List<Entity> getEntities(int x0, int y0, int x1, int y1) {
+  public List<Entity> getEntities(double left, double top, double right, double bottom) {
     List<Entity> result = new ArrayList<Entity>();
     for (Entity e : getEntities()) {
-      if (e.intersects(x0, y0, x1, y1)) {
+      if (e.intersects(left, top, right, bottom)) {
         result.add(e);
       }
     }
@@ -139,10 +139,10 @@ public class Map implements Serializable {
     return getTile(x / Map.tileSize, y / Map.tileSize);
   }
   
-  public List<Tile> getTiles(int x0, int y0, int x1, int y1) {
+  public List<Tile> getTiles(double left, double top, double right, double bottom) {
     List<Tile> result = new ArrayList<Tile>();
-    for (int j = y0 / Map.tileSize * Map.tileSize; j <= y1; j += Map.tileSize)
-      for (int i = x0 / Map.tileSize * Map.tileSize; i <= x1; i += Map.tileSize)
+    for (int j = (int) (top / Map.tileSize * Map.tileSize); j <= bottom; j += Map.tileSize)
+      for (int i = (int) (left / Map.tileSize * Map.tileSize); i <= right; i += Map.tileSize)
         if (isValidLoc(i, j))
           result.add(getTileAt(i, j));
     return result;
