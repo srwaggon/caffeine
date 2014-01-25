@@ -21,6 +21,8 @@ public class Game extends Thread {
   private final HashMap<String, Entity> entities = new HashMap<String, Entity>();
   private final HashMap<String, Player> players = new HashMap<String, Player>();
   private final HashMap<Integer, Map> world = new HashMap<Integer, Map>();
+  private static final int TICKS_PER_SECOND = 60;
+  public static final double NANOSECONDS_PER_SECOND = 1000000000.0;
   
   public Game() {
     Map map = new Map(Map.defaultMapData);
@@ -83,28 +85,41 @@ public class Game extends Thread {
   
   @Override
   public void run() {
-    final double nsPerTick = 1000000000.0 / 60;
     long now, lastTime = System.nanoTime();
     double unprocessed = 0;
-    
+    int ticks = 0;
+    long secondTimer = System.currentTimeMillis();
     while (true) {
       now = System.nanoTime();
-      unprocessed += (now - lastTime) / nsPerTick;
+      unprocessed += (now - lastTime) / getTicksPerSecond();
       lastTime = now;
       
       // System.out.println(unprocessed);
       
       while (unprocessed >= 1) {
+        ticks++;
         tick();
         unprocessed -= 1;
       }
       
+      long thisTime = System.currentTimeMillis();
+      if (thisTime - secondTimer > 1000) {
+        secondTimer = thisTime;
+        System.out.println(ticks + " ticks");
+        ticks = 0;
+      }
+
       try {
         Thread.sleep(2);
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
+
     }
+  }
+
+  protected double getTicksPerSecond() {
+    return NANOSECONDS_PER_SECOND / TICKS_PER_SECOND;
   }
   
   @Override

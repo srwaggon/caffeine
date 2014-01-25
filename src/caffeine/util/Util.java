@@ -15,6 +15,10 @@ public class Util{
 		return Math.random() < .5;
 	}
 
+  public static boolean oneIn(int chances) {
+    return Math.random() < 1.0 / chances;
+  }
+
 	public static double pythagoras(double a, double b){
 		return Math.sqrt(a*a + b*b);
 	}

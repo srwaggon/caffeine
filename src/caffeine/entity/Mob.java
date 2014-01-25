@@ -149,25 +149,34 @@ public class Mob extends Entity {
 
   @Override
   public boolean move(double dx, double dy) {
-    if (xKnockback > 0) {
+    if (isKnockedBack()) {
       xKnockback--;
-      super.move(1, 0);
+      if (!super.move(1, 0)) {
+        xKnockback = 0;
+      }
     }
     if (xKnockback < 0) {
       xKnockback++;
-      super.move(-1, 0);
+      if (!super.move(-1, 0)) {
+        xKnockback = 0;
+      }
     }
     if (yKnockback > 0) {
       yKnockback--;
-      super.move(0, 1);
+      if (!super.move(0, 1)) {
+        yKnockback = 0;
+      }
     }
     if (yKnockback < 0) {
       yKnockback++;
-      super.move(0, -1);
+      if (!super.move(0, -1)) {
+        yKnockback = 0;
+      }
     }
 
-    if (hurtTime > 0)
+    if (hurtTime > 0 || isKnockedBack()) {
       return true;
+    }
     
     if (dx != 0 || dy != 0) {
       walkDist++;
@@ -185,6 +194,10 @@ public class Mob extends Entity {
         dir = Dir.W;
     }
     return super.move(dx, dy);
+  }
+
+  protected boolean isKnockedBack() {
+    return xKnockback > 0 || yKnockback > 0;
   }
   
   public void render(Screen screen) {
