@@ -8,7 +8,7 @@ import caffeine.world.Dir;
 public class Water extends TileObject {
 
   public Water() {
-    super(TileType.water, '~', 64, false, false, false);
+    super(TileType.WATER, '~', 64, false, false, false);
   }
 
   @Override

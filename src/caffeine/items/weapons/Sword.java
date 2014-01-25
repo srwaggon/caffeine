@@ -12,7 +12,7 @@ public class Sword extends Weapon {
 
   @Override
   public int getSprite() {
-    return 97;
+    return 99;
   }
 
   public void playUseSound(){
