@@ -13,6 +13,6 @@ public class RightBrain extends Brain {
   @Override
   public void tick() {
     self.setDir(dir);
-    self.move(dir);
+    self.moveDirInSpeed(dir);
   }
 }

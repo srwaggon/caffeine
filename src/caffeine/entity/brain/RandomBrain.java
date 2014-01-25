@@ -24,7 +24,10 @@ public class RandomBrain extends Brain {
       } else {
         dir = dir.prev();
       }
-      numSteps = (int) (Math.random() * 20) + 5;
+      numSteps = (int) (Math.random() * 100) + 25;
+    }
+    if (Util.coinflip() && Util.coinflip()) {
+      self.useRightHand();
     }
     numSteps--;
     self.setAccel(dir.dx, dir.dy);

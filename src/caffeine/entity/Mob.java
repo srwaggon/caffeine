@@ -139,47 +139,52 @@ public class Mob extends Entity {
   
   @Override
   public void knockback(int x, int y) {
-    xKnockback = x;
-    yKnockback = y;
+    xKnockback += x;
+    yKnockback += y;
   }
   
-  public boolean move(Dir dir) {
+  public boolean moveDirInSpeed(Dir dir) {
     return move(dir.dx * speed, dir.dy * speed);
   }
 
   @Override
-  public boolean move(double xa, double ya) {
+  public boolean move(double dx, double dy) {
     if (xKnockback > 0) {
       xKnockback--;
-      super.move2(1, 0);
+      super.move(1, 0);
     }
     if (xKnockback < 0) {
       xKnockback++;
-      super.move2(-1, 0);
+      super.move(-1, 0);
     }
     if (yKnockback > 0) {
       yKnockback--;
-      super.move2(0, 1);
+      super.move(0, 1);
     }
     if (yKnockback < 0) {
       yKnockback++;
-      super.move2(0, -1);
+      super.move(0, -1);
     }
+
     if (hurtTime > 0)
       return true;
     
-    if (xa != 0 || ya != 0) {
+    if (dx != 0 || dy != 0) {
       walkDist++;
-      if (ya < 0)
+
+      if (dy < 0)
         dir = Dir.N;
-      if (xa > 0)
+
+      if (dx > 0)
         dir = Dir.E;
-      if (ya > 0)
+
+      if (dy > 0)
         dir = Dir.S;
-      if (xa < 0)
+
+      if (dx < 0)
         dir = Dir.W;
     }
-    return super.move(xa, ya);
+    return super.move(dx, dy);
   }
   
   public void render(Screen screen) {
@@ -196,16 +201,16 @@ public class Mob extends Entity {
   public void takeDamage(int dmg, Dir dir) {
     hp -= dmg;
     Sound.HURT.play();
-    
-    if (dir == Dir.N)
-      yKnockback = -power;
-    if (dir == Dir.S)
-      yKnockback = power;
-    if (dir == Dir.W)
-      xKnockback = -power;
-    if (dir == Dir.E)
-      xKnockback = power;
+    knockback(getXKnockback(dmg, dir), getYKnockback(dmg, dir));
     hurtTime = power;
+  }
+
+  private int getXKnockback(int dmg, Dir dir) {
+    return dir == Dir.E ? dmg : dir == Dir.W ? -dmg : 0;
+  }
+
+  private int getYKnockback(int dmg, Dir dir) {
+    return dir == Dir.S ? dmg : dir == Dir.N ? -dmg : 0;
   }
   
   @Override

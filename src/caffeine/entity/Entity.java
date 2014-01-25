@@ -117,14 +117,9 @@ public class Entity implements Serializable {
   public void knockback(int x, int y) {
   }
   
-  public boolean move(double xa, double ya) {
-    boolean notStopped = move2(xa, 0);
-    return notStopped && move2(0, ya);
-  }
-  
-  public boolean move2(double xa, double ya) {
-    double nx = x + xa; // next x
-    double ny = y + ya; // next y
+  public boolean move(double dx, double dy) {
+    double nx = x + dx; // next x
+    double ny = y + dy; // next y
     
     List<Tile> nextTiles = map.getTiles(nx - width, ny - length, nx + width, ny
         + length);
@@ -159,8 +154,8 @@ public class Entity implements Serializable {
     }
     
     // Change location.
-    x += xa;
-    y += ya;
+    x += dx;
+    y += dy;
     
     for (Tile t : nextTiles) {
       t.onEnter(this);

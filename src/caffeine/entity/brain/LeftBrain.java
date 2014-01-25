@@ -19,6 +19,6 @@ public class LeftBrain extends Brain {
       dir = dir.prev();
     self.setDir(dir);
     if((timetick++ & 0x1) == 0)
-      lastFailed = !self.move(dir);
+      lastFailed = !self.moveDirInSpeed(dir);
   }
 }
