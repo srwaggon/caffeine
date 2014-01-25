@@ -35,15 +35,15 @@ public class Mob extends Entity {
   protected List<Item> inventory = new ArrayList<Item>();
   
   public Mob() {
-    xr = 5;
-    yr = 5;
+    width = 5;
+    length = 5;
     brain = new RandomBrain(this);
   }
   
   public Mob(String id) {
     super(id);
-    xr = 5;
-    yr = 5;
+    width = 5;
+    length = 5;
     brain = new Brain(this);
   }
   
@@ -59,13 +59,13 @@ public class Mob extends Entity {
   public void attack() {
     // use this entity's range to hurt the entities within a given proximity
     if (dir == Dir.N)
-      hurt(x, y - (2 * yr), x, y);
+      hurt(x, y - (2 * length), x, y);
     if (dir == Dir.E)
-      hurt(x, y, x + (2 * xr), y);
+      hurt(x, y, x + (2 * width), y);
     if (dir == Dir.S)
-      hurt(x, y, x, y + (2 * yr));
+      hurt(x, y, x, y + (2 * length));
     if (dir == Dir.W)
-      hurt(x - (2 * xr), y, x, y);
+      hurt(x - (2 * width), y, x, y);
   }
   
   public void die() {
@@ -256,13 +256,13 @@ public class Mob extends Entity {
   public boolean useRightHand() {
     if (rightHand != null) {
       if (dir == Dir.N)
-        interact(x, y - (2 * yr), x, y, rightHand);
+        interact(x, y - (2 * length), x, y, rightHand);
       if (dir == Dir.E)
-        interact(x, y, x + (2 * xr), y, rightHand);
+        interact(x, y, x + (2 * width), y, rightHand);
       if (dir == Dir.S)
-        interact(x, y, x, y + (2 * yr), rightHand);
+        interact(x, y, x, y + (2 * length), rightHand);
       if (dir == Dir.W)
-        interact(x - (2 * xr), y, x, y, rightHand);
+        interact(x - (2 * width), y, x, y, rightHand);
       
       if (rightHand.getType() == ItemType.weapon) {
         attack();

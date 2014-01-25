@@ -27,12 +27,10 @@ public enum Dir {
     return ordinal() > 0 ? Dir.values()[ordinal() - 1] : Dir.values()[Dir
         .count() - 1];
   }
-  
 
   public static Dir pickOneAtRandom() {
     return Dir.values()[((int) Math.random() * Dir.count())];
   }
-  
 
   public static int count() {
     return Dir.values().length;

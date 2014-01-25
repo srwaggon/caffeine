@@ -40,9 +40,15 @@ public class Map implements Serializable {
     
   };
   
-  public static final String defaultMapData = "M 0 W 13 H 8 " + "DDDDDDDDDDDDD"
-      + "D......m..mmD" + "D.mmm####mmmD" + "D.m~~~~##.m.D" + "D.m~~#.##mm.D"
-      + "D~~mm###m.m.D" + "D~~..mm...mmD" + "DDDDDDDDDDDDD";
+  public static final String defaultMapData = "M 0 W 13 H 8 "
+  + "DDDDDDDDDDDDD"
+  + "D......m..mmD"
+  + "D.mmm####mmmD"
+  + "D.m~~~~##~m.D"
+  + "D.m~~#~##mm.D"
+  + "D~~mm###m.m.D"
+  + "D~~..mm...mmD"
+  + "DDDDDDDDDDDDD";
   
   public Map(int id, int w, int h, String data) {
     this.id = id;
@@ -248,7 +254,6 @@ public class Map implements Serializable {
       if (e.isRemoved()) {
         entities.remove(i--);
       }
-      
     }
   }
   

@@ -33,8 +33,8 @@ public class Entity implements Serializable {
   protected double x = 32;
   protected double y = 32;
   protected double z = 0;
-  protected int xr = 3; // width/2
-  protected int yr = 3; // height/2
+  protected int width = 3; // (left to right) / 2
+  protected int length = 3; // (front to back) / 2
   protected Dir dir = Dir.S;
   
   protected Map map;
@@ -78,10 +78,6 @@ public class Entity implements Serializable {
     return mapID;
   }
   
-  public int getSpeed() {
-    return speed;
-  }
-  
   public double getX() {
     return x;
   }
@@ -99,13 +95,13 @@ public class Entity implements Serializable {
   
   public boolean intersects(Entity e) {
     return !equals(e)
-        && intersects(e.getX() - e.xr, e.getY() - e.yr, e.getX() + e.xr,
-            e.getY() + e.yr);
+        && intersects(e.getX() - e.width, e.getY() - e.length, e.getX()
+            + e.width, e.getY() + e.length);
   }
   
   // top left corner and bottom right corner
-  public boolean intersects(double x0, double y0, double x1, double y1) {
-    return !(x + xr < x0 || y + yr < y0 || x - xr > x1 || y - yr > y1);
+  public boolean intersects(double left, double top, double right, double bottom) {
+    return !(x + width < left || y + length < top || x - width > right || y - length > bottom);
   }
   
   public boolean isRemoved() {
@@ -135,7 +131,8 @@ public class Entity implements Serializable {
     int nx = (int) (x + xa); // next x
     int ny = (int) (y + ya); // next y
     
-    List<Tile> nextTiles = map.getTiles(nx - xr, ny - yr, nx + xr, ny + yr);
+    List<Tile> nextTiles = map.getTiles(nx - width, ny - length, nx + width, ny
+        + length);
     for (Tile t : nextTiles) {
       if (!isValidTile(t)) {
         return false;
@@ -157,7 +154,7 @@ public class Entity implements Serializable {
         // entity.touchedBy(this);
       }
       
-      if (entity.intersects(nx - xr, ny - yr, nx + xr, ny + yr)
+      if (entity.intersects(nx - width, ny - length, nx + width, ny + length)
           && (z > 0 == entity.z > 0)) {
         // If they're going to intersect, inform them.
         if (!entity.touchedBy(this)) {
