@@ -1,136 +1,137 @@
 package caffeine.net;
 
 import java.io.IOException;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
+import java.util.HashMap;
 
-import caffeine.Game;
+import link.Server;
+import link.packet.Packet;
+import caffeine.Caffeine;
 import caffeine.entity.Entity;
 import caffeine.entity.PlayerEntity;
 import caffeine.net.accounts.PlayerAccount;
-import caffeine.net.packet.EventPacket;
+import caffeine.net.packet.CaffeineCode;
+import caffeine.net.packet.CaffeinePacket;
+import caffeine.net.packet.ErrorPacket;
+import caffeine.net.packet.LoginPacket;
 import caffeine.net.packet.MapPacket;
-import caffeine.net.packet.Packet;
 import caffeine.world.tile.Tile;
 
-public class GameServer extends Thread implements MapListener{
-  protected final int port;
-  protected Game game;
-  protected ServerSocket socket = null;
-  protected ArrayList<GameServerWorker> workers = new ArrayList<GameServerWorker>();
-
+public class GameServer extends Server implements MapListener {
+  private final Caffeine game;
+  private final HashMap<String, GameServerWorker> clients = new HashMap<String, GameServerWorker>();
+  
   public static void main(String args[]) {
-    Game game = new Game();
-    game.start();
+    Caffeine game = new Caffeine();
     GameServer gs = new GameServer(game, 4444);
-    gs.run();
+    game.start();
+    gs.start();
   }
-
-  public GameServer(Game game, int port) {
-    this.port = port;
+  
+  public GameServer(Caffeine game, int port) {
+    super(port);
     this.game = game;
-
-    try {
-      socket = new ServerSocket(port);
-    } catch (IOException e) {
-      System.out.println("Could not listen on port " + port);
-      System.exit(-1);
-    }
     game.getMap(0).addMapListener(this);
   }
-
-  public void run() {
-    while (true) {
-      try {
-        System.out.print("Awaiting connection...");
-        acceptConnection(socket.accept());
-        Thread.sleep(100);
-      } catch (IOException ioe) {
-        System.out.println("Accept failed: " + port);
-        ioe.printStackTrace();
-      } catch (InterruptedException ie) {
-        ie.printStackTrace();
-      }
-    }
-  }
-
+  
+  /**
+   * Receives a socket representing a client connection and wraps it in a
+   * connection before attempting to authenticate it as a valid login packet. If
+   * the login is successful, a GameServerWorker is requested and assigned to
+   * handle incoming data from the client.
+   * 
+   * @param socket
+   */
+  @Override
   public void acceptConnection(Socket socket) {
     System.out.println(socket.getInetAddress().toString() + " connecting.");
     Connection client = new Connection(socket);
-    GameServerWorker worker;
+    
+    Packet packet = null;
     try {
-      worker = new GameServerWorker(this, client);
-      worker.start();
-    } catch (IOException e) {
-      client.send(Packet.LoginFailure);
-      e.printStackTrace();
+      packet = client.readPacket();
+    } catch (IOException ioe) {
+      ioe.printStackTrace();
+      return;
     }
-
+    
+    // authenticate primary packet is login or new account.
+    if (packet.getCode() != CaffeineCode.LOGIN.ordinal()) {
+      client.send(new ErrorPacket("Bad login."));
+      return;
+    }
+    
+    // check player username / password authenticity.
+    LoginPacket loginPacket = (LoginPacket) packet;
+    PlayerAccount account = PlayerAccount.loadPlayer(loginPacket.USERNAME);
+    if (!account.authenticate(loginPacket.PASSWORD)) {
+      client.send(new ErrorPacket("Bad username/password."));
+      return;
+    }
+    
+    // check if not already online.
+    if (clients.get(account.getUsername()) != null) {
+      client.send(new ErrorPacket("Account already connected."));
+      return;
+    }
+    
+    // accept connection
+    GameServerWorker worker = requestWorker();
+    worker.handleConnection(client, account);
+    assignClient(worker, account);
+    worker.start();
   }
-
+  
   public synchronized void handle(PlayerAccount player, Packet packet) {
-    if (packet.getCode() == Packet.Code.EVENT) {
-      System.out.println(game.getEntities(0));
-      System.out.println(packet);
-      EventPacket event = (EventPacket) packet;
-      event.getEvent().apply();
-    }
-
-    //System.out.println("Packet received: " + packet);
+    int packetCode = packet.getCode();
+    Class packetClass = CaffeineCode.get(packetCode).getPacketClass();
+    ((CaffeinePacket) packetClass.cast(packet)).apply(game);
+    System.out.println("Received" + packet);
     broadcast(packet);
   }
-
+  
   public void broadcast(Packet packet) {
-    for (GameServerWorker worker : workers) {
-      worker.send(packet);
+    for (GameServerWorker client : clients.values()) {
+      client.send(packet);
     }
   }
-
-  protected void finalize() {
-    try {
-      socket.close();
-      super.finalize();
-    } catch (IOException e) {
-      System.out.println("Could not close.");
-      System.exit(-1);
-    } catch (Throwable e) {
-      e.printStackTrace();
-      System.exit(-1);
-    }
+  
+  public GameServerWorker requestWorker() {
+    GameServerWorker worker = new GameServerWorker(this);
+    return worker;
   }
-
-  public synchronized void addWorker(GameServerWorker worker) {
-    // Handle the newly connected player.
-    PlayerAccount player = worker.getPlayer();
-
-    // : Add his piece to the game.
-    PlayerEntity entity = player.getEntity();
-    System.out.println(entity.ID);
+  
+  public synchronized void assignClient(GameServerWorker worker,
+      PlayerAccount account) {
+    
+    // Add account's avatar to the game.
+    PlayerEntity entity = account.getEntity();
+    System.out.println(entity.ID + " added to game.");
     game.addEntity(entity, entity.getMapID());
-    workers.add(worker);
     worker.client.send(new MapPacket(entity.getMap()));
+    
+    // track worker by account
+    clients.put(account.getUsername(), worker);
   }
-
-  public synchronized void removeWorker(GameServerWorker worker) {
-    PlayerAccount player  = worker.getPlayer();
-    PlayerAccount.savePlayer(player);
-    player.getEntity().remove();
-    workers.remove(worker);
+  
+  public synchronized void removeAccount(PlayerAccount account) {
+    PlayerAccount.savePlayer(account);
+    account.getEntity().remove();
+    clients.remove(account.getUsername());
   }
-
+  
+  @Override
   public void onAddEntity(Entity entity) {
     broadcast(new MapPacket(entity.getMap()));
   }
-
+  
+  @Override
   public void onRemoveEntity(Entity entity) {
     broadcast(new MapPacket(entity.getMap()));
   }
-
+  
+  @Override
   public void onTileChange(Tile tile) {
     ;
   }
-
-
-
 }

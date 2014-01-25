@@ -1,7 +1,7 @@
 package caffeine.world.tile;
 
 public enum TileType {
-  dirt('.'), grass('m'), water('~'), sand('s'), nil(' ');
+  DIRT('.'), GRASS('m'), WATER('~'), SAND('s'), nil(' ');
 
   protected char symbol;
 
@@ -10,10 +10,18 @@ public enum TileType {
   }
 
   public int getSprite(){
-    return this == nil? 0 : this == dirt ? 1 : ordinal() * 32;
+    return this == nil? 0 : this == DIRT ? 1 : ordinal() * 32;
   }
 
   public char getChar(){
     return symbol;
+  }
+
+  public static void tick(Tile tile) {
+    if (tile.type == GRASS && tile.tileObject == null) {
+      if (tile.getAge() > 15000 ) {
+        tile.hold(new Bush());
+      }
+    }
   }
 }

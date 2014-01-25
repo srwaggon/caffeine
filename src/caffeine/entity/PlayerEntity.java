@@ -13,4 +13,5 @@ public class PlayerEntity extends Mob implements Serializable {
   public void takeItem(ItemEntity item) {
     item.take(this);
   }
+
 }
