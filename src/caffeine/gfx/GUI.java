@@ -10,18 +10,15 @@ import pixl.interaction.InputListener;
 import caffeine.InputHandler;
 
 public class GUI implements WindowListener {
+
   private final Frame frame;
   private final Spritesheet spritesheet = new Spritesheet("sprites2.png", 16);
+  private InputHandler inputHandler = new InputHandler();
 
   public GUI(String title) {
     frame = new Frame(title);
-    frame.setTitle(title);
     frame.addWindowListener(this);
-    setInputHandler(new InputHandler());
-  }
-
-  public void setInputHandler(InputHandler input) {
-    frame.addInputListener(input);
+    frame.addInputListener(inputHandler);
   }
 
   public void addRenderable(Renderable renderable) {
@@ -62,6 +59,6 @@ public class GUI implements WindowListener {
   }
 
   public InputListener getInputListener() {
-    return frame.getInputListener();
+    return inputHandler;
   }
 }
