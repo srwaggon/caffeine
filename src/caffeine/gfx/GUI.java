@@ -4,9 +4,9 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import pixl.Frame;
-import pixl.InputListener;
 import pixl.Renderable;
 import pixl.Spritesheet;
+import pixl.interaction.InputListener;
 import caffeine.InputHandler;
 
 public class GUI implements WindowListener {
@@ -21,7 +21,7 @@ public class GUI implements WindowListener {
   }
 
   public void setInputHandler(InputHandler input) {
-    frame.setInputListener(input);
+    frame.addInputListener(input);
   }
 
   public void addRenderable(Renderable renderable) {

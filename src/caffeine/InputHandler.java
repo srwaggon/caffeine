@@ -1,11 +1,12 @@
 package caffeine;
 
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InputHandler implements pixl.InputListener {
+import pixl.interaction.SimpleInputListener;
+
+public class InputHandler extends SimpleInputListener {
   public class Key {
     public boolean isClicked, isPressed;
     public int presses, absorbs;
@@ -85,36 +86,5 @@ public class InputHandler implements pixl.InputListener {
   
   public void keyReleased(KeyEvent event) {
     toggle(event.getKeyCode(), false);
-  }
-  
-  public void keyTyped(KeyEvent e) {
-    
-  }
-  
-  public void mouseClicked(MouseEvent event) {
-    
-  }
-  
-  public void mouseDragged(MouseEvent event) {
-    
-  }
-  
-  public void mouseEntered(MouseEvent event) {
-    
-  }
-  
-  public void mouseExited(MouseEvent event) {
-    
-  }
-  
-  public void mouseMoved(MouseEvent event) {
-    
-  }
-  
-  public void mousePressed(MouseEvent event) {
-    
-  }
-  
-  public void mouseReleased(MouseEvent event) {
   }
 }

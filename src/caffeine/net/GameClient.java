@@ -29,7 +29,7 @@ public class GameClient extends link.Client {
   /* Constructor */
   public GameClient(String username, String password, String ip, int port) {
     super(ip, port);
-    frame.setInputListener(input);
+    frame.addInputListener(input);
     USERNAME = username;
     packetListener.send(new LoginPacket(username, password));
     frame.addRenderable(game);
