@@ -7,7 +7,7 @@ public class InteractiveBrain extends Brain {
   private static final long serialVersionUID = -4836711233666644626L;
   protected InputHandler input;
 
-  public InteractiveBrain(InputHandler inputHandler, Mob self) {
+  public InteractiveBrain(Mob self, InputHandler inputHandler) {
     super(self);
     this.input = inputHandler;
   }

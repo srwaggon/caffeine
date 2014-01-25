@@ -3,7 +3,6 @@ package caffeine.gfx;
 import pixl.Frame;
 import pixl.Renderable;
 import pixl.Spritesheet;
-import pixl.interaction.InputListener;
 import caffeine.InputHandler;
 
 public class GUI {
@@ -25,7 +24,7 @@ public class GUI {
     frame.start();
   }
 
-  public InputListener getInputListener() {
+  public InputHandler getInputHandler() {
     return inputHandler;
   }
 }

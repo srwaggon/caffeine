@@ -10,11 +10,17 @@ public class SinglePlayerMain {
     Caffeine caffeine = new Caffeine();
     caffeine.addEntity(new Mob());
     caffeine.addEntity(new Mob());
-    PlayerEntity player = new PlayerEntity("Fnar");
-    caffeine.addEntity(player);
 
-    player.setBrain(new InteractiveBrain((InputHandler) caffeine.getGUI().getInputListener(), player));
+    addPlayer(caffeine);
 
     caffeine.start();
+  }
+
+  private static void addPlayer(Caffeine caffeine) {
+    PlayerEntity player = new PlayerEntity("Fnar");
+    InputHandler inputHandler = caffeine.getGUI().getInputHandler();
+    InteractiveBrain brain = new InteractiveBrain(player, inputHandler);
+    player.setBrain(brain);
+    caffeine.addEntity(player);
   }
 }
