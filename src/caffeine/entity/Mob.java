@@ -138,7 +138,7 @@ public class Mob extends Entity {
   }
   
   @Override
-  public void knockback(int x, int y) {
+  public void addKnockback(int x, int y) {
     xKnockback += x;
     yKnockback += y;
   }
@@ -149,33 +149,10 @@ public class Mob extends Entity {
 
   @Override
   public boolean move(double dx, double dy) {
-    if (isKnockedBack()) {
-      xKnockback--;
-      if (!super.move(1, 0)) {
-        xKnockback = 0;
-      }
-    }
-    if (xKnockback < 0) {
-      xKnockback++;
-      if (!super.move(-1, 0)) {
-        xKnockback = 0;
-      }
-    }
-    if (yKnockback > 0) {
-      yKnockback--;
-      if (!super.move(0, 1)) {
-        yKnockback = 0;
-      }
-    }
-    if (yKnockback < 0) {
-      yKnockback++;
-      if (!super.move(0, -1)) {
-        yKnockback = 0;
-      }
-    }
+    applyKnockback();
 
     if (hurtTime > 0 || isKnockedBack()) {
-      return true;
+      return false;
     }
     
     if (dx != 0 || dy != 0) {
@@ -196,6 +173,43 @@ public class Mob extends Entity {
     return super.move(dx, dy);
   }
 
+  protected void applyKnockback() {
+    applyXKnockback();
+    applyYKnockback();
+  }
+
+  protected void applyXKnockback() {
+    if (xKnockback > 0) {
+      xKnockback--;
+      if (!super.move(1, 0)) {
+        xKnockback = 0;
+      }
+    }
+
+    if (xKnockback < 0) {
+      xKnockback++;
+      if (!super.move(-1, 0)) {
+        xKnockback = 0;
+      }
+    }
+  }
+
+  protected void applyYKnockback() {
+    if (yKnockback > 0) {
+      yKnockback--;
+      if (!super.move(0, 1)) {
+        yKnockback = 0;
+      }
+    }
+
+    if (yKnockback < 0) {
+      yKnockback++;
+      if (!super.move(0, -1)) {
+        yKnockback = 0;
+      }
+    }
+  }
+
   protected boolean isKnockedBack() {
     return xKnockback > 0 || yKnockback > 0;
   }
@@ -206,16 +220,16 @@ public class Mob extends Entity {
         / 2 - z));
   }
   
-  public void setBrain(Brain b) {
-    brain = b;
+  public void setBrain(Brain brain) {
+    this.brain = brain;
   }
   
   @Override
   public void takeDamage(int dmg, Dir dir) {
     hp -= dmg;
     Sound.HURT.play();
-    knockback(getXKnockback(dmg, dir), getYKnockback(dmg, dir));
-    hurtTime = power;
+    addKnockback(getXKnockback(dmg, dir), getYKnockback(dmg, dir));
+    hurtTime = dmg * 3;
   }
 
   private int getXKnockback(int dmg, Dir dir) {
@@ -258,16 +272,20 @@ public class Mob extends Entity {
       die();
   }
   
+  public boolean touchedBy(Mob mob) {
+    if (mob.dir == Dir.N)
+      addKnockback(0, -mob.power);
+    if (mob.dir == Dir.S)
+      addKnockback(0, mob.power);
+    if (mob.dir == Dir.W)
+      addKnockback(-mob.power, 0);
+    if (mob.dir == Dir.E)
+      addKnockback(mob.power, 0);
+    return false;
+  }
+
   @Override
   public boolean touchedBy(Entity entity) {
-    if (entity.dir == Dir.N)
-      knockback(0, -6);
-    if (entity.dir == Dir.S)
-      knockback(0, 6);
-    if (entity.dir == Dir.W)
-      knockback(-6, 0);
-    if (entity.dir == Dir.E)
-      knockback(6, 0);
     return false;
   }
   

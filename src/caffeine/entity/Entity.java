@@ -114,7 +114,7 @@ public class Entity implements Serializable {
   public void jump() {
   }
   
-  public void knockback(int x, int y) {
+  public void addKnockback(int x, int y) {
   }
   
   public boolean move(double dx, double dy) {
