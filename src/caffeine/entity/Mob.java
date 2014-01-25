@@ -23,12 +23,10 @@ public class Mob extends Entity {
   protected int hp = 200;
   protected int hurtTime;
   protected int power = 10;
-  protected int xKnockback, yKnockback;
   protected double speed = 0.7;
   protected double xa = 0;
   protected double ya = 0;
   protected double za = 0;
-  protected int ticktime = 0;
   protected int walkDist = 0;
   
   // Object Fields
@@ -108,9 +106,11 @@ public class Mob extends Entity {
   
   public void hurt(double left, double top, double right, double bottom) {
     List<Entity> entities = getMap().getEntities(left, top, right, bottom);
-    for (Entity entity : entities)
-      if (!entity.equals(this))
+    for (Entity entity : entities) {
+      if (!entity.equals(this)) {
         entity.takeDamage(power, dir);
+      }
+    }
   }
   
   public void interact(double left, double top, double right, double bottom, Item item) {
@@ -129,89 +129,11 @@ public class Mob extends Entity {
     return !tile.blocksNPC() || z > 0;
   }
   
-  @Override
   public void jump() {
     if (z == 0) {
       za = 6;
       Sound.JUMP.play();
     }
-  }
-  
-  @Override
-  public void addKnockback(int x, int y) {
-    xKnockback += x;
-    yKnockback += y;
-  }
-  
-  public boolean moveDirInSpeed(Dir dir) {
-    return move(dir.dx * speed, dir.dy * speed);
-  }
-
-  @Override
-  public boolean move(double dx, double dy) {
-    applyKnockback();
-
-    if (hurtTime > 0 || isKnockedBack()) {
-      return false;
-    }
-    
-    if (dx != 0 || dy != 0) {
-      walkDist++;
-
-      if (dy < 0)
-        dir = Dir.N;
-
-      if (dx > 0)
-        dir = Dir.E;
-
-      if (dy > 0)
-        dir = Dir.S;
-
-      if (dx < 0)
-        dir = Dir.W;
-    }
-    return super.move(dx, dy);
-  }
-
-  protected void applyKnockback() {
-    applyXKnockback();
-    applyYKnockback();
-  }
-
-  protected void applyXKnockback() {
-    if (xKnockback > 0) {
-      xKnockback--;
-      if (!super.move(1, 0)) {
-        xKnockback = 0;
-      }
-    }
-
-    if (xKnockback < 0) {
-      xKnockback++;
-      if (!super.move(-1, 0)) {
-        xKnockback = 0;
-      }
-    }
-  }
-
-  protected void applyYKnockback() {
-    if (yKnockback > 0) {
-      yKnockback--;
-      if (!super.move(0, 1)) {
-        yKnockback = 0;
-      }
-    }
-
-    if (yKnockback < 0) {
-      yKnockback++;
-      if (!super.move(0, -1)) {
-        yKnockback = 0;
-      }
-    }
-  }
-
-  protected boolean isKnockedBack() {
-    return xKnockback > 0 || yKnockback > 0;
   }
   
   public void render(Screen screen) {
@@ -228,18 +150,9 @@ public class Mob extends Entity {
   public void takeDamage(int dmg, Dir dir) {
     hp -= dmg;
     Sound.HURT.play();
-    addKnockback(getXKnockback(dmg, dir), getYKnockback(dmg, dir));
     hurtTime = dmg * 3;
   }
 
-  private int getXKnockback(int dmg, Dir dir) {
-    return dir == Dir.E ? dmg : dir == Dir.W ? -dmg : 0;
-  }
-
-  private int getYKnockback(int dmg, Dir dir) {
-    return dir == Dir.S ? dmg : dir == Dir.N ? -dmg : 0;
-  }
-  
   @Override
   public void takeItem(ItemEntity item) {
     item.take(this);
@@ -247,23 +160,9 @@ public class Mob extends Entity {
   
   @Override
   public void tick() {
-    ticktime++;
     if (brain != null) {
       brain.tick();
     }
-    
-    if ((ticktime & 1) == 0) {
-      if (z >= 0) {
-        z += za--;
-        if (z <= 0) {
-          z = 0;
-          za = 0;
-        }
-      }
-    }
-    move(xa, ya);
-    xa = 0;
-    ya = 0;
     
     if (hurtTime > 0)
       hurtTime--;
@@ -272,18 +171,6 @@ public class Mob extends Entity {
       die();
   }
   
-  public boolean touchedBy(Mob mob) {
-    if (mob.dir == Dir.N)
-      addKnockback(0, -mob.power);
-    if (mob.dir == Dir.S)
-      addKnockback(0, mob.power);
-    if (mob.dir == Dir.W)
-      addKnockback(-mob.power, 0);
-    if (mob.dir == Dir.E)
-      addKnockback(mob.power, 0);
-    return false;
-  }
-
   @Override
   public boolean touchedBy(Entity entity) {
     return false;
@@ -314,11 +201,6 @@ public class Mob extends Entity {
     }
     
     return true;
-  }
-  
-  public void setAccel(int dx, int dy) {
-    xa = speed * dx;
-    ya = speed * dy;
   }
   
 }

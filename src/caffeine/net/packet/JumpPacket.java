@@ -12,6 +12,5 @@ public class JumpPacket extends CaffeinePacket {
   
   @Override
   public void apply(Caffeine caffeine) {
-    caffeine.getEntity(USERNAME).jump();
   }
 }

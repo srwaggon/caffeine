@@ -20,7 +20,6 @@ public class MovePacket extends CaffeinePacket {
   
   @Override
   public void apply(Caffeine caffeine) {
-    caffeine.getMob(USERNAME).moveDirInSpeed(DIR);
   }
   
 }

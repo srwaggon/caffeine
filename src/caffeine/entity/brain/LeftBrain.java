@@ -15,10 +15,6 @@ public class LeftBrain extends Brain {
 
   @Override
   public void tick() {
-    if (turnThresh < Math.random() || lastFailed)
-      dir = dir.prev();
-    self.setDir(dir);
-    if((timetick++ & 0x1) == 0)
-      lastFailed = !self.moveDirInSpeed(dir);
+
   }
 }

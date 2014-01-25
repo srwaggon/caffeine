@@ -17,9 +17,5 @@ public class StraightBrain extends Brain {
 
   @Override
   public void tick() {
-
-    if((timetick++ & 0x3) == 0)
-      if(!self.moveDirInSpeed(forward))
-        forward = forward.opposite();
   }
 }

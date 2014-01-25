@@ -1,8 +1,6 @@
 package caffeine.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
 
 import pixl.Screen;
 import caffeine.items.Item;
@@ -109,63 +107,6 @@ public class Entity implements Serializable {
   
   public boolean isValidTile(Tile tile) {
     return !tile.blocksNPC();
-  }
-  
-  public void jump() {
-  }
-  
-  public void addKnockback(int x, int y) {
-  }
-  
-  public boolean move(double dx, double dy) {
-    double nx = x + dx; // next x
-    double ny = y + dy; // next y
-    
-    List<Tile> nextTiles = map.getTiles(nx - width, ny - length, nx + width, ny
-        + length);
-    for (Tile t : nextTiles) {
-      if (!isValidTile(t)) {
-        return false;
-      }
-    }
-    
-    // Check collision with each entity.
-    Collection<Entity> entities = map.getEntities();
-    for (Entity entity : entities) {
-      
-      // Ignore collisions with self.
-      if (entity.equals(this)) {
-        continue;
-      }
-      
-      // if they currently intersect, move freely.
-      if (intersects(entity) && (z > 0 == entity.z > 0)) {
-        continue;
-        // entity.touchedBy(this);
-      }
-      
-      if (entity.intersects(nx - width, ny - length, nx + width, ny + length)
-          && (z > 0 == entity.z > 0)) {
-        // If they're going to intersect, inform them.
-        if (!entity.touchedBy(this)) {
-          return false;
-        }
-      }
-    }
-    
-    // Change location.
-    x += dx;
-    y += dy;
-    
-    for (Tile t : nextTiles) {
-      t.onEnter(this);
-    }
-    
-    return true;
-  }
-  
-  public boolean push(Entity pushee, int xa, int ya) {
-    return pushee.move(xa, ya);
   }
   
   public void remove() {

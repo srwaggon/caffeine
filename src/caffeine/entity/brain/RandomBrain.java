@@ -30,6 +30,5 @@ public class RandomBrain extends Brain {
       self.useRightHand();
     }
     numSteps--;
-    self.setAccel(dir.dx, dir.dy);
   }
 }

@@ -36,9 +36,18 @@ public enum Dir {
     return Dir.values().length;
   }
   
-  public static Dir whichDir(int dx, int dy) {
+  public static Dir getXDir(int dx) {
+    return dx > 0 ? E : dx < 0 ? W : null;
+  }
+
+  public static Dir getYDir(int dy) {
+    return dy < 0 ? N : dy > 0 ? S : null;
+  }
+
+  public static Dir getDir(int dx, int dy) {
     for (Dir dir : values()) {
-      if (dx / Math.abs(dx) == dir.dx && dy / Math.abs(dy) == dir.dy) {
+      if ((dx == 0 || dx / Math.abs(dx) == dir.dx)
+          && (dy == 0 || dy / Math.abs(dy) == dir.dy)) {
         return dir;
       }
     }
