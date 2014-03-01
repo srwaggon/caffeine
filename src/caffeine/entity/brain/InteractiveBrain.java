@@ -16,12 +16,16 @@ public class InteractiveBrain extends Brain {
   public void tick() {
     input.tick();
     if (input.up.isPressed) {
+      self.north();
     }
     if (input.down.isPressed) {
+      self.south();
     }
     if (input.left.isPressed) {
+      self.west();
     }
     if (input.right.isPressed) {
+      self.east();
     }
     if (input.jump.isClicked) {
       self.jump();

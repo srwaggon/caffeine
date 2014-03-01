@@ -26,9 +26,6 @@ public class RandomBrain extends Brain {
       }
       numSteps = (int) (Math.random() * 100) + 25;
     }
-    if (Util.oneIn(100)) {
-      self.useRightHand();
-    }
     numSteps--;
   }
 }

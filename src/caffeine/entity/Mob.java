@@ -24,9 +24,6 @@ public class Mob extends Entity {
   protected int hurtTime;
   protected int power = 10;
   protected double speed = 0.7;
-  protected double xa = 0;
-  protected double ya = 0;
-  protected double za = 0;
   protected int walkDist = 0;
   
   // Object Fields
@@ -131,7 +128,7 @@ public class Mob extends Entity {
   
   public void jump() {
     if (z == 0) {
-      za = 6;
+      dz = 6;
       Sound.JUMP.play();
     }
   }
@@ -160,15 +157,19 @@ public class Mob extends Entity {
   
   @Override
   public void tick() {
+    super.tick();
+
     if (brain != null) {
       brain.tick();
     }
     
-    if (hurtTime > 0)
+    if (hurtTime > 0) {
       hurtTime--;
+    }
     
-    if (hp <= 0)
+    if (hp <= 0) {
       die();
+    }
   }
   
   @Override

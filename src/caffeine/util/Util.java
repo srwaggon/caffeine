@@ -23,4 +23,8 @@ public class Util{
 		return Math.sqrt(a*a + b*b);
 	}
 
+  public static int signOf(double num) {
+    return (int) (num == 0.0 ? 0.0 : num / Math.abs(num));
+  }
+
 }

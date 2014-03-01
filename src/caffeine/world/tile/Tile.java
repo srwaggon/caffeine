@@ -3,13 +3,14 @@ package caffeine.world.tile;
 import java.io.Serializable;
 
 import pixl.Screen;
+import caffeine.Collideable;
 import caffeine.entity.Entity;
 import caffeine.entity.ItemEntity;
 import caffeine.items.Item;
 import caffeine.world.Dir;
 import caffeine.world.Map;
 
-public class Tile implements Serializable {
+public class Tile implements Serializable, Collideable {
   private static final long serialVersionUID = -4410353113874468565L;
   private long time = System.currentTimeMillis();
   
@@ -162,4 +163,18 @@ public class Tile implements Serializable {
   public String toString() {
     return "" + getSymbol();
   }
+
+  @Override
+  public boolean collides(double left, double top, double right, double bottom) {
+    int width = Map.tileSize;
+    int length = Map.tileSize;
+    return !(x + width < left || y + length < top || x - width > right || y
+        - length > bottom);
+  }
+
+  @Override
+  public boolean onCollide() {
+    return false;
+  }
+
 }
