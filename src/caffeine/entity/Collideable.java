@@ -1,4 +1,4 @@
-package caffeine;
+package caffeine.entity;
 
 public interface Collideable {
 

@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import caffeine.entity.Entity;
-import caffeine.entity.Mob;
+import caffeine.entity.mob.Mob;
 import caffeine.world.Map;
 
 /**

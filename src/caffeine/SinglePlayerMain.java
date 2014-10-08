@@ -1,7 +1,7 @@
 package caffeine;
 
-import caffeine.entity.PlayerEntity;
-import caffeine.entity.brain.InteractiveBrain;
+import caffeine.entity.mob.PlayerEntity;
+import caffeine.entity.mob.brain.InteractiveBrain;
 
 public class SinglePlayerMain {
 

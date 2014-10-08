@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pixl.Screen;
-import caffeine.Collideable;
 import caffeine.items.Item;
 import caffeine.world.Dir;
 import caffeine.world.Map;
@@ -36,6 +35,7 @@ public class Entity implements Serializable, Collideable {
   protected double dx = 0;
   protected double dy = 0;
   protected double dz = 0;
+  protected double za = 0;
   protected double speed = .8;
   protected int width = 6; // (left to right)
   protected int length = 6; // (front to back)
@@ -162,19 +162,33 @@ public class Entity implements Serializable, Collideable {
     if (shouldRemove()) {
       remove();
     }
-
-    move();
+    applyMotion();
   }
 
-  private void move() {
+  private void applyMotion() {
+    applyGravity();
     applySpeed();
     resetSpeed();
+  }
+
+  private void applyGravity() {
+    dz += za;
+    z += dz;
+    
+    if (za > 0) {
+      za -= .6;
+    }
+    
+    if (z <= 0) {
+      za = 0;
+      dz = 0;
+      z = 0;
+    }
   }
 
   protected void resetSpeed() {
     dx = 0;
     dy = 0;
-    dz = 0;
   }
 
   protected void applySpeed() {

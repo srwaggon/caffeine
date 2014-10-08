@@ -1,6 +1,6 @@
-package caffeine.entity.brain;
+package caffeine.entity.mob.brain;
 
-import caffeine.entity.Mob;
+import caffeine.entity.mob.Mob;
 import caffeine.world.Dir;
 
 public class RightBrain extends Brain {

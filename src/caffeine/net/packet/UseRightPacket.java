@@ -1,7 +1,7 @@
 package caffeine.net.packet;
 
 import caffeine.Caffeine;
-import caffeine.entity.Mob;
+import caffeine.entity.mob.Mob;
 
 public class UseRightPacket extends CaffeinePacket {
   

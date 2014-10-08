@@ -1,6 +1,8 @@
-package caffeine.entity;
+package caffeine.entity.mob;
 
 import java.io.Serializable;
+
+import caffeine.entity.ItemEntity;
 
 public class PlayerEntity extends Mob implements Serializable {
 

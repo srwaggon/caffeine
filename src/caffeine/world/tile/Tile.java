@@ -3,7 +3,7 @@ package caffeine.world.tile;
 import java.io.Serializable;
 
 import pixl.Screen;
-import caffeine.Collideable;
+import caffeine.entity.Collideable;
 import caffeine.entity.Entity;
 import caffeine.entity.ItemEntity;
 import caffeine.items.Item;

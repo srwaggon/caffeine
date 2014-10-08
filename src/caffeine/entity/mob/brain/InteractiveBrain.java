@@ -1,7 +1,7 @@
-package caffeine.entity.brain;
+package caffeine.entity.mob.brain;
 
 import caffeine.InputHandler;
-import caffeine.entity.Mob;
+import caffeine.entity.mob.Mob;
 
 public class InteractiveBrain extends Brain {
   private static final long serialVersionUID = -4836711233666644626L;
