@@ -36,9 +36,9 @@ public class Entity implements Serializable, Collideable {
   protected double dy = 0;
   protected double dz = 0;
   protected double za = 0;
-  protected double speed = .8;
-  protected int width = 6; // (left to right)
-  protected int length = 6; // (front to back)
+  protected double speed = 50;
+  protected int width = 8; // (left to right)
+  protected int length = 8; // (front to back)
   protected Dir dir = Dir.S;
 
   protected Map map;
@@ -89,13 +89,13 @@ public class Entity implements Serializable, Collideable {
 
   public boolean intersects(Entity e) {
     return !equals(e)
-        && intersects(e.getX() - e.width, e.getY() - e.length, e.getX()
+        && intersects(e.getX() - e.getLength(), e.getY() - e.getWidth(), e.getX()
             + e.width, e.getY() + e.length);
   }
 
   public boolean intersects(double left, double top, double right, double bottom) {
-    return !(x + width < left || y + length < top || x - width > right || y
-        - length > bottom);
+    return !(x + getLength() < left || y + getWidth() < top || x - getLength() > right || y
+        - getWidth() > bottom);
   }
 
   public boolean isRemoved() {
@@ -111,8 +111,8 @@ public class Entity implements Serializable, Collideable {
   }
 
   public void render(Screen screen) {
-    screen.render(sprite, ((int) x) - Map.tileSize / 2, ((int) y)
-        - Map.tileSize / 2 - ((int) z));
+    screen.render(sprite, (int) x - Map.tileSize/2, (int) y
+        - Map.tileSize/2 - (int) z);
   }
 
   public void setDir(Dir dir) {
@@ -158,86 +158,102 @@ public class Entity implements Serializable, Collideable {
   public void takeItem(ItemEntity item) {
   }
 
-  public void tick() {
+  public void tick(double ticksPerSecond) {
     if (shouldRemove()) {
       remove();
     }
-    applyMotion();
+    applyMotion(ticksPerSecond);
   }
 
-  private void applyMotion() {
-    applyGravity();
-    applySpeed();
+  protected double ticksPerSecond;
+  private void applyMotion(double ticksPerSecond) {
+    this.ticksPerSecond = ticksPerSecond;
+    applyGravity(ticksPerSecond);
+    applySpeed(ticksPerSecond);
     resetSpeed();
   }
 
-  private void applyGravity() {
+  double gravity = 5.0;
+  private void applyGravity(double ticksPerSecond) {
     dz += za;
     z += dz;
     
-    if (za > 0) {
-      za -= .6;
-    }
-    
-    if (z <= 0) {
+    if (z < 0) {
       za = 0;
       dz = 0;
       z = 0;
     }
+    if (za >= 0) {
+      za -= gravity / ticksPerSecond;
+    }
   }
 
   protected void resetSpeed() {
-    dx = 0;
-    dy = 0;
+    dx = 0.0;
+    dy = 0.0;
   }
 
-  protected void applySpeed() {
+  protected void applySpeed(double ticksPerSecond) {
     double projectedX = x + dx;
     double projectedY = y + dy;
-    double projectedZ = z + dz;
 
     final double left = projectedX - getWidth();
     final double top = projectedY - getLength();
-    final double right = projectedX
-    + getWidth();
+    final double right = projectedX + getWidth();
     final double bottom = projectedY + getLength();
+    
     List<Tile> collidingTiles = map.getTiles(left, top, right, bottom);
     List<Entity> collidingEntities = map.getEntities(left, top, right, bottom);
     List<Collideable> collideables = new ArrayList<Collideable>(
         collidingTiles.size() + collidingEntities.size());
     collideables.addAll(collidingTiles);
     collideables.addAll(collidingEntities);
+    
+    
+    
+    for (Tile tile : collidingTiles) {
+      if (tile.blocksNPC()) {
+//        System.out.println("BUMP");
+//        tile.setSprite(32);
+        return;
+      }
+    }
+    
+//    System.out.printf("(%.1f, %.1f, %.1f, %.1f)\n", left, top, right, bottom);
 
     x += dx;
     y += dy;
-    z += dz;
   }
 
   public void north() {
-    dy = -speed;
+    dy = -speed / ticksPerSecond;
+    sprite = 126;
   }
 
   public void east() {
-    dx = speed;
+    dx = speed / ticksPerSecond;
+    sprite = 127;
   }
 
   public void south() {
-    dy = speed;
+    dy = speed / ticksPerSecond;
+    sprite = 128;
   }
 
   public void west() {
-    dx = -speed;
+    dx = -speed / ticksPerSecond;
+    sprite = 129;
   }
 
   private boolean shouldRemove() {
     return false;
   }
 
-  private int getWidth() {
+  public int getWidth() {
     return isSideways() ? length : width;
   }
 
-  private int getLength() {
+  public int getLength() {
     return isSideways() ? width : length;
   }
 

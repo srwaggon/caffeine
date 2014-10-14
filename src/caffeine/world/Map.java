@@ -40,9 +40,15 @@ public class Map implements Serializable {
 
   };
 
-  public static final String defaultMapData = "M 0 W 13 H 8 " + "DDDDDDDDDDDDD"
-      + "D~~~~~~..mmmD" + "D~~~~~~....mD" + "D~~~~~~...m.D" + "D~~~~~~...m.D"
-      + "D~~~~~~..m..D" + "D~~~~~~..mmmD" + "DDDDDDDDDDDDD";
+  public static final String defaultMapData = "M 0 W 13 H 8 " 
+      + "DDDDDDDDDDDDD"
+      + "D~~~~~~..mmmD" 
+      + "D~~~~~~....mD" 
+      + "D~~.~~~...m.D" 
+      + "D~.m~~~...m.D"
+      + "D~~~~~~~~~..D" 
+      + "D~~~~~~..mmmD" 
+      + "DDDDDDDDDDDDD";
 
   public Map(int id, int w, int h, String data) {
     this.id = id;
@@ -237,16 +243,16 @@ public class Map implements Serializable {
     }
   }
 
-  public void tick() {
+  public void tick(double ticksPerSecond) {
 
     for (int y = 0; y < numRows; y++) {
       for (int x = 0; x < numCols; x++) {
-        getTile(x, y).tick();
+        getTile(x, y).tick(ticksPerSecond);
       }
     }
     for (int i = 0; i < entities.size(); i++) {
       Entity e = entities.get(i);
-      e.tick();
+      e.tick(ticksPerSecond);
       if (e.isRemoved()) {
         entities.remove(i--);
       }

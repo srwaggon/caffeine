@@ -91,21 +91,18 @@ public class Game extends Thread {
     long secondTimer = System.currentTimeMillis();
     while (true) {
       now = System.nanoTime();
-      unprocessed += (now - lastTime) / getTicksPerSecond();
+      unprocessed += (now - lastTime) / getNsPerTick();
       lastTime = now;
-      
-      // System.out.println(unprocessed);
       
       while (unprocessed >= 1) {
         ticks++;
-        tick();
+        tick(TICKS_PER_SECOND);
         unprocessed -= 1;
       }
       
       long thisTime = System.currentTimeMillis();
       if (thisTime - secondTimer > 1000) {
         secondTimer = thisTime;
-        System.out.println(ticks + " ticks");
         ticks = 0;
       }
 
@@ -118,7 +115,7 @@ public class Game extends Thread {
     }
   }
 
-  protected double getTicksPerSecond() {
+  protected double getNsPerTick() {
     return NANOSECONDS_PER_SECOND / TICKS_PER_SECOND;
   }
   
@@ -127,9 +124,9 @@ public class Game extends Thread {
     new Thread(this).start();
   }
   
-  public void tick() {
+  public void tick(double ticksPerSecond) {
     for (Map m : world.values()) {
-      m.tick();
+      m.tick(ticksPerSecond);
     }
   }
 }

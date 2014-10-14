@@ -100,8 +100,22 @@ public class Tile implements Serializable, Collideable {
   public void onEnter(Entity entity) {
   }
   
+  public void setSprite(int spriteId) {
+    this.sprite = spriteId;
+  }
+  
+  int sprite = 1;
   public void render(Screen screen, Map map, int x, int y) {
     
+    int sprite = getSprite(map);
+    
+    screen.render(sprite, x, y);
+    if (tileObject != null) {
+      tileObject.render(screen, this, x, y);
+    }
+  }
+
+  private int getSprite(Map map) {
     boolean u = map.getTileSafe(this.x, this.y - 1).type == type;
     boolean d = map.getTileSafe(this.x, this.y + 1).type == type;
     boolean l = map.getTileSafe(this.x - 1, this.y).type == type;
@@ -141,18 +155,14 @@ public class Tile implements Serializable, Collideable {
       if (!u && d && !l && !r)
         sprite += 15;
     }
-    
-    screen.render(sprite, x, y);
-    if (tileObject != null) {
-      tileObject.render(screen, this, x, y);
-    }
+    return sprite;
   }
   
   public void resetTime() {
     time = System.currentTimeMillis();
   }
   
-  public void tick() {
+  public void tick(double ticksPerSecond) {
     TileType.tick(this);
     if (tileObject != null) {
       tileObject.tick();

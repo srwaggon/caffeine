@@ -1,5 +1,7 @@
 package caffeine.entity.mob;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,15 +37,15 @@ public class Mob extends Entity {
   protected List<Item> inventory = new ArrayList<Item>();
 
   public Mob() {
-    width = 5;
-    length = 5;
+    width = 8;
+    length = 8;
     brain = new RandomBrain(this);
   }
 
   public Mob(String id) {
     super(id);
-    width = 5;
-    length = 5;
+    width = 8;
+    length = 8;
     brain = new Brain(this);
   }
 
@@ -59,13 +61,13 @@ public class Mob extends Entity {
   public void attack() {
     // use this entity's range to hurt the entities within a given proximity
     if (dir == Dir.N)
-      hurt(x, y - (2 * length), x, y);
+      hurt(x, y - (2 * getWidth()), x, y);
     if (dir == Dir.E)
-      hurt(x, y, x + (2 * width), y);
+      hurt(x, y, x + (2 * getLength()), y);
     if (dir == Dir.S)
-      hurt(x, y, x, y + (2 * length));
+      hurt(x, y, x, y + (2 * getWidth()));
     if (dir == Dir.W)
-      hurt(x - (2 * width), y, x, y);
+      hurt(x - (2 * getLength()), y, x, y);
   }
 
   public void die() {
@@ -128,16 +130,19 @@ public class Mob extends Entity {
     return !tile.blocksNPC() || z > 0;
   }
 
+  int jump = 25;
   public void jump() {
     if (z <= 0) {
-      za = 1;
+      za = jump / ticksPerSecond;
       Sound.JUMP.play();
     }
   }
 
   public void render(Screen screen) {
     int sprite = this.sprite + dir.ordinal();
-    screen.render(sprite, (int) (x - Map.tileSize / 2), (int) (y - Map.tileSize / 2 - z));
+    int h = Map.tileSize / 2;
+    int w = 2 * getWidth();
+    screen.render(sprite, (int) x - w, (int) (y - w - z));
   }
 
   public void setBrain(Brain brain) {
@@ -157,8 +162,8 @@ public class Mob extends Entity {
   }
 
   @Override
-  public void tick() {
-    super.tick();
+  public void tick(double ticksPerSecond) {
+    super.tick(ticksPerSecond);
 
     if (brain != null) {
       brain.tick();
@@ -188,13 +193,13 @@ public class Mob extends Entity {
   public boolean useRightHand() {
     if (rightHand != null) {
       if (dir == Dir.N)
-        interact(x, y - (2 * length), x, y, rightHand);
+        interact(x, y - (2 * getWidth()), x, y, rightHand);
       if (dir == Dir.E)
-        interact(x, y, x + (2 * width), y, rightHand);
+        interact(x, y, x + (2 * getLength()), y, rightHand);
       if (dir == Dir.S)
-        interact(x, y, x, y + (2 * length), rightHand);
+        interact(x, y, x, y + (2 * getWidth()), rightHand);
       if (dir == Dir.W)
-        interact(x - (2 * width), y, x, y, rightHand);
+        interact(x - (2 * getLength()), y, x, y, rightHand);
 
       if (rightHand.getType() == ItemType.weapon) {
         attack();

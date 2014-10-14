@@ -54,7 +54,7 @@ public class GameClient extends link.Client {
       lastTime = now;
 
       while (unprocessed >= 1) {
-        game.tick();
+        game.tick(nsPerTick);
         input.tick();
         processInput();
         unprocessed -= 1;
