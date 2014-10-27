@@ -29,8 +29,8 @@ public class Entity implements Serializable, Collideable {
   public final String ID;
   protected int mapID = 0;
   protected int sprite = 128;
-  protected double x = 32;
-  protected double y = 32;
+  protected double x = 0;
+  protected double y = 0;
   protected double z = 0;
   protected double dx = 0;
   protected double dy = 0;
@@ -43,7 +43,6 @@ public class Entity implements Serializable, Collideable {
 
   protected Map map;
 
-  /* CONSTRUCTORS */
   public Entity() {
     ID = "" + Entity.numEntities++;
   }
@@ -94,8 +93,11 @@ public class Entity implements Serializable, Collideable {
   }
 
   public boolean intersects(double left, double top, double right, double bottom) {
-    return !(x + getLength() < left || y + getWidth() < top || x - getLength() > right || y
-        - getWidth() > bottom);
+    double myRight = x + getLength();
+    double myBottom = y + getWidth();
+    double myLeft = x - getLength();
+    double myTop = y - getWidth();
+    return !(myRight < left || myBottom < top || myLeft > right || myTop > bottom);
   }
 
   public boolean isRemoved() {
@@ -119,11 +121,6 @@ public class Entity implements Serializable, Collideable {
     this.dir = dir;
   }
 
-  public void setLoc(double x, double y) {
-    this.x = x;
-    this.y = y;
-  }
-
   public void setMap(Map map) {
     this.map = map;
     mapID = map.getID();
@@ -137,15 +134,21 @@ public class Entity implements Serializable, Collideable {
     this.sprite = sprite;
   }
 
-  public void setX(int x) {
+  public void setX(double x) {
     this.x = x;
   }
 
-  public void setY(int y) {
+  public void setY(double y) {
     this.y = y;
   }
 
-  public void setZ(int z) {
+  public void setZ(double z) {
+    this.z = z;
+  }
+  
+  public void setLoc(double x, double y, double z) {
+    this.x = x;
+    this.y = y;
     this.z = z;
   }
 
@@ -198,28 +201,31 @@ public class Entity implements Serializable, Collideable {
     double projectedY = y + dy;
 
     final double left = projectedX - getWidth();
-    final double top = projectedY - getLength();
     final double right = projectedX + getWidth();
+    
+    final double top = projectedY - getLength();
     final double bottom = projectedY + getLength();
     
     List<Tile> collidingTiles = map.getTiles(left, top, right, bottom);
+    
     List<Entity> collidingEntities = map.getEntities(left, top, right, bottom);
     List<Collideable> collideables = new ArrayList<Collideable>(
         collidingTiles.size() + collidingEntities.size());
     collideables.addAll(collidingTiles);
     collideables.addAll(collidingEntities);
     
+//    Tile topLeft = map.getTiles(left, top, left, top).get(0);
+    Tile bottomRight = map.getTiles(right, bottom, right, bottom).get(0);
     
+//    System.out.printf("tl(%.1f,%.1f) %b\n", left, top, topLeft.blocksNPC());
+//    System.out.printf("\tbr(%.1f,%.1f) %b\n", right, bottom, bottomRight.blocksNPC());
+    System.out.println(collidingTiles.contains(bottomRight));
     
     for (Tile tile : collidingTiles) {
-      if (tile.blocksNPC()) {
-//        System.out.println("BUMP");
-//        tile.setSprite(32);
+      if (tile.blocksNPC() && z == 0) {
         return;
       }
     }
-    
-//    System.out.printf("(%.1f, %.1f, %.1f, %.1f)\n", left, top, right, bottom);
 
     x += dx;
     y += dy;
@@ -280,4 +286,7 @@ public class Entity implements Serializable, Collideable {
     return false;
   }
 
+  public List<Tile> getTiles() {
+    return map.getTiles(x - getWidth(), y - getLength(), x + getWidth(), y + getLength());
+  }
 }

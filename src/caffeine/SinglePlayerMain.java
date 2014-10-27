@@ -7,8 +7,8 @@ public class SinglePlayerMain {
 
   public static void main(String[] args) {
     Caffeine caffeine = new Caffeine();
-    // caffeine.addEntity(new Mob());
-    // caffeine.addEntity(new Mob());
+//     caffeine.addEntity(new Mob());
+//     caffeine.addEntity(new Mob());
 
     addPlayer(caffeine);
 
@@ -17,6 +17,7 @@ public class SinglePlayerMain {
 
   private static void addPlayer(Caffeine caffeine) {
     PlayerEntity player = new PlayerEntity("Fnar");
+    player.setLoc(32, 32, 0);
     InputHandler inputHandler = caffeine.getGUI().getInputHandler();
     InteractiveBrain brain = new InteractiveBrain(player, inputHandler);
     player.setBrain(brain);

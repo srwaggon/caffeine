@@ -44,8 +44,9 @@ public class Mob extends Entity {
 
   public Mob(String id) {
     super(id);
-    width = 8;
-    length = 8;
+    int dat = 7;
+    width = dat;
+    length = dat;
     brain = new Brain(this);
   }
 
@@ -80,7 +81,7 @@ public class Mob extends Entity {
 
   public void drop(Item item) {
     ItemEntity ie = new ItemEntity(item);
-    ie.setLoc(x, y);
+    ie.setLoc(x, y, 0);
     map.addEntity(ie);
   }
 
@@ -140,9 +141,7 @@ public class Mob extends Entity {
 
   public void render(Screen screen) {
     int sprite = this.sprite + dir.ordinal();
-    int h = Map.tileSize / 2;
-    int w = 2 * getWidth();
-    screen.render(sprite, (int) x - w, (int) (y - w - z));
+    screen.render(sprite, (int) x - getWidth(), (int) (y - getLength() - z));
   }
 
   public void setBrain(Brain brain) {

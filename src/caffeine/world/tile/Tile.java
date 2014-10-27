@@ -87,7 +87,7 @@ public class Tile implements Serializable, Collideable {
         if (dropped != null) {
           Entity ie = new ItemEntity(dropped);
           int ts = Map.tileSize;
-          ie.setLoc(x * ts + ts / 2, y * ts + ts / 2);
+          ie.setLoc(x * ts + ts / 2, y * ts + ts / 2, 0);
           entity.getMap().addEntity(ie);
         }
         time = System.currentTimeMillis();

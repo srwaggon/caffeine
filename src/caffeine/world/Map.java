@@ -65,7 +65,6 @@ public class Map implements Serializable {
     }
   }
 
-  /* CONSTRUCTORS */
   public Map(String data) {
     Scanner scan = new Scanner(data);
 
@@ -138,21 +137,32 @@ public class Map implements Serializable {
     return id;
   }
 
-  public Tile getTile(int x, int y) {
+  private Tile getTile(int x, int y) {
     return inRange(x, y) ? map[x][y] : null;
   }
-
+  
+  // tilesize = 16
+  //    0 1 2 3
+  // 0 [][][][]
+  // 1 [][][][]
+  // 2 [][][][]
+  // 3 [][][][]
+  // (0,0) - (15, 15)
+  
   public Tile getTileAt(int x, int y) {
     return getTile(x / Map.tileSize, y / Map.tileSize);
   }
 
-  public List<Tile> getTiles(double left, double top, double right,
-      double bottom) {
+  public List<Tile> getTiles(double left, double top, double right, double bottom) {
     List<Tile> result = new ArrayList<Tile>();
-    for (int j = (int) (top / Map.tileSize * Map.tileSize); j <= bottom; j += Map.tileSize)
-      for (int i = (int) (left / Map.tileSize * Map.tileSize); i <= right; i += Map.tileSize)
-        if (isValidLoc(i, j))
-          result.add(getTileAt(i, j));
+
+    for (int row = (int) top; row <= bottom; row += Map.tileSize) {
+      for (int col = (int) left; col <= right; col += Map.tileSize) {
+        if (isValidLoc(col, row)) {
+          result.add(getTileAt(col, row));
+        }
+      }
+    }
     return result;
   }
 
