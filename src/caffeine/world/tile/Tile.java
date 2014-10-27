@@ -3,13 +3,14 @@ package caffeine.world.tile;
 import java.io.Serializable;
 
 import pixl.Screen;
+import caffeine.entity.Collideable;
 import caffeine.entity.Entity;
 import caffeine.entity.ItemEntity;
 import caffeine.items.Item;
 import caffeine.world.Dir;
 import caffeine.world.Map;
 
-public class Tile implements Serializable {
+public class Tile implements Serializable, Collideable {
   private static final long serialVersionUID = -4410353113874468565L;
   private long time = System.currentTimeMillis();
   
@@ -86,7 +87,7 @@ public class Tile implements Serializable {
         if (dropped != null) {
           Entity ie = new ItemEntity(dropped);
           int ts = Map.tileSize;
-          ie.setLoc(x * ts + ts / 2, y * ts + ts / 2);
+          ie.setLoc(x * ts + ts / 2, y * ts + ts / 2, 0);
           entity.getMap().addEntity(ie);
         }
         time = System.currentTimeMillis();
@@ -99,8 +100,22 @@ public class Tile implements Serializable {
   public void onEnter(Entity entity) {
   }
   
+  public void setSprite(int spriteId) {
+    this.sprite = spriteId;
+  }
+  
+  int sprite = 1;
   public void render(Screen screen, Map map, int x, int y) {
     
+    int sprite = getSprite(map);
+    
+    screen.render(sprite, x, y);
+    if (tileObject != null) {
+      tileObject.render(screen, this, x, y);
+    }
+  }
+
+  private int getSprite(Map map) {
     boolean u = map.getTileSafe(this.x, this.y - 1).type == type;
     boolean d = map.getTileSafe(this.x, this.y + 1).type == type;
     boolean l = map.getTileSafe(this.x - 1, this.y).type == type;
@@ -140,18 +155,14 @@ public class Tile implements Serializable {
       if (!u && d && !l && !r)
         sprite += 15;
     }
-    
-    screen.render(sprite, x, y);
-    if (tileObject != null) {
-      tileObject.render(screen, this, x, y);
-    }
+    return sprite;
   }
   
   public void resetTime() {
     time = System.currentTimeMillis();
   }
   
-  public void tick() {
+  public void tick(double ticksPerSecond) {
     TileType.tick(this);
     if (tileObject != null) {
       tileObject.tick();
@@ -162,4 +173,18 @@ public class Tile implements Serializable {
   public String toString() {
     return "" + getSymbol();
   }
+
+  @Override
+  public boolean collides(double left, double top, double right, double bottom) {
+    int width = Map.tileSize;
+    int length = Map.tileSize;
+    return !(x + width < left || y + length < top || x - width > right || y
+        - length > bottom);
+  }
+
+  @Override
+  public boolean onCollide() {
+    return false;
+  }
+
 }

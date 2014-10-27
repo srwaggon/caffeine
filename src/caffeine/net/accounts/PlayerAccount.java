@@ -7,7 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-import caffeine.entity.PlayerEntity;
+import caffeine.entity.mob.PlayerEntity;
 
 public class PlayerAccount implements Serializable {
   

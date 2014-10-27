@@ -8,7 +8,7 @@ import link.Server;
 import link.packet.Packet;
 import caffeine.Caffeine;
 import caffeine.entity.Entity;
-import caffeine.entity.PlayerEntity;
+import caffeine.entity.mob.PlayerEntity;
 import caffeine.net.accounts.PlayerAccount;
 import caffeine.net.packet.CaffeineCode;
 import caffeine.net.packet.CaffeinePacket;

@@ -1,13 +1,13 @@
-package caffeine.entity.brain;
+package caffeine.entity.mob.brain;
 
 import caffeine.InputHandler;
-import caffeine.entity.Mob;
+import caffeine.entity.mob.Mob;
 
 public class InteractiveBrain extends Brain {
   private static final long serialVersionUID = -4836711233666644626L;
   protected InputHandler input;
 
-  public InteractiveBrain(InputHandler inputHandler, Mob self) {
+  public InteractiveBrain(Mob self, InputHandler inputHandler) {
     super(self);
     this.input = inputHandler;
   }
@@ -16,16 +16,16 @@ public class InteractiveBrain extends Brain {
   public void tick() {
     input.tick();
     if (input.up.isPressed) {
-      self.setAccel(0, -1);
+      self.north();
     }
     if (input.down.isPressed) {
-      self.setAccel(0, 1);
+      self.south();
     }
     if (input.left.isPressed) {
-      self.setAccel(-1, 0);
+      self.west();
     }
     if (input.right.isPressed) {
-      self.setAccel(1, 0);
+      self.east();
     }
     if (input.jump.isClicked) {
       self.jump();

@@ -21,11 +21,11 @@ public class Map implements Serializable {
   protected int numRows, numCols;
   public final static int tileSize = 16;
   protected Tile[][] map;
-  
+
   // Object Fields
   protected List<Entity> entities = new ArrayList<Entity>();
   protected static transient List<MapListener> listeners = new ArrayList<MapListener>();
-  
+
   public static Comparator<Entity> spriteSorter = new Comparator<Entity>() {
     @Override
     public int compare(Entity e1, Entity e2) {
@@ -34,23 +34,29 @@ public class Map implements Serializable {
       } else if (e2 instanceof ItemEntity) {
         return 1;
       } else {
-        return e1.getY() - e2.getY();
+        return (int) (e1.getY() - e2.getY());
       }
     }
-    
+
   };
-  
-  public static final String defaultMapData = "M 0 W 13 H 8 " + "DDDDDDDDDDDDD"
-      + "D......m..mmD" + "D.mmm####mmmD" + "D.m~~~~##.m.D" + "D.m~~#.##mm.D"
-      + "D~~mm###m.m.D" + "D~~..mm...mmD" + "DDDDDDDDDDDDD";
-  
+
+  public static final String defaultMapData = "M 0 W 13 H 8 " 
+      + "DDDDDDDDDDDDD"
+      + "D~~~~~~..mmmD" 
+      + "D~~~~~~....mD" 
+      + "D~~.~~~...m.D" 
+      + "D~.m~~~...m.D"
+      + "D~~~~~~~~~..D" 
+      + "D~~~~~~..mmmD" 
+      + "DDDDDDDDDDDDD";
+
   public Map(int id, int w, int h, String data) {
     this.id = id;
     numCols = w;
     numRows = h;
-    
+
     map = new Tile[numCols][numRows];
-    
+
     for (int i = 0; i < data.length(); i++) {
       int x = i % numCols;
       int y = i / numCols;
@@ -58,23 +64,22 @@ public class Map implements Serializable {
       map[x][y] = t;
     }
   }
-  
-  /* CONSTRUCTORS */
+
   public Map(String data) {
     Scanner scan = new Scanner(data);
-    
+
     scan.next(); // M - map id
     id = scan.nextInt();
-    
+
     scan.next(); // W - width
     numCols = scan.nextInt();
-    
+
     scan.next(); // H - height
     numRows = scan.nextInt();
-    
+
     data = scan.next();
     map = new Tile[numCols][numRows];
-    
+
     for (int i = 0; i < data.length(); i++) {
       int x = i % numCols;
       int y = i / numCols;
@@ -82,7 +87,7 @@ public class Map implements Serializable {
       map[x][y] = t;
     }
   }
-  
+
   public void addEntity(Entity e) {
     entities.add(e);
     e.setMap(this);
@@ -90,33 +95,34 @@ public class Map implements Serializable {
       l.onAddEntity(e);
     }
   }
-  
+
   public void addMapListener(MapListener listener) {
     listeners.add(listener);
   }
-  
+
   public List<Entity> getEntities() {
     return entities;
   }
-  
+
   public int getBackground() {
     return backgroundSprite;
   }
-  
-  public List<Entity> getEntities(int x0, int y0, int x1, int y1) {
+
+  public List<Entity> getEntities(double left, double top, double right,
+      double bottom) {
     List<Entity> result = new ArrayList<Entity>();
     for (Entity e : getEntities()) {
-      if (e.intersects(x0, y0, x1, y1)) {
+      if (e.intersects(left, top, right, bottom)) {
         result.add(e);
       }
     }
     return result;
   }
-  
+
   public Entity getEntity(int id) {
     return entities.get(id);
   }
-  
+
   public Entity getEntityByID(String id) {
     for (int i = 0; i < entities.size(); i++) {
       Entity e = entities.get(i);
@@ -126,28 +132,40 @@ public class Map implements Serializable {
     }
     return null;
   }
-  
+
   public int getID() {
     return id;
   }
-  
-  public Tile getTile(int x, int y) {
+
+  private Tile getTile(int x, int y) {
     return inRange(x, y) ? map[x][y] : null;
   }
+  
+  // tilesize = 16
+  //    0 1 2 3
+  // 0 [][][][]
+  // 1 [][][][]
+  // 2 [][][][]
+  // 3 [][][][]
+  // (0,0) - (15, 15)
   
   public Tile getTileAt(int x, int y) {
     return getTile(x / Map.tileSize, y / Map.tileSize);
   }
-  
-  public List<Tile> getTiles(int x0, int y0, int x1, int y1) {
+
+  public List<Tile> getTiles(double left, double top, double right, double bottom) {
     List<Tile> result = new ArrayList<Tile>();
-    for (int j = y0 / Map.tileSize * Map.tileSize; j <= y1; j += Map.tileSize)
-      for (int i = x0 / Map.tileSize * Map.tileSize; i <= x1; i += Map.tileSize)
-        if (isValidLoc(i, j))
-          result.add(getTileAt(i, j));
+
+    for (int row = (int) top; row <= bottom; row += Map.tileSize) {
+      for (int col = (int) left; col <= right; col += Map.tileSize) {
+        if (isValidLoc(col, row)) {
+          result.add(getTileAt(col, row));
+        }
+      }
+    }
     return result;
   }
-  
+
   public Tile getTileSafe(int x, int y) {
     if (x < 0)
       x = 0;
@@ -159,38 +177,38 @@ public class Map implements Serializable {
       y = numRows - 1;
     return map[x][y];
   }
-  
+
   public int height() {
     return numRows * Map.tileSize;
   }
-  
+
   protected boolean inRange(int x, int y) {
     return 0 <= x && x < numCols && 0 <= y && y < numRows;
   }
-  
+
   public boolean isEmpty() {
     return entities.isEmpty();
   }
-  
+
   public boolean isValidLoc(int x, int y) {
     return 0 <= x && x < numCols * Map.tileSize && 0 <= y
         && y < numRows * Map.tileSize;
   }
-  
+
   public void read(String data) {
     Scanner scan = new Scanner(data);
-    
+
     scan.next(); // M - map id
     id = scan.nextInt();
-    
+
     scan.next(); // W - width
     numCols = scan.nextInt();
-    
+
     scan.next(); // H - height
     numRows = scan.nextInt();
-    
+
     data = scan.next();
-    
+
     for (int i = 0; i < data.length(); i++) {
       int x = i % numCols;
       int y = i / numCols;
@@ -198,7 +216,7 @@ public class Map implements Serializable {
       map[x][y] = t;
     }
   }
-  
+
   public boolean removeEntity(String id) {
     Entity e = getEntityByID(id);
     if (e != null) {
@@ -210,7 +228,7 @@ public class Map implements Serializable {
     }
     return false;
   }
-  
+
   public void renderBackground(Screen screen) {
     for (int x = 0; x < numCols; x++)
       for (int y = 0; y < numRows; y++) {
@@ -218,7 +236,7 @@ public class Map implements Serializable {
         tile.render(screen, this, x * Map.tileSize, y * Map.tileSize);
       }
   }
-  
+
   public void renderSprites(Screen screen) {
     List<Entity> sprites = new ArrayList<Entity>();
     sprites.addAll(getEntities());
@@ -227,35 +245,34 @@ public class Map implements Serializable {
       e.render(screen);
     }
   }
-  
+
   public void setTile(int x, int y, Tile tile) {
     map[x][y] = tile;
     for (MapListener l : listeners) {
       l.onTileChange(tile);
     }
   }
-  
-  public void tick() {
-    
+
+  public void tick(double ticksPerSecond) {
+
     for (int y = 0; y < numRows; y++) {
       for (int x = 0; x < numCols; x++) {
-        getTile(x, y).tick();
+        getTile(x, y).tick(ticksPerSecond);
       }
     }
     for (int i = 0; i < entities.size(); i++) {
       Entity e = entities.get(i);
-      e.tick();
+      e.tick(ticksPerSecond);
       if (e.isRemoved()) {
         entities.remove(i--);
       }
-      
     }
   }
-  
+
   public int tileSize() {
     return Map.tileSize;
   }
-  
+
   @Override
   public String toString() {
     String s = "M " + id + " " + "W " + numCols + " " + "H " + numRows + " ";
@@ -269,9 +286,9 @@ public class Map implements Serializable {
     }
     return s;
   }
-  
+
   public int width() {
     return numCols * Map.tileSize;
   }
-  
+
 }

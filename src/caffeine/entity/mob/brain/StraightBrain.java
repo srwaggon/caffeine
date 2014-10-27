@@ -1,6 +1,6 @@
-package caffeine.entity.brain;
+package caffeine.entity.mob.brain;
 
-import caffeine.entity.Mob;
+import caffeine.entity.mob.Mob;
 import caffeine.world.Dir;
 
 public class StraightBrain extends Brain {
@@ -17,9 +17,5 @@ public class StraightBrain extends Brain {
 
   @Override
   public void tick() {
-
-    if((timetick++ & 0x3) == 0)
-      if(!self.move(forward))
-        forward = forward.opposite();
   }
 }

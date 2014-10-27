@@ -1,6 +1,6 @@
-package caffeine.entity.brain;
+package caffeine.entity.mob.brain;
 
-import caffeine.entity.Mob;
+import caffeine.entity.mob.Mob;
 import caffeine.util.Util;
 import caffeine.world.Dir;
 
@@ -24,9 +24,8 @@ public class RandomBrain extends Brain {
       } else {
         dir = dir.prev();
       }
-      numSteps = (int) (Math.random() * 20) + 5;
+      numSteps = (int) (Math.random() * 100) + 25;
     }
     numSteps--;
-    self.setAccel(dir.dx, dir.dy);
   }
 }

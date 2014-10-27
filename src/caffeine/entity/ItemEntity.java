@@ -17,7 +17,7 @@ public class ItemEntity extends Entity{
     lifetime = 5000;
   }
 
-  public void tick() {
+  public void tick(double ticksPerSecond) {
     if (System.currentTimeMillis() - spawnTime > lifetime) {
       remove();
       return;

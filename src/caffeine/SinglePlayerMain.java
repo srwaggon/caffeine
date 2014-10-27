@@ -1,20 +1,26 @@
 package caffeine;
 
-import caffeine.entity.Mob;
-import caffeine.entity.PlayerEntity;
-import caffeine.entity.brain.InteractiveBrain;
+import caffeine.entity.mob.PlayerEntity;
+import caffeine.entity.mob.brain.InteractiveBrain;
 
 public class SinglePlayerMain {
 
   public static void main(String[] args) {
     Caffeine caffeine = new Caffeine();
-    caffeine.addEntity(new Mob());
-    caffeine.addEntity(new Mob());
-    PlayerEntity player = new PlayerEntity("Fnar");
-    caffeine.addEntity(player);
+//     caffeine.addEntity(new Mob());
+//     caffeine.addEntity(new Mob());
 
-    player.setBrain(new InteractiveBrain((InputHandler) caffeine.getGUI().getInputListener(), player));
+    addPlayer(caffeine);
 
     caffeine.start();
+  }
+
+  private static void addPlayer(Caffeine caffeine) {
+    PlayerEntity player = new PlayerEntity("Fnar");
+    player.setLoc(32, 32, 0);
+    InputHandler inputHandler = caffeine.getGUI().getInputHandler();
+    InteractiveBrain brain = new InteractiveBrain(player, inputHandler);
+    player.setBrain(brain);
+    caffeine.addEntity(player);
   }
 }

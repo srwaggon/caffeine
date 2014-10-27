@@ -1,8 +1,8 @@
-package caffeine.entity.brain;
+package caffeine.entity.mob.brain;
 
 import java.io.Serializable;
 
-import caffeine.entity.Mob;
+import caffeine.entity.mob.Mob;
 
 public class Brain implements Serializable {
 

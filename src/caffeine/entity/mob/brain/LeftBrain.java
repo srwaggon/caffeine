@@ -1,6 +1,6 @@
-package caffeine.entity.brain;
+package caffeine.entity.mob.brain;
 
-import caffeine.entity.Mob;
+import caffeine.entity.mob.Mob;
 import caffeine.world.Dir;
 
 public class LeftBrain extends Brain {
@@ -15,10 +15,6 @@ public class LeftBrain extends Brain {
 
   @Override
   public void tick() {
-    if (turnThresh < Math.random() || lastFailed)
-      dir = dir.prev();
-    self.setDir(dir);
-    if((timetick++ & 0x1) == 0)
-      lastFailed = !self.move(dir);
+
   }
 }
