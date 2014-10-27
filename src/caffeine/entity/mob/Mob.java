@@ -18,7 +18,7 @@ import caffeine.world.tile.Tile;
 
 public class Mob extends Entity {
   private static final long serialVersionUID = -3841320632173330369L;
-  // primitive Fields
+
   protected boolean flip = false;
   protected boolean isAlive = true;
   protected int hp = 200;
@@ -27,7 +27,6 @@ public class Mob extends Entity {
   protected double speed = 0.7;
   protected int walkDist = 0;
 
-  // Object Fields
   protected Brain brain;
   protected Item leftHand;
   protected Item rightHand = new Sword();
