@@ -86,6 +86,8 @@ public class Map implements Serializable {
       Tile t = Tile.read(x, y, data.charAt(i));
       map[x][y] = t;
     }
+    
+    scan.close();
   }
 
   public void addEntity(Entity e) {
@@ -141,14 +143,6 @@ public class Map implements Serializable {
     return inRange(x, y) ? map[x][y] : null;
   }
   
-  // tilesize = 16
-  //    0 1 2 3
-  // 0 [][][][]
-  // 1 [][][][]
-  // 2 [][][][]
-  // 3 [][][][]
-  // (0,0) - (15, 15)
-  
   public Tile getTileAt(int x, int y) {
     return getTile(x / Map.tileSize, y / Map.tileSize);
   }
@@ -197,7 +191,6 @@ public class Map implements Serializable {
 
   public void read(String data) {
     Scanner scan = new Scanner(data);
-
     scan.next(); // M - map id
     id = scan.nextInt();
 
@@ -215,6 +208,7 @@ public class Map implements Serializable {
       Tile t = Tile.read(x, y, data.charAt(i));
       map[x][y] = t;
     }
+    scan.close();
   }
 
   public boolean removeEntity(String id) {
@@ -290,5 +284,4 @@ public class Map implements Serializable {
   public int width() {
     return numCols * Map.tileSize;
   }
-
 }

@@ -7,6 +7,8 @@ import caffeine.world.Dir;
 
 public class Stone extends TileObject {
 
+  private static final long serialVersionUID = -6751959527517861520L;
+  
   private int hp = 10;
 
   public Stone() {

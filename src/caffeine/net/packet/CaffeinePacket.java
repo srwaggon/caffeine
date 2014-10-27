@@ -4,6 +4,8 @@ import caffeine.Caffeine;
 
 public abstract class CaffeinePacket extends link.packet.Packet {
   
+  private static final long serialVersionUID = -3516416792644263748L;
+  
   CaffeineCode code;
   
   public CaffeinePacket(CaffeineCode code) {

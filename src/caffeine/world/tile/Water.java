@@ -7,6 +7,8 @@ import caffeine.world.Dir;
 
 public class Water extends TileObject {
 
+  private static final long serialVersionUID = 3857607660382089726L;
+
   public Water() {
     super(TileType.WATER, '~', 64, false, false, false);
   }

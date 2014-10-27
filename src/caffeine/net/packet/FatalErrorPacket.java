@@ -4,6 +4,8 @@ import caffeine.Caffeine;
 
 public class FatalErrorPacket extends CaffeinePacket {
   
+  private static final long serialVersionUID = 1219016604841884266L;
+  
   private final String errorMessage;
   private final int errorCode;
   

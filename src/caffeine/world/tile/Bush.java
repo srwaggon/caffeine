@@ -9,6 +9,8 @@ import caffeine.world.Dir;
 
 public class Bush extends TileObject {
   
+  private static final long serialVersionUID = 2671708457769241840L;
+  
   long time = System.currentTimeMillis();
   Stage stage;
   

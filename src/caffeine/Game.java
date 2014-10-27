@@ -87,7 +87,6 @@ public class Game extends Thread {
   public void run() {
     long now, lastTime = System.nanoTime();
     double unprocessed = 0;
-    int ticks = 0;
     long secondTimer = System.currentTimeMillis();
     while (true) {
       now = System.nanoTime();
@@ -95,7 +94,6 @@ public class Game extends Thread {
       lastTime = now;
       
       while (unprocessed >= 1) {
-        ticks++;
         tick(TICKS_PER_SECOND);
         unprocessed -= 1;
       }
@@ -103,7 +101,6 @@ public class Game extends Thread {
       long thisTime = System.currentTimeMillis();
       if (thisTime - secondTimer > 1000) {
         secondTimer = thisTime;
-        ticks = 0;
       }
 
       try {

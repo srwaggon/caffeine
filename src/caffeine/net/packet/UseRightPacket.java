@@ -5,6 +5,8 @@ import caffeine.entity.mob.Mob;
 
 public class UseRightPacket extends CaffeinePacket {
   
+  private static final long serialVersionUID = 7251779307882630706L;
+  
   final String USERNAME;
   
   public UseRightPacket(String username) {
