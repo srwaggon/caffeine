@@ -1,7 +1,5 @@
 package caffeine.entity.mob;
 
-import java.awt.Color;
-import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +14,6 @@ import caffeine.items.ItemType;
 import caffeine.items.weapons.Sword;
 import caffeine.sfx.Sound;
 import caffeine.world.Dir;
-import caffeine.world.Map;
 import caffeine.world.tile.Tile;
 
 public class Mob extends Entity {
@@ -37,16 +34,11 @@ public class Mob extends Entity {
   protected List<Item> inventory = new ArrayList<Item>();
 
   public Mob() {
-    width = 8;
-    length = 8;
     brain = new RandomBrain(this);
   }
 
   public Mob(String id) {
     super(id);
-    int dat = 7;
-    width = dat;
-    length = dat;
     brain = new Brain(this);
   }
 

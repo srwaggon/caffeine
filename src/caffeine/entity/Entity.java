@@ -37,8 +37,6 @@ public class Entity implements Serializable, Collideable {
   protected double dz = 0;
   protected double za = 0;
   protected double speed = 50;
-  protected int width = 8; // (left to right)
-  protected int length = 8; // (front to back)
   protected Dir dir = Dir.S;
 
   protected Map map;
@@ -89,7 +87,7 @@ public class Entity implements Serializable, Collideable {
   public boolean intersects(Entity e) {
     return !equals(e)
         && intersects(e.getX() - e.getLength(), e.getY() - e.getWidth(), e.getX()
-            + e.width, e.getY() + e.length);
+            + e.getWidth(), e.getY() + e.getLength());
   }
 
   public boolean intersects(double left, double top, double right, double bottom) {
@@ -214,13 +212,6 @@ public class Entity implements Serializable, Collideable {
     collideables.addAll(collidingTiles);
     collideables.addAll(collidingEntities);
     
-//    Tile topLeft = map.getTiles(left, top, left, top).get(0);
-    Tile bottomRight = map.getTiles(right, bottom, right, bottom).get(0);
-    
-//    System.out.printf("tl(%.1f,%.1f) %b\n", left, top, topLeft.blocksNPC());
-//    System.out.printf("\tbr(%.1f,%.1f) %b\n", right, bottom, bottomRight.blocksNPC());
-    System.out.println(collidingTiles.contains(bottomRight));
-    
     for (Tile tile : collidingTiles) {
       if (tile.blocksNPC() && z == 0) {
         return;
@@ -256,15 +247,11 @@ public class Entity implements Serializable, Collideable {
   }
 
   public int getWidth() {
-    return isSideways() ? length : width;
+    return 8;
   }
 
   public int getLength() {
-    return isSideways() ? width : length;
-  }
-
-  protected boolean isSideways() {
-    return dir == Dir.E || dir == Dir.W;
+    return 8;
   }
 
   @Override

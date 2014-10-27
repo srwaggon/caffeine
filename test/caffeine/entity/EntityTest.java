@@ -13,17 +13,17 @@ import caffeine.world.tile.Tile;
 public class EntityTest {
   
   private Entity testObject;
+  private Map map = new Map("M 0 W 3 H 3 .........\n");
   
   @Before
   public void setUp() {
     testObject = new Entity();
+    testObject.setMap(map);
   }
 
   @Test
   public void getTiles_ReturnsTilesOccupiedByEntity() {
     testObject.setLoc(8, 8, 0);
-    Map map = new Map("M 0 W 3 H 3 .........\n");
-    testObject.setMap(map);
     int top = 0;
     int left = 0;
     int right = Map.tileSize;
@@ -45,8 +45,6 @@ public class EntityTest {
   @Test
   public void getTiles_ReturnsTilesOccupiedByEntity_GivenEntityHasRelocated() {
     testObject.setLoc(Map.tileSize * 2, Map.tileSize * 2, 0);
-    Map map = new Map("M 0 W 3 H 3 .........\n");
-    testObject.setMap(map);
     int top = Map.tileSize;
     int left = Map.tileSize;
     int right = Map.tileSize * 2;
