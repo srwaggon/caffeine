@@ -1,18 +1,23 @@
 package caffeine;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import caffeine.entity.mob.PlayerEntity;
 import caffeine.entity.mob.brain.InteractiveBrain;
 
 public class SinglePlayerMain {
 
   public static void main(String[] args) {
+    ExecutorService executor = Executors.newSingleThreadExecutor();
+    
     Caffeine caffeine = new Caffeine();
 //     caffeine.addEntity(new Mob());
 //     caffeine.addEntity(new Mob());
 
     addPlayer(caffeine);
 
-    caffeine.start();
+    executor.submit(caffeine);
   }
 
   private static void addPlayer(Caffeine caffeine) {

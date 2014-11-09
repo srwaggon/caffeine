@@ -3,6 +3,7 @@ package caffeine;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import caffeine.entity.Entity;
 import caffeine.entity.mob.Mob;
@@ -16,7 +17,7 @@ import caffeine.world.Map;
  * @author Samuel Waggoner
  * @email samuel.waggoner@gmail.com
  */
-public class Game extends Thread {
+public class Game implements Callable<Void> {
   
   private final HashMap<String, Entity> entities = new HashMap<String, Entity>();
   private final HashMap<String, Player> players = new HashMap<String, Player>();
@@ -84,7 +85,7 @@ public class Game extends Thread {
   }
   
   @Override
-  public void run() {
+  public Void call() throws Exception{
     long now, lastTime = System.nanoTime();
     double unprocessed = 0;
     long secondTimer = System.currentTimeMillis();
@@ -116,14 +117,10 @@ public class Game extends Thread {
     return NANOSECONDS_PER_SECOND / TICKS_PER_SECOND;
   }
   
-  @Override
-  public void start() {
-    new Thread(this).start();
-  }
-  
   public void tick(double ticksPerSecond) {
     for (Map m : world.values()) {
       m.tick(ticksPerSecond);
     }
   }
+
 }

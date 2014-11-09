@@ -21,9 +21,9 @@ public class Caffeine extends Game implements Renderable {
   }
 
   @Override
-  public void start() {
+  public Void call() throws Exception {
     gui.start();
-    super.start();
+    return super.call();
   }
 
   public GUI getGUI() {

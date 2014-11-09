@@ -3,6 +3,8 @@ package caffeine.net;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import link.Server;
 import link.packet.Packet;
@@ -22,9 +24,10 @@ public class GameServer extends Server implements MapListener {
   private final HashMap<String, GameServerWorker> clients = new HashMap<String, GameServerWorker>();
   
   public static void main(String args[]) {
+    ExecutorService executor = Executors.newSingleThreadExecutor();
     Caffeine game = new Caffeine();
     GameServer gs = new GameServer(game, 4444);
-    game.start();
+    executor.submit(game);
     gs.start();
   }
   
