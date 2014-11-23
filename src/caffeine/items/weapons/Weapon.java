@@ -9,6 +9,11 @@ import caffeine.world.tile.Tile;
 
 public abstract class Weapon extends Item {
 
+  /**
+   * 
+   */
+  private static final long serialVersionUID = -1821151869640287577L;
+
   @Override
   public void onTake(Entity entity) {
     entity.addItem(this);

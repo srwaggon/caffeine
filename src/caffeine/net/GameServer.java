@@ -87,8 +87,8 @@ public class GameServer extends Server implements MapListener {
   
   public synchronized void handle(PlayerAccount player, Packet packet) {
     int packetCode = packet.getCode();
-    Class packetClass = CaffeineCode.get(packetCode).getPacketClass();
-    ((CaffeinePacket) packetClass.cast(packet)).apply(game);
+    Class<? extends CaffeinePacket> packetClass = CaffeineCode.get(packetCode).getPacketClass();
+    packetClass.cast(packet).apply(game);
     System.out.println("Received" + packet);
     broadcast(packet);
   }

@@ -1,5 +1,7 @@
 package caffeine;
 
+import java.util.concurrent.ExecutorService;
+
 import pixl.Renderable;
 import pixl.Screen;
 import caffeine.gfx.GUI;
@@ -19,10 +21,14 @@ public class Caffeine extends Game implements Renderable {
     map.renderBackground(screen);
     map.renderSprites(screen);
   }
+  
+  public void start(ExecutorService executor) {
+    executor.submit(gui);
+    executor.submit(this);
+  }
 
   @Override
   public Void call() throws Exception {
-    gui.start();
     return super.call();
   }
 

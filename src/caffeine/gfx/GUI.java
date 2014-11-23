@@ -1,11 +1,13 @@
 package caffeine.gfx;
 
+import java.util.concurrent.Callable;
+
 import pixl.Frame;
 import pixl.Renderable;
 import pixl.Spritesheet;
 import caffeine.InputHandler;
 
-public class GUI {
+public class GUI implements Callable<Void> {
 
   private final Frame frame;
   private final Spritesheet spritesheet = new Spritesheet("sprites2.png", 16);
@@ -20,11 +22,12 @@ public class GUI {
     frame.addRenderable(renderable);
   }
 
-  public void start() {
-    frame.start();
-  }
-
   public InputHandler getInputHandler() {
     return inputHandler;
+  }
+
+  @Override
+  public Void call() throws Exception {
+    return frame.call();
   }
 }

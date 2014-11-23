@@ -9,7 +9,7 @@ import caffeine.entity.mob.brain.InteractiveBrain;
 public class SinglePlayerMain {
 
   public static void main(String[] args) {
-    ExecutorService executor = Executors.newSingleThreadExecutor();
+    ExecutorService executor = Executors.newCachedThreadPool();
     
     Caffeine caffeine = new Caffeine();
 //     caffeine.addEntity(new Mob());
@@ -17,7 +17,7 @@ public class SinglePlayerMain {
 
     addPlayer(caffeine);
 
-    executor.submit(caffeine);
+    caffeine.start(executor);
   }
 
   private static void addPlayer(Caffeine caffeine) {

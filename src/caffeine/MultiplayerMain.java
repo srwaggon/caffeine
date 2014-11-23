@@ -9,7 +9,7 @@ import caffeine.net.GameServer;
 public class MultiplayerMain {
   
   public static void main(String[] args) {
-    ExecutorService executor = Executors.newSingleThreadExecutor();
+    ExecutorService executor = Executors.newCachedThreadPool();
     Caffeine game = new Caffeine();
     GameServer gs = new GameServer(game, 4444);
     executor.submit(game);

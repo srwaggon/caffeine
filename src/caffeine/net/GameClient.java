@@ -37,7 +37,7 @@ public class GameClient extends link.Client {
 
   @Override
   public void start() {
-    frame.start();
+//    frame.start();
     super.start();
   }
 
@@ -93,7 +93,7 @@ public class GameClient extends link.Client {
   @Override
   public void handlePacket(Packet packet) {
     int packetCode = packet.getCode();
-    Class packetClass = CaffeineCode.get(packetCode).getPacketClass();
-    ((CaffeinePacket) packetClass.cast(packet)).apply(game);
+    Class<? extends CaffeinePacket> packetClass = CaffeineCode.get(packetCode).getPacketClass();
+    packetClass.cast(packet).apply(game);
   }
 }

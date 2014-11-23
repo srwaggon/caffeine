@@ -5,13 +5,13 @@ public enum CaffeineCode {
       FatalErrorPacket.class), MAP(MapPacket.class), EVENT(EventPacket.class), MOVE(
       MovePacket.class), JUMP(JumpPacket.class), USERIGHT(UseRightPacket.class);
   
-  private Class packetClass;
+  private Class<? extends CaffeinePacket> packetClass;
   
-  CaffeineCode(Class packetClass) {
+  CaffeineCode(Class<? extends CaffeinePacket> packetClass) {
     this.packetClass = packetClass;
   }
   
-  public Class getPacketClass() {
+  public Class<? extends CaffeinePacket> getPacketClass() {
     return this.packetClass;
   }
   
