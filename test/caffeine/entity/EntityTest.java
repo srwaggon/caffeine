@@ -44,6 +44,9 @@ public class EntityTest {
   
   @Test
   public void getTiles_ReturnsTilesOccupiedByEntity_GivenEntityHasRelocated() {
+    // [. . .]
+    // [. x x]
+    // [. x x]
     testObject.setLoc(Map.tileSize * 2, Map.tileSize * 2, 0);
     int top = Map.tileSize;
     int left = Map.tileSize;
@@ -56,10 +59,10 @@ public class EntityTest {
     
     List<Tile> tiles = testObject.getTiles();
     
-    assertEquals(4, tiles.size());
     assertTrue(tiles.contains(topLeft));
     assertTrue(tiles.contains(topRight));
     assertTrue(tiles.contains(bottomLeft));
     assertTrue(tiles.contains(bottomRight));
+    assertEquals(4, tiles.size());
   }
 }

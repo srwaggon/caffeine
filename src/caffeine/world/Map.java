@@ -7,13 +7,14 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
-import pixl.Screen;
 import caffeine.entity.Entity;
 import caffeine.entity.ItemEntity;
 import caffeine.net.MapListener;
 import caffeine.world.tile.Tile;
+import pixl.Screen;
 
 public class Map implements Serializable {
+
   private static final long serialVersionUID = -8758917884307083852L;
   // primitive Fields
   protected int backgroundSprite = 4;
@@ -40,15 +41,15 @@ public class Map implements Serializable {
 
   };
 
-  public static final String defaultMapData = "M 0 W 13 H 8 " 
-      + "DDDDDDDDDDDDD"
-      + "D~~~~~~..mmmD" 
-      + "D~~~~~~....mD" 
-      + "D~~.~~~...m.D" 
-      + "D~.m~~~...m.D"
-      + "D~~~~~~~~~..D" 
-      + "D~~~~~~..mmmD" 
-      + "DDDDDDDDDDDDD";
+  public static final String defaultMapData = "M 0 W 13 H 8 "
+                                              + "DDDDDDDDDDDDD"
+                                              + "D~~~~~~..mmmD"
+                                              + "D~~~~~~....mD"
+                                              + "D~~.~~~...m.D"
+                                              + "D~.m~~~...m.D"
+                                              + "D~~..~~~~~..D"
+                                              + "D~~~~.~..mmmD"
+                                              + "DDDDDDDDDDDDD";
 
   public Map(int id, int w, int h, String data) {
     this.id = id;
@@ -86,7 +87,7 @@ public class Map implements Serializable {
       Tile t = Tile.read(x, y, data.charAt(i));
       map[x][y] = t;
     }
-    
+
     scan.close();
   }
 
@@ -111,7 +112,7 @@ public class Map implements Serializable {
   }
 
   public List<Entity> getEntities(double left, double top, double right,
-      double bottom) {
+                                  double bottom) {
     List<Entity> result = new ArrayList<Entity>();
     for (Entity e : getEntities()) {
       if (e.intersects(left, top, right, bottom)) {
@@ -142,7 +143,7 @@ public class Map implements Serializable {
   private Tile getTile(int x, int y) {
     return inRange(x, y) ? map[x][y] : null;
   }
-  
+
   public Tile getTileAt(int x, int y) {
     return getTile(x / Map.tileSize, y / Map.tileSize);
   }
@@ -150,8 +151,8 @@ public class Map implements Serializable {
   public List<Tile> getTiles(double left, double top, double right, double bottom) {
     List<Tile> result = new ArrayList<Tile>();
 
-    for (int row = (int) top; row <= bottom; row += Map.tileSize) {
-      for (int col = (int) left; col <= right; col += Map.tileSize) {
+    for (int row = (int) top; row <= bottom + Map.tileSize; row += Map.tileSize) {
+      for (int col = (int) left; col <= right + Map.tileSize; col += Map.tileSize) {
         if (isValidLoc(col, row)) {
           result.add(getTileAt(col, row));
         }
@@ -161,14 +162,18 @@ public class Map implements Serializable {
   }
 
   public Tile getTileSafe(int x, int y) {
-    if (x < 0)
+    if (x < 0) {
       x = 0;
-    if (y < 0)
+    }
+    if (y < 0) {
       y = 0;
-    if (x >= numCols)
+    }
+    if (x >= numCols) {
       x = numCols - 1;
-    if (y >= numRows)
+    }
+    if (y >= numRows) {
       y = numRows - 1;
+    }
     return map[x][y];
   }
 
@@ -186,7 +191,7 @@ public class Map implements Serializable {
 
   public boolean isValidLoc(int x, int y) {
     return 0 <= x && x < numCols * Map.tileSize && 0 <= y
-        && y < numRows * Map.tileSize;
+           && y < numRows * Map.tileSize;
   }
 
   public void read(String data) {
@@ -224,11 +229,12 @@ public class Map implements Serializable {
   }
 
   public void renderBackground(Screen screen) {
-    for (int x = 0; x < numCols; x++)
+    for (int x = 0; x < numCols; x++) {
       for (int y = 0; y < numRows; y++) {
         Tile tile = map[x][y];
         tile.render(screen, this, x * Map.tileSize, y * Map.tileSize);
       }
+    }
   }
 
   public void renderSprites(Screen screen) {

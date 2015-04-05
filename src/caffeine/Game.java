@@ -103,13 +103,6 @@ public class Game implements Callable<Void> {
       if (thisTime - secondTimer > 1000) {
         secondTimer = thisTime;
       }
-
-      try {
-        Thread.sleep(2);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      }
-
     }
   }
 

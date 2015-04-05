@@ -247,11 +247,11 @@ public class Entity implements Serializable, Collideable {
   }
 
   public int getWidth() {
-    return 8;
+    return 7;
   }
 
   public int getLength() {
-    return 8;
+    return 7;
   }
 
   @Override
